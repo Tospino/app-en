@@ -15,7 +15,7 @@
                     <div class="good-desc">
                         <span class="p1 clamp-2">{{product.supplyTitle}}</span><br>
                         <span class="p2" v-if="false">{{product.scTotal}}人收藏</span>
-                        <span class="p2" v-else>已售{{product.skuSalesNum}}件</span>
+                        <span class="p2" v-else>已售{{product.skuSalesNum ? product.skuSalesNum:0}}件</span>
                     </div>
                     <div class="good-price">
                         <span class="p1" v-if="false">{{jn}}{{product.discountPrice ? product.discountPrice : product.salePrice}}</span>

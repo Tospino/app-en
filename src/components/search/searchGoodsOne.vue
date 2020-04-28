@@ -20,7 +20,7 @@
                             </div>
                             <div class="good-desc">
                                 <div class="p1 clamp-2">{{good.supplyTitle}}</div>
-                                <div class="sales-num">Sales:{{good.skuSalesNum}}</div>
+                                <div class="sales-num">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</div>
                                 <div class="country">
                                     <div class="guojia" v-if="good.locationNameEng">
                                         <img :src="$webUrl+good.locationUrl" v-if="good.locationUrl">

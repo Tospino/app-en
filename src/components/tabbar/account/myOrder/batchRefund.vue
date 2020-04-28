@@ -93,7 +93,6 @@ export default {
         },
         //单件商品复选框
         productCheckBox(item){
-            item.checked = !item.checked
             this.$forceUpdate()
             this.disabledSubmit()
         },
