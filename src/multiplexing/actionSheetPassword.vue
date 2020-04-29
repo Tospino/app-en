@@ -125,11 +125,7 @@ export default {
                 height: 110px;
                 line-height: 109px;
                 font-size: 60px;
-                .delete{
-                    img{
-                        width: 60px;
-                    }
-                }
+
             }
         }
         
