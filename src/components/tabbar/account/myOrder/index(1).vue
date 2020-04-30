@@ -54,7 +54,7 @@ import {orderlistApi,orderlaunchpayApi,completeorderApi} from '@/api/myOrder/ind
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import actionSheetPaymen from '@/multiplexing/actionSheetPaymen'
 import actionSheetSucess from '@/multiplexing/actionSheetSucess'
-import { Toast } from 'vant';
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -113,7 +113,6 @@ export default {
         
     },
     mounted() {
-        
         this.active = Number(sessionStorage.getItem("activeIndex")) 
         this.formData.order_status_app = this.active - 1
         this.refreshOrder()
@@ -362,9 +361,12 @@ export default {
                 }
                 .van-tab{
                     line-height: 80px;
-                    flex-basis: 20% !important;
                     font-size: 28px;
                     color: #000;
+                    text-overflow:clip;
+                    &:nth-child(3){
+                        flex-basis: 30% !important;
+                    }
                 }
                 .van-tabs__line{
                     bottom: 30px;

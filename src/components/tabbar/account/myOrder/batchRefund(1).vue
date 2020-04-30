@@ -12,7 +12,7 @@
                         </div>
                         <div class="good-detail-title">
                             <span class="name">{{data.skuName}}</span>
-                            <div class="guige">{{data.skuValuesTitle}}</div>
+                            <div class="guige">{{data.skuValuesTitleEng}}</div>
                         </div>
                         <div class="price fl-right">
                             <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
@@ -25,8 +25,7 @@
             <div class="settlement">
                 <span class="settlement-text">
                     <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600" @change="allCheckBox"></van-checkbox>
-                    <span class="btn1" @click="assign" :style="{backgroundColor:(btnFlag?'#FA5300':'#999')}">OK</span> 
-                    
+                    <span class="btn1" @click="assign" :style="{backgroundColor:(btnFlag?'#FA5300':'#999')}">OK</span>
                     <span class="p1">All</span>
                 </span>
             </div>
@@ -94,7 +93,6 @@ export default {
         },
         //单件商品复选框
         productCheckBox(item){
-            item.checked = !item.checked
             this.$forceUpdate()
             this.disabledSubmit()
         },

@@ -19,9 +19,10 @@
         </div>
       </div>
       <div class="upload">
-        <van-button type="info" size="large" class="load-btn" @click="confirm">立即付款</van-button>
+        <van-button type="info" size="large" class="load-btn" @click="confirm">Pay Now</van-button>
       </div>
     </van-action-sheet>
+    <!-- <action-sheet-yinhang ref="actionSheetYinhang"></action-sheet-yinhang> -->
     <action-sheet-yinhang
       ref="actionSheetYinhang"
       :orderSn="orderSn"
@@ -43,7 +44,6 @@ export default {
     },
     orderSn: {
       type: String
-      // type: text
     }
   },
   data() {
@@ -53,9 +53,14 @@ export default {
         {
           type: 201,
           name: "Balance"
+        },
+        {
+          type: 203,
+          name: "Third party"
         }
       ],
-      list: []
+      list: [],
+      oneTypeName: ""
     };
   },
   computed: {
@@ -148,8 +153,6 @@ export default {
     },
     //展示支付方式列表
     showyinhang() {
-      console.log("---打开-----");
-      console.log(this.$refs.actionSheetYinhang.showAction);
       this.$refs.actionSheetYinhang.showAction = true;
     }
   },

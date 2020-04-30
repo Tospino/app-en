@@ -7,24 +7,17 @@
                     <span>Cancel Order</span>
                     <van-icon name="cross" class="cross" @click="closeCancel"/>
                 </div>
-                <div class="yuanyin">
-                    Reason for cancelling
-                </div>
+                <div class="yuanyin">Reason for cancelling</div>
                 <div class="yuanyin-list" v-for="(reason,index) in reasonList" :key="index">
                     <span>{{reason.name}}</span>
                     <div class="yuan" v-if="reason.istrue" @click="checkyuan(reason)"></div>
                     <div class="yuan-img" v-else>
                         <img src="@/assets/img/confirmOrder/icon-02@2x.png">
-                        <img src="@/assets/img/confirmOrder/icon-02@2x.png">
                     </div>
                 </div>
                 <div class="btns">
-                    <div class="btn-zbqx" @click="closeCancel">
-                        Cancel
-                    </div>
-                    <div class="btn-qdqx" @click="submitOrder">
-                        Confirm
-                    </div>
+                    <div class="btn-zbqx" @click="closeCancel">Cancel</div>
+                    <div class="btn-qdqx" @click="submitOrder">Confirm</div>
                 </div>
             </div>
         </div>
@@ -33,7 +26,7 @@
 
 <script>
 import {revokeorderApi} from '@/api/myOrder/index'
-import { Toast } from 'vant';
+import {Toast} from 'vant'
 export default {
     props: {
         orderId:{
@@ -100,7 +93,7 @@ export default {
             this.remark = item.name
         },
         revokeorder(data){
-           revokeorderApi(data).then(res => {
+            revokeorderApi(data).then(res => {
                 if(res.code == 0){
                     this.closeCancel()
                     this.$emit('refreshOrder')

@@ -19,10 +19,9 @@
         </div>
       </div>
       <div class="upload">
-        <van-button type="info" size="large" class="load-btn" @click="confirm">Pay Now</van-button>
+        <van-button type="info" size="large" class="load-btn" @click="confirm">立即付款</van-button>
       </div>
     </van-action-sheet>
-    <!-- <action-sheet-yinhang ref="actionSheetYinhang"></action-sheet-yinhang> -->
     <action-sheet-yinhang
       ref="actionSheetYinhang"
       :orderSn="orderSn"
@@ -87,7 +86,7 @@ export default {
     // 付款方式
     fnParent(e) {
       this.oneTypeName = e.name;
-      console.log("付款方式", e);
+      // console.log("付款方式", e);
       this.payTypeList = [
         {
           name: e.name,
@@ -107,22 +106,23 @@ export default {
           data: {
             payTypeDetail: 203,
             orderList: [{ orderId: this.orderSn }]
-          }
+          },
+          dataType:'text'
         }).then(res => {
           // window.location.href = res.Data.payMainNo
-          console.log(res);
+          // console.log(res);
           park({
             url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}`,
             method: "POST"
           }).then(result => {
             // console.log(result);
-            if (result.status_code === 200) {
+            if (result.status_code) {
               // 第三方支付页面跳转
               // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
               // console.log(this.$store.state.thirdPartyPaymentUrl)
               // this.$router.push("/thirdPartyPayment")
-            //   window.location.href = result.data.resultUrl;
-                window.open(res.data.resultUrl, "_blank");
+              window.location.href = result.data.resultUrl;
+                // window.open( result.data.resultUrl, "_blank");
             }
           });
         });
