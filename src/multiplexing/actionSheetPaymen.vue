@@ -53,10 +53,6 @@ export default {
           type: 201,
           name: "Balance"
         },
-        {
-          type: 203,
-          name: "Third party"
-        }
       ],
       list: [],
       oneTypeName: ""
@@ -82,6 +78,14 @@ export default {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
       console.log("paymethod", item);
+       this.payTypeList = [
+        {
+          name: item.name,
+          type: item.type
+        }
+      ];
+      this.list[0].payTypeList = item.type;
+      this.list[0].payTypeDetail = item.name;
     },
     // 付款方式
     fnParent(e) {
@@ -107,7 +111,7 @@ export default {
             payTypeDetail: 203,
             orderList: [{ orderId: this.orderSn }]
           },
-          dataType:'text'
+          dataType: "text"
         }).then(res => {
           // window.location.href = res.Data.payMainNo
           // console.log(res);
@@ -122,13 +126,14 @@ export default {
               // console.log(this.$store.state.thirdPartyPaymentUrl)
               // this.$router.push("/thirdPartyPayment")
               window.location.href = result.data.resultUrl;
-                // window.open( result.data.resultUrl, "_blank");
+              // window.open( result.data.resultUrl, "_blank");
             }
           });
         });
         return;
+      } else {
+        this.$emit("showPassWord", true, "支付");
       }
-      this.$emit("showPassWord", true, "支付");
     },
     getonlinepaytypelist() {
       getonlinepaytypelistApi({}).then(res => {

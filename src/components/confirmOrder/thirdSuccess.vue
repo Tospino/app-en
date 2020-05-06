@@ -1,7 +1,7 @@
 <template>
   <!-- 第三方支付成功 -->
   <div class="password-success">
-    <balance-header></balance-header>
+    <third-header></third-header>
     <div class="success-img">
       <img src="@/assets/img/confirmOrder/icon-05@2x.png" alt />
     </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import balanceHeader from "./itemComponents/balanceHeader";
+import thirdHeader from "./itemComponents/thirdHeader";
 import ThirdSuccessVue from "./thirdSuccess.vue";
 import { main, park } from "@/api/index";
 export default {
@@ -80,7 +80,7 @@ export default {
     // }
   },
   components: {
-    balanceHeader
+    thirdHeader
   }
 };
 </script>

@@ -78,6 +78,14 @@ export default {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
       console.log("paymethod", item);
+      this.payTypeList = [
+        {
+          name: item.name,
+          type: item.type
+        }
+      ];
+      this.list[0].payTypeList = item.type;
+      this.list[0].payTypeDetail = item.name;
     },
     // 付款方式
     fnParent(e) {
@@ -116,14 +124,15 @@ export default {
               // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
               // console.log(this.$store.state.thirdPartyPaymentUrl)
               // this.$router.push("/thirdPartyPayment")
-            //   window.location.href = result.data.resultUrl;
-                window.open(res.data.resultUrl, "_blank");
+              //   window.location.href = result.data.resultUrl;
+              window.open(res.data.resultUrl, "_blank");
             }
           });
         });
         return;
+      } else {
+        this.$emit("showPassWord", true, "支付");
       }
-      this.$emit("showPassWord", true, "支付");
     },
     getonlinepaytypelist() {
       getonlinepaytypelistApi({}).then(res => {
