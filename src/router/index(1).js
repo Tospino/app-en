@@ -128,12 +128,6 @@ import inforDetails from '@/components/tabbar/account/information/details'
 //扫码
 import sweepCode from '@/multiplexing/sweepCode'
 
-//第三方支付
-import thirdSuccess from "@/components/confirmOrder/thirdSuccess"
-import thirdLose from "@/components/confirmOrder/thirdLose"
-
-import thirdPartyPayment from '@/components/confirmOrder/thirdPartyPayment'
-
 
 Vue.use(Router)
 
@@ -374,27 +368,27 @@ export default new Router({
         },
         {
           path: 'aboutTospino',
-          name: '关于TOSPINO',
+          name: 'About TOSPINO',
           component: aboutTospino,
           children:[
             {
               path: 'helpCenter',
-              name: '帮助中心',
+              name: 'Help Center',
               component: helpCenter,
             },
             {
               path: 'introduce',
-              name: '平台介绍',
+              name: 'About Tospino',
               component: introduce,
             },
             {
               path: 'privacyPolicy',
-              name: '隐私政策',
+              name: 'Privacy Policy',
               component: privacyPolicy,
             },
             {
               path: 'userAgreement',
-              name: '用户协议',
+              name: 'User Agreement',
               component: userAgreement,
             },
           ]
@@ -626,23 +620,6 @@ export default new Router({
       name: '扫码',
       component: sweepCode
     },
-
-
-    {
-      path: '/thirdSuccess',
-      name: '第三方支付页成功',
-      component: thirdSuccess
-    },
-    {
-      path: '/thirdLose',
-      name: '第三方支付页失败',
-      component: thirdLose
-    }
-    // {
-    //   path: '/thirdPartyPayment',
-    //   name: '第三方支付页',
-    //   component: thirdPartyPayment
-    // },
 
   ],
   

@@ -171,9 +171,10 @@ parkAxios.interceptors.response.use(
           Toast(data.msg)
         } else if (data.code == 0) {
           Toast.clear()
-        } else {
-          Toast('error')
-        }
+        } 
+		//else {
+        //  Toast('error')
+        //}
       }
     }
     return response.data

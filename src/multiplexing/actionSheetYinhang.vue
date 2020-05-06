@@ -13,18 +13,18 @@
             <!-- <img src="@/assets/img/confirmOrder/zhongguoyinhang@2x.png" /> -->
           </span>
           <span class="c-999"></span>
-          <span :class="{'c-orange':i.a}">{{i.msg}}</span>
+          <span>{{i.msg}}</span>
         </div>
-        <div class="paymen-content-top" @click="toaddBankcar">
-          <span></span>
+        <!-- <div class="paymen-content-top" @click="toaddBankcar">
+          <span></span> -->
           <!-- <span class="c-999">></span> -->
-          <van-icon name="arrow" class="arrow c-999" />
+          <!-- <van-icon name="arrow" class="arrow c-999" />
           <span>Add bank card</span>
-        </div>
+        </div> -->
         <div class="paymen-content-top" @click="pay">
           <span></span>
           <span class="c-999"></span>
-          <span>Third party</span>
+          <span>slydePay</span>
         </div>
         <!-- <div class="btn-ljzf" @click="showpaymen">立即付款</div> -->
       </div>
@@ -85,7 +85,7 @@ export default {
     },
     pay() {
       this.showAction = false;
-      this.$emit("toParnet", { name: "Third party", type: 203 });
+      this.$emit("toParnet", { name: "slydePay", type: 203 });
     }
   },
   components: {}

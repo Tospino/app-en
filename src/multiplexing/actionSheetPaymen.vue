@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="upload">
-        <van-button type="info" size="large" class="load-btn" @click="confirm">立即付款</van-button>
+        <van-button type="info" size="large" class="load-btn" @click="confirm">Confirm the Payment</van-button>
       </div>
     </van-action-sheet>
     <action-sheet-yinhang

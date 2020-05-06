@@ -185,14 +185,14 @@ export default {
         { text: "好评排序", value: "b" },
         { text: "销量排序", value: "c" }
       ],
-      payStatus: [
+     payStatus: [
         {
           type: 1,
-          name: "货到付款"
+          name: "Cash"
         },
         {
           type: 2,
-          name: "在线支付"
+          name: "Online"
         }
       ],
       showPayment: false,
@@ -265,11 +265,11 @@ export default {
         });
       });
       if (!flag) {
-        Toast("请移除异常商品");
+        Toast("Please remove abnormal products");
         return;
       }
       if (!flag2) {
-        Toast("请移除异常商品或者更换地址");
+        Toast("Please remove abnormal products/change the address");
         return;
       }
       if (!this.userinfoShop.payPwd) {
@@ -330,7 +330,7 @@ export default {
     //减数量
     reduceCount(item) {
       if (item.detailNum <= item.minStartNum) {
-        Toast("不可小于起订量" + item.minStartNum);
+        Toast("Not less than MOQ" + item.minStartNum);
         return;
       }
       item.detailNum--;
@@ -430,34 +430,34 @@ export default {
             this.orderIdList = orderIdArr;
             this.orderSn=this.orderIdList[0].orderId+""
           }
-        } else if (res.code == 1) {
-          Toast("参数requestModel不能为空");
+        }else if (res.code == 1) {
+          Toast("Parameter “requestModel” cannot be empty.");
         } else if (res.code == 2) {
-          Toast("参数订单列表orderList不能为空");
+          Toast("Parameter”orderList” cannot not be empty.");
         } else if (res.code == 3) {
-          Toast("参数付款方式不能为空");
+          Toast("Parameter Method of Payment cannot not be empty.");
         } else if (res.code == 4) {
-          Toast("参数收获地址Id不能为空");
+          Toast("Parameter Shipping Address ID cannot not be empty.");
         } else if (res.code == 5) {
-          Toast("参数是否匿名不能为空");
+          Toast("Parameter Anonymous Buyer cannot not be empty.");
         } else if (res.code == 6) {
-          Toast("参数订单来源不能为空");
+          Toast("Parameter Order List cannot not be empty.");
         } else if (res.code == 7) {
-          Toast("参数订单明细列表detailList不能为空");
+          Toast("Parameter”detailList” cannot not be empty.");
         } else if (res.code == 21) {
-          Toast("商品已失效，请重新确认订单");
+          Toast("The product is invalid. Please reconfirm the order.");
           this.refresh();
         } else if (res.code == 22) {
-          Toast("商品起订量不足，请重新确认订单");
+          Toast("The MOQ is insufficient. Please reconfirm the order.");
           this.refresh();
         } else if (res.code == 23) {
-          Toast("商品库存不足，请重新确认订单");
+          Toast("The stock is insufficient. Please reconfirm the order.");
           this.refresh();
         } else if (res.code == 24) {
-          Toast("商品价格已经变化，请重新确认订单");
+          Toast("The product price is changed. Please reconfirm the order.");
           this.refresh();
         } else if (res.code == 25) {
-          Toast("FBM商品不能使用货到付款");
+          Toast("FBM products do not support pay by cash.");
           this.refresh();
         }
       });
@@ -477,37 +477,43 @@ export default {
       orderlaunchpayApi(data).then(res => {
         console.log(data);
 
-        if (res.code == 0) {
+       if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
-          Toast("参数requestModel不能为空");
+          Toast("Parameter “requestModel” cannot be empty.");
         } else if (res.code == 2) {
-          Toast("参数支付方式不能为空");
+          Toast("Parameter Method of Payment cannot not be empty.");
         } else if (res.code == 3) {
-          Toast("余额支付支付密码不能为空");
+          Toast(
+            "The payment password cannot be empty if you choose Pay by Balance."
+          );
         } else if (res.code == 4) {
-          Toast("参数订单列表orderList不能为空");
+          Toast("Parameter”orderList” cannot not be empty.");
         } else if (res.code == 5) {
-          Toast("参数订单Id必须大于0");
+          Toast("Parameter Order ID must be larger than 0.");
         } else if (res.code == 21) {
-          Toast("请先设置支付密码");
+          Toast("Set the payment password first.");
           setTimeout(() => {
             this.$router.push({ name: "设置支付密码" });
           }, 1000);
         } else if (res.code == 22) {
-          Toast("支付密码不正确");
+          Toast("Incorrect password!");
         } else if (res.code == 23) {
-          Toast("余额不足");
+          Toast("Your balance isn't enough to pay.");
         } else if (res.code == 31) {
-          Toast("提交的订单列表不能为空");
+          Toast("The submitted order list cannot be empty.");
         } else if (res.code == 32) {
-          Toast("存在订单不属于当前用户，不能进行操作");
+          Toast(
+            "The existing order isn’t belong to the current user and cannot be operated."
+          );
         } else if (res.code == 33) {
-          Toast("存在订单已经支付，不能重复支付");
+          Toast("The existing order is paid and cannot be repaid.");
         } else if (res.code == 34) {
-          Toast("提交的订单列表包含状态不为待付款的订单");
+          Toast("The submitted order list involves Unpaid order.");
         } else if (res.code == 35) {
-          Toast("提交的订单列表包含已过支付有效期的订单");
+          Toast(
+            "The submitted order list involves unsuccessful payment order. "
+          );
         }
       });
     },
