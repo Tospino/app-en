@@ -204,7 +204,7 @@ export default {
         },
         //商品复选框
         productCheckBox(productItem,flag,list){
-            // productItem.checked = !productItem.checked
+            productItem.checked = !productItem.checked
             if(flag == 'all'){
                 productItem.listhistory.forEach(ele => {
                     ele.checked = productItem.checked
