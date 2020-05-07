@@ -207,8 +207,8 @@ export default {
       payTypeList: [], //支付方式列表
       shopcrtList: [],
       moeny: 0,
-      //   payTypeDetail: 201, //余额支付ID,暂时写死
-      payTypeDetail: 203, //余额支付ID,暂时写死
+        payTypeDetail: 201, //余额支付ID,暂时写死
+      // payTypeDetail: 203, //余额支付ID,暂时写死
       orderIdList: [],
       // 用户支付
       userinfoShop: {},
