@@ -27,6 +27,7 @@
       :orderSn="orderSn"
       @toParnet="fnParent"
       @change="onChangePayMethod"
+      :showList="showList"
     ></action-sheet-yinhang>
   </div>
 </template>
@@ -34,6 +35,7 @@
 <script>
 import { getonlinepaytypelistApi } from "@/api/myOrder/index";
 import actionSheetYinhang from "@/multiplexing/actionSheetYinhang";
+import {listPayOptionsApi} from "@/api/confirmOrder/index";
 import { park } from "@/api";
 export default {
   props: {
@@ -55,7 +57,8 @@ export default {
         },
       ],
       list: [],
-      oneTypeName: ""
+      oneTypeName: "",
+      showList:[]
     };
   },
   computed: {
@@ -72,12 +75,12 @@ export default {
   created() {},
   mounted() {
     this.getonlinepaytypelist();
+    this.listPayOptions()
   },
   watch: {},
   methods: {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
-      console.log("paymethod", item);
        this.payTypeList = [
         {
           name: item.name,
@@ -89,12 +92,14 @@ export default {
     },
     // 付款方式
     fnParent(e) {
+      console.log(e);
       this.oneTypeName = e.name;
       // console.log("付款方式", e);
       this.payTypeList = [
         {
           name: e.name,
-          type: e.type
+          type: e.type,
+          shortName:e.shortName,
         }
       ];
       this.list[0].payTypeList = e.type;
@@ -116,7 +121,7 @@ export default {
           // window.location.href = res.Data.payMainNo
           // console.log(res);
           park({
-            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}`,
+            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&provider=${this.payTypeList[0].shortName}`,
             method: "POST"
           }).then(result => {
             console.log(result);
@@ -159,6 +164,28 @@ export default {
     //展示支付方式列表
     showyinhang() {
       this.$refs.actionSheetYinhang.showAction = true;
+    },
+    //付款方式列表
+    listPayOptions(){
+      let arr = []
+      listPayOptionsApi().then(res => {
+        if(res.status_code == 200){
+          //支付方式
+          res.data.response.result.forEach(item => {
+            let itemObj = {
+              name:item.name,
+              shortName:item.shortName,
+              logourl:item.logourl,
+              checked:false,
+              type:203
+            }
+            arr.push(itemObj)
+          })
+          //单独添加余额支付类型
+          arr.push({name:'Balance',shortName:'Balance',logourl:'http://47.52.210.251:8091/tospino/test/common/image/yuan.png',checked:false,type:201})
+          this.showList = arr
+				}
+      })
     }
   },
   components: {

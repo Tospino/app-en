@@ -162,10 +162,7 @@ import actionSheetPaymen from "@/multiplexing/actionSheetPaymen";
 import actionSheetPassword from "@/multiplexing/actionSheetPassword";
 import balanceHeader from "./itemComponents/balanceHeader";
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
-import {
-  getconfirmorderApi,
-  batchmakeorderApi
-} from "@/api/confirmOrder/index";
+import {getconfirmorderApi,batchmakeorderApi,listPayOptionsApi} from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
 import { mapState, mapActions } from "vuex";
@@ -207,7 +204,7 @@ export default {
       payTypeList: [], //支付方式列表
       shopcrtList: [],
       moeny: 0,
-        payTypeDetail: 201, //余额支付ID,暂时写死
+      payTypeDetail: 201, //余额支付ID,暂时写死
       // payTypeDetail: 203, //余额支付ID,暂时写死
       orderIdList: [],
       // 用户支付
@@ -277,7 +274,7 @@ export default {
         return;
       }
       //提交订单
-      this.batchmakeorder(this.orderData);
+			this.batchmakeorder(this.orderData);
     },
 
     //编译状态
@@ -531,7 +528,7 @@ export default {
       console.log(flag);
       console.log("第三方支付弹起");
       this.$refs.actionSheetPassword.showAction = flag;
-    }
+    },
   },
   components: {
     actionSheetPaymen,

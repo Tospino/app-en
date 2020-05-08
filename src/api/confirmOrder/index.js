@@ -16,3 +16,12 @@ export function batchmakeorderApi(params) {
         data:params
     })
 }
+
+//付款方式列表
+export function listPayOptionsApi(params) {
+    return park({
+        url:`/appWallet/ListPayOptions`,
+        method: 'POST',
+        data:params
+    })
+}

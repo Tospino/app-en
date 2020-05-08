@@ -1,40 +1,15 @@
 <template>
   <!-- 选择付款方式弹窗 -->
   <div>
-    <van-action-sheet
-      v-model="showAction"
-      :title="title"
-      class="action-sheet-yinhang"
-      :close-on-click-overlay="false"
-    >
-      <div class="paymen-content">
-        <div class="paymen-content-top" v-for="(reason,index) in list" :key="index">
-          <span class="yh-icon czjz">
-            <!-- <img src="@/assets/img/confirmOrder/zhongguoyinhang@2x.png" /> -->
-          </span>
-          <span class="c-999"></span>
-          <span>{{reason.msg}}</span>
-          <div class="yuan" v-if="reason.istrue" @click="paymen(reason)"></div>
-          <div class="yuan-img" v-else>
-            <img src="@/assets/img/confirmOrder/icon-02@2x.png" />
-            <img src="@/assets/img/confirmOrder/icon-02@2x.png" />
-          </div>
-        </div>
-        <!-- <div class="paymen-content-top" @click="toaddBankcar">
-        <span></span>-->
-        <!-- <span class="c-999">></span> -->
-        <!-- <van-icon name="arrow" class="arrow c-999" />
-          <span>Add bank card</span>
-        </div>-->
-        <div class="paymen-content-top" @click="pay">
-          <span class="yh-icon czjz">
-            <!-- <img src="@/assets/img/confirmOrder/zhongguoyinhang@2x.png" /> -->
-          </span>
-          <span class="c-999"></span>
-          <span>slydePay</span>
-        </div>
+    <van-action-sheet v-model="showAction" :title="title" class="action-sheet-yinhang" :close-on-click-overlay="false">
+		<div class="paymen-content">
+			<div class="paymen-content-top" v-for="(reason,index) in list" :key="index" @click="cliItem(reason)">
+				<img :src="reason.logourl" class="icon-img">
+				<span>{{reason.name}}</span>
+				<van-checkbox v-model="reason.checked" icon-size="24px" class="img-checkbox" checked-color="#FA5300"></van-checkbox>
+			</div>
       </div>
-      <div class="btn-ljzf" @click="showpaymen">NEXT</div>
+      <div class="btn-ljzf" @click="pay">Confirm</div>
     </van-action-sheet>
   </div>
 </template>
@@ -52,44 +27,22 @@ export default {
     orderId: {
       type: Number,
       default: 0
+    },
+    showList:{
+      type:Array,
+      default: () => {
+        return []
+      }
     }
   },
   data() {
     return {
-      list: [
-        {
-          a: false,
-          num: 1,
-          msg: "Balance",
-          istrue: true
-        },
-        {
-          a: false,
-          num: 2,
-          msg: "Balance",
-          istrue: true
-        },
-        {
-          a: false,
-          num: 3,
-          msg: "Balance",
-          istrue: true
-        },
-        {
-          a: false,
-          num: 4,
-          msg: "Balance",
-          istrue: true
-        }
-      ],
+      list: [],
       showAction: false,
       remark: "",
       id:0,
     };
   },
-  //   methods: {
-  //
-  //   },
   computed: {},
   created() {},
   mounted() {},
@@ -102,34 +55,30 @@ export default {
         });
         this.remark = "";
       }
+    },
+    showList:{
+      handler:function(newVal){
+        this.list = newVal.map(o => Object.assign({}, o));
+      }
     }
   },
   methods: {
-    paymen(item) {
-      this.list.forEach(ele => {
-        ele.a = false;
-        ele.istrue = true;
-        if (item.num == ele.num) {
-          ele.a = true;
-        }
-      });
-      item.istrue = false;
-      this.remark = item.name;
-      // this.showAction = false;
-      // this.$emit("change", item);
-    },
-    //显示支付弹窗
-    showpaymen() {
-      this.$emit("showpassword");
-      // this.$emit('showsucess')
-    },
-    //添加银行卡
-    toaddBankcar() {
-      this.$router.push({ name: "添加银行卡" });
+    cliItem(item) {
+		this.list.forEach(ele => {
+			ele.checked = false
+		});
+		item.checked = true
     },
     pay() {
-      this.showAction = false;
-      this.$emit("toParnet", { name: "slydePay", type: 203 });
+		this.showAction = false;
+		let trueItem = {}
+		this.list.forEach(ele => {
+			if(ele.checked){
+				trueItem = ele
+			}
+			
+		});
+		this.$emit("toParnet", trueItem);
     }
   },
   components: {}
@@ -141,7 +90,7 @@ export default {
   border-radius: 0;
   /deep/ .van-action-sheet__header {
     height: 120px;
-    font-size: 40px;
+    font-size: 32px;
     font-weight: bold;
     line-height: 109px;
     .van-icon {
@@ -158,66 +107,26 @@ export default {
     font-size: 34px;
     color: #333;
     margin-bottom: 100px;
-    .paymen-content-top {
-      position: relative;
-      width: 100%;
-      height: 97px;
-      line-height: 97px;
-      border-top: 1px solid #dcdcdc;
-      padding: 0 30px;
-      box-sizing: border-box;
-      &:nth-last-child(2) {
-        border-bottom: 1px solid #dcdcdc;
-      }
-      &:nth-last-child(4) {
-        border-bottom: none;
-      }
-      .yh-icon {
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-      }
-      span {
-        &:nth-child(2) {
-          float: right;
-          font-size: 30px;
-          .van-icon {
-            color: #fa5300;
-          }
-        }
-        &:nth-child(3) {
-          padding-left: 119px;
-        }
-      }
-      .arrow {
-        position: absolute;
-        right: 30px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      .yuan {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        border-radius: 50%;
-        border: 2px solid rgba(153, 153, 153, 1);
-        top: 50%;
-        transform: translateY(-50%);
-        right: 30px;
-      }
-      .yuan-img {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 30px;
-        img {
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-      }
+	.paymen-content-top {
+		position: relative;
+		width: 100%;
+		height: 97px;
+		line-height: 97px;
+		border-top: 1px solid #dcdcdc;
+		padding: 0 30px;
+		box-sizing: border-box;
+		&:nth-last-child(1) {
+			border-bottom: 1px solid #dcdcdc;
+		}
+		.img-checkbox{
+			float: right;
+			margin-top:20px;
+		}
+		.icon-img{
+			width: 60px;
+			height: 60px;
+			vertical-align: middle;
+		}
     }
   }
   .btn-ljzf {
