@@ -8,33 +8,27 @@
       :close-on-click-overlay="false"
     >
       <div class="paymen-content">
-        <div class="paymen-content-top" v-for="(reason,index) in list" :key="index">
+        <div class="paymen-content-top" v-for="i in list" :key="i.num" @click="paymen(i)">
           <span class="yh-icon czjz">
             <!-- <img src="@/assets/img/confirmOrder/zhongguoyinhang@2x.png" /> -->
           </span>
           <span class="c-999"></span>
-          <span>{{reason.msg}}</span>
-          <div class="yuan" v-if="reason.istrue" @click="paymen(reason)"></div>
-          <div class="yuan-img" v-else>
-            <img src="@/assets/img/confirmOrder/icon-02@2x.png" />
-            <img src="@/assets/img/confirmOrder/icon-02@2x.png" />
-          </div>
+          <span>{{i.msg}}</span>
         </div>
+        <van-checkbox v-model="checked">复选框</van-checkbox>
         <!-- <div class="paymen-content-top" @click="toaddBankcar">
-        <span></span>-->
-        <!-- <span class="c-999">></span> -->
-        <!-- <van-icon name="arrow" class="arrow c-999" />
+          <span></span> -->
+          <!-- <span class="c-999">></span> -->
+          <!-- <van-icon name="arrow" class="arrow c-999" />
           <span>Add bank card</span>
-        </div>-->
+        </div> -->
         <div class="paymen-content-top" @click="pay">
-          <span class="yh-icon czjz">
-            <!-- <img src="@/assets/img/confirmOrder/zhongguoyinhang@2x.png" /> -->
-          </span>
+          <span></span>
           <span class="c-999"></span>
           <span>slydePay</span>
         </div>
+        <!-- <div class="btn-ljzf" @click="showpaymen">立即付款</div> -->
       </div>
-      <div class="btn-ljzf" @click="showpaymen">NEXT</div>
     </van-action-sheet>
   </div>
 </template>
@@ -48,10 +42,6 @@ export default {
     },
     orderSn: {
       type: String
-    },
-    orderId: {
-      type: Number,
-      default: 0
     }
   },
   data() {
@@ -61,30 +51,10 @@ export default {
           a: false,
           num: 1,
           msg: "Balance",
-          istrue: true
-        },
-        {
-          a: false,
-          num: 2,
-          msg: "Balance",
-          istrue: true
-        },
-        {
-          a: false,
-          num: 3,
-          msg: "Balance",
-          istrue: true
-        },
-        {
-          a: false,
-          num: 4,
-          msg: "Balance",
-          istrue: true
+          istrue:true
         }
       ],
-      showAction: false,
-      remark: "",
-      id:0,
+      showAction: false
     };
   },
   //   methods: {
@@ -93,30 +63,18 @@ export default {
   computed: {},
   created() {},
   mounted() {},
-  watch: {
-    orderId: {
-      handler: function(newVal) {
-        this.id = newVal;
-        this.reasonList.forEach(item => {
-          item.istrue = true;
-        });
-        this.remark = "";
-      }
-    }
-  },
+  watch: {},
   methods: {
     paymen(item) {
-      this.list.forEach(ele => {
-        ele.a = false;
-        ele.istrue = true;
-        if (item.num == ele.num) {
-          ele.a = true;
+      this.list.forEach(element => {
+        element.a = false;
+        if (item.num == element.num) {
+          element.a = true;
         }
       });
-      item.istrue = false;
-      this.remark = item.name;
-      // this.showAction = false;
-      // this.$emit("change", item);
+
+      this.showAction = false;
+      this.$emit("change", item);
     },
     //显示支付弹窗
     showpaymen() {
@@ -140,7 +98,7 @@ export default {
 .action-sheet-yinhang {
   border-radius: 0;
   /deep/ .van-action-sheet__header {
-    height: 120px;
+    height: 109px;
     font-size: 40px;
     font-weight: bold;
     line-height: 109px;
@@ -157,7 +115,6 @@ export default {
     position: relative;
     font-size: 34px;
     color: #333;
-    margin-bottom: 100px;
     .paymen-content-top {
       position: relative;
       width: 100%;
@@ -194,29 +151,6 @@ export default {
         right: 30px;
         top: 50%;
         transform: translateY(-50%);
-      }
-      .yuan {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        border-radius: 50%;
-        border: 2px solid rgba(153, 153, 153, 1);
-        top: 50%;
-        transform: translateY(-50%);
-        right: 30px;
-      }
-      .yuan-img {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 30px;
-        img {
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
       }
     }
   }
