@@ -162,7 +162,7 @@ import actionSheetPaymen from "@/multiplexing/actionSheetPaymen";
 import actionSheetPassword from "@/multiplexing/actionSheetPassword";
 import balanceHeader from "./itemComponents/balanceHeader";
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
-import {getconfirmorderApi,batchmakeorderApi,listPayOptionsApi} from "@/api/confirmOrder/index";
+import {getconfirmorderApi,batchmakeorderApi} from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
 import { mapState, mapActions } from "vuex";
@@ -209,7 +209,7 @@ export default {
       orderIdList: [],
       // 用户支付
       userinfoShop: {},
-      orderSn:""
+      orderSn:[]
       
     };
   },
@@ -409,9 +409,6 @@ export default {
         shopcrtList: this.shopcrtList
       };
       batchmakeorderApi(obj).then(res => {
-        console.log(res)
-        // this.orderSn=res.Data[0].orderSn
-        console.log("测试", res.Data[0].orderSn);
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -425,7 +422,7 @@ export default {
               orderIdArr.push({ orderId: Number(item.orderId) });
             });
             this.orderIdList = orderIdArr;
-            this.orderSn=this.orderIdList[0].orderId+""
+            this.orderSn=this.orderIdList
           }
         }else if (res.code == 1) {
           Toast("Parameter “requestModel” cannot be empty.");

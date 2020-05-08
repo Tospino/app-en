@@ -24,7 +24,6 @@
     </van-action-sheet>
     <action-sheet-yinhang
       ref="actionSheetYinhang"
-      :orderSn="orderSn"
       @toParnet="fnParent"
       @change="onChangePayMethod"
       :showList="showList"
@@ -44,7 +43,10 @@ export default {
       default: 0
     },
     orderSn: {
-      type: String
+      type: Array,
+      default:()=>{
+        return []
+      }
     }
   },
   data() {
@@ -114,7 +116,7 @@ export default {
           method: "POST",
           data: {
             payTypeDetail: 203,
-            orderList: [{ orderId: this.orderSn }]
+            orderList: this.orderSn
           },
           dataType: "text"
         }).then(res => {

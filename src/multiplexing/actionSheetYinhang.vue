@@ -21,9 +21,6 @@ export default {
       type: String,
       default: "Choose the method of payment"
     },
-    orderSn: {
-      type: String
-    },
     orderId: {
       type: Number,
       default: 0
