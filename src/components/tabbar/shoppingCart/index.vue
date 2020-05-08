@@ -277,7 +277,7 @@ export default {
         },
         //点击复选框
         changeCheckbox(item,flag,list){
-            // item.checkStatus = !item.checkStatus
+            item.checkStatus = !item.checkStatus
             if(flag == 'all'){
                 //订单上的复选框,该订单商品全选中
                 item.list.forEach(ele => {

@@ -362,9 +362,18 @@ export default {
                 }
                 .van-tab{
                     line-height: 80px;
-                    flex-basis: 20% !important;
+                    // flex-basis: 20% !important;
                     font-size: 28px;
                     color: #000;
+                    &:nth-child(1){
+                        flex-basis: 15% !important;
+                    }
+                    &:nth-child(4){
+                        flex-basis: 25% !important;
+                    }
+                    &:nth-child(3){
+                        flex-basis: 25% !important;
+                    }
                 }
                 .van-tabs__line{
                     bottom: 30px;
