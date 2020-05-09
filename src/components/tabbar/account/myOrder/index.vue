@@ -41,7 +41,7 @@
         <!-- 密码弹窗 -->
         <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord" :typeLeixing="typeLeixing"></action-sheet-password>
         <!-- 付款方式弹窗 -->
-        <action-sheet-paymen ref="actionSheetPaymen" :moeny="moeny" @showPassWord="showPassWord" :orderSn='orderData.orderId'></action-sheet-paymen>
+        <action-sheet-paymen ref="actionSheetPaymen" :moeny="moeny" @showPassWord="showPassWord" :orderSn='orderSn'></action-sheet-paymen>
     </div>
 </template>
 
@@ -104,6 +104,7 @@ export default {
             payTypeDetail:201,//余额支付ID,暂时写死
             orderData:{},
             typeLeixing:'',
+            orderSn:[]
         };  
     },
     computed: {
@@ -113,7 +114,6 @@ export default {
         
     },
     mounted() {
-        
         this.active = Number(sessionStorage.getItem("activeIndex")) 
         this.formData.order_status_app = this.active - 1
         this.refreshOrder()
@@ -223,10 +223,13 @@ export default {
         },
         //弹出付款方式弹窗
         showPay(flag,alldata){
+            let arr = []
             this.$refs.actionSheetPaymen.showAction = flag
             if(!alldata) return
             this.moeny = alldata.orderAmountWebsite
             this.orderData = alldata
+            arr.push({orderId:this.orderData.orderId})
+            this.orderSn = arr
         },
         //密码弹窗
         showPassWord(flag,typeLeixing,alldata){

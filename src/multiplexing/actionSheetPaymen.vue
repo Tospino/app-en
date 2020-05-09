@@ -1,12 +1,7 @@
 <template>
   <!--付款方式弹窗 -->
   <div>
-    <van-action-sheet
-      v-model="showAction"
-      title="Confirm the Payment"
-      class="action-sheet-paymen"
-      :close-on-click-overlay="false"
-    >
+    <van-action-sheet v-model="showAction" title="Confirm the Payment" class="action-sheet-paymen" :close-on-click-overlay="false">
       <div class="paymen-content">
         <div class="paymen-content-top" @click="showyinhang">
           <span>Pay by</span>
@@ -94,7 +89,6 @@ export default {
     },
     // 付款方式
     fnParent(e) {
-      console.log(e);
       this.oneTypeName = e.name;
       // console.log("付款方式", e);
       this.payTypeList = [
@@ -147,9 +141,7 @@ export default {
         if (res.code == 0) {
           this.list = res.Data;
           this.oneTypeName = this.oneTypeName =
-            this.list.length > 0
-              ? this.orderStatus(this.list[0].payTypeDetail, "payTypeList")
-              : "";
+          this.list.length > 0 ? this.orderStatus(this.list[0].payTypeDetail, "payTypeList") : "";
         }
       });
     },

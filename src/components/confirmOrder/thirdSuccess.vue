@@ -64,7 +64,7 @@ export default {
       }).then(res => {
         // console.log("GET",res);
         if (res.status_code === 100) {
-          this.$router.push("/thridlose");
+          this.$router.push("/thirdLose");
         }
       });
     }
