@@ -228,7 +228,7 @@ export default {
         if(this.$route.query.token && this.$route.query.token != 'undefined'){
             localStorage.token = this.$route.query.token
             this.getuserinfo()
-            console.log(123123);
+            // console.log(123123);
         }
     },
     beforeRouteLeave(to, from, next) {

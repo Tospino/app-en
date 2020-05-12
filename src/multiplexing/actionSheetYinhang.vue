@@ -96,7 +96,7 @@ export default {
   }
   .paymen-content {
     width: 100%;
-    height: 590px;
+    height: 700px;
     background-color: #fff;
     box-sizing: border-box;
     padding: 0px 0px 0;
@@ -107,8 +107,8 @@ export default {
 	.paymen-content-top {
 		position: relative;
 		width: 100%;
-		height: 97px;
-		line-height: 97px;
+		height: 110px;
+		line-height: 110px;
 		border-top: 1px solid #dcdcdc;
 		padding: 0 30px;
 		box-sizing: border-box;
@@ -120,9 +120,14 @@ export default {
 			margin-top:20px;
 		}
 		.icon-img{
-			width: 60px;
-			height: 60px;
-			vertical-align: middle;
+			width: 100px;
+			height: 90px;
+      vertical-align: middle;
+      // &:last-child{
+      //   width: 60px;
+      //   height: 90px;
+      //   vertical-align: middle;
+      // }
 		}
     }
   }

@@ -77,7 +77,7 @@ export default {
   methods: {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
-      console.log("paymethod", item);
+      // console.log("paymethod", item);
       this.payTypeList = [
         {
           name: item.name,
@@ -90,7 +90,6 @@ export default {
     // 付款方式
     fnParent(e) {
       this.oneTypeName = e.name;
-      console.log("付款方式", e);
       this.payTypeList = [
         {
           name: e.name,
@@ -113,7 +112,7 @@ export default {
           }
         }).then(res => {
           // window.location.href = res.Data.payMainNo
-          console.log(res);
+          // console.log(res);
           park({
             url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}`,
             method: "POST"
@@ -157,8 +156,8 @@ export default {
     },
     //展示支付方式列表
     showyinhang() {
-      console.log("---打开-----");
-      console.log(this.$refs.actionSheetYinhang.showAction);
+      // console.log("---打开-----");
+      // console.log(this.$refs.actionSheetYinhang.showAction);
       this.$refs.actionSheetYinhang.showAction = true;
     }
   },
