@@ -469,7 +469,7 @@ export default {
     orderlaunchpay(data) {
 
       orderlaunchpayApi(data).then(res => {
-        console.log(data);
+        // console.log(data);
 
        if (res.code == 0) {
           this.showsucess();
@@ -522,8 +522,8 @@ export default {
       this.orderlaunchpay(obj);
     },
     showPassWord(flag) {
-      console.log(flag);
-      console.log("第三方支付弹起");
+      // console.log(flag);
+      // console.log("第三方支付弹起");
       this.$refs.actionSheetPassword.showAction = flag;
     },
   },

@@ -130,7 +130,6 @@ import sweepCode from '@/multiplexing/sweepCode'
 
 //第三方支付
 import thirdSuccess from "@/components/confirmOrder/thirdSuccess"
-import thirdLose from "@/components/confirmOrder/thirdLose"
 
 import thirdPartyPayment from '@/components/confirmOrder/thirdPartyPayment'
 
@@ -632,11 +631,6 @@ export default new Router({
       path: '/thirdSuccess',
       name: '第三方支付页成功',
       component: thirdSuccess
-    },
-    {
-      path: '/thirdLose',
-      name: '第三方支付页失败',
-      component: thirdLose
     }
     // {
     //   path: '/thirdPartyPayment',

@@ -1,21 +1,20 @@
 <template>
-  <!-- 第三方支付失败 -->
-  <div class="password-success">
-    <third-header></third-header>
+  <!-- 第三方Loading -->
+  <div class="Loading-success">
+    <!-- <third-header></third-header> -->
     <div class="success-img">
-      <img src="@/assets/img/confirmOrder/icon-06@2x.png" alt />
+      <!-- <img src="@/assets/img/confirmOrder/icon-06@2x.png" alt /> -->
     </div>
     <div class="success-test c-orange">
-      Your order was failed to be paid.
-      <button class="success-shop" @click="shop">View the order</button>
+      <van-loading size="100px" vertical color="#fa5300" text-size="16px">Loading...</van-loading>
     </div>
   </div>
 </template>
 
 <script>
-import thirdHeader from "./itemComponents/thirdHeader";
-import ThirdSuccessVue from "./thirdSuccess.vue";
+import thirdHeader from "./thirdHeader";
 import { main, park } from "@/api/index";
+import { Loading } from "vant";
 export default {
   props: {},
   data() {
@@ -31,7 +30,7 @@ export default {
   computed: {},
   created() {
     // this.getParams();
-    this.getPayStatus();
+    // this.getPayStatus();
   },
   mounted() {
     // setTimeout(()=>{
@@ -51,7 +50,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.password-success {
+.Loading-success {
   position: relative;
   text-align: center;
   .success-img {

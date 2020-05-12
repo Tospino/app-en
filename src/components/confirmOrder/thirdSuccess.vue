@@ -1,20 +1,32 @@
 <template>
-  <!-- 第三方支付成功 -->
-  <div class="password-success">
-    <third-header></third-header>
-    <div class="success-img">
-      <img src="@/assets/img/confirmOrder/icon-05@2x.png" alt />
+  <!-- 第三方支付 -->
+  <div>
+    <div class="password-success" v-if="show">
+      <third-header></third-header>
+      <div class="success-img">
+        <img src="@/assets/img/confirmOrder/icon-05@2x.png" alt />
+      </div>
+      <div class="success-test c-orange">
+        Your order was paid successfully.
+        <button
+          class="success-shop"
+          @click="shop"
+        >Continue shopping</button>
+      </div>
     </div>
-    <div class="success-test c-orange">
-      Your order was paid successfully.
-      <button class="success-shop" @click="shop">Continue shopping</button>
+    <div v-else-if="lose">
+      <thirdLose></thirdLose>
+    </div>
+    <div class="loading" v-else>
+      <thirdLoading></thirdLoading>
     </div>
   </div>
 </template>
 
 <script>
 import thirdHeader from "./itemComponents/thirdHeader";
-import ThirdSuccessVue from "./thirdSuccess.vue";
+import thirdLose from "./itemComponents/thirdLose";
+import thirdLoading from "./itemComponents/thirdLoading";
 import { main, park } from "@/api/index";
 export default {
   props: {},
@@ -26,6 +38,8 @@ export default {
       //   pay_token: "eff11e4d-5f96-4d96-8191-eeb559dc2feb",
       //   cust_ref: "FKD202004301750406499d4a43b4e"
       // }
+      show: false,
+      lose: false
     };
   },
   computed: {},
@@ -34,8 +48,8 @@ export default {
     this.getPayStatus();
   },
   mounted() {
-     //setTimeout(()=>{
-     //  this.$router.go(-3)
+    //setTimeout(()=>{
+    //  this.$router.go(-3)
     //},1500)
   },
   watch: {},
@@ -63,8 +77,14 @@ export default {
         }
       }).then(res => {
         // console.log("GET",res);
-        if (res.status_code === 100) {
-          this.$router.push("/thirdLose");
+        if (res.status_code === 200) {
+          this.show = true;
+          // this.$router.push("/thirdLose");
+        }else if (res.status_code === 100) {
+           this.lose = true;
+        }else{ 
+          this.show = false;
+          this.lose = false;
         }
       });
     }
@@ -80,12 +100,18 @@ export default {
     // }
   },
   components: {
-    thirdHeader
+    thirdHeader,
+    thirdLose,
+    thirdLoading
   }
 };
 </script>
 
 <style scoped lang="less">
+/deep/ .van-loading__circular {
+  width: 100%;
+  height: 100%;
+}
 .password-success {
   position: relative;
   text-align: center;

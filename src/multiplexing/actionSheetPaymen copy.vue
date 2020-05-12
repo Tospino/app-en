@@ -77,7 +77,7 @@ export default {
   methods: {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
-      console.log("paymethod", item);
+      // console.log("paymethod", item);
        this.payTypeList = [
         {
           name: item.name,
@@ -119,7 +119,7 @@ export default {
             url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}`,
             method: "POST"
           }).then(result => {
-            console.log(result);
+            // console.log(result);
             if (result.status_code) {
               // 第三方支付页面跳转
               // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);

@@ -120,7 +120,7 @@ export default {
             url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&provider=${this.payTypeList[0].shortName}`,
             method: "POST"
           }).then(result => {
-            console.log(result);
+            // console.log(result);
             if (result.status_code) {
               // 第三方支付页面跳转
               // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
@@ -163,9 +163,10 @@ export default {
     listPayOptions(){
       let arr = []
       listPayOptionsApi().then(res => {
+        // console.log("付款方式列表",res.data)
         if(res.status_code == 200){
           //支付方式
-          res.data.response.result.forEach(item => {
+          res.data.forEach(item => {
             let itemObj = {
               name:item.name,
               shortName:item.shortName,
