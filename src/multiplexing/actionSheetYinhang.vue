@@ -117,7 +117,7 @@ export default {
 		}
 		.img-checkbox{
 			float: right;
-			margin-top:20px;
+			margin-top:30px;
 		}
 		.icon-img{
 			width: 100px;

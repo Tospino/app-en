@@ -571,7 +571,6 @@ export default {
             
         }
         .price{
-            float: right;
             text-align: right;
             .p3{
                 font-size:28px;

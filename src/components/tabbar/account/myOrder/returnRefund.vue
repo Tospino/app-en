@@ -16,7 +16,7 @@
                         <div class="guige">{{data.skuValuesTitleEng}}</div>
                         
                     </div>
-                    <!-- <div class="price">
+                    <div class="price">
                         <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
                         <div class="selection-right-stepper">
                             <div class="add-btn" :style="{color:(data.shouldReturnNum == data.canReturnMaxNum?'#dcdcdc':'#999')}" @click="changeStepper(data,'add')">+</div>
@@ -25,10 +25,6 @@
                             </div>
                             <div class="reduce-btn"  :style="{color:(data.shouldReturnNum==1?'#dcdcdc':'#999')}" @click="changeStepper(data,'reduce')">一</div>
                         </div>
-                    </div> -->
-                    <div class="price">
-                        <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
-                        <div class="p4 fl-right">x{{data.shouldReturnNum}}</div>
                     </div>
                     <div class="tkje">
                         <span class="c-999 f-22">Refund:</span>
@@ -45,7 +41,7 @@
                 <span>Refund</span>
                 <span class="text-tk c-orange f-30">
                     <span>{{orderData.currencySignWebsite}}{{orderData.orderAmountWebsite}}</span> 
-                    <span class="c-999 f-22">(Freight Included)</span>
+                    <span class="c-999 f-22"></span>
                 </span>
             </div>
         </div>
