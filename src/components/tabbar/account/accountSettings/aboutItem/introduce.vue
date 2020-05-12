@@ -3,23 +3,30 @@
     <div class="introduce">
         <div class="title" v-if="showTitle">ABOUT TOSPINO APP</div>
         <p>
-            <br>Severing as a cross-border online shopping mall, TOSPINO APP focuses on B2B e-commercial trading and providing global wholesale and purchasing services of multiple products to retailers by intelligent, high-effective online businesses.
-            <br>With an export experience lasting for 10 years, it has developed multiple professional trading channels. It collected excellent brands and outstanding products all over China through a more comprehensive supply chain. Its categories are more integrated while prices are far better for businessmen. To perfect user experiences, TOSPINO takes mobile internet as its useful and effective trading tool. That means users can purchase any quantity of products online, anywhere and anytime. What’s more, they can choose different payments when order goods, including pay by Balance, Paypal, or Cash.
+            <br><span class="jiacu">About Tospino Market</span>
             <br>
-            <br><span class="h1">ABOUT OUR TEAM</span>
-            <br>Over 90 percents of TOSPINO’s staff, like warehouse personnel, couriers and online customer service staff, are local people. They all are cable enough to provide good services to our consumers for their professional skills learned from TOSPINO’s training.
+            <br>Tospino is an integrated shopping mall focusing on cross-border e-commerce in Africa, equipping with such online functions as product searching, browsing, collection, buying, payment, order inquiry, logistics tracking and return/exchange. By convenient cross-border direct mail, it converges huge global good products to meet people’s needs on daily consumption and online shopping, bringing consumers an easy, happy shopping experience.
             <br>
-            <br><span class='h1'>ABOUT TOSPINO’s FUNCTIONS</span>
-            <br>TOSPINO SHOPPING is consisted of five function modules, namely Home, Category, Cart, News and Account. Purchasers can order or buy products, check logistics, and apply refund/return services just on the APP. It is really an easier buying method with more conveniences. 
+            <br><span class="jiacu">[Comprehensive Product Categories]</span>
             <br>
-            <br><span class='jiacu'>1)Home</span>
-            <br>Functions of Home is overall and powerful, covering product targeting and searching, shopping by category, flash deals, product list and brand display. For example, it’s easy for buyers to search commodities they need via key words; and the intelligent function of skipping to specific product details is easily accessible for every single user. 
-            <br><span class='jiacu'>2)Category</span>
-            <br>Functions about Category are product searching, listing, ranking and selecting. All goods are classified to Digital, Food, Baby, Daily, Beauty, Electronics and other classifications.
-            <br><span class='jiacu'>3)Cart </span>
-            <br>Functions of Cart contain product adding, buying and canceling. That is to say it is very handy to add your goods to the Cart on the interface of Product Details.
-            <br><span class='jiacu'>4)Account</span>
-            <br>Account covers lots of important data, including personal information, balance, coupon, points, order delivery, browse record, collection, point description and settings.
+            <br>You can buy everything you want on the Tospino app!
+            <br>Apparel, Beauty, Digital, Office, Maternity & Baby, Building, Home, Auto, Medical, Fitness, Agric, Lighting, and Chemical & Metallurgy.
+            <br>Go and download the Tospino app! You will get everything you want!
+            <br>
+            <br><span class="jiacu">[Timely Delivery & Easy Access]</span>
+            <br>
+            <br>Fulfillment By Tospino (FBT)
+            <br>Local warehouses and teams get goods ready in 24 hours and send them out within 72 hours. It takes only 1-3 days to send the goods to the shipping address. 
+            <br>
+            <br><span class="jiacu">[Promotion & Discount]</span>
+            <br>
+            <br>Tospino’s members can enjoy various special offers and benefits, such as good coupons for large orders, free gifts for higher consumption points, great discounts on holidays or festivals, exclusive birthday gifts and 1₵ flash deals.
+            <br>
+            <br><span class="jiacu">[Worry-free After-sales Services]</span>
+            <br>
+            <br>Tospino provides the Return/Exchange services for products with damages or quality problems. Buyers do not need to pay additional fees for the services.
+            <br>It supports the Return/Exchange services within 7 days after the consumption. Some products can even be returned/exchanged within 365 days after the consumption if the products are till saleable for maintaining their good quality.
+
         </p>
     </div>
 </template>
