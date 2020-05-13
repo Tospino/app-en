@@ -20,7 +20,7 @@
                             </div>
                             <div class="good-desc">
                                 <div class="p1 clamp-2">{{good.supplyTitle}}</div>
-                                <div class="sales-num">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</div>
+                                <!-- <div class="sales-num">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</div> -->
                                 <div class="country">
                                     <div class="guojia" v-if="good.locationNameEng">
                                         <img :src="$webUrl+good.locationUrl" v-if="good.locationUrl">
@@ -32,6 +32,7 @@
                                 <div class="good-price">
                                     <span class="p1">{{jn}}{{good.discountPrice == null ? good.salePrice:good.discountPrice}}</span>
                                     <span class="p3" v-if="good.discountPrice != null">{{jn}}{{good.salePrice}}</span>
+                                    <span class="fl-right">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</span>
                                     <!-- 省略号,暂时先隐藏 -->
                                     <!-- <span class="p2">
                                         <van-icon name="ellipsis" />
@@ -311,7 +312,7 @@ export default {
         margin-bottom: 20px;
         .footprint-goods-content{
             width: 100%;
-            height: 280px;
+            height: 250px;
             background-color: #fff;
             position: relative;
             border-bottom: 1px solid #F2F3F5;
@@ -338,6 +339,7 @@ export default {
                 left:250px;
                 font-size:26px;
                 color: #333;
+                width:480px;
                 .p1{
                     line-height:39px;
                     height: 80px;

@@ -20,6 +20,7 @@
                 <div class="price">
                     <span class="price1">{{jn}}{{good.discountPrice == null ? good.salePrice:good.discountPrice}}</span>
                     <span class="price2" v-if="good.discountPrice != null">{{jn}}{{good.salePrice}}</span>
+                    <span class="fl-right" style="color:red">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</span>
                     <!-- <span class="poin">...</span> -->
                 </div>
             </div>
@@ -127,7 +128,7 @@ export default {
     }
     .exhibition-left{
         width: 340px;
-        height: 570px;
+        height: 540px;
         float: left;
         background-color: #fff;
         margin-bottom: 10px;
@@ -150,7 +151,8 @@ export default {
             }
         }
         .produced{
-            margin-bottom: 18px;
+            // margin-bottom: 18px;
+            height:50px;
             .produced-font{
                 color: #DB9000;
                 margin-left:10px;

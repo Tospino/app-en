@@ -152,8 +152,9 @@
                                     <span class="price1">{{jn}}{{searchgoodDao.discountPrice ?searchgoodDao.discountPrice : searchgoodDao.salePrice}}</span>
                                     <span class="price2" v-if="searchgoodDao.discountPrice">{{jn}}{{searchgoodDao.salePrice}}</span>
                                     <!-- <span class="poin">...</span> -->
+                                    <span class="fl-right" style="color:red;">Sales:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}PCS</span>
                                 </div>
-                                <div>Sales:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}PCS</div>
+                                <!-- <div>Sales:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}PCS</div> -->
                             </div>
                         </div>
                     </div>
@@ -862,10 +863,10 @@ export default {
             }
             .exhibition-left{
                 width: 340px;
-                height: 570px;
+                height: 540px;
                 float: left;
                 background-color: #fff;
-                margin-bottom: 10px;
+                margin-bottom: 20px;
                 position: relative;
                 .shouwan{
                     position: absolute;
@@ -886,6 +887,7 @@ export default {
                 .miaoshu{
                     line-height: 27px;
                     font-size: 18px;
+                    height:54px;
                 }
                 img{
                     width: 340px;
@@ -901,7 +903,8 @@ export default {
                     }
                 }
                 .produced{
-                    margin-bottom: 18px;
+                    height:50px;
+                    // margin-bottom: 18px;
                     .produced-font{
                         color: #DB9000;
                         margin-left:10px;
