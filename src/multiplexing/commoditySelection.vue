@@ -216,6 +216,7 @@ export default {
 
             var makeOne = makeupList[0].split(',')
             this.checkList = makeOne.map(Number)
+            console.log(this.checkList,'this.checkList');
             this.twodata.forEach(item => {
                 item.ischeck = false
                 this.checkList.forEach(checkItem => {

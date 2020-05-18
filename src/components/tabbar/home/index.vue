@@ -135,7 +135,7 @@
                     <div class="footer-exhibition">
                         <div  class="exhibition-con">
                             <div class="exhibition-left" v-for="(searchgoodDao,index) in searchgoodDaolist" :key="index">
-                                <!-- <div class="shouwan" v-if="!searchgoodDao.canSalesNum">Out of Stock</div> -->
+                                <div class="shouwan" v-if="!searchgoodDao.canSalesNum">Out of Stock</div>
                                 <img :src="$webUrl + searchgoodDao.imgUrl" @click="toDetail(searchgoodDao.skuId)">
                                 <div class="produced">
                                     <span class="icon" v-if="searchgoodDao.locationUrl">
@@ -883,6 +883,7 @@ export default {
                     align-items: center;
                     justify-content: space-around;
                     flex-direction: column;
+                    z-index: 10;
                 }
                 .miaoshu{
                     line-height: 27px;
