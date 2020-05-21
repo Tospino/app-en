@@ -14,10 +14,18 @@
                 <div v-if="good.canSalesNum > 0" class="exhibition-left" @click="toProduDetail(good.skuId)">
                     <img :src="$webUrl+good.imgUrl">
                     <div class="produced">
-                        <span class="icon">
-                            <img :src="$webUrl+good.locationUrl" v-if="good.locationUrl">
-                        </span>
-                        <span class="produced-font">{{good.locationNameEng ? good.locationNameEng:''}}</span>
+                        <div v-if="good.expId == 1">
+                            <span class="icon">
+                                <img :src="$webUrl+'/common/image/zhiyou.png'"/>
+                            </span>
+                            <span class="produced-font">Ships from{{good.areaNameEng}}</span>
+                        </div>
+                        <div v-else>
+                            <span class="icon">
+                                <img :src="$webUrl+good.locationUrl" v-if="good.locationUrl">
+                            </span>
+                            <span class="produced-font">{{good.locationNameEng ? good.locationNameEng:''}}</span>
+                        </div>
                     </div>
                     <div class="produced-title">
                         <span>{{good.supplyTitle}}</span>

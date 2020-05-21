@@ -24,9 +24,10 @@
                                 <option value="0">{{dataitem.skuValuesTitleEng}}</option> 
                             </select> 
                         </div>
-                        <!-- <div class="good-logistics">
-                            <span>物流：TOSPINO物流</span>
-                        </div> -->
+                        <div class="good-logistics" v-if="dataitem.expId == 1">
+                            <img :src="$webUrl+'/common/image/zhiyou.png'"/>
+                            <span>Ships from{{dataitem.areaNameEng}}</span>
+                        </div>
                         <div class="good-price">
                             <span class="price-p1">{{jn}}{{dataitem.discountPrice ? dataitem.discountPrice : dataitem.salePrice}}</span>
                             <span class="price-p2" v-if="dataitem.discountPrice">{{jn}}{{dataitem.salePrice}}</span>
@@ -582,6 +583,11 @@ export default {
                 left:320px;
                 font-size: 16px;
                 color: #666666;
+                img{
+                    width: 45px;
+                    vertical-align: sub;
+                    margin-right: 10px;
+                }
             }
             .good-price{
                 position: absolute;

@@ -10,7 +10,11 @@
                 <div class="car-icon">
                     <img src="@/assets/img/confirmOrder/logistics@2x.png">
                 </div>
-                <span>{{orderStatus(detailObj.deliverType,'deliverTypes')}}</span>
+                <span v-if="detailObj.expId == 2">{{orderStatus(detailObj.deliverType,'deliverTypes')}}</span>
+                <span v-if="detailObj.expId == 1">
+                    <img class="zhida" :src="$webUrl+'/common/image/zhiyou.png'"/>
+                    Ships from {{detailObj.businessCountryNameEng}}
+                </span>
                 <div class="fl-right" v-if="detailObj.hasLogistics == 1" @click="toLogistics(detailObj.orderId)">
                     <van-icon name="arrow" size="21" class="arrow-icon"/>
                 </div>
@@ -76,8 +80,12 @@
                     <span>Sum:</span>
                     <span class="fl-right c-orange font-24">{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
                 </div>
+                <div class="mingxi" v-if="detailObj.arriveDateRangeString">
+                    <span class="fbm-time">Get it within {{detailObj.arriveDateRangeStringEng}} after payment.</span>
+                </div>
             </div>
         </div>
+        <div class="m-b-30 fbm-beizhu" v-if="detailObj.expId == 1">Tips:DM products do not support online after-sales services. Please contact customer service personnel for consulting!!!</div>
         <div class="address-p4">
             <div class="p4-top">Order Info</div>
             <div class="p4-middle">
@@ -457,6 +465,11 @@ export default {
                 vertical-align: text-bottom;
                 margin-right:23px;
             }
+            .zhida{
+                width: 30px;
+                height: 30px;
+                vertical-align: middle;
+            }
         }
         .p2-bottom{
             height: 180px;
@@ -501,7 +514,17 @@ export default {
             height: 50px;
             font-size: 20px;
             padding: 0 30px;
+            .fbm-time{
+                font-size:26px;
+                font-weight:400;
+                color:rgba(8,129,214,1);
+            }
         }
+    }
+    .fbm-beizhu{
+        color:rgba(235,2,2,1);
+        font-size:20px;
+        padding: 0 30px;
     }
     .address-p4{
         background-color: #fff;
@@ -632,5 +655,8 @@ export default {
 }
 .m-t-29{
     margin-top:29px;
+}
+.m-b-30 {
+  margin-bottom: 30px;
 }
 </style>

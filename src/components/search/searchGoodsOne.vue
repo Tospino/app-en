@@ -24,9 +24,17 @@
                                 <div class="p1 clamp-2">{{good.supplyTitle}}</div>
                                 <!-- <div class="sales-num">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</div> -->
                                 <div class="country">
-                                    <div class="guojia" v-if="good.locationNameEng">
-                                        <img :src="$webUrl+good.locationUrl" v-if="good.locationUrl">
-                                        <span>{{good.locationNameEng}}</span><br>
+                                    <div v-if="good.expId == 1">
+                                        <img :src="$webUrl+'/common/image/zhiyou.png'"/>
+                                        <div class="guojia">
+                                            <span>Ships from {{good.areaNameEng}}</span>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <img :src="$webUrl+good.locationUrl">
+                                        <div class="guojia" v-if="good.locationNameEng">
+                                            <span>{{good.locationNameEng}}</span><br>
+                                        </div>
                                     </div>
                                     <van-rate v-model="good.starNumber" readonly class="rate"/>
                                     <span class="rate-num">{{good.manNumber}}</span>
@@ -393,16 +401,16 @@ export default {
     .country{
         color: #333;
         font-size:36px;
+        img{
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+        }
         .guojia{
+            display: inline-block;
             font-size: 20px;
             color: #DB9000;
-            // margin-left:50px;
             margin:10px 0;
-            img{
-                width: 30px;
-                height: 30px;
-                vertical-align: middle;
-            }
         }
         .rate{
             margin:0 10px 10px 0px;

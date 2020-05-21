@@ -9,10 +9,18 @@
                 </div>
                 
                 <div class="produced">
-                    <span class="icon">
-                        <img :src="$webUrl+good.locationUrl">
-                    </span>
-                    <span class="produced-font">{{good.locationNameEng}}</span>
+                   <div v-if="good.expId == 1">
+                        <span class="icon">
+                            <img :src="$webUrl+'/common/image/zhiyou.png'"/>
+                        </span>
+                        <span class="produced-font">Ships from {{good.areaNameEng}}</span>
+                    </div>
+                    <div v-else>
+                        <span class="icon">
+                            <img :src="$webUrl+good.locationUrl">
+                        </span>
+                        <span class="produced-font">{{good.locationNameEng}}</span>
+                    </div>
                 </div>
                 <div class="produced-title">
                     <span>{{good.supplyTitle}}</span>
