@@ -147,7 +147,7 @@
                                         <img :src="$webUrl + searchgoodDao.locationUrl">
                                     </span>
                                     <span class="produced-font" v-if="searchgoodDao.expId == 1">
-                                        <span>Ships from</span>
+                                        <span>Ships from </span>
                                         <span>{{searchgoodDao.areaNameEng ? searchgoodDao.areaNameEng : ''}}</span>
                                         
                                     </span>

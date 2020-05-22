@@ -18,7 +18,7 @@
                             <span class="icon">
                                 <img :src="$webUrl+'/common/image/zhiyou.png'"/>
                             </span>
-                            <span class="produced-font">Ships from{{good.areaNameEng}}</span>
+                            <span class="produced-font">Ships from {{good.areaNameEng}}</span>
                         </div>
                         <div v-else>
                             <span class="icon">

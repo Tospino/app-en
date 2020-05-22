@@ -81,11 +81,11 @@
                     <span class="fl-right c-orange font-24">{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
                 </div>
                 <div class="mingxi" v-if="detailObj.arriveDateRangeString">
-                    <span class="fbm-time">Get it within {{detailObj.arriveDateRangeStringEng}} after payment.</span>
+                    <span class="fbm-time">Get it as soon as {{detailObj.arriveDateRangeStringEng}} </span>
                 </div>
             </div>
         </div>
-        <div class="m-b-30 fbm-beizhu" v-if="detailObj.expId == 1">Tips:DM products do not support online after-sales services. Please contact customer service personnel for consulting!!!</div>
+        <div class="m-b-30 fbm-beizhu" v-if="detailObj.expId == 1">Tips: DM products do not support online after-sales services. Please contact customer service personnel for consulting!!!</div>
         <div class="address-p4">
             <div class="p4-top">Order Info</div>
             <div class="p4-middle">
