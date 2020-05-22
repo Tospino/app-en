@@ -324,7 +324,7 @@ export default {
         }
         .good-detail-title{
             display: inline-block;
-            width: 397px;
+            width: 350px;
             .name{
                 display: inline-block;
                 margin-bottom: 24px;
@@ -352,7 +352,7 @@ export default {
             }
             .selection-right-stepper{
                 position: relative;
-                height: 156px;
+                // height: 156px;
                 .add-btn{
                     position: absolute;
                     top:20px;
