@@ -12,7 +12,7 @@
                         </div>
                         <div class="good-detail-title">
                             <span class="name">{{data.skuName}}</span>
-                            <div class="guige">{{data.skuValuesTitle}}</div>
+                            <div class="guige">{{data.skuValuesTitleEng}}</div>
                         </div>
                         <div class="price fl-right">
                             <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>

@@ -40,7 +40,6 @@
                 <span>Refund</span>
                 <span class="text-tk c-orange f-30">
                     {{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}
-                    <span class="c-999 f-22">(Freight Included)</span>
                 </span>
             </div>
         </div>

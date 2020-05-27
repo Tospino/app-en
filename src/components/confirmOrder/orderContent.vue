@@ -124,7 +124,10 @@
       </div>
     </div>
 
-    <div class="m-b-20 fbm-beizhu" v-if="orderData.hasFBM == 1">Tips: DM products do not support online after-sales services. <br>Please contact customer service personnel for consulting!!!</div>
+    <div class="m-b-20 fbm-beizhu" v-if="orderData.hasFBM == 1">
+      Tips: DM products do not support online after-sales services. <br>
+      Please contact customer service personnel for consulting!!!
+    </div>
 
     <div class="total">
       <div class="total-top">

@@ -67,7 +67,7 @@
                         <span class="t3">TOSPINO</span>
                     </div>
                 </div>
-                <div class="fbm-time" v-if="detailmData.arriveDateRangeStringEng">Get it as soon as {{detailmData.arriveDateRangeStringEng}}</div>
+                <div class="fbm-time" v-if="detailmData.arriveDateRangeStringEng">Get it as soon as {{detailmData.arriveDateRangeStringEng}}.</div>
                 <van-cell-group class="border-0" @click="changeComStatus(true,false)">
                     <van-field v-model="username" clearable right-icon="arrow" :placeholder="detailmData.skuValuesTitleEng" left-icon="arrow" disabled>
                         <div slot="left-icon" size="small" type="primary" class="text-left" >
