@@ -1,7 +1,12 @@
 <template>
   <!--付款方式弹窗 -->
   <div>
-    <van-action-sheet v-model="showAction" title="Confirm the Payment" class="action-sheet-paymen" :close-on-click-overlay="false">
+    <van-action-sheet
+      v-model="showAction"
+      title="Confirm the Payment"
+      class="action-sheet-paymen"
+      :close-on-click-overlay="false"
+    >
       <div class="paymen-content">
         <div class="paymen-content-top" @click="showyinhang">
           <span>Pay by</span>
@@ -29,7 +34,7 @@
 <script>
 import { getonlinepaytypelistApi } from "@/api/myOrder/index";
 import actionSheetYinhang from "@/multiplexing/actionSheetYinhang";
-import {listPayOptionsApi} from "@/api/confirmOrder/index";
+import { listPayOptionsApi } from "@/api/confirmOrder/index";
 import { park } from "@/api";
 export default {
   props: {
@@ -39,23 +44,30 @@ export default {
     },
     orderSn: {
       type: Array,
-      default:()=>{
-        return []
+      default: () => {
+        return [];
       }
     }
   },
   data() {
     return {
       showAction: false,
+      // payTypeList: [
+      //   {
+      //     type: 201,
+      //     name: "Balance"
+      //   }
+      // ],
       payTypeList: [
         {
-          type: 201,
-          name: "Balance"
+          type: 203,
+          name: "MTN Mobile Money"
         },
       ],
       list: [],
+      nalist:[],
       oneTypeName: "",
-      showList:[]
+      showList: []
     };
   },
   computed: {
@@ -72,13 +84,13 @@ export default {
   created() {},
   mounted() {
     this.getonlinepaytypelist();
-    this.listPayOptions()
+    this.listPayOptions();
   },
   watch: {},
   methods: {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
-       this.payTypeList = [
+      this.payTypeList = [
         {
           name: item.name,
           type: item.type
@@ -95,7 +107,7 @@ export default {
         {
           name: e.name,
           type: e.type,
-          shortName:e.shortName,
+          shortName: e.shortName
         }
       ];
       this.list[0].payTypeList = e.type;
@@ -140,8 +152,9 @@ export default {
       getonlinepaytypelistApi({}).then(res => {
         if (res.code == 0) {
           this.list = res.Data;
-          this.oneTypeName = this.oneTypeName =
-          this.list.length > 0 ? this.orderStatus(this.list[0].payTypeDetail, "payTypeList") : "";
+          // console.log(res.Data);
+          // this.oneTypeName = this.oneTypeName =
+          // this.list.length > 0 ? this.orderStatus(this.list[0].payTypeDetail, "payTypeList") : "";
         }
       });
     },
@@ -160,27 +173,37 @@ export default {
       this.$refs.actionSheetYinhang.showAction = true;
     },
     //付款方式列表
-    listPayOptions(){
-      let arr = []
+    listPayOptions() {
+      let arr = [];
       listPayOptionsApi().then(res => {
         // console.log("付款方式列表",res.data)
-        if(res.status_code == 200){
+        if (res.status_code == 200) {
+           this.nalist = res.data;
+          this.oneTypeName = this.oneTypeName =
+          this.list.length > 0 ? this.orderStatus(203, "payTypeList") : "";
           //支付方式
           res.data.forEach(item => {
             let itemObj = {
-              name:item.name,
-              shortName:item.shortName,
-              logourl:item.logourl,
-              checked:false,
-              type:203
-            }
-            arr.push(itemObj)
-          })
+              name: item.name,
+              shortName: item.shortName,
+              logourl: item.logourl,
+              checked: false,
+              type: 203
+            };
+            arr.push(itemObj);
+          });
           //单独添加余额支付类型
-          arr.push({name:'Balance',shortName:'Balance',logourl:'http://47.52.210.251:8091/tospino/test/common/image/yuan.png',checked:false,type:201})
-          this.showList = arr
-				}
-      })
+          arr.push({
+            name: "Balance",
+            shortName: "Balance",
+            logourl:
+              "http://47.52.210.251:8091/tospino/test/common/image/yuan.png",
+            checked: false,
+            type: 201
+          });
+          this.showList = arr;
+        }
+      });
     }
   },
   components: {

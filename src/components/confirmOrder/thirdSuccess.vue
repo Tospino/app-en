@@ -73,12 +73,14 @@ export default {
           status: this.$route.query.status,
           transac_id: this.$route.query.transac_id,
           pay_token: this.$route.query.pay_token,
-          cust_ref: this.$route.query.cust_ref
+          cust_ref: this.$route.query.cust_ref,
+          // orderType:this.$route.query.orderType
         }
       }).then(res => {
-        // console.log("GET",res);
+        console.log("GET",res);
         if (res.status_code === 200) {
           this.show = true;
+          // if
           // this.$router.push("/thirdLose");
         }else if (res.status_code === 100) {
            this.lose = true;
