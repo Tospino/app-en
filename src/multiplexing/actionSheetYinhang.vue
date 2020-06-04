@@ -1,13 +1,28 @@
 <template>
   <!-- 选择付款方式弹窗 -->
   <div>
-    <van-action-sheet v-model="showAction" :title="title" class="action-sheet-yinhang" :close-on-click-overlay="false">
-		<div class="paymen-content">
-			<div class="paymen-content-top" v-for="(reason,index) in list" :key="index" @click="cliItem(reason)">
-				<img :src="reason.logourl" class="icon-img">
-				<span>{{reason.name}}</span>
-				<van-checkbox v-model="reason.checked" icon-size="24px" class="img-checkbox" checked-color="#FA5300"></van-checkbox>
-			</div>
+    <van-action-sheet
+      v-model="showAction"
+      :title="title"
+      class="action-sheet-yinhang"
+      :close-on-click-overlay="false"
+    >
+      <div class="paymen-content">
+        <div
+          class="paymen-content-top"
+          v-for="(reason,index) in list"
+          :key="index"
+          @click="cliItem(reason)"
+        >
+          <img :src="reason.logourl" class="icon-img" />
+          <span>{{reason.name}}</span>
+          <van-checkbox
+            v-model="reason.checked"
+            icon-size="24px"
+            class="img-checkbox"
+            checked-color="#FA5300"
+          ></van-checkbox>
+        </div>
       </div>
       <div class="btn-ljzf" @click="pay">Confirm</div>
     </van-action-sheet>
@@ -25,10 +40,10 @@ export default {
       type: Number,
       default: 0
     },
-    showList:{
-      type:Array,
+    showList: {
+      type: Array,
       default: () => {
-        return []
+        return [];
       }
     }
   },
@@ -37,7 +52,7 @@ export default {
       list: [],
       showAction: false,
       remark: "",
-      id:0,
+      id: 0
     };
   },
   computed: {},
@@ -53,29 +68,28 @@ export default {
         this.remark = "";
       }
     },
-    showList:{
-      handler:function(newVal){
+    showList: {
+      handler: function(newVal) {
         this.list = newVal.map(o => Object.assign({}, o));
       }
     }
   },
   methods: {
     cliItem(item) {
-		this.list.forEach(ele => {
-			ele.checked = false
-		});
-		item.checked = true
+      this.list.forEach(ele => {
+        ele.checked = false;
+      });
+      item.checked = true;
     },
     pay() {
-		this.showAction = false;
-		let trueItem = {}
-		this.list.forEach(ele => {
-			if(ele.checked){
-				trueItem = ele
-			}
-			
-		});
-		this.$emit("toParnet", trueItem);
+      this.showAction = false;
+      let trueItem = {};
+      this.list.forEach(ele => {
+        if (ele.checked) {
+          trueItem = ele;
+        }
+      });
+      this.$emit("toParnet", trueItem);
     }
   },
   components: {}
@@ -96,7 +110,7 @@ export default {
   }
   .paymen-content {
     width: 100%;
-    height: 700px;
+    height:440px;
     background-color: #fff;
     box-sizing: border-box;
     padding: 0px 0px 0;
@@ -104,31 +118,32 @@ export default {
     font-size: 34px;
     color: #333;
     margin-bottom: 100px;
-	.paymen-content-top {
-		position: relative;
-		width: 100%;
-		height: 110px;
-		line-height: 110px;
-		border-top: 1px solid #dcdcdc;
-		padding: 0 30px;
-		box-sizing: border-box;
-		&:nth-last-child(1) {
-			border-bottom: 1px solid #dcdcdc;
-		}
-		.img-checkbox{
-			float: right;
-			margin-top:30px;
-		}
-		.icon-img{
-			width: 100px;
-			height: 90px;
-      vertical-align: middle;
-      // &:last-child{
-      //   width: 60px;
-      //   height: 90px;
-      //   vertical-align: middle;
-      // }
-		}
+    overflow: auto;
+    .paymen-content-top {
+      position: relative;
+      width: 100%;
+      height: 110px;
+      line-height: 110px;
+      border-top: 1px solid #dcdcdc;
+      padding: 0 30px;
+      box-sizing: border-box;
+      &:nth-last-child(1) {
+        border-bottom: 1px solid #dcdcdc;
+      }
+      .img-checkbox {
+        float: right;
+        margin-top: 30px;
+      }
+      .icon-img {
+        width: 100px;
+        height: 90px;
+        vertical-align: middle;
+        // &:last-child{
+        //   width: 60px;
+        //   height: 90px;
+        //   vertical-align: middle;
+        // }
+      }
     }
   }
   .btn-ljzf {
@@ -139,7 +154,7 @@ export default {
     text-align: center;
     color: #fff;
     font-size: 38px;
-    position: absolute;
+    position: relative;
     bottom: 0;
   }
 }
