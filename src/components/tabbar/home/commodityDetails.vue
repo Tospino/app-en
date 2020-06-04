@@ -19,7 +19,7 @@
                     <van-swipe @change="onChange" v-if="showData">
                         <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
                             <div class="w1">
-                                <img :src="$webUrl+banner.imgUrl">
+                                <img :src="$bigwebUrl+banner.imgUrl">
                             </div>
                         </van-swipe-item>
                         <div class="custom-indicator" slot="indicator">
