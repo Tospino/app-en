@@ -61,7 +61,8 @@ export default {
       payTypeList: [
         {
           type: 203,
-          name: "MTN Mobile Money"
+          name: "MTN Mobile Money",
+          shortName: "MTN_MONEY"
         },
       ],
       list: [],
@@ -126,13 +127,10 @@ export default {
           },
           dataType: "text"
         }).then(res => {
-          // window.location.href = res.Data.payMainNo
-          // console.log(res);
           park({
             url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&provider=${this.payTypeList[0].shortName}`,
             method: "POST"
           }).then(result => {
-            // console.log(result);
             if (result.status_code) {
               // 第三方支付页面跳转
               // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
@@ -159,7 +157,7 @@ export default {
       });
     },
     //编译状态
-    orderStatus(type, list) {
+    orderStatus(type, list,shortName) {
       let name = "";
       this[list].forEach(statu => {
         if (statu.type == type) {
@@ -180,7 +178,7 @@ export default {
         if (res.status_code == 200) {
            this.nalist = res.data;
           this.oneTypeName = this.oneTypeName =
-          this.list.length > 0 ? this.orderStatus(203, "payTypeList") : "";
+          this.list.length > 0 ? this.orderStatus(203, "payTypeList",this.nalist[4].shortName) : "";
           //支付方式
           res.data.forEach(item => {
             let itemObj = {

@@ -12,7 +12,7 @@
           class="paymen-content-top"
           v-for="(reason,index) in list"
           :key="index"
-          @click="cliItem(reason)"
+          @click="cliItem(index)"
         >
           <img :src="reason.logourl" class="icon-img" />
           <span>{{reason.name}}</span>
@@ -24,7 +24,7 @@
           ></van-checkbox>
         </div>
       </div>
-      <div class="btn-ljzf" @click="pay">Confirm</div>
+      <div class="btn-ljzf" @click="pay()   ">Confirm</div>
     </van-action-sheet>
   </div>
 </template>
@@ -52,12 +52,13 @@ export default {
       list: [],
       showAction: false,
       remark: "",
-      id: 0
+      id: 0,
     };
   },
   computed: {},
   created() {},
-  mounted() {},
+  mounted() {
+  },
   watch: {
     orderId: {
       handler: function(newVal) {
@@ -71,17 +72,17 @@ export default {
     showList: {
       handler: function(newVal) {
         this.list = newVal.map(o => Object.assign({}, o));
+        this.list[4].checked = true
       }
     }
   },
   methods: {
-    cliItem(item) {
-      this.list.forEach(ele => {
-        ele.checked = false;
+    cliItem(index) {
+      this.list.forEach((ele,i) => {
+        ele.checked = index == i
       });
-      item.checked = true;
     },
-    pay() {
+    pay(index) {
       this.showAction = false;
       let trueItem = {};
       this.list.forEach(ele => {
