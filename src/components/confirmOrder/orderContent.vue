@@ -402,7 +402,7 @@ export default {
         if (res.code == 0) {
           this.orderData = res.Data;
           this.payTypeList = res.Data.payTypeList;
-          // console.log("订单详情",this.payTypeList)
+          console.log("订单详情",this.payTypeList)
           this.zffs = this.payTypeList[1].payType;
         }
       });
