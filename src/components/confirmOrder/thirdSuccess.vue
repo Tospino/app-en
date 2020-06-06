@@ -28,6 +28,7 @@ import thirdHeader from "./itemComponents/thirdHeader";
 import thirdLose from "./itemComponents/thirdLose";
 import thirdLoading from "./itemComponents/thirdLoading";
 import { main, park } from "@/api/index";
+import {callbackApi} from '@/api/prepaidRefill/index.js'
 export default {
   props: {},
   data() {
@@ -45,7 +46,23 @@ export default {
   computed: {},
   created() {
     // this.getParams();
-    this.getPayStatus();
+    console.log(123123132123);
+    if(this.$route.query.orderType == 1){
+      this.getPayStatus();
+      console.log(this.$route.query);
+    }else if(this.$route.query.orderType == 2){
+      let obj = {
+        status:this.$route.query.status,
+        transac_id:this.$route.query.transac_id,
+        cust_ref:this.$route.query.cust_ref,
+        pay_token:this.$route.query.pay_token,
+        orderType:this.$route.query.orderType,
+        phoneNumber:this.$route.query.phoneNumber
+      }
+      console.log(obj,'obj');
+      this.callback(obj)
+    }
+    
   },
   mounted() {
     //setTimeout(()=>{
@@ -89,6 +106,19 @@ export default {
           this.lose = false;
         }
       });
+    },
+    //支付回调接口
+    callback(data){
+      callbackApi(data).then(res => {
+        if (res.status_code === 200) {
+          this.show = true;
+        }else if (res.status_code === 100) {
+           this.lose = true;
+        }else{ 
+          this.show = false;
+          this.lose = false;
+        }
+      })
     }
     // getParams() {
     //   console.log(111111111111111111111);

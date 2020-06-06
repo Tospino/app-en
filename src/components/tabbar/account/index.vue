@@ -140,7 +140,13 @@
                 </div>
             </van-field>
         </van-cell-group>
-        
+        <van-cell-group class="border-0">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="Add Minutes" left-icon="arrow" disabled @click="jumpRouter('话费充值')">
+                <div slot="left-icon" size="small" type="primary" class="icon-left">
+                    <img src="@/assets/img/tabbar/my/account/chongzhi.png" class="chongzhi">
+                </div>
+            </van-field>
+        </van-cell-group>
         <div class="footer-btn">
             <van-button type="default" @click="logOut">Log Out</van-button>
         </div>
@@ -404,6 +410,10 @@ export default {
                 position: absolute;
                 left:23px;
                 top:20px;
+                .chongzhi{
+                    width: 36px;
+                    height: 36px;
+                }
             }
         }
     }

@@ -24,9 +24,8 @@
     </van-action-sheet>
     <action-sheet-yinhang
       ref="actionSheetYinhang"
-      :orderSn="orderSn"
       @toParnet="fnParent"
-      @change="onChangePayMethod"
+      :showList="showList"
     ></action-sheet-yinhang>
   </div>
 </template>
@@ -34,6 +33,7 @@
 <script>
 import { getonlinepaytypelistApi } from "@/api/myOrder/index";
 import actionSheetYinhang from "@/multiplexing/actionSheetYinhang";
+import { listPayOptionsApi } from "@/api/confirmOrder/index";
 import { park } from "@/api";
 export default {
   props: {
@@ -42,43 +42,47 @@ export default {
       default: 0
     },
     orderSn: {
-      type: String
+      type: Array,
+      default: () => {
+        return [];
+      }
     }
   },
   data() {
     return {
       showAction: false,
+      // payTypeList: [
+      //   {
+      //     type: 201,
+      //     name: "Balance"
+      //   }
+      // ],
       payTypeList: [
         {
-          type: 201,
-          name: "Balance"
+          type: 203,
+          name: "MTN Mobile Money"
         },
       ],
-      list: [],
-      oneTypeName: ""
+      list: [{payTypeDetail: 'MTN Mobile Money'}],
+      nalist:[],
+      oneTypeName: "",
+      showList: []
     };
   },
   computed: {
-    // oneTypeName() {
-    //   let name = "";
-    //   if (this.list.length == 0) return;
-    //   name = this.orderStatus(this.list[0].payTypeDetail, "payTypeList");
-    //   return name;
-    // },
     paymoeny() {
       return this.moeny;
     }
   },
   created() {},
   mounted() {
-    this.getonlinepaytypelist();
+    this.listPayOptions();
   },
   watch: {},
   methods: {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
-      // console.log("paymethod", item);
-       this.payTypeList = [
+      this.payTypeList = [
         {
           name: item.name,
           type: item.type
@@ -90,11 +94,12 @@ export default {
     // 付款方式
     fnParent(e) {
       this.oneTypeName = e.name;
-      // console.log("付款方式", e);
+    //   console.log("付款方式", e);
       this.payTypeList = [
         {
           name: e.name,
-          type: e.type
+          type: e.type,
+          shortName: e.shortName
         }
       ];
       this.list[0].payTypeList = e.type;
@@ -103,48 +108,8 @@ export default {
     },
     // 立即支付
     confirm() {
-      if (this.payTypeList[0].type === 203) {
-        park({
-          url: `/appsaleorder/orderlaunchpay`,
-          method: "POST",
-          data: {
-            payTypeDetail: 203,
-            orderList: [{ orderId: this.orderSn }]
-          },
-          dataType: "text"
-        }).then(res => {
-          // window.location.href = res.Data.payMainNo
-          // console.log(res);
-          park({
-            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}`,
-            method: "POST"
-          }).then(result => {
-            // console.log(result);
-            if (result.status_code) {
-              // 第三方支付页面跳转
-              // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
-              // console.log(this.$store.state.thirdPartyPaymentUrl)
-              // this.$router.push("/thirdPartyPayment")
-              window.location.href = result.data.resultUrl;
-              // window.open( result.data.resultUrl, "_blank");
-            }
-          });
-        });
-        return;
-      } else {
-        this.$emit("showPassWord", true, "支付");
-      }
-    },
-    getonlinepaytypelist() {
-      getonlinepaytypelistApi({}).then(res => {
-        if (res.code == 0) {
-          this.list = res.Data;
-          this.oneTypeName = this.oneTypeName =
-            this.list.length > 0
-              ? this.orderStatus(this.list[0].payTypeDetail, "payTypeList")
-              : "";
-        }
-      });
+		this.list[0].shortName = this.payTypeList[0].shortName
+		this.$emit('paymoeny',this.list[0])
     },
     //编译状态
     orderStatus(type, list) {
@@ -159,6 +124,48 @@ export default {
     //展示支付方式列表
     showyinhang() {
       this.$refs.actionSheetYinhang.showAction = true;
+    },
+    //付款方式列表
+    listPayOptions() {
+      let arr = [];
+      listPayOptionsApi().then(res => {
+		// console.log("付款方式列表",res.data)
+		if (res.status_code == 200) {
+			this.nalist = res.data;
+			if(this.list.length > 0){
+				this.oneTypeName = this.orderStatus(203, "payTypeList")
+				this.list[0].payTypeList = 203
+				
+				this.nalist.forEach(item => {
+					if(item.name == 'MTN Mobile Money'){
+						this.payTypeList[0].shortName = item.shortName
+					}
+				})
+			}else{
+				this.oneTypeName = ''
+			}
+			//支付方式
+			res.data.forEach(item => {
+				let itemObj = {
+					name: item.name,
+					shortName: item.shortName,
+					logourl: item.logourl,
+					checked: false,
+					type: 203
+				};
+				arr.push(itemObj);
+			});
+			//单独添加余额支付类型
+			arr.push({
+				name: "Balance",
+				shortName: "Balance",
+				logourl: "http://47.52.210.251:8091/tospino/test/common/image/yuan.png",
+				checked: false,
+				type: 201
+			});
+			this.showList = arr;
+        }
+      });
     }
   },
   components: {

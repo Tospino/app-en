@@ -133,7 +133,11 @@ import thirdSuccess from "@/components/confirmOrder/thirdSuccess"
 
 import thirdPartyPayment from '@/components/confirmOrder/thirdPartyPayment'
 
-
+//话费充值
+import rechargeIndex from '@/multiplexing/router.vue'
+import recharge from '@/components/tabbar/account/prepaidRefill/recharge' //主页
+import rechargeDetails from '@/components/tabbar/account/prepaidRefill/rechargeDetails' //详情
+import rechargeFlow from '@/components/tabbar/account/prepaidRefill/rechargeFlow'
 Vue.use(Router)
 
 export default new Router({
@@ -425,7 +429,29 @@ export default new Router({
       component: accountDetails,
     },
 
-    
+    //话费充值
+    {
+      path: '/rechargeIndex',
+      name: '话费充值母页',
+      component: rechargeIndex,
+      children:[
+        {
+          path: 'recharge',
+          name: '话费充值',
+          component: recharge,
+        },
+        {
+          path: 'recharge/rechargeDetails',
+          name: '话费充值详情',
+          component: rechargeDetails,
+        },
+        {
+          path: 'recharge/rechargeFlow',
+          name: '话费充值记录',
+          component: rechargeFlow,
+        },
+      ]
+    },
 
     {
       path: '/afterSales',
