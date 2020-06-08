@@ -14,29 +14,16 @@
     </div>
     <div class="payment m-b-20">
       <span>Pay (by)</span>
-      <div class="select">
-        {{orderStatus(zffs,'payStatus')}}
-        <van-icon name="ellipsis" class="ellipsis" @click="showPayment=!showPayment" />
-        <div class="xiala" v-if="showPayment" @click="showPayment=false">
-          <ul>
-            <li
-              @click="zffs=pay.payType"
-              v-for="(pay,index) in payTypeList"
-              :key="index"
-            >{{orderStatus(pay.payType,'payStatus')}}</li>
-          </ul>
-        </div>
-      </div>
+			<div class="fl-right" v-for="(pay,index) in payTypeList" :key="index" @click="changePaymen(pay)">
+				<van-checkbox v-model="pay.checked" checked-color="#FA5300">{{orderStatus(pay.payType,'payStatus')}}</van-checkbox>
+			</div>
+	  	
     </div>
     <div class="good-detail" v-for="order in orderData.orderList" :key="order.sortOrder">
       <div class="good-detail-header">
         <span>{{order.sortOrder}}</span>
       </div>
-      <div
-        class="good-detail-content"
-        v-for="(product,index) in order.detailList"
-        :key="product.skuId"
-      >
+      <div class="good-detail-content" v-for="(product,index) in order.detailList" :key="product.skuId">
         <div>
           <van-swipe-cell :right-width="70">
             <template slot="right">
@@ -44,19 +31,13 @@
             </template>
             <div class="good-detail-img">
               <img :src="$webUrl+product.skuImg" />
-              <div
-                class="img-nochange"
-                v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0"
-              >{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
+              <div class="img-nochange" v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0">{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
             </div>
             <div class="good-detail-title">
               <span class="name">{{product.skuName}}</span>
               <div class="guige">{{product.skuValuesTitleEng}}</div>
               <div class="p1">{{product.currencySignWebsite}}{{product.priceWebsite}}</div>
-              <div
-                class="p2 through"
-                v-if="product.originPriceWebsite"
-              >{{product.currencySignWebsite}}{{product.originPriceWebsite}}</div>
+              <div class="p2 through" v-if="product.originPriceWebsite">{{product.currencySignWebsite}}{{product.originPriceWebsite}}</div>
             </div>
             <div class="price">
               <div class="p3">{{product.currencySignWebsite}}{{product.totalPriceWebsite}}</div>
@@ -67,12 +48,7 @@
               <div class="selection-right-stepper">
                 <div class="add-btn" @click="addCount(product)">+</div>
                 <div class="center-input">
-                  <input
-                    type="number"
-                    class="number-input"
-                    v-model="product.detailNum"
-                    @blur="blur(product)"
-                  />
+                  <input type="number" class="number-input" v-model="product.detailNum" @blur="blur(product)"/>
                 </div>
                 <div class="reduce-btn" @click="reduceCount(product)">一</div>
               </div>
@@ -112,14 +88,7 @@
 
       <div class="beizhu">
         <van-cell-group>
-          <van-field
-            v-model="order.remark"
-            rows="3"
-            autosize
-            label="Note"
-            type="textarea"
-            placeholder="Contact customer service to confirm the order"
-          />
+          <van-field v-model="order.remark" rows="3" autosize label="Note" type="textarea" placeholder="Contact customer service to confirm the order"/>
         </van-cell-group>
       </div>
     </div>
@@ -175,7 +144,7 @@ import {getconfirmorderApi,batchmakeorderApi} from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
 import { mapState, mapActions } from "vuex";
-import { Toast } from "vant";
+import { Toast,Notify } from "vant";
 export default {
   props: {},
   data() {
@@ -258,6 +227,14 @@ export default {
     ...mapActions(["deladressitem"]),
     //提交订单按钮
     submit() {
+			if(this.zffs == ''){
+				Notify({
+					message: 'Choose the method of payment.',
+					color: '#fff',
+					type: 'danger',
+				});
+				return
+			}
       let flag = true;
       let flag2 = true;
       this.orderData.orderList.forEach(ele => {
@@ -402,8 +379,6 @@ export default {
         if (res.code == 0) {
           this.orderData = res.Data;
           this.payTypeList = res.Data.payTypeList;
-          console.log("订单详情",this.payTypeList)
-          this.zffs = this.payTypeList[1].payType;
         }
       });
     },
@@ -535,7 +510,16 @@ export default {
       // console.log(flag);
       // console.log("第三方支付弹起");
       this.$refs.actionSheetPassword.showAction = flag;
-    },
+		},
+		//选择支付方式
+		changePaymen(dataItem){
+			this.payTypeList.forEach(item => {
+				item.checked = false
+			})
+			dataItem.checked = true
+			this.zffs = dataItem.payType
+			this.$forceUpdate()
+		}
   },
   components: {
     actionSheetPaymen,
@@ -577,7 +561,19 @@ export default {
     line-height: 100px;
     position: relative;
     z-index: 6;
-    padding: 0 30px;
+		padding: 0 30px;
+		/deep/ .van-checkbox {
+      display: inline-block;
+      .van-checkbox__icon {
+		vertical-align: sub;
+        display: inline-block;
+        font-size: 40px;
+      }
+      .van-checkbox__label {
+        font-size: 28px;
+        margin-right: 20px;
+      }
+    }
     span:nth-child(1) {
       font-size: 26px;
     }
@@ -692,7 +688,7 @@ export default {
           .add-btn {
             position: absolute;
             top: 20px;
-            right: 0;
+            right: -10px;
             width: 40px;
             height: 40px;
             border: 1px solid #999999;

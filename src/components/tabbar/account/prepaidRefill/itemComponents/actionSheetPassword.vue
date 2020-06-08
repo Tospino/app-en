@@ -60,7 +60,7 @@ export default {
         onInput(key) {
             this.value = (this.value + key).slice(0, 6);
             if(this.value.length==6){
-                this.$emit('getPassWord',this.value,this.type)
+                this.$emit('getPassWord',this.value)
             }
         },
         onDelete() {

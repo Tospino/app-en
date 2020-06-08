@@ -6,6 +6,7 @@
       title="Confirm the Payment"
       class="action-sheet-paymen"
       :close-on-click-overlay="false"
+      @cancel="cancelSheet"
     >
       <div class="paymen-content">
         <div class="paymen-content-top" @click="showyinhang">
@@ -28,6 +29,21 @@
       @change="onChangePayMethod"
       :showList="showList"
     ></action-sheet-yinhang>
+
+    <zhezhao v-if="aaa">
+      <div class="tanchuang">
+        <p class="p1">{{tips1}}</p>
+        <p class="p2">{{tips2}}</p>
+        <div v-if="payStatus">
+          <div class="fl-left btn-left" @click="aaa = false">Other Ways</div>
+          <div class="fl-right btn-right" @click="this.orderlaunchpay">OK</div>
+        </div>
+        <div v-else>
+          <div class="fl-left btn-left" @click="leavePay">Leave</div>
+          <div class="fl-right btn-right" @click="aaa = false">Continue Paying</div>
+        </div>
+      </div>
+    </zhezhao>
   </div>
 </template>
 
@@ -36,6 +52,7 @@ import { getonlinepaytypelistApi } from "@/api/myOrder/index";
 import actionSheetYinhang from "@/multiplexing/actionSheetYinhang";
 import { listPayOptionsApi } from "@/api/confirmOrder/index";
 import { park } from "@/api";
+import {Toast} from 'vant'
 export default {
   props: {
     moeny: {
@@ -68,7 +85,11 @@ export default {
       list: [],
       nalist:[],
       oneTypeName: "",
-      showList: []
+      showList: [],
+      aaa:false,
+      tips1:'Are you sure to leave the checkout counter?',
+      tips2:'Unpaid order will be canceled within 30 minutes. Please pay ASAP!',
+      payStatus:false
     };
   },
   computed: {
@@ -118,7 +139,14 @@ export default {
     // 立即支付
     confirm() {
       if (this.payTypeList[0].type === 203) {
-        park({
+        this.aaa = true
+        this.payStatus = true
+      } else {
+        this.$emit("showPassWord", true, "支付");
+      }
+    },
+    orderlaunchpay(){
+      park({
           url: `/appsaleorder/orderlaunchpay`,
           method: "POST",
           data: {
@@ -141,10 +169,6 @@ export default {
             }
           });
         });
-        return;
-      } else {
-        this.$emit("showPassWord", true, "支付");
-      }
     },
     getonlinepaytypelist() {
       getonlinepaytypelistApi({}).then(res => {
@@ -176,7 +200,7 @@ export default {
       listPayOptionsApi().then(res => {
         // console.log("付款方式列表",res.data)
         if (res.status_code == 200) {
-           this.nalist = res.data;
+          this.nalist = res.data;
           this.oneTypeName = this.oneTypeName =
           this.list.length > 0 ? this.orderStatus(203, "payTypeList",this.nalist[4].shortName) : "";
           //支付方式
@@ -201,7 +225,19 @@ export default {
           });
           this.showList = arr;
         }
+        Toast.clear()
       });
+    },
+    //确认离开
+    leavePay(){
+      this.aaa = false
+      this.showAction = false
+    },
+    //点击关闭面板
+    cancelSheet(el){
+      this.showAction = true
+      this.aaa = true
+      this.payStatus = false
     }
   },
   components: {
@@ -257,6 +293,45 @@ export default {
       height: 88px;
       background-color: #fa5300;
       font-size: 40px;
+    }
+  }
+}
+.zhezhao{
+  z-index: 9999 !important;
+  .tanchuang{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    padding: 67px 30px 43px;
+    background-color: #fff;
+    line-height: 27px;
+    font-size: 24px;
+    width: 600px;
+    color: #333;
+    box-sizing: border-box;
+    .p1{
+      font-weight:bold;
+    }
+    .p2{
+      margin: 16px 0 42px;
+    }
+    .btn-left{
+      width:260px;
+      height:60px;
+      border:1px solid rgba(153,153,153,1);
+      line-height: 60px;
+      text-align: center;
+      font-size:28px;
+    }
+    .btn-right{
+      width:260px;
+      height:60px;
+      background:rgba(250,83,0,1);
+      line-height: 60px;
+      text-align: center;
+      font-size:28px;
+      color: #fff;
     }
   }
 }

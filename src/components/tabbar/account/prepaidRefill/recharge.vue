@@ -22,13 +22,13 @@
         </div>
         
         <!-- 选择付款方式弹窗 -->
-        <action-sheet-paymen ref="actionSheetPaymen" :moeny="Number(currentItem.discountPrice)" @showPassWord="showPassWord" @showpaymen="showpaymen" @paymoeny="paymoeny"></action-sheet-paymen>
+        <action-sheet-paymen ref="actionSheetPaymen" :moeny="Number(currentItem.discountPrice)" @showPassWord="showPassWord" @paymoeny="paymoeny"></action-sheet-paymen>
 
         <!-- 支付成功弹窗 -->
-        <!-- <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess> -->
+        <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
 
         <!-- 支付密码 -->
-        <!-- <action-sheet-password ref="password" @showpassword="showpassword"></action-sheet-password> -->
+        <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
 
     </div>
 </template>
@@ -39,7 +39,7 @@ import actionSheetPaymen from "./itemComponents/actionSheetPaymen"
 import actionSheetYinhang from './itemComponents/actionSheetYinhang'
 import actionSheetSucess from './itemComponents/actionSheetSucess'
 import actionSheetPassword from './itemComponents/actionSheetPassword'
-import {topupFlexiProductListApi,addPhoneRechargeOrderApi,createInvoiceApi} from '@/api/prepaidRefill/index.js'
+import {topupFlexiProductListApi,addPhoneRechargeOrderApi,createInvoiceApi,balancePrepaidRechargeApi} from '@/api/prepaidRefill/index.js'
 import {Toast} from 'vant'
 export default {
     props: {
@@ -55,7 +55,8 @@ export default {
                 prepaidMoney:null,
                 prepaidActuallyMoney:null,
                 discount:null,
-                paymentType:null
+                paymentType:null,
+                referalNumber:null
             },
             userinfoShop:{},
             currentIndex:null,
@@ -101,6 +102,19 @@ export default {
                 }
             })
         },
+        //余额话费充值
+        balancePrepaidRecharge(data){
+            balancePrepaidRechargeApi(data).then(res => {
+                if(res.status_code == 200){
+                    this.showsucess()
+                    Toast.clear()
+                }else if(res.status_code == 101){
+                    Toast('Payment password error')
+                }else{
+                    Toast('error')
+                }
+            })
+        },
         //生成话费充值订单
         addPhoneRechargeOrder(data){
             addPhoneRechargeOrderApi(data).then(res => {
@@ -108,8 +122,7 @@ export default {
                     this.invoiceData.phoneNumber = 233+this.phone
                     this.invoiceData.payMainNo = res.data.prepaidSn
                     if(this.paidMoneyData.paymentType == 1){
-                        // console.log(123123);
-                        //账户金额充值,暂无接口
+                        this.balancePrepaidRecharge({prepaidId:res.data.prepaidId,payPwd:this.payPwd})
                     }else{
                         this.createInvoice(this.invoiceData)
                     }
@@ -141,8 +154,9 @@ export default {
             this.paidMoneyData.prepaidMoney = this.currentItem.money
             this.paidMoneyData.prepaidActuallyMoney = this.currentItem.discountPrice
             this.paidMoneyData.discount = this.currentItem.discount
+            this.paidMoneyData.referalNumber = 233+this.phone
             this.invoiceData.provider = paymentData.shortName
-            this.addPhoneRechargeOrder(this.paidMoneyData)
+            this.showPassWord(true)
         },
         //弹出银行
         showPassWord(flag) {
@@ -171,12 +185,16 @@ export default {
             }
         },
         //弹出支付成功
-        showsucess(){
-            this.$refs.sucess.showAction = true
+        showsucess() {
+            this.$refs.sucess.showAction = true;
+            setTimeout(() => {
+                this.$router.push({name:'话费充值记录'})
+            }, 1000);
         },
-        //弹出密码框
-        showpassword(){
-            this.$refs.password.showAction = true
+        //获取到密码,请求接口
+        getPassWord(value) {
+            this.payPwd = value,
+            this.addPhoneRechargeOrder(this.paidMoneyData)
         },
     },
     components: {

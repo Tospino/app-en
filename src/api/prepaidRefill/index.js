@@ -61,3 +61,12 @@ export function deleteRecordApi(params) {
         params
     })
 }
+
+//余额话费充值
+export function balancePrepaidRechargeApi(params) {
+    return park({
+        url:`/appWallet/balancePrepaidRecharge`,
+        method: 'POST',
+        data:params
+    })
+}
