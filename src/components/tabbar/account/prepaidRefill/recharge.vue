@@ -22,7 +22,7 @@
         </div>
         
         <!-- 选择付款方式弹窗 -->
-        <action-sheet-paymen ref="actionSheetPaymen" :moeny="Number(currentItem.discountPrice)" @showPassWord="showPassWord" @paymoeny="paymoeny"></action-sheet-paymen>
+        <action-sheet-paymen ref="actionSheetPaymen" :moeny="Number(currentItem.discountPrice)" @showPassWord="showPassWord" @paymoeny="paymoeny" @orderpay="orderpay"></action-sheet-paymen>
 
         <!-- 支付成功弹窗 -->
         <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
@@ -88,6 +88,9 @@ export default {
 
     },
     methods: {
+        orderpay(){
+            this.addPhoneRechargeOrder(this.paidMoneyData)
+        },
         jumpRouter(name){
             this.$router.push({name})
         },
@@ -156,7 +159,13 @@ export default {
             this.paidMoneyData.discount = this.currentItem.discount
             this.paidMoneyData.referalNumber = 233+this.phone
             this.invoiceData.provider = paymentData.shortName
-            this.showPassWord(true)
+            if(this.paidMoneyData.paymentType == 1){
+                this.showPassWord(true)
+            }else{
+                this.$refs.actionSheetPaymen.zhezhaoStatus = true
+                this.$refs.actionSheetPaymen.payStatus = true
+            }
+            
         },
         //弹出银行
         showPassWord(flag) {

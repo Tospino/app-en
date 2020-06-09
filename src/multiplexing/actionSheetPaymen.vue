@@ -30,17 +30,17 @@
       :showList="showList"
     ></action-sheet-yinhang>
 
-    <zhezhao v-if="aaa">
+    <zhezhao v-if="zhezhaoStatus">
       <div class="tanchuang">
         <p class="p1">{{tips1}}</p>
         <p class="p2">{{tips2}}</p>
         <div v-if="payStatus">
-          <div class="fl-left btn-left" @click="aaa = false">Other Ways</div>
+          <div class="fl-left btn-left" @click="zhezhaoStatus = false">Other Ways</div>
           <div class="fl-right btn-right" @click="this.orderlaunchpay">OK</div>
         </div>
         <div v-else>
           <div class="fl-left btn-left" @click="leavePay">Leave</div>
-          <div class="fl-right btn-right" @click="aaa = false">Continue Paying</div>
+          <div class="fl-right btn-right" @click="zhezhaoStatus = false">Continue Paying</div>
         </div>
       </div>
     </zhezhao>
@@ -86,7 +86,7 @@ export default {
       nalist:[],
       oneTypeName: "",
       showList: [],
-      aaa:false,
+      zhezhaoStatus:false,
       tips1:'Are you sure to leave the checkout counter?',
       tips2:'Unpaid order will be canceled within 30 minutes. Please pay ASAP!',
       payStatus:false
@@ -139,8 +139,10 @@ export default {
     // 立即支付
     confirm() {
       if (this.payTypeList[0].type === 203) {
-        this.aaa = true
+        this.zhezhaoStatus = true
         this.payStatus = true
+        this.tips2 = 'The advanced logout during payment process will cause failed order payment. The order will be canceled automatically if it cannot be paid within 30 minutes.'
+        this.tips1 = ''
       } else {
         this.$emit("showPassWord", true, "支付");
       }
@@ -230,13 +232,15 @@ export default {
     },
     //确认离开
     leavePay(){
-      this.aaa = false
+      this.zhezhaoStatus = false
       this.showAction = false
+      sessionStorage.setItem("activeIndex", 1);
+      this.$router.replace({ name: "我的订单" });
     },
     //点击关闭面板
     cancelSheet(el){
       this.showAction = true
-      this.aaa = true
+      this.zhezhaoStatus = true
       this.payStatus = false
     }
   },
