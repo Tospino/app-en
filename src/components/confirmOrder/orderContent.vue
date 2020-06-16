@@ -353,7 +353,7 @@ export default {
         this.orderData.orderList.length == 1 &&
         this.orderData.orderList[0].detailList.length == 1
       ) {
-        Toast("不可以删除全部商品");
+        Toast("Cannot delete all goods");
         return;
       }
       this.orderData.orderList.forEach((ele, eleIndex) => {

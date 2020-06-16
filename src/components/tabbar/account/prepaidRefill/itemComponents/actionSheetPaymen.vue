@@ -253,7 +253,7 @@ export default {
   }
 }
 .zhezhao{
-  z-index: 9999 !important;
+  z-index: 3000 !important;
   .tanchuang{
     position: absolute;
     top:50%;

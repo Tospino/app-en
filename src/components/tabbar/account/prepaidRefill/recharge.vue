@@ -11,9 +11,9 @@
             <div class="money-list">
                 <div v-for="(prepaidMoney,index) in prepaidMoneyList" :key="index" :class="{active: index==currentIndex}" @click="choiceItem(prepaidMoney,index)">
                     <span class="mony1">{{prepaidMoney.money}}&nbsp;GHS</span><br>
-                    <span class="mony2">Price:{{prepaidMoney.discountPrice}}&nbsp;GHS</span>
+                    <span class="mony2">Price: {{prepaidMoney.discountPrice}} GHS</span>
                 </div>
-                <div class="custom" :class="{active: currentIndex == 100}">
+                <div class="custom" :class="{active: currentIndex == 100}" v-if="prepaidMoneyData.isStartFreedom == 1">
                     <!-- <span class="mony1">自定义</span> -->
                     <input type="number" class="custom-input" placeholder="User-defined" @click="customNum" @change="customOnblur" v-model="customMony">
                 </div>
@@ -47,6 +47,7 @@ export default {
     },
     data() {
         return {
+            prepaidMoneyData:{},
             prepaidMoneyList:[],
             showPaymen:false,
             phone:'',
@@ -98,6 +99,7 @@ export default {
         topupFlexiProductList(){
             topupFlexiProductListApi().then(res => {
                 if(res.status_code == 200){
+                    this.prepaidMoneyData = res.data
                     this.prepaidMoneyList = res.data.prepaidMoneyList
                     Toast.clear()
                 }else{
@@ -112,7 +114,11 @@ export default {
                     this.showsucess()
                     Toast.clear()
                 }else if(res.status_code == 101){
-                    Toast('Payment password error')
+                    console.log(123465);
+                    Toast('Wrong payment password')
+                }else if(res.status_code == 102){
+                    console.log(789);
+                    Toast('Insufficient balance')
                 }else{
                     Toast('error')
                 }
@@ -130,6 +136,8 @@ export default {
                         this.createInvoice(this.invoiceData)
                     }
                     Toast.clear()
+                }else if(res.status_code == 102){
+                    Toast('Incorrect phone number')
                 }else{
                     Toast('error')
                 }

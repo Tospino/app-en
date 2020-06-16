@@ -235,13 +235,17 @@ export default {
       this.zhezhaoStatus = false
       this.showAction = false
       sessionStorage.setItem("activeIndex", 1);
-      this.$router.replace({ name: "我的订单" });
+      if(this.$route.name != '我的订单'){
+        this.$router.replace({ name: "我的订单" });
+      }
     },
     //点击关闭面板
     cancelSheet(el){
       this.showAction = true
       this.zhezhaoStatus = true
       this.payStatus = false
+      this.tips1 = 'Are you sure to leave the checkout counter?'
+      this.tips2 = 'Unpaid order will be canceled within 30 minutes. Please pay ASAP!'
     }
   },
   components: {
@@ -301,7 +305,7 @@ export default {
   }
 }
 .zhezhao{
-  z-index: 9999 !important;
+  z-index: 3000 !important;
   .tanchuang{
     position: absolute;
     top:50%;

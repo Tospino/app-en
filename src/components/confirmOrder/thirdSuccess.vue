@@ -91,7 +91,7 @@ export default {
           transac_id: this.$route.query.transac_id,
           pay_token: this.$route.query.pay_token,
           cust_ref: this.$route.query.cust_ref,
-          // orderType:this.$route.query.orderType
+          orderType:this.$route.query.orderType
         }
       }).then(res => {
         console.log("GET",res);
