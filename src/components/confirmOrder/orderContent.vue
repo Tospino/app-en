@@ -187,8 +187,8 @@ export default {
       orderIdList: [],
       // 用户支付
       userinfoShop: {},
-      orderSn:[]
-      
+      orderSn:[],
+      payTypeListLength:0
     };
   },
   computed: {
@@ -349,10 +349,7 @@ export default {
     },
     //删除某个商品
     delItem(good, goodindex) {
-      if (
-        this.orderData.orderList.length == 1 &&
-        this.orderData.orderList[0].detailList.length == 1
-      ) {
+      if (this.orderData.orderList.length == 1 && this.orderData.orderList[0].detailList.length == 1){
         Toast("Cannot delete all goods");
         return;
       }
@@ -378,7 +375,14 @@ export default {
       getconfirmorderApi(data).then(res => {
         if (res.code == 0) {
           this.orderData = res.Data;
-          this.payTypeList = res.Data.payTypeList;
+          if(this.payTypeList.length == 0){
+            //第一次请求
+            this.payTypeList = res.Data.payTypeList;
+            this.payTypeListLength = this.payTypeList.length
+          }else if(this.payTypeList.length != res.Data.payTypeList.length){
+            this.payTypeList = res.Data.payTypeList;
+            this.payTypeListLength = this.payTypeList.length
+          }
         }
       });
     },
