@@ -379,9 +379,11 @@ export default {
             //第一次请求
             this.payTypeList = res.Data.payTypeList;
             this.payTypeListLength = this.payTypeList.length
+            this.zffs = ''
           }else if(this.payTypeList.length != res.Data.payTypeList.length){
             this.payTypeList = res.Data.payTypeList;
             this.payTypeListLength = this.payTypeList.length
+            this.zffs = ''
           }
         }
       });
