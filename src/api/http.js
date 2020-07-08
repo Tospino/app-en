@@ -12,7 +12,7 @@ const mainAxios = axios.create({
 });
 
 const parkAxios = axios.create({
-    timeout: 20000,
+    timeout: 60000,
     headers: {
         'Content-Type':'application/json;charset=utf-8'
     },
@@ -49,7 +49,7 @@ parkAxios.interceptors.request.use(function (config) {
         message: 'loading',
         forbidClick: true,
         loadingType: 'spinner',
-        duration:10000
+        duration:60000
       });
     config.transformRequest = [function (data) {
         if(config.loading == 'shouyedibu'){
@@ -162,7 +162,7 @@ parkAxios.interceptors.response.use(function (response) {
     return response.data;
 }, function (error) {
     // 对响应错误做点什么
-    if(error.message == 'timeout of 20000ms exceeded'){
+    if(error.message == 'timeout of 60000ms exceeded'){
         Toast('Time-out')
     }else{
         Toast('error');

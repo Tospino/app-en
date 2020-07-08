@@ -11,7 +11,7 @@
             </van-dropdown-menu>
             <div style="height:34px;"></div>
             <!-- 模式一 -->
-            <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup">
+            <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup" v-show="showData">
                 <div v-show="goodsShow1" class="footprint-goods">
                     <div class="footprint-goods-content" v-for="(good,index) in dataList" :key="index" @click="toProduDetail(good.skuId)">
                         
@@ -115,7 +115,8 @@ export default {
             noSearchStatus:true,
             nosear1:nosear1,
             isgo:false,
-            iconName:'apps-o'
+            iconName:'apps-o',
+            showData:false
         };
     },
     computed: {
@@ -221,6 +222,10 @@ export default {
                         this.pulldown = false
                         this.pullup = false
                     }
+                    setTimeout(()=>{
+                        this.showData = true
+                        Toast.clear();
+                    },1000)
                 }else{
                     searchProductApi(data).then(res => {
                         if(res.code == 0){
@@ -243,6 +248,10 @@ export default {
                                 this.pullup = false
                             }
                         }
+                        setTimeout(()=>{
+                            this.showData = true
+                            Toast.clear();
+                        },1000)
                     })
                 }
             })
