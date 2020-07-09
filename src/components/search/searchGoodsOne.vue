@@ -25,13 +25,13 @@
                                 <!-- <div class="sales-num">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</div> -->
                                 <div class="country">
                                     <div v-if="good.expId == 1">
-                                        <img :src="$webUrl+'/common/image/zhiyou.png'"/>
+                                        <!-- <img :src="$webUrl+'/common/image/zhiyou.png'"/> -->
                                         <div class="guojia">
                                             <span>Ships from {{good.areaNameEng}}</span>
                                         </div>
                                     </div>
                                     <div v-else>
-                                        <img :src="$webUrl+good.locationUrl">
+                                        <!-- <img :src="$webUrl+good.locationUrl"> -->
                                         <div class="guojia" v-if="good.locationNameEng">
                                             <span>{{good.locationNameEng}}</span><br>
                                         </div>
@@ -71,6 +71,7 @@ import searchHead from '@/multiplexing/searchHead.vue'
 import noSearGood from '@/multiplexing/noSearGood'
 import {searchProductApi,HomeEsApi} from '@/api/search/index';
 import nosear1 from '@/assets/img/search/nosear1.png'
+import { Toast } from 'vant'
 export default {
     props: {
 
