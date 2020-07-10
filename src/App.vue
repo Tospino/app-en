@@ -18,6 +18,7 @@ export default {
     }
   },
   mounted(){
+	console.log(1)
     setTimeout(()=>{
       try {
 				var first = null;  
