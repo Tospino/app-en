@@ -1,3 +1,11 @@
+/*
+ * @Author: CJY
+ * @Date: 2020-07-09 10:00:20
+ * @LastEditTime: 2020-07-10 10:35:39
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \app-en\src\api\http.js
+ */
 import axios from 'axios';
 import main from '@/main.js'
 import { Toast } from 'vant';
@@ -14,7 +22,7 @@ const mainAxios = axios.create({
 const parkAxios = axios.create({
     timeout: 60000,
     headers: {
-        'Content-Type':'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8'
     },
     withCredentials: true,
 });
@@ -27,12 +35,12 @@ mainAxios.interceptors.request.use(function (config) {
         message: 'loading',
         forbidClick: true,
         loadingType: 'spinner',
-        duration:180000
-      });
-    
+        duration: 180000
+    });
+
     return config;
 
-    }, function (error) {
+}, function (error) {
     // 对请求错误做些什么
     return Promise.reject(error);
 });
@@ -40,24 +48,26 @@ mainAxios.interceptors.request.use(function (config) {
 
 // 添加请求拦截器
 parkAxios.interceptors.request.use(function (config) {
-    if(localStorage.token){
-        config.headers.token = localStorage.token; 
+    if (localStorage.token) {
+        config.headers.token = localStorage.token;
     }
-    
+    if (config.method === 'get' || config.method === 'GET') {
+        config.params = config.data
+    }
     // 在发送请求之前做些什么
     Toast.loading({
         message: 'loading',
         forbidClick: true,
         loadingType: 'spinner',
-        duration:60000
-      });
+        duration: 60000
+    });
     config.transformRequest = [function (data) {
-        if(config.loading == 'shouyedibu'){
+        if (config.loading == 'shouyedibu') {
             //首页底部
-            if(config.data.page == 1 && config.data.categoryId == 0){
+            if (config.data.page == 1 && config.data.categoryId == 0) {
                 Toast.clear();
             }
-        }else if(config.loading == 'jianadizhi'){
+        } else if (config.loading == 'jianadizhi') {
             Toast.clear();
         }
         // 在请求之前对data传参进行格式转换
@@ -66,7 +76,7 @@ parkAxios.interceptors.request.use(function (config) {
     }];
     return config;
 
-    }, function (error) {
+}, function (error) {
     // 对请求错误做些什么
     return Promise.reject(error);
 });
@@ -74,39 +84,39 @@ parkAxios.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 mainAxios.interceptors.response.use(function (response) {
-    let { noError = true } =  response.config
+    let { noError = true } = response.config
 
     if (noError) {
         let data = response.data
-        if(data.code < 0){
-            if(data.code == -1){
+        if (data.code < 0) {
+            if (data.code == -1) {
                 data.msg = "Please login again"
-                setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
-            }else if(data.code == -2){
+                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+            } else if (data.code == -2) {
                 data.msg = "No account information! Please login again."
-                setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
-            }else if(data.code == -3){
+                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+            } else if (data.code == -3) {
                 data.msg = "The login is invalid. Please login again."
-                setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
-            }else if(data.code == -4){
+                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+            } else if (data.code == -4) {
                 data.msg = "Non-existent account/incorrect password"
             }
-        }else{
+        } else {
             if (data.code == 500) {
                 data.msg = "Network is busy, please try again later!"
                 Toast(data.msg);
-            }else if(data.code == 0){
+            } else if (data.code == 0) {
                 Toast.clear();
             }
         }
-        
+
     }
     return response.data;
 }, function (error) {
     // 对响应错误做点什么
-    if(error.message == 'timeout of 180000ms exceeded'){
+    if (error.message == 'timeout of 180000ms exceeded') {
         Toast('Time-out')
-    }else{
+    } else {
         Toast('error');
     }
     if (error.response) {
@@ -119,63 +129,63 @@ mainAxios.interceptors.response.use(function (response) {
 
 // 添加响应拦截器
 parkAxios.interceptors.response.use(function (response) {
-    let { noError = true } =  response.config
+    let { noError = true } = response.config
     if (noError) {
         let data = response.data
-        if(data.code < 0){
-            if(data.code == -1){
+        if (data.code < 0) {
+            if (data.code == -1) {
                 data.msg = "Please login again"
                 Toast(data.msg);
-                setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
-                if(localStorage.token) {localStorage.removeItem('token')}
-            }else if(data.code == -2){
+                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+                if (localStorage.token) { localStorage.removeItem('token') }
+            } else if (data.code == -2) {
                 data.msg = "No account information! Please login again."
-                setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
-                if(localStorage.token) {localStorage.removeItem('token')}
+                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+                if (localStorage.token) { localStorage.removeItem('token') }
                 Toast(data.msg);
-            }else if(data.code == -3){
+            } else if (data.code == -3) {
                 data.msg = "The login is invalid. Please login again."
-                setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
-                if(localStorage.token) {localStorage.removeItem('token')}
+                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+                if (localStorage.token) { localStorage.removeItem('token') }
                 Toast(data.msg);
-            }else if(data.code == -4){
+            } else if (data.code == -4) {
                 data.msg = "Non-existent account/incorrect password"
                 Toast(data.msg);
             }
-			// else{
-             //   Toast('error');
+            // else{
+            //   Toast('error');
             //}
-            
-        }else{
+
+        } else {
             if (data.code == 500) {
                 data.msg = "Network is busy, please try again later!"
                 Toast(data.msg);
-            }else if(data.code == 0){
+            } else if (data.code == 0) {
                 Toast.clear();
             }
-			//else{
-           //     Toast('error');
+            //else{
+            //     Toast('error');
             //}
         }
-        
+
     }
     return response.data;
 }, function (error) {
     // 对响应错误做点什么
-    if(error.message == 'timeout of 60000ms exceeded'){
+    if (error.message == 'timeout of 60000ms exceeded') {
         Toast('Time-out')
-    }else{
+    } else {
         Toast('error');
     }
     if (error.response) {
         Toast("Network is busy, please try again later!");
     }
-    
+
     return Promise.reject(error);
 });
 
-function redirect(){}
+function redirect() { }
 
 
 
-export {mainAxios,parkAxios}
+export { mainAxios, parkAxios }
