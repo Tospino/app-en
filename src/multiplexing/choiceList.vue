@@ -4,10 +4,10 @@
     <div class="balance-header">
       <van-icon name="arrow-left" class="arrow-left" @click="$emit('choiceStatus',true)" />
       <!-- <span class="header-t1">{{title}}</span> -->
-      <span class="header-t1" v-show="formData.area_level===1">请选择国家</span>
-      <span class="header-t1" v-show="formData.area_level===2">请选择省</span>
-      <span class="header-t1" v-show="formData.area_level===3">请选择市</span>
-      <span class="header-t1" v-show="formData.area_level===4">请选择区</span>
+      <span class="header-t1" v-show="formData.area_level===1">Please select country</span>
+      <span class="header-t1" v-show="formData.area_level===2">Please select a province</span>
+      <span class="header-t1" v-show="formData.area_level===3">Please select the city</span>
+      <span class="header-t1" v-show="formData.area_level===4">Please select a region</span>
     </div>
     <div class="place"></div>
     <div
