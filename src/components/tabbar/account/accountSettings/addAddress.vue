@@ -72,6 +72,11 @@
       <div class="top-textarea">
         <textarea placeholder="Enter a full address" v-model="form.message"></textarea>
       </div>
+      <van-button
+        style="height: 40px;margin-bottom: 15px;;font-size:16px"
+        @click="getLoaction"
+        block
+      >Retrieves the location address</van-button>
       <div class="cell">
         <span class="c-333">Set it as dafault address</span>
         <van-switch
@@ -149,56 +154,7 @@ export default {
   computed: {},
   async created() {
     if (this.$route.query.type == "add") {
-      let latlng = "5.6037168000,-0.1869644000";
-      let key = "AIzaSyBw4RT57Ny-Cq9hVnpACvAscXoQpQHvOkY";
-      let a = this;
-      // 通過經緯度 獲取位置信息 例如國家，省，市，區
-      await ipgetcountry({ IP: document.cookie }).then(res => {
-        latlng = `${res.Data.lat},${res.Data.lon}`;
-      });
-      //   await axios({
-      //     url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json;charset=utf-8"
-      //     }
-      //   }).then(res => {
-      //     let data = res.data;
-      //     latlng = `${data.location.lat},${data.location.lng}`;
-      //   });
-      let data = await axios({
-        url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}`,
-        method: "GET"
-      });
-      if (Array.isArray(data.data.results) && data.data.results.length !== 0) {
-        let datas = data.data.results.reverse();
-        let lev1 = await datas.filter((v, i) => {
-          return v.types.toString().indexOf("country") !== -1 && !a.form.lev1;
-        });
-        a.form.lev1 = lev1[0].formatted_address;
-        await a.getAreaId(lev1[0].formatted_address, 1, lev1[0].place_id);
-        let lev2 = await datas.filter((v, i) => {
-          return (
-            v.types.toString().indexOf("administrative_area_level_1") !== -1 &&
-            !a.form.lev2
-          );
-        });
-        a.form.lev2 = lev2[0].formatted_address;
-        await a.getAreaId(lev2[0].formatted_address, 2, lev2[0].place_id);
-        let lev3 = await datas.filter((v, i) => {
-          return v.types.toString().indexOf("locality") !== -1 && !a.form.lev3;
-        });
-        a.form.lev3 = lev3[0].formatted_address;
-        await a.getAreaId(lev3[0].formatted_address, 3, lev3[0].place_id);
-        let lev4 = await datas.filter((v, i) => {
-          return (
-            v.types.toString().indexOf("administrative_area_level_2") !== -1 &&
-            !a.form.lev4
-          );
-        });
-        a.form.lev4 = lev4[0].formatted_address;
-        await a.getAreaId(lev4[0].formatted_address, 4, lev4[0].place_id);
-      }
+      this.getLoaction();
     }
   },
   mounted() {
@@ -206,6 +162,61 @@ export default {
   },
   watch: {},
   methods: {
+    // 获取定位地址
+    async getLoaction() {
+      let latlng = "5.6037168000,-0.1869644000";
+      let key = "AIzaSyBw4RT57Ny-Cq9hVnpACvAscXoQpQHvOkY";
+      let a = this;
+      // 通過經緯度 獲取位置信息 例如國家，省，市，區
+      //   await ipgetcountry({ IP: document.cookie }).then(res => {
+      //     latlng = `${res.Data.lat},${res.Data.lon}`;
+      //   });
+      await axios({
+        url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8"
+        }
+      }).then(res => {
+        let data = res.data;
+        latlng = `${data.location.lat},${data.location.lng}`;
+      });
+      let data = await axios({
+        url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=EN`,
+        method: "GET"
+      });
+      if (Array.isArray(data.data.results) && data.data.results.length !== 0) {
+        let datas = data.data.results.reverse();
+        let lev1 = await datas.filter((v, i) => {
+          return v.types.toString().indexOf("country") !== -1;
+        });
+        a.form.lev1 = lev1[0].formatted_address;
+        await a.getAreaId(lev1[0].formatted_address, 1, lev1[0].place_id);
+        let lev2 = await datas.filter((v, i) => {
+          return (
+            v.types.toString().indexOf("administrative_area_level_1") !== -1
+          );
+        });
+        a.form.lev2 = lev2[0].formatted_address;
+        await a.getAreaId(lev2[0].formatted_address, 2, lev2[0].place_id);
+        let lev3 = await datas.filter((v, i) => {
+          return v.types.toString().indexOf("locality") !== -1;
+        });
+        a.form.lev3 = lev3[0].formatted_address;
+        await a.getAreaId(lev3[0].formatted_address, 3, lev3[0].place_id);
+        let lev4 = await datas.filter((v, i) => {
+          return (
+            v.types.toString().indexOf("administrative_area_level_2") !== -1
+          );
+        });
+        a.form.lev4 = lev4[0].formatted_address;
+        await a.getAreaId(lev4[0].formatted_address, 4, lev4[0].place_id);
+        let companyAddress = await datas.filter((v, i) => {
+          return v.types.toString().indexOf("route") !== -1;
+        });
+        a.form.message = companyAddress[0].formatted_address;
+      }
+    },
     //选择地址组件返回信息
     getchoice(choicDate) {
       this.choiceForm = Object.assign({}, this.choiceForm, choicDate);
