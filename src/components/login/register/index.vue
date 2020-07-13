@@ -354,19 +354,19 @@ export default {
     let key = "AIzaSyBw4RT57Ny-Cq9hVnpACvAscXoQpQHvOkY";
     let a = this;
     // 通過經緯度 獲取位置信息 例如國家，省，市，區
-    // await ipgetcountry({ IP: document.cookie }).then(res => {
-    //   latlng = `${res.Data.lat},${res.Data.lon}`;
-    // });
-    await axios({
-      url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8"
-      }
-    }).then(res => {
-      let data = res.data;
-      latlng = `${data.location.lat},${data.location.lng}`;
+    await ipgetcountry({ IP: document.cookie }).then(res => {
+      latlng = `${res.Data.lat},${res.Data.lon}`;
     });
+    // await axios({
+    //   url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json;charset=utf-8"
+    //   }
+    // }).then(res => {
+    //   let data = res.data;
+    //   latlng = `${data.location.lat},${data.location.lng}`;
+    // });
     let data = await axios({
       url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}`,
       method: "GET"
