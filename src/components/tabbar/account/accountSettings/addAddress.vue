@@ -191,7 +191,6 @@ export default {
         method: "GET"
       });
       let total_data = [...dataEN.data.results, ...data.data.results];
-      console.log("total_data", total_data);
       if (Array.isArray(total_data) && total_data.length !== 0) {
         let datas = total_data.reverse();
         let lev1 = await datas.filter((v, i) => {
