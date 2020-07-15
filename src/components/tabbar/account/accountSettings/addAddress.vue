@@ -185,36 +185,70 @@ export default {
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=EN`,
         method: "GET"
       });
-      if (Array.isArray(data.data.results) && data.data.results.length !== 0) {
-        let datas = data.data.results.reverse();
+      // 获取中文数据，添加到数据库
+      let dataEN = await axios({
+        url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=CN`,
+        method: "GET"
+      });
+      let total_data = [...dataEN.data.results, ...data.data.results];
+      if (Array.isArray(total_data) && total_data.length !== 0) {
+        let datas = total_data.reverse();
         let lev1 = await datas.filter((v, i) => {
           return v.types.toString().indexOf("country") !== -1;
         });
-        a.form.lev1 = lev1[0].formatted_address;
-        await a.getAreaId(lev1[0].formatted_address, 1, lev1[0].place_id);
+        a.form.lev1 =
+          lev1 && lev1.length !== 0 ? lev1[0].formatted_address : "";
+        a.form.lev1
+          ? await a.getAreaId(
+              lev1[0].formatted_address,
+              1,
+              lev1[0].place_id,
+              lev1[1].formatted_address
+            )
+          : "";
         let lev2 = await datas.filter((v, i) => {
           return (
             v.types.toString().indexOf("administrative_area_level_1") !== -1
           );
         });
-        a.form.lev2 = lev2[0].formatted_address;
-        await a.getAreaId(lev2[0].formatted_address, 2, lev2[0].place_id);
+        a.form.lev2 =
+          lev2 && lev2.length !== 0 ? lev2[0].formatted_address : "";
+        a.form.lev2
+          ? await a.getAreaId(
+              lev2[0].formatted_address,
+              2,
+              lev2[0].place_id,
+              lev2[1].formatted_address
+            )
+          : "";
         let lev3 = await datas.filter((v, i) => {
           return v.types.toString().indexOf("locality") !== -1;
         });
-        a.form.lev3 = lev3[0].formatted_address;
-        await a.getAreaId(lev3[0].formatted_address, 3, lev3[0].place_id);
+        a.form.lev3 =
+          lev3 && lev3.length !== 0 ? lev3[0].formatted_address : "";
+        a.form.lev3
+          ? await a.getAreaId(
+              lev3[0].formatted_address,
+              3,
+              lev3[0].place_id,
+              lev3[1].formatted_address
+            )
+          : "";
         let lev4 = await datas.filter((v, i) => {
           return (
             v.types.toString().indexOf("administrative_area_level_2") !== -1
           );
         });
-        a.form.lev4 = lev4[0].formatted_address;
-        await a.getAreaId(lev4[0].formatted_address, 4, lev4[0].place_id);
-        let companyAddress = await datas.filter((v, i) => {
-          return v.types.toString().indexOf("route") !== -1;
-        });
-        a.form.message = companyAddress[0].formatted_address;
+        a.form.lev4 =
+          lev4 && lev4.length !== 0 ? lev4[0].formatted_address : "";
+        a.form.lev4
+          ? await a.getAreaId(
+              lev4[0].formatted_address,
+              4,
+              lev4[0].place_id,
+              lev4[1].formatted_address
+            )
+          : "";
       }
     },
     //选择地址组件返回信息
@@ -361,7 +395,7 @@ export default {
       this.form.sjhm = e.target.value.replace(/[^\d]/g, "");
     },
     // 通过名称获取对应位置的id
-    async getAreaId(name, level, id) {
+    async getAreaId(name, level, id, name_cn) {
       let data = await areanamegetid({ areaname: name, arealevel: level });
       if (data.code === 0) {
         let obj = {
@@ -378,8 +412,8 @@ export default {
         await this.addAreaID({
           areaCode: id, // 编码
           areaLevel: level, // 当前层级
-          areaName: name, // 名称
-          // areaNameEng: "string", // 名称英语
+          areaName: name_cn, // 名称
+          areaNameEng: name, // 名称英语
           parentId: level == 1 ? 0 : this.choiceForm[`lev${lev}`].id, // 父级ID
           area_status: 1
         });
