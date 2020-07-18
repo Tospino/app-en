@@ -14,7 +14,7 @@
           :key="index"
           @click="cliItem(index)"
         >
-          <img :src="reason.logourl" class="icon-img" />
+          <img v-lazy="reason.logourl" class="icon-img" />
           <span>{{reason.name}}</span>
           <van-checkbox
             v-model="reason.checked"
@@ -52,13 +52,12 @@ export default {
       list: [],
       showAction: false,
       remark: "",
-      id: 0,
+      id: 0
     };
   },
   computed: {},
   created() {},
-  mounted() {
-  },
+  mounted() {},
   watch: {
     orderId: {
       handler: function(newVal) {
@@ -72,14 +71,14 @@ export default {
     showList: {
       handler: function(newVal) {
         this.list = newVal.map(o => Object.assign({}, o));
-        this.list[4].checked = true
+        this.list[4].checked = true;
       }
     }
   },
   methods: {
     cliItem(index) {
-      this.list.forEach((ele,i) => {
-        ele.checked = index == i
+      this.list.forEach((ele, i) => {
+        ele.checked = index == i;
       });
     },
     pay(index) {
@@ -111,7 +110,7 @@ export default {
   }
   .paymen-content {
     width: 100%;
-    height:440px;
+    height: 440px;
     background-color: #fff;
     box-sizing: border-box;
     padding: 0px 0px 0;

@@ -164,7 +164,7 @@ export default {
   methods: {
     // 获取定位地址
     async getLoaction() {
-      let latlng = "5.6037168000,-0.1869644000";
+      let latlng = "";
       let key = "AIzaSyBw4RT57Ny-Cq9hVnpACvAscXoQpQHvOkY";
       let a = this;
       // 通過經緯度 獲取位置信息 例如國家，省，市，區
@@ -400,7 +400,7 @@ export default {
       if (data.code === 0) {
         let obj = {
           id: data.Data.areaId,
-          name: data.Data.areaName,
+          name: data.Data.areaNameEng,
           areaCode: data.Data.areaCode
         };
         this.$set(this.choiceForm, `lev${level}`, obj);
@@ -424,7 +424,7 @@ export default {
       await addbasearea(params).then(res => {
         this.$set(this.choiceForm, `lev${params.areaLevel}`, {
           id: res.Data.areaId,
-          name: res.Data.areaName,
+          name: res.Data.areaNameEng,
           areaCode: res.Data.areaCode
         });
       });

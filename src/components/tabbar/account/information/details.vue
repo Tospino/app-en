@@ -1,47 +1,46 @@
 <template >
   <!-- 消息订阅 -->
-	<div class="details c-b-gray">
-		<balance-header :iconShow="true"></balance-header>
-		<div class="plr30">
-			<h3 class="title">{{detail.announceTitle}}</h3>
-			<div class="timeWrap">
-				<span>TOSPINO</span>
-				<span class="time">{{detail.publishTime}}</span>
-			</div>
-		<!-- 内容区 -->
-			<div class="main">
-				<img :src='$webUrl+detail.announceImg'/>
-				<div v-html="detail.announceContent" class="announceContent"></div>
-			</div>
-		</div>
-  	</div>
+  <div class="details c-b-gray">
+    <balance-header :iconShow="true"></balance-header>
+    <div class="plr30">
+      <h3 class="title">{{detail.announceTitle}}</h3>
+      <div class="timeWrap">
+        <span>TOSPINO</span>
+        <span class="time">{{detail.publishTime}}</span>
+      </div>
+      <!-- 内容区 -->
+      <div class="main">
+        <img v-lazy="$webUrl+detail.announceImg" />
+        <div v-html="detail.announceContent" class="announceContent"></div>
+      </div>
+    </div>
+  </div>
 </template> 
 
 <script>
-import balanceHeader from './itemComponents/balanceHeader'
-import {getsystemmesgmodelApi} from '@/api/information/index.js'
+import balanceHeader from "./itemComponents/balanceHeader";
+import { getsystemmesgmodelApi } from "@/api/information/index.js";
 export default {
-	data() {
-		return {
-			detail:{}
-		};
-	},
-	mounted(){
-		this.getsystemmesgmodel(this.$route.query.announceId)
-	},
-  	methods: {
-		getsystemmesgmodel(id){
-			getsystemmesgmodelApi({announceId:id}).then(res => {
-				if(res.code == 0){
-					this.detail = res.tpAnnounce
-				}
-			})
-		}
-	},
-  	components:{
-		balanceHeader
-	}
-
+  data() {
+    return {
+      detail: {}
+    };
+  },
+  mounted() {
+    this.getsystemmesgmodel(this.$route.query.announceId);
+  },
+  methods: {
+    getsystemmesgmodel(id) {
+      getsystemmesgmodelApi({ announceId: id }).then(res => {
+        if (res.code == 0) {
+          this.detail = res.tpAnnounce;
+        }
+      });
+    }
+  },
+  components: {
+    balanceHeader
+  }
 };
 </script> 
 
@@ -54,8 +53,8 @@ export default {
     font-family: PingFang SC;
     font-weight: 500;
     color: rgba(51, 51, 51, 1);
-	line-height: 1.4;
-	padding-top: 30px;
+    line-height: 1.4;
+    padding-top: 30px;
   }
   .timeWrap {
     font-size: 26px;
@@ -78,11 +77,11 @@ export default {
     font-weight: 500;
     color: rgba(51, 51, 51, 1);
     line-height: 39px;
-    img{
+    img {
       margin-bottom: 30px;
     }
-    p{
-       margin-bottom: 30px;
+    p {
+      margin-bottom: 30px;
     }
   }
 }
