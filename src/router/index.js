@@ -248,27 +248,27 @@ export default new Router({
                 },
                 {
                     path: 'aboutTospino',
-                    name: '关于TOSPINO',
+                    name: 'About TOSPINO',
                     component: () => import(`@/components/tabbar/account/accountSettings/aboutTospino`),
                     children: [
                         {
                             path: 'helpCenter',
-                            name: '帮助中心',
+                            name: 'Help Center',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/helpCenter`),
                         },
                         {
                             path: 'introduce',
-                            name: '平台介绍',
+                            name: 'About Tospino',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/introduce`),
                         },
                         {
                             path: 'privacyPolicy',
-                            name: '隐私政策',
+                            name: 'Privacy Policy',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy`),
                         },
                         {
                             path: 'userAgreement',
-                            name: '用户协议',
+                            name: 'User Agreement',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/userAgreement`),
                         },
                     ]
