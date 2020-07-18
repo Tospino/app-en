@@ -28,8 +28,8 @@ import clipboard from 'clipboard';
 import { gethttpimgurlApi } from '@/api/login/index'
 
 
-// Vue.prototype.$webUrl = 'http://192.168.3.161:8091/tospino/test/'
-// Vue.prototype.jn = '₵'
+Vue.prototype.$webUrl = ''
+Vue.prototype.jn = ''
 gethttpimgurlApi().then(res => {
     if (res.code == 0) {
         Vue.prototype.jn = res.currency
