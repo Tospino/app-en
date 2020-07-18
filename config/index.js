@@ -1,3 +1,11 @@
+/*
+ * @Author: 曹建勇
+ * @Date: 2020-07-07 18:05:39
+ * @LastEditors: 曹建勇
+ * @LastEditTime: 2020-07-18 10:25:14
+ * @Description: 
+ * @FilePath: \app-en\config\index.js
+ */
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
@@ -60,7 +68,7 @@ module.exports = {
          * Source Maps
          */
 
-        productionSourceMap: true,
+        productionSourceMap: false,
         // https://webpack.js.org/configuration/devtool/#production
         devtool: '#source-map',
 

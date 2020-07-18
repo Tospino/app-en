@@ -14,30 +14,47 @@
     </div>
     <div class="payment m-b-20">
       <span>Pay (by)</span>
-			<div class="fl-right" v-for="(pay,index) in payTypeList" :key="index" @click="changePaymen(pay)">
-				<van-checkbox v-model="pay.checked" checked-color="#FA5300">{{orderStatus(pay.payType,'payStatus')}}</van-checkbox>
-			</div>
-	  	
+      <div
+        class="fl-right"
+        v-for="(pay,index) in payTypeList"
+        :key="index"
+        @click="changePaymen(pay)"
+      >
+        <van-checkbox
+          v-model="pay.checked"
+          checked-color="#FA5300"
+        >{{orderStatus(pay.payType,'payStatus')}}</van-checkbox>
+      </div>
     </div>
     <div class="good-detail" v-for="order in orderData.orderList" :key="order.sortOrder">
       <div class="good-detail-header">
         <span>{{order.sortOrder}}</span>
       </div>
-      <div class="good-detail-content" v-for="(product,index) in order.detailList" :key="product.skuId">
+      <div
+        class="good-detail-content"
+        v-for="(product,index) in order.detailList"
+        :key="product.skuId"
+      >
         <div>
           <van-swipe-cell :right-width="70">
             <template slot="right">
               <van-button square type="danger" text="Delete" @click="delItem(product,index)" />
             </template>
             <div class="good-detail-img">
-              <img :src="$webUrl+product.skuImg" />
-              <div class="img-nochange" v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0">{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
+              <img v-lazy="$webUrl+product.skuImg" />
+              <div
+                class="img-nochange"
+                v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0"
+              >{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
             </div>
             <div class="good-detail-title">
               <span class="name">{{product.skuName}}</span>
               <div class="guige">{{product.skuValuesTitleEng}}</div>
               <div class="p1">{{product.currencySignWebsite}}{{product.priceWebsite}}</div>
-              <div class="p2 through" v-if="product.originPriceWebsite">{{product.currencySignWebsite}}{{product.originPriceWebsite}}</div>
+              <div
+                class="p2 through"
+                v-if="product.originPriceWebsite"
+              >{{product.currencySignWebsite}}{{product.originPriceWebsite}}</div>
             </div>
             <div class="price">
               <div class="p3">{{product.currencySignWebsite}}{{product.totalPriceWebsite}}</div>
@@ -48,7 +65,12 @@
               <div class="selection-right-stepper">
                 <div class="add-btn" @click="addCount(product)">+</div>
                 <div class="center-input">
-                  <input type="number" class="number-input" v-model="product.detailNum" @blur="blur(product)"/>
+                  <input
+                    type="number"
+                    class="number-input"
+                    v-model="product.detailNum"
+                    @blur="blur(product)"
+                  />
                 </div>
                 <div class="reduce-btn" @click="reduceCount(product)">一</div>
               </div>
@@ -67,13 +89,16 @@
       </div>
       <div class="payment b-t-1">
         <span>Transporation</span>
-        <div class="select" v-if="order.deliverType==1 || order.deliverType==2">{{order.deliverType==1? 'Fulfillment by Tospino':'Take Delivery'}}</div>
+        <div
+          class="select"
+          v-if="order.deliverType==1 || order.deliverType==2"
+        >{{order.deliverType==1? 'Fulfillment by Tospino':'Take Delivery'}}</div>
         <div class="select" v-else>
           <div class="gj-img">
-            <img :src="$webUrl+'/common/image/zhiyou.png'" v-if="orderData.hasFBM == 1"/>
-            <img :src="$webUrl+order.areaImg"  v-else/>
+            <img v-lazy="$webUrl+'/common/image/zhiyou.png'" v-if="orderData.hasFBM == 1" />
+            <img v-lazy="$webUrl+order.areaImg" v-else />
           </div>
-          <span v-if="orderData.hasFBM == 1">Ships from </span>
+          <span v-if="orderData.hasFBM == 1">Ships from</span>
           <span>{{order.areaNameEng}}</span>
         </div>
       </div>
@@ -83,19 +108,26 @@
       </div>
 
       <div class="payment b-t-1" v-if="order.transitTimeRangeStringEng">
-        <span class="fbm-time" >Get it within {{order.transitTimeRangeStringEng}} after payment. </span>
+        <span class="fbm-time">Get it within {{order.transitTimeRangeStringEng}} after payment.</span>
       </div>
 
       <div class="beizhu">
         <van-cell-group>
-          <van-field v-model="order.remark" rows="3" autosize label="Note" type="textarea" placeholder="Contact customer service to confirm the order"/>
+          <van-field
+            v-model="order.remark"
+            rows="3"
+            autosize
+            label="Note"
+            type="textarea"
+            placeholder="Contact customer service to confirm the order"
+          />
         </van-cell-group>
       </div>
     </div>
 
     <div class="m-b-20 fbm-beizhu" v-if="orderData.hasFBM == 1">
-      Tips: DM products do not support online after-sales services. <br>
-      Please contact customer service personnel for consulting!!!
+      Tips: DM products do not support online after-sales services.
+      <br />Please contact customer service personnel for consulting!!!
     </div>
 
     <div class="total">
@@ -140,11 +172,14 @@ import actionSheetPaymen from "@/multiplexing/actionSheetPaymen";
 import actionSheetPassword from "@/multiplexing/actionSheetPassword";
 import balanceHeader from "./itemComponents/balanceHeader";
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
-import {getconfirmorderApi,batchmakeorderApi} from "@/api/confirmOrder/index";
+import {
+  getconfirmorderApi,
+  batchmakeorderApi
+} from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
 import { mapState, mapActions } from "vuex";
-import { Toast,Notify } from "vant";
+import { Toast, Notify } from "vant";
 export default {
   props: {},
   data() {
@@ -160,7 +195,7 @@ export default {
         { text: "好评排序", value: "b" },
         { text: "销量排序", value: "c" }
       ],
-     payStatus: [
+      payStatus: [
         {
           type: 1,
           name: "Cash"
@@ -187,8 +222,8 @@ export default {
       orderIdList: [],
       // 用户支付
       userinfoShop: {},
-      orderSn:[],
-      payTypeListLength:0
+      orderSn: [],
+      payTypeListLength: 0
     };
   },
   computed: {
@@ -227,14 +262,14 @@ export default {
     ...mapActions(["deladressitem"]),
     //提交订单按钮
     submit() {
-			if(this.zffs == ''){
-				Notify({
-					message: 'Choose the method of payment.',
-					color: '#fff',
-					type: 'danger',
-				});
-				return
-			}
+      if (this.zffs == "") {
+        Notify({
+          message: "Choose the method of payment.",
+          color: "#fff",
+          type: "danger"
+        });
+        return;
+      }
       let flag = true;
       let flag2 = true;
       this.orderData.orderList.forEach(ele => {
@@ -260,7 +295,7 @@ export default {
         return;
       }
       //提交订单
-			this.batchmakeorder(this.orderData);
+      this.batchmakeorder(this.orderData);
     },
 
     //编译状态
@@ -349,7 +384,10 @@ export default {
     },
     //删除某个商品
     delItem(good, goodindex) {
-      if (this.orderData.orderList.length == 1 && this.orderData.orderList[0].detailList.length == 1){
+      if (
+        this.orderData.orderList.length == 1 &&
+        this.orderData.orderList[0].detailList.length == 1
+      ) {
         Toast("Cannot delete all goods");
         return;
       }
@@ -375,15 +413,15 @@ export default {
       getconfirmorderApi(data).then(res => {
         if (res.code == 0) {
           this.orderData = res.Data;
-          if(this.payTypeList.length == 0){
+          if (this.payTypeList.length == 0) {
             //第一次请求
             this.payTypeList = res.Data.payTypeList;
-            this.payTypeListLength = this.payTypeList.length
-            this.zffs = ''
-          }else if(this.payTypeList.length != res.Data.payTypeList.length){
+            this.payTypeListLength = this.payTypeList.length;
+            this.zffs = "";
+          } else if (this.payTypeList.length != res.Data.payTypeList.length) {
             this.payTypeList = res.Data.payTypeList;
-            this.payTypeListLength = this.payTypeList.length
-            this.zffs = ''
+            this.payTypeListLength = this.payTypeList.length;
+            this.zffs = "";
           }
         }
       });
@@ -413,9 +451,9 @@ export default {
               orderIdArr.push({ orderId: Number(item.orderId) });
             });
             this.orderIdList = orderIdArr;
-            this.orderSn=this.orderIdList
+            this.orderSn = this.orderIdList;
           }
-        }else if (res.code == 1) {
+        } else if (res.code == 1) {
           Toast("Parameter “requestModel” cannot be empty.");
         } else if (res.code == 2) {
           Toast("Parameter”orderList” cannot not be empty.");
@@ -458,11 +496,10 @@ export default {
 
     //订单发起支付
     orderlaunchpay(data) {
-
       orderlaunchpayApi(data).then(res => {
         // console.log(data);
 
-       if (res.code == 0) {
+        if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
           Toast("Parameter “requestModel” cannot be empty.");
@@ -516,16 +553,16 @@ export default {
       // console.log(flag);
       // console.log("第三方支付弹起");
       this.$refs.actionSheetPassword.showAction = flag;
-		},
-		//选择支付方式
-		changePaymen(dataItem){
-			this.payTypeList.forEach(item => {
-				item.checked = false
-			})
-			dataItem.checked = true
-			this.zffs = dataItem.payType
-			this.$forceUpdate()
-		}
+    },
+    //选择支付方式
+    changePaymen(dataItem) {
+      this.payTypeList.forEach(item => {
+        item.checked = false;
+      });
+      dataItem.checked = true;
+      this.zffs = dataItem.payType;
+      this.$forceUpdate();
+    }
   },
   components: {
     actionSheetPaymen,
@@ -567,11 +604,11 @@ export default {
     line-height: 100px;
     position: relative;
     z-index: 6;
-		padding: 0 30px;
-		/deep/ .van-checkbox {
+    padding: 0 30px;
+    /deep/ .van-checkbox {
       display: inline-block;
       .van-checkbox__icon {
-		vertical-align: sub;
+        vertical-align: sub;
         display: inline-block;
         font-size: 40px;
       }
@@ -607,10 +644,10 @@ export default {
       font-weight: bold;
       margin-left: 29px;
     }
-    .fbm-time{
-      font-size:26px;
-      font-weight:400;
-      color:rgba(8,129,214,1);
+    .fbm-time {
+      font-size: 26px;
+      font-weight: 400;
+      color: rgba(8, 129, 214, 1);
     }
   }
   .good-detail {
@@ -792,9 +829,9 @@ export default {
       }
     }
   }
-  .fbm-beizhu{
-    color:rgba(235,2,2,1);
-    font-size:20px;
+  .fbm-beizhu {
+    color: rgba(235, 2, 2, 1);
+    font-size: 20px;
     padding: 0 30px;
   }
   .total {
