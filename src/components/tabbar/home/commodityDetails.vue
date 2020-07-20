@@ -19,7 +19,7 @@
           <van-swipe @change="onChange" v-if="showData">
             <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
               <div class="w1">
-                <img v-lazy="$bigwebUrl+banner.imgUrl" />
+                <img :src="$bigwebUrl+banner.imgUrl" />
               </div>
             </van-swipe-item>
             <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
@@ -42,8 +42,8 @@
           <div class="miaoshu">
             <span class="p4">{{detailmData.supplyTitle}}</span>
             <!-- <span>
-                            <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
-                            <span class="fenxiang-txt">Share</span>
+                    <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
+                    <span class="fenxiang-txt">Share</span>
             </span>-->
           </div>
           <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
