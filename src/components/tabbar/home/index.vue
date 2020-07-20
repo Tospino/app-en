@@ -26,7 +26,7 @@
               @click="swipeClick(banner)"
             >
               <div class="w1">
-                <img v-lazy="$webUrl+banner.advertImg" />
+                <img :src="$webUrl+banner.advertImg" />
               </div>
             </van-swipe-item>
             <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>

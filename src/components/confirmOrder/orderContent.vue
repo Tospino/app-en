@@ -41,7 +41,7 @@
               <van-button square type="danger" text="Delete" @click="delItem(product,index)" />
             </template>
             <div class="good-detail-img">
-              <img v-lazy="$webUrl+product.skuImg" />
+              <img :src="$webUrl+product.skuImg" />
               <div
                 class="img-nochange"
                 v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0"
