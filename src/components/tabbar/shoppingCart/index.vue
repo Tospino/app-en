@@ -1,3 +1,12 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-18 17:45:35
+ * @LastEditTime: 2020-07-20 16:09:32
+ * @LastEditors: Please set LastEditors
+ * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
+ * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
+--> 
+
 <template>
   <!-- 购物车 -->
   <div class="shopping-cart" ref="content">
@@ -10,47 +19,68 @@
       <!-- 有商品的页面 -->
       <div v-if="dataList.length>0">
         <div class="shopping-cart-content" v-for="(data,index) in dataList" :key="index">
-          <div class="serial-number">
-            <van-checkbox
-              v-model="data.checkStatus"
-              icon-size="24px"
-              checked-color="#F83600"
-              @click="changeCheckbox(data,'all')"
-            ></van-checkbox>
-          </div>
-          <div class="goods-content" v-for="(dataitem,index) in data.list" :key="index">
-            <van-checkbox
-              v-model="dataitem.checkStatus"
-              icon-size="24px"
-              checked-color="#F83600"
-              @click="changeCheckbox(dataitem,'',data)"
-            ></van-checkbox>
-            <div class="good-img" @click="toDetail(dataitem.skuId)">
-              <img v-lazy="$webUrl+dataitem.imgUrl" />
-            </div>
-            <span class="good-describe" @click="toDetail(dataitem.skuId)">{{dataitem.skuName}}</span>
-            <div class="good-seclet">
-              <select name disabled>
-                <option value="0">{{dataitem.skuValuesTitleEng}}</option>
-              </select>
-            </div>
-            <div class="good-logistics" v-if="dataitem.expId == 1">
-              <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
-              <span>Ships from {{dataitem.areaNameEng}}</span>
-            </div>
-            <div class="good-price">
-              <span
-                class="price-p1"
-              >{{jn}}{{dataitem.discountPrice ? dataitem.discountPrice : dataitem.salePrice}}</span>
-              <span class="price-p2" v-if="dataitem.discountPrice">{{jn}}{{dataitem.salePrice}}</span>
-              <van-stepper
-                class="price-quantity"
-                v-model="dataitem.shopNumber"
-                :min="dataitem.numIntervalStart"
-                :max="dataitem.canSalesNum"
-                @change="changeStepper(dataitem)"
-              />
-              <span class="price-batch">MOQ{{dataitem.numIntervalStart}}Pcs</span>
+          <!-- <div class="serial-number">
+                        <van-checkbox v-model="data.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(data,'all')"></van-checkbox>
+          </div>-->
+          <div class="good-box" v-for="(dataitem,index) in data.list" :key="index">
+            <!-- 新增-第二版 -->
+            <div class="goods-content">
+              <div class="goods-header">
+                <div class="goods-left">
+                  <div
+                    class="goods-coupons"
+                  >{{dataitem.coupons!=''?"Shop Coupons":"Tospino Coupons"}}</div>
+                  <span class="goods-coupons-money">{{jn}}100 off for {{jn}}700 buying</span>
+                </div>
+                <p class="goods-add" @click="addOn">
+                  Add-on ltem
+                  <van-icon name="arrow" />
+                </p>
+              </div>
+              <div class="good-item">
+                <div class="good-item-l">
+                  <van-checkbox
+                    v-model="dataitem.checkStatus"
+                    icon-size="24px"
+                    checked-color="#F83600"
+                    @click="changeCheckbox(dataitem,'',data)"
+                  ></van-checkbox>
+                  <div class="good-img" @click="toDetail(dataitem.skuId)">
+                    <img v-lazy="$webUrl+dataitem.imgUrl" />
+                  </div>
+                </div>
+                <div class="good-item-r">
+                  <span class="good-describe" @click="toDetail(dataitem.skuId)">{{dataitem.skuName}}</span>
+                  <div class="good-seclet">
+                    <select name disabled>
+                      <option value="0">{{dataitem.skuValuesTitleEng}}</option>
+                    </select>
+                  </div>
+                  <div class="good-logistics" v-if="dataitem.expId == 1">
+                    <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
+                    <span>Ships from {{dataitem.areaNameEng}}</span>
+                  </div>
+                  <div class="good-price">
+                    <span
+                      class="price-p1"
+                    >{{jn}}{{dataitem.discountPrice ? dataitem.discountPrice : dataitem.salePrice}}</span>
+                    <span
+                      class="price-p2"
+                      v-if="dataitem.discountPrice"
+                    >{{jn}}{{dataitem.salePrice}}</span>
+                    <div class="good-price-r">
+                      <van-stepper
+                        class="price-quantity"
+                        v-model="dataitem.shopNumber"
+                        :min="dataitem.numIntervalStart"
+                        :max="dataitem.canSalesNum"
+                        @change="changeStepper(dataitem)"
+                      />
+                      <p class="price-batch">MOQ{{dataitem.numIntervalStart}}Pcs</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -58,22 +88,28 @@
 
       <!-- 失效商品 -->
       <div class="shopping-cart-content" v-if="wuxiaoList.length>0">
-        <div class="serial-number">
-          <span class="invalid-num">Invalid Products:{{wuxiaoList.length}}</span>
-          <span class="empty" @click="emptyPro">Clear</span>
-        </div>
-        <div class="goods-content" v-for="(wuxiao,index) in wuxiaoList" :key="index">
-          <span class="invalid">Invalid</span>
-          <div class="good-img">
-            <img v-lazy="$webUrl+wuxiao.imgUrl" />
+        <div class="good-box">
+          <div class="serial-number">
+            <span class="invalid-num">Invalid Products:{{wuxiaoList.length}}</span>
+            <span class="empty" @click="emptyPro">Clear</span>
           </div>
-          <span class="good-describe">{{wuxiao.skuName}}</span>
-          <div class="good-seclet">
-            <span class="specifications">{{wuxiao.skuValuesTitleEng}}</span>
-          </div>
-          <div class="good-price">
-            <span class="price-batch-left">Sold Out</span>
-            <span class="price-batch-right" @click="toXiangsi(wuxiao)">Similar Items</span>
+          <div class="goods-content good-item" v-for="(wuxiao,index) in wuxiaoList" :key="index">
+            <div class="good-item-l">
+              <span class="invalid">Invalid</span>
+              <div class="good-img">
+                <img v-lazy="$webUrl+wuxiao.imgUrl" />
+              </div>
+            </div>
+            <div class="good-item-r">
+              <span class="good-describe">{{wuxiao.skuName}}</span>
+              <div class="good-seclet">
+                <span class="specifications">{{wuxiao.skuValuesTitleEng}}</span>
+              </div>
+              <div class="good-price">
+                <span class="price-batch-left">Sold Out</span>
+                <p class="price-batch-right" @click="toXiangsi(wuxiao)">Similar Items</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -506,6 +542,9 @@ export default {
         if (res.code == 0) {
         }
       });
+    },
+    addOn() {
+      this.$router.push({ name: "搜索商品1" });
     }
   },
   components: {
@@ -537,8 +576,8 @@ export default {
   }
   .shopping-cart-content {
     width: 100%;
-    background-color: #fff;
-    margin-bottom: 20px;
+    background-color: #f2f3f5;
+    // margin-bottom: 20px;//这个是原始样式
     overflow: hidden;
     .serial-number {
       width: 100%;
@@ -569,139 +608,147 @@ export default {
         font-size: 28px;
       }
     }
-    .goods-content {
-      width: 100%;
-      height: 350px;
+
+    .good-box {
       background-color: #fff;
-      box-sizing: border-box;
-      padding-top: 50px;
-      position: relative;
-      .good-img {
-        width: 200px;
-        height: 200px;
-        display: inline-block;
-        margin-right: 20px;
-        vertical-align: middle;
-      }
-      .van-checkbox {
-        display: inline-block;
-        position: relative;
-        left: 0;
-        top: -60px;
-        margin: 0 12px 0 30px;
-      }
-      .good-describe {
-        display: inline-block;
-        position: absolute;
-        width: 410px;
-        top: 50px;
-        left: 320px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
-      }
-      .good-seclet {
-        height: 44px;
-        position: absolute;
-        top: 115px;
-        left: 320px;
-        select {
-          width: 100%;
-        }
-        .specifications {
-          display: inline-block;
-          background-color: #eee;
-          padding: 12px 18px;
-        }
-      }
-      .good-logistics {
-        position: absolute;
-        top: 166px;
-        left: 320px;
-        font-size: 16px;
-        color: #666666;
-        img {
-          width: 45px;
-          vertical-align: sub;
-          margin-right: 10px;
-        }
-      }
-      .good-price {
-        position: absolute;
-        top: 229px;
-        left: 320px;
-        width: 400px;
-        .price-p1 {
-          font-size: 40px;
-          color: #fa5300;
-        }
-        .price-p2 {
-          font-size: 20px;
-          color: #999;
-          text-decoration: line-through;
-          margin-right: 30px;
-        }
-        .price-quantity {
-          display: inline-block;
-          width: 147px;
-          height: 36px;
-          text-align: center;
-          line-height: 36px;
-          position: absolute;
-          right: 0;
-          top: 40px;
-          /deep/ .van-stepper__input {
-            width: 76px;
+      // padding-bottom: 120px;
+      margin-bottom: 20px;
+      .goods-content {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+
+        .goods-header {
+          padding-top: 20px;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 30px;
+          box-sizing: border-box;
+          .goods-left {
+            display: flex;
+            align-items: center;
+            .goods-coupons {
+              background-color: #fa5300;
+              padding: 7px 13px;
+              color: #fff;
+              font-size: 24px;
+            }
+            .goods-coupons-money {
+              font-size: 22px;
+              color: #999;
+              padding-left: 8px;
+            }
+          }
+          .goods-add {
+            display: flex;
+            align-items: center;
+            color: #fa5300;
+            /deep/ .van-icon {
+              color: #999;
+            }
           }
         }
-        .price-batch {
-          width: 162px;
-          height: 24px;
-          display: inline-block;
-          position: absolute;
-          top: 85px;
-          left: 270px;
-          font-size: 24px;
-        }
-        .price-batch-right {
-          width: 162px;
-          height: 24px;
-          display: inline-block;
-          position: absolute;
-          top: 35px;
-          left: 250px;
-          font-size: 24px;
-        }
-        .price-batch-left {
-          width: 162px;
-          height: 40px;
-          display: inline-block;
-          position: absolute;
-          top: 35px;
-          left: 0px;
-          font-size: 24px;
-          color: #666;
-          line-height: 40px;
-        }
-        .price-batch-right {
-          // width: 140px;
-          height: 40px;
-          display: inline-block;
-          border: 2px solid rgba(219, 144, 0, 1);
-          border-radius: 20px;
-          text-align: center;
-          line-height: 40px;
+      }
+    }
+
+    .good-item {
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 20px 30px;
+      .good-item-l {
+        display: flex;
+        align-items: center;
+        .good-img {
+          width: 200px;
+          height: 200px;
+          max-width: 100%;
+          max-width: 100%;
+          margin: 0 20px;
         }
       }
-      .invalid {
-        display: inline-block;
-        height: 34px;
-        border: 2px solid rgba(220, 220, 220, 1);
-        border-radius: 5px;
-        line-height: 34px;
-        text-align: center;
-        margin-left: 20px;
+      .good-item-r {
+        .good-describe {
+          width: 410px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+        }
+        .good-seclet {
+          padding-top: 20px;
+          height: 44px;
+          select {
+            padding: 3px;
+          }
+          .specifications {
+            display: inline-block;
+            background-color: #eee;
+            padding: 12px 18px;
+          }
+        }
+        .good-logistics {
+          padding-top: 50px;
+          font-size: 16px;
+          color: #666666;
+          display: flex;
+          align-items: center;
+          img {
+            width: 45px;
+            vertical-align: sub;
+            margin-right: 10px;
+          }
+        }
+        .good-price {
+          padding-top: 20px;
+          width: 400px;
+          .price-p1 {
+            font-size: 40px;
+            color: #fa5300;
+          }
+          .good-price-r {
+            text-align: center;
+            position: relative;
+            left: 66%;
+          }
+          .price-p2 {
+            font-size: 20px;
+            color: #999;
+            text-decoration: line-through;
+            margin-right: 30px;
+          }
+          .price-quantity {
+            width: 147px;
+            height: 36px;
+
+            line-height: 36px;
+            /deep/ .van-stepper__input {
+              width: 76px;
+            }
+          }
+          .price-batch {
+            width: 147px;
+            font-size: 24px;
+          }
+          .price-batch-left {
+            width: 162px;
+            height: 40px;
+            font-size: 24px;
+            color: #666;
+            line-height: 40px;
+          }
+          .price-batch-right {
+            position: relative;
+            left: 50%;
+            font-size: 24px;
+            width: 140px;
+            border: 2px solid rgba(219, 144, 0, 1);
+            border-radius: 20px;
+            padding: 10px 20px;
+          }
+        }
       }
     }
   }

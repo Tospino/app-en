@@ -1,3 +1,13 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-18 17:45:35
+ * @LastEditTime: 2020-07-20 16:21:22
+ * @LastEditors: Please set LastEditors
+ * @Description: 新增优惠券-两个字段
+ * @FilePath: \app-en\src\components\tabbar\account\myOrder\orderDetail.vue
+--> 
+
+
 <template>
   <!-- 订单详情 -->
   <div class="order-detail">
@@ -83,6 +93,22 @@
           <span>Freight:</span>
           <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderFareWebsite}}</span>
         </div>
+
+        <!-- 新增两个字段 -->
+        <div class="mingxi">
+          <span>Coupons：</span>
+          <span
+            class="fl-right font-24"
+          >-{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
+        </div>
+
+        <div class="mingxi">
+          <span>Allowance:</span>
+          <span
+            class="fl-right font-24"
+          >-{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
+        </div>
+
         <div class="mingxi">
           <span>Sum:</span>
           <span

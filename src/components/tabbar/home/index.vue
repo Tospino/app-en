@@ -1,3 +1,12 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-18 17:45:35
+ * @LastEditTime: 2020-07-20 10:08:43
+ * @LastEditors: Please set LastEditors
+ * @Description: 添加优惠券userPopup
+ * @FilePath: \app-en\src\components\tabbar\home\index.vue
+--> 
+
 <template>
   <!-- 首页 -->
   <div class="home">
@@ -26,7 +35,7 @@
               @click="swipeClick(banner)"
             >
               <div class="w1">
-                <img :src="$webUrl+banner.advertImg" />
+                <img v-lazy="$webUrl+banner.advertImg" />
               </div>
             </van-swipe-item>
             <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
@@ -246,10 +255,14 @@
         </div>
       </div>
     </scroll>
+
+    <!-- 新用户弹框 -->
+    <user-popup ></user-popup>
   </div>
 </template>
 
 <script>
+import userPopup from '@/multiplexing/userCouponPop'
 import searchHeader from "@/multiplexing/searchHeader";
 import {
   homePageApi,
@@ -497,7 +510,8 @@ export default {
     }
   },
   components: {
-    searchHeader
+    searchHeader,
+    userPopup
   }
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-18 11:55:10
+ * @LastEditTime: 2020-07-18 10:22:36
  * @Description: 
  * @FilePath: \app-en\build\webpack.base.conf.js
  */
@@ -60,6 +60,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'happypack/loader?id=js',
+                // loader: 'babel-loader',
                 include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
             },
             {

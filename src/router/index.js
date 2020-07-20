@@ -1,11 +1,12 @@
 /*
- * @Author: your name
- * @Date: 2020-07-10 10:26:27
- * @LastEditTime: 2020-07-10 10:38:28
+ * @Author: zlj
+ * @Date: 2020-07-18 17:45:35
+ * @LastEditTime: 2020-07-20 15:20:45
  * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
+ * @Description: 新增售后进度和优惠券中心页面
  * @FilePath: \app-en\src\router\index.js
- */
+ */ 
+
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -530,7 +531,8 @@ export default new Router({
             path: '/thirdLose',
             name: '第三方支付页失败',
             component: () => import(`@/components/confirmOrder/itemComponents/thirdLose.vue`) // @/components/confirmOrder/thirdLose 
-        }
+        },
+        
         // {
         //   path: '/thirdPartyPayment',
         //   name: '第三方支付页',
