@@ -1,12 +1,11 @@
 /*
- * @Author: zlj
- * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 15:20:45
+ * @Author: your name
+ * @Date: 2020-07-10 10:26:27
+ * @LastEditTime: 2020-07-10 10:38:28
  * @LastEditors: Please set LastEditors
- * @Description: 新增售后进度和优惠券中心页面
+ * @Description: In User Settings Edit
  * @FilePath: \app-en\src\router\index.js
- */ 
-
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -249,27 +248,27 @@ export default new Router({
                 },
                 {
                     path: 'aboutTospino',
-                    name: 'About TOSPINO',
+                    name: '关于TOSPINO',
                     component: () => import(`@/components/tabbar/account/accountSettings/aboutTospino`),
                     children: [
                         {
                             path: 'helpCenter',
-                            name: 'Help Center',
+                            name: '帮助中心',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/helpCenter`),
                         },
                         {
                             path: 'introduce',
-                            name: 'About Tospino',
+                            name: '平台介绍',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/introduce`),
                         },
                         {
                             path: 'privacyPolicy',
-                            name: 'Privacy Policy',
+                            name: '隐私政策',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy`),
                         },
                         {
                             path: 'userAgreement',
-                            name: 'User Agreement',
+                            name: '用户协议',
                             component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/userAgreement`),
                         },
                     ]
@@ -531,8 +530,7 @@ export default new Router({
             path: '/thirdLose',
             name: '第三方支付页失败',
             component: () => import(`@/components/confirmOrder/itemComponents/thirdLose.vue`) // @/components/confirmOrder/thirdLose 
-        },
-        
+        }
         // {
         //   path: '/thirdPartyPayment',
         //   name: '第三方支付页',
