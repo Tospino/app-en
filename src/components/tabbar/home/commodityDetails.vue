@@ -1,12 +1,3 @@
-<!--
- * @Author: zlj
- * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 14:08:00
- * @LastEditors: Please set LastEditors
- * @Description: 添加优惠券--shopCouponPop组件和字段
- * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
---> 
-
 <template>
   <!-- 商品详情页 -->
   <div class="commodity-details">
@@ -28,7 +19,7 @@
           <van-swipe @change="onChange" v-if="showData">
             <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
               <div class="w1">
-                <img v-lazy="$bigwebUrl+banner.imgUrl" />
+                <img :src="$bigwebUrl+banner.imgUrl" />
               </div>
             </van-swipe-item>
             <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
@@ -51,8 +42,8 @@
           <div class="miaoshu">
             <span class="p4">{{detailmData.supplyTitle}}</span>
             <!-- <span>
-                            <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
-                            <span class="fenxiang-txt">Share</span>
+                    <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
+                    <span class="fenxiang-txt">Share</span>
             </span>-->
           </div>
           <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
@@ -138,45 +129,6 @@
           </div>
           <div v-html="detailmData.supplyDetailpara"></div>
         </div>
-
-        <!-- 新增-优惠券 -->
-        <div class="youhuiquan yhq">
-          <div class="youhuiquan-header">
-            <span class="youhuiquan-title">Coupons</span>
-            <span class="youhuiquan-txt" @click="saleMore">More</span>
-          </div>
-          <div class="youhuiquan-main">
-            <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png" />
-            <div class="youhuiquan-box">
-              <div class="youhuiquan-left">
-                <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                <p class="youhuiquan-left-money">
-                  10.00
-                  <i>OFF</i>
-                </p>
-                <p class="youhuiquan-left-m">Type:Shop Coupons</p>
-                <p class="youhuiquan-left-m">Valid:06/30/2020 23:59</p>
-                <progress-bar :progressBar="iSpeed"></progress-bar>
-              </div>
-
-              <div class="youhuiquan-right">
-                <div class="youhuiquan-right-header">
-                  <span class="youhuiquan-right-title">Black Friday Black Black</span>
-                </div>
-                <div class="youhuiquan-right-main">
-                  <div>For GH₵ 1000.00 consumption</div>
-                  <van-button
-                    round
-                    type="info"
-                    @click="ProBar"
-                    class="youhuiquan-right-btn"
-                  >Get it now</van-button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="bbxq" ref="xiangqing">
           <span class="line-left"></span>
           <span class="bbxq-p1">Details</span>
@@ -229,9 +181,6 @@
       <!-- 客服电话 -->
       <kefu></kefu>
     </van-overlay>
-
-    <!-- 更多优惠券 -->
-    <shop-coupon-pop :shop="shop" @shopPop="shopPop"></shop-coupon-pop>
   </div>
 </template>
 
@@ -239,9 +188,6 @@
 import detailsHeader from "@/multiplexing/detailsHeader";
 import footerExhibition from "@/multiplexing/footerExhibition";
 import commoditySelection from "@/multiplexing/commoditySelection";
-import shopCouponPop from "./itemComponents/shopCouponPop";
-import progressBar from "@/multiplexing/progress";
-
 import { productdetailApi } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
@@ -275,9 +221,7 @@ export default {
       productParamList2: [],
       shousuoStatus: false,
       showData: false,
-      spclist: [],
-      iSpeed: 0, //进度条,
-      shop: false //更多优惠券
+      spclist: []
     };
   },
   computed: {},
@@ -392,28 +336,13 @@ export default {
     zankai() {
       this.productParamList = this.productParamList2;
       this.shousuoStatus = false;
-    },
-    // 新增-优惠券 进度条
-    ProBar() {
-      if (this.iSpeed != 100) {
-        this.iSpeed++;
-      }
-    },
-    // 更多优惠券
-    saleMore() {
-      this.shop = true;
-    },
-    shopPop() {
-      this.shop = false;
     }
   },
   components: {
     detailsHeader,
     footerExhibition,
     commoditySelection,
-    kefu,
-    shopCouponPop,
-    progressBar
+    kefu
   }
 };
 </script>
@@ -666,97 +595,6 @@ export default {
       vertical-align: text-bottom;
     }
   }
-  // 新增-优惠券
-  .yhq {
-    width: 100%;
-    background-color: #f2f3f5;
-    position: relative;
-    padding: 20px 30px;
-    box-sizing: border-box;
-    .youhuiquan-header {
-      display: flex;
-      justify-content: space-between;
-    }
-    .youhuiquan-title {
-      font-size: 30px;
-      font-weight: bold;
-    }
-    .youhuiquan-txt {
-      font-size: 20px;
-      color: rgba(102, 102, 102, 1);
-      margin-top: 10px;
-    }
-    .youhuiquan-main {
-      max-width: 100%;
-      height: 210px;
-      margin-top: 15px;
-      overflow: hidden;
-      .youhuiquan-box {
-        display: flex;
-        position: relative;
-        top: -209px;
-        left: 20px;
-
-        .youhuiquan-left {
-          width: 40%;
-          padding-top: 16px;
-          .youhuiquan-left-biao {
-            font-size: 25px;
-            color: #fa5300;
-          }
-          .youhuiquan-left-money {
-            font-size: 60px;
-            font-weight: bold;
-            color: #fa5300;
-            i {
-              font-size: 25px;
-              font-weight: normal;
-            }
-          }
-          .youhuiquan-left-m {
-            font-size: 25px;
-            color: #333;
-            line-height: 34px;
-          }
-        }
-
-        .youhuiquan-right {
-          width: 57%;
-          text-align: center;
-          .youhuiquan-right-header {
-            margin-top: 11px;
-          }
-          .youhuiquan-right-title {
-            font-size: 20px;
-            color: #fa5300;
-            padding: 10px 30px;
-            background: rgba(253, 193, 154, 1);
-          }
-          .youhuiquan-right-main {
-            padding-top: 54px;
-            font-size: 24px;
-            color: rgba(255, 255, 255, 1);
-            .youhuiquan-right-btn {
-              margin-top: 15px;
-            }
-            /deep/ .van-button--info {
-              color: #fa5300;
-              background: #fff;
-              border: 1px solid #fff;
-              font-size: 30px;
-              font-weight: bold;
-              padding: 30px 42px;
-            }
-            /deep/ .van-button {
-              // height: 0;
-              line-height: 0;
-            }
-          }
-        }
-      }
-    }
-  }
-
   .bbxq {
     width: 100%;
     height: 85px;

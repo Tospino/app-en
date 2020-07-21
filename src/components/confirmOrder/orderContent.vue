@@ -1,13 +1,3 @@
-<!--
- * @Author: zlj
- * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 14:37:38
- * @LastEditors: Please set LastEditors
- * @Description: 添加优惠券--orderCouponPop组件和字段
- * @FilePath: \app-en\src\components\confirmOrder\orderContent.vue
---> 
-
-
 <template>
   <!-- 确认订单填写信息 -->
   <div class="order-content">
@@ -51,7 +41,7 @@
               <van-button square type="danger" text="Delete" @click="delItem(product,index)" />
             </template>
             <div class="good-detail-img">
-              <img v-lazy="$webUrl+product.skuImg" />
+              <img :src="$webUrl+product.skuImg" />
               <div
                 class="img-nochange"
                 v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0"
@@ -135,56 +125,6 @@
       </div>
     </div>
 
-    <!-- 新增-优惠券 -->
-    <div class="youhuiquan-item">
-      <div class="youhuiquan-header">
-        <span class="youhuiquan-title">Coupons</span>
-        <span class="youhuiquan-txt" @click="saleMore">
-          -{{jn}}0.00
-          <van-icon name="arrow" />
-        </span>
-      </div>
-      <div class="youhuiquan-main">
-        <div class="youhuiquan-left">
-          <span class="youhuiquan-left-biao">GH{{jn}}</span>
-          <p class="youhuiquan-left-money">
-            10.00
-            <i>OFF</i>
-          </p>
-          <div class="youhuiquan-left-ms">
-            <p class="youhuiquan-left-m">Type:Shop Coupons</p>
-            <p class="youhuiquan-left-m">Valid:06/30/2020 23:59</p>
-          </div>
-          <progress-bar :progressBar="iSpeed"></progress-bar>
-        </div>
-        <div class="youhuiquan-right">
-          <div class="youhuiquan-right-header">
-            <span class="youhuiquan-right-title">Black Friday Black Black</span>
-          </div>
-          <div class="youhuiquan-right-main">
-            <p class="youhuiquan-left-mc">For GH₵ 1000.00 consumption</p>
-            <van-button round type="info" @click="ProBar" class="youhuiquan-right-btn">Get it now</van-button>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="youhuiquan-ya">
-          <van-row type="flex" justify="space-between">
-            <van-col span="12">
-              <div class="youhuiquan-title">
-                   <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan-icon.png" />
-                   <span class="youhuiquan-txt">618 allowance</span>
-             </div>
-             <div class="youhuiquan-ts">
-                 <span class="youhuiquan-txt">(Only supported online payment)</span>
-             </div>
-            </van-col>
-            <van-col span="6">
-              <van-checkbox v-model="checked" checked-color="#FA5300">-{{jn}} 20.36</van-checkbox>
-            </van-col>
-          </van-row>
-      </div>-->
-    </div>
-
     <div class="m-b-20 fbm-beizhu" v-if="orderData.hasFBM == 1">
       Tips: DM products do not support online after-sales services.
       <br />Please contact customer service personnel for consulting!!!
@@ -223,9 +163,6 @@
       @showPassWord="showPassWord"
       @showpaymen="showpaymen"
     ></action-sheet-paymen>
-
-    <!-- 更多优惠券 -->
-    <order-coupon-pop :order="order" @orderPop="orderPop"></order-coupon-pop>
   </div>
 </template>
 
@@ -234,9 +171,6 @@ import actionSheetSucess from "@/multiplexing/actionSheetSucess";
 import actionSheetPaymen from "@/multiplexing/actionSheetPaymen";
 import actionSheetPassword from "@/multiplexing/actionSheetPassword";
 import balanceHeader from "./itemComponents/balanceHeader";
-import progressBar from "@/multiplexing/progress";
-import orderCouponPop from "./itemComponents/orderCouponPop";
-
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
@@ -289,9 +223,7 @@ export default {
       // 用户支付
       userinfoShop: {},
       orderSn: [],
-      payTypeListLength: 0,
-      iSpeed: 0, //进度条,
-      order: false //更多优惠券
+      payTypeListLength: 0
     };
   },
   computed: {
@@ -630,29 +562,13 @@ export default {
       dataItem.checked = true;
       this.zffs = dataItem.payType;
       this.$forceUpdate();
-    },
-    // 新增-优惠券 进度条
-    ProBar() {
-      if (this.iSpeed != 100) {
-        this.iSpeed++;
-      }
-    },
-    // 更多优惠券
-    saleMore() {
-      console.log("哈哈哈");
-      this.order = true;
-    },
-    orderPop() {
-      this.order = false;
     }
   },
   components: {
     actionSheetPaymen,
     actionSheetSucess,
     actionSheetPassword,
-    balanceHeader,
-    progressBar,
-    orderCouponPop
+    balanceHeader
   }
 };
 </script>
@@ -913,131 +829,6 @@ export default {
       }
     }
   }
-
-  // 新增-优惠券
-  .youhuiquan-item {
-    background-color: #fff;
-    margin-bottom: 20px;
-    padding: 20px 30px;
-    box-sizing: border-box;
-    .youhuiquan-header {
-      display: flex;
-      justify-content: space-between;
-      .youhuiquan-title {
-        font-size: 30px;
-        font-weight: bold;
-      }
-      .youhuiquan-txt {
-        margin-top: 10px;
-        font-size: 24px;
-        color: #fa5300;
-        /deep/ .van-icon {
-          color: #000;
-        }
-      }
-    }
-
-    .youhuiquan-main {
-      display: flex;
-      background: #fff3eb;
-      margin-top: 15px;
-      .youhuiquan-left {
-        width: 46%;
-        padding: 20px 0 16px 20px;
-        .youhuiquan-left-biao {
-          font-size: 25px;
-          color: #fa5300;
-        }
-        .youhuiquan-left-money {
-          font-size: 60px;
-          font-weight: bold;
-          color: #fa5300;
-          i {
-            font-size: 25px;
-            font-weight: normal;
-          }
-        }
-        .youhuiquan-left-m {
-          font-size: 20px;
-          color: #fa5300;
-          padding-top: 6px;
-        }
-      }
-    }
-    .youhuiquan-right {
-      width: 54%;
-      text-align: center;
-      .youhuiquan-right-header {
-        margin-top: 11px;
-      }
-      .youhuiquan-right-title {
-        font-size: 20px;
-        color: #fa5300;
-        padding: 10px 30px;
-        background: rgba(253, 193, 154, 1);
-      }
-      .youhuiquan-right-main {
-        padding-top: 54px;
-        font-size: 24px;
-        color: rgba(255, 255, 255, 1);
-        .youhuiquan-left-mc {
-          font-size: 24px;
-          color: #fa5300;
-          padding-top: 6px;
-        }
-        .youhuiquan-right-btn {
-          margin-top: 15px;
-        }
-        /deep/ .van-button--info {
-          color: #fff;
-          background: #fa5300;
-          border: 1px solid #fff;
-          font-size: 30px;
-          padding: 30px 42px;
-        }
-        /deep/ .van-button {
-          line-height: 0;
-        }
-      }
-    }
-    .youhuiquan-ya {
-      padding-top: 36px;
-      .youhuiquan-title {
-        display: flex;
-        img {
-          max-width: 50px;
-          max-height: 32px;
-          height: 32px;
-        }
-        .youhuiquan-txt {
-          line-height: 32px;
-          padding-left: 9px;
-          font-size: 26px;
-        }
-      }
-      .youhuiquan-ts {
-        padding-top: 18px;
-        font-size: 20px;
-        color: #666;
-      }
-      /deep/ .van-col--6 {
-        text-align: right;
-      }
-      /deep/ .van-checkbox {
-        display: inline-block;
-        .van-checkbox__icon {
-          vertical-align: sub;
-          display: inline-block;
-          font-size: 36px;
-          padding-top: 14px;
-        }
-        .van-checkbox__label {
-          font-size: 28px;
-        }
-      }
-    }
-  }
-
   .fbm-beizhu {
     color: rgba(235, 2, 2, 1);
     font-size: 20px;

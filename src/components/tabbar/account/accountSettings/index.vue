@@ -14,14 +14,14 @@
             <span>Account and Security</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
-        <div class="cell bor-b-1" @click="clearCache">
+        <!-- <div class="cell bor-b-1" @click="clearCache">
             <span>Clear Cache Data</span>
             <van-icon name="arrow" class="arrow c-999"/>
-        </div>
-        <div class="cell bor-b-1">
+        </div> -->
+        <!-- <div class="cell bor-b-1">
             <span>Legal Provision</span>
             <van-icon name="arrow" class="arrow c-999"/>
-        </div>
+        </div> -->
         <div class="cell bor-b-1" @click="jumpRouter('About TOSPINO')">
             <span>About TOSPINO</span>
             <van-icon name="arrow" class="arrow c-999"/>
