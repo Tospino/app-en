@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-18 10:25:14
+ * @LastEditTime: 2020-07-22 08:56:30
  * @Description: 
  * @FilePath: \app-en\config\index.js
  */
@@ -33,7 +33,7 @@ module.exports = {
 
         // Various Dev Server settings
         host: 'localhost', // can be overwritten by process.env.HOST
-        port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+        port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,
         notifyOnErrors: true,

@@ -1,11 +1,12 @@
 /*
  * @Author: CJY
  * @Date: 2020-07-09 10:00:20
- * @LastEditTime: 2020-07-10 10:35:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-07-22 18:16:20
+ * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\api\http.js
  */
+require('es6-promise').polyfill()
 import axios from 'axios';
 import main from '@/main.js'
 import { Toast } from 'vant';
@@ -169,6 +170,7 @@ parkAxios.interceptors.response.use(function (response) {
         }
 
     }
+    Toast.clear();
     return response.data;
 }, function (error) {
     // 对响应错误做点什么

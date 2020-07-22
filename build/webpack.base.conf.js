@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-18 11:55:10
+ * @LastEditTime: 2020-07-21 14:25:02
  * @Description: 
  * @FilePath: \app-en\build\webpack.base.conf.js
  */
@@ -18,7 +18,7 @@ function resolve(dir) {
     return path.join(__dirname, '..', dir)
 }
 
-
+const packjson = require("../package.json")
 
 module.exports = {
     context: path.resolve(__dirname, '../'),
@@ -27,7 +27,7 @@ module.exports = {
     },
     output: {
         path: config.build.assetsRoot,
-        filename: '[name].js',
+        filename: `[name]${packjson.version}.js`,
         publicPath: process.env.NODE_ENV === 'production'
             ? config.build.assetsPublicPath
             : config.dev.assetsPublicPath

@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-09 10:00:20
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-16 10:35:32
+ * @LastEditTime: 2020-07-22 17:44:08
  * @Description: 
  * @FilePath: \app-en\src\App.vue
 --> 
@@ -26,11 +26,9 @@ export default {
     }
   },
   mounted() {
-    console.log(1);
     setTimeout(() => {
       try {
         var first = null;
-        console.log("plus", plus.device);
         var webview = plus.webview.currentWebview();
         plus.key.addEventListener("backbutton", function() {
           webview.canBack(function(e) {
