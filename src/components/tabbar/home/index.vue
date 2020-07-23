@@ -68,7 +68,6 @@
           <div class="flash-sale-1">
             <span class="put-line"></span>
             <span class="t1">Selectives</span>
-            <!-- <span class="t2">查看更多</span> -->
           </div>
           <div class="flash-sale-2">
             <div class="pictures">

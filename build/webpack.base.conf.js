@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-21 14:25:02
+ * @LastEditTime: 2020-07-23 10:18:17
  * @Description: 
  * @FilePath: \app-en\build\webpack.base.conf.js
  */
@@ -11,7 +11,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-const webpack = require("webpack");
+// const webpack = require("webpack");
 const HappyPack = require("happypack") // 加速打包
 
 function resolve(dir) {
@@ -33,10 +33,10 @@ module.exports = {
             : config.dev.assetsPublicPath
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            filename: '[name].js'
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor',
+        //     filename: `[name]${packjson.version}.js`
+        // }),
         new HappyPack({
             id: 'js', //ID是标识符的意思，ID用来代理当前的happypack是用来处理一类特定的文件的
             threads: 4, //你要开启多少个子进程去处理这一类型的文件
