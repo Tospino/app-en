@@ -381,7 +381,7 @@ export default {
   methods: {
     // 获取定位地址
     async getLoaction() {
-      let latlng = "19.1269888,12.7798104"; //
+      let latlng = ""; //
       let key = "AIzaSyBw4RT57Ny-Cq9hVnpACvAscXoQpQHvOkY";
       let a = this;
 
@@ -389,16 +389,16 @@ export default {
       //   await ipgetcountry({ IP: document.cookie }).then(res => {
       //     latlng = `${res.Data.lat},${res.Data.lon}`;
       //   });
-      //   await axios({
-      //     url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json;charset=utf-8"
-      //     }
-      //   }).then(res => {
-      //     let data = res.data;
-      //     latlng = `${data.location.lat},${data.location.lng}`;
-      //   });
+      await axios({
+        url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+      }).then((res) => {
+        let data = res.data;
+        latlng = `${data.location.lat},${data.location.lng}`;
+      });
       let data = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=EN`,
         method: "GET",
