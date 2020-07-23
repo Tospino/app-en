@@ -1,12 +1,12 @@
 /*
  * @Author: CJY
  * @Date: 2020-07-09 10:00:20
- * @LastEditTime: 2020-07-22 18:16:20
+ * @LastEditTime: 2020-07-23 09:01:03
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\api\http.js
  */
-require('es6-promise').polyfill()
+
 import axios from 'axios';
 import main from '@/main.js'
 import { Toast } from 'vant';

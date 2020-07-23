@@ -254,7 +254,7 @@ import searchHeader from "@/multiplexing/searchHeader";
 import {
   homePageApi,
   HomePagebottomApi,
-  homeAdvertPictureApi
+  homeAdvertPictureApi,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 export default {
@@ -269,15 +269,15 @@ export default {
       fineSaleList2: [],
       brandLogo1: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo2: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo3: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       formData: {
         brandId: 0,
@@ -285,7 +285,7 @@ export default {
         limit: 10,
         page: 1,
         seraname: "",
-        sort: 0
+        sort: 0,
       },
       bottomTabs: [],
       searchgoodDaolist: [],
@@ -298,14 +298,14 @@ export default {
       codeUrl: "",
       topBananerList: [],
       banner1: {
-        advertImg: ""
+        advertImg: "",
       },
       banner2: {
-        advertImg: ""
+        advertImg: "",
       },
       banner3: {
-        advertImg: ""
-      }
+        advertImg: "",
+      },
     };
   },
   computed: {},
@@ -358,7 +358,7 @@ export default {
     },
     //首页数据
     homePage(data) {
-      homePageApi(data).then(res => {
+      homePageApi(data).then((res) => {
         if (res.code == 0) {
           this.homeObj = res.Data;
           this.globalProList = this.homeObj["producteFineBrand"].slice(3);
@@ -390,7 +390,7 @@ export default {
     },
     //底部数据分类
     homePagebottom(data, flag) {
-      HomePagebottomApi(data).then(res => {
+      HomePagebottomApi(data).then((res) => {
         if (res.code == 0) {
           this.bottomTabs = res.top;
 
@@ -466,7 +466,7 @@ export default {
     },
     //首页广告
     homeAdvertPicture() {
-      homeAdvertPictureApi().then(res => {
+      homeAdvertPictureApi().then((res) => {
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
@@ -489,16 +489,16 @@ export default {
     },
     //获取用户信息
     getuserinfo() {
-      getuserinfoApi().then(res => {
+      getuserinfoApi().then((res) => {
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }
       });
-    }
+    },
   },
   components: {
-    searchHeader
-  }
+    searchHeader,
+  },
 };
 </script>
 
