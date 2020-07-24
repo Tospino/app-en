@@ -1,14 +1,143 @@
-/*
- * @Author: your name
- * @Date: 2020-07-10 10:26:27
- * @LastEditTime: 2020-07-10 10:38:28
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \app-en\src\router\index.js
- */
 import Vue from 'vue'
 import Router from 'vue-router'
 
+//引导屏
+import guidePage from '@/components/guidePage/index.vue'
+//登录页
+import login from '@/components/login/index.vue'
+
+//忘记密码
+import forgetPassword from '@/components/login/forgetPassword/index.vue'
+import otp from '@/components/login/forgetPassword/otp.vue'
+import forgeSuccess from '@/components/login/forgetPassword/forgeSuccess.vue'
+import revisePassword from '@/components/login/forgetPassword/revisePassword.vue'
+//注册
+import register from '@/components/login/register/index.vue'
+import parenPay from '@/components/login/register/parenPay'
+import payPassword from '@/components/login/register/payPassword.vue'
+import payPasswordTwo from '@/components/login/register/payPasswordTwo.vue'
+
+//分类
+import classify from '@/components/tabbar/classify/index.vue'
+//购物车
+import shoppingCart from '@/components/tabbar/shoppingCart/index.vue'
+//我的
+import account from '@/components/tabbar/account/index.vue'
+//首页母页
+import person from '@/components/tabbar/person.vue'
+
+//首页
+import home from '@/components/tabbar/home/index.vue'
+import commodityDetails from '@/components/tabbar/home/commodityDetails.vue'
+import evaluaDetails from '@/components/tabbar/home/evaluaDetails.vue'
+import homeItem from '@/components/tabbar/home/homeItem/index.vue'
+import flashSale from '@/components/tabbar/home/homeItem/flashSale.vue'
+//我的足迹
+import footprint from '@/components/tabbar/account/footprint/index.vue'
+
+//确认订单
+import confirmOrder from '@/components/confirmOrder/index.vue'
+import orderContent from '@/components/confirmOrder/orderContent.vue'
+import confirmSuccess from '@/components/confirmOrder/confirmSuccess.vue'
+import addBankcar from '@/components/confirmOrder/addBankcar.vue'
+import resetPassword from '@/components/confirmOrder/resetPassword.vue'
+import passwordSuccess from '@/components/confirmOrder/passwordSuccess.vue'
+import parrwordOtp from '@/components/confirmOrder/parrwordOtp.vue'
+import orderAddress from '@/components/confirmOrder/orderAddress.vue'
+
+
+//搜索界面
+import search from '@/components/search/index.vue'
+import searchRecord from '@/components/search/searchRecord.vue'
+import noSearch from '@/components/search/noSearch.vue'
+import searchGoodsOne from '@/components/search/searchGoodsOne.vue'
+import favoriteRecord from '@/components/tabbar/account/favorites/favoriteRecord'
+import searchMyOrder from '@/components/tabbar/account/myOrder/searchMyOrder'
+import myOrderGood from '@/components/tabbar/account/myOrder/myOrderGood'
+
+
+
+//收藏夹
+import favorites from '@/components/tabbar/account/favorites/index.vue'
+import resembleGood from '@/components/tabbar/account/favorites/resembleGood'
+import searGoodList from '@/components/tabbar/account/favorites/itemComponents/searGoodList'
+
+
+
+//我的订单
+import myOrderParent from '@/components/tabbar/account/myOrder/myOrderParent'
+import myOrder from '@/components/tabbar/account/myOrder/index'
+import editAddress from '@/components/tabbar/account/myOrder/editAddress'
+import orderDetail from '@/components/tabbar/account/myOrder/orderDetail'
+import addressList from '@/components/tabbar/account/myOrder/addressList'
+import refund from '@/components/tabbar/account/myOrder/refund'
+import returnRefund from '@/components/tabbar/account/myOrder/returnRefund'
+import batchRefund from '@/components/tabbar/account/myOrder/batchRefund'
+import logistrefund from '@/components/tabbar/account/myOrder/logistrefund'
+import logistics from '@/components/tabbar/account/myOrder/logistics'
+
+//售后
+import afterSales from '@/components/tabbar/account/afterSales/index'
+import afterSalesContent from '@/components/tabbar/account/afterSales/afterSalesContent'
+import afterSalesDetail from '@/components/tabbar/account/afterSales/afterSalesDetail'
+import afterSalesSteps from '@/components/tabbar/account/afterSales/afterSalesSteps'
+
+//评价
+import evaluate from '@/components/tabbar/account/evaluate/index'
+import noShopping from '@/components/tabbar/account/evaluate/noShopping'
+import evaluateList from '@/components/tabbar/account/evaluate/evaluateList'
+import expressedEvaluate from '@/components/tabbar/account/evaluate/expressedEvaluate'
+import appendEvaluate from '@/components/tabbar/account/evaluate/appendEvaluate'
+import evaluateSuccess from '@/components/tabbar/account/evaluate/evaluateSuccess'
+import evaluateDetail from '@/components/tabbar/account/evaluate/evaluateDetail'
+
+
+//账户设置
+import accountSettings from '@/components/tabbar/account/accountSettings/index'
+import settingsItem from '@/components/tabbar/account/accountSettings/settingsItem'
+import accountAddress from '@/components/tabbar/account/accountSettings/accountAddress'
+import addAddress from '@/components/tabbar/account/accountSettings/addAddress'
+import accountSecurity from '@/components/tabbar/account/accountSettings/accountSecurity'
+import editName from '@/components/tabbar/account/accountSettings/editName'
+import editPhone from '@/components/tabbar/account/accountSettings/editPhone'
+import acceptOtp from '@/components/tabbar/account/accountSettings/acceptOtp'
+import editEmail from '@/components/tabbar/account/accountSettings/editEmail'
+import editLogpawo from '@/components/tabbar/account/accountSettings/editLogpawo'
+import editPaypawo from '@/components/tabbar/account/accountSettings/editPaypawo'
+import companyInformation from '@/components/tabbar/account/accountSettings/companyInformation'
+import choiceList from '@/multiplexing/choiceList'
+import aboutTospino from '@/components/tabbar/account/accountSettings/aboutTospino'
+import helpCenter from '@/components/tabbar/account/accountSettings/aboutItem/helpCenter'
+import introduce from '@/components/tabbar/account/accountSettings/aboutItem/introduce'
+import privacyPolicy from '@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy'
+import userAgreement from '@/components/tabbar/account/accountSettings/aboutItem/userAgreement'
+// 账户余额
+import accountBalance from '@/components/tabbar/account/accountBalance/index'
+import commentDetail from '@/components/tabbar/account/accountBalance/commentDetail'
+import comment from '@/components/tabbar/account/accountBalance/comment'
+import accountDetails from '@/components/tabbar/account/accountBalance/accountDetails'
+
+//语言
+import language from '@/components/tabbar/account/language/index'
+import languSubPage from '@/components/tabbar/account/language/subPage'
+
+//消息
+import information from '@/components/tabbar/account/information/index'
+import inforDetails from '@/components/tabbar/account/information/details'
+
+//扫码
+import sweepCode from '@/multiplexing/sweepCode'
+
+//第三方支付
+import thirdSuccess from "@/components/confirmOrder/thirdSuccess"
+
+import thirdPartyPayment from '@/components/confirmOrder/thirdPartyPayment'
+
+//话费充值
+import rechargeIndex from '@/multiplexing/router.vue'
+import recharge from '@/components/tabbar/account/prepaidRefill/recharge' //主页
+import rechargeDetails from '@/components/tabbar/account/prepaidRefill/rechargeDetails' //详情
+import rechargeFlow from '@/components/tabbar/account/prepaidRefill/rechargeFlow'
 Vue.use(Router)
 
 export default new Router({
@@ -16,53 +145,53 @@ export default new Router({
         {
             path: '/',
             name: '引导页',
-            component: () => import(`@/components/guidePage/index.vue`)
+            component: guidePage
         },
         {
             path: '/login',
             name: '登录',
-            component: () => import(`@/components/login/index.vue`),
+            component: login,
         },
         {
             path: '/otp',
             name: '验证码',
-            component: () => import(`@/components/login/forgetPassword/otp.vue`)
+            component: otp
         },
         {
             path: '/forgetPassword',
             name: '忘记密码',
-            component: () => import(`@/components/login/forgetPassword/index.vue`),
+            component: forgetPassword,
         },
         {
             path: '/forgeSuccess',
             name: '修改密码成功',
-            component: () => import(`@/components/login/forgetPassword/forgeSuccess.vue`)
+            component: forgeSuccess
         },
         {
             path: '/revisePassword',
             name: '修改密码',
-            component: () => import(`@/components/login/forgetPassword/revisePassword.vue`)
+            component: revisePassword
         },
         {
             path: '/register',
             name: '注册',
-            component: () => import(`@/components/login/register/index.vue`)
+            component: register
         },
 
         {
             path: '/parenPay',
             name: '设置支付密码母页',
-            component: () => import(`@/components/login/register/parenPay`),
+            component: parenPay,
             children: [
                 {
                     path: 'payPassword',
                     name: '设置支付密码',
-                    component: () => import(`@/components/login/register/payPassword.vue`)
+                    component: payPassword
                 },
                 {
                     path: 'payPasswordTwo',
                     name: '确定支付密码',
-                    component: () => import(`@/components/login/register/payPasswordTwo.vue`)
+                    component: payPasswordTwo
                 },
             ]
         },
@@ -72,19 +201,19 @@ export default new Router({
         {
             path: '/commodityDetails',
             name: '商品详情',
-            component: () => import(`@/components/tabbar/home/commodityDetails.vue`)
+            component: commodityDetails
         },
         {
             path: '/commodityDetails/evaluaDetails',
             name: '商品详情评价',
-            component: () => import(`@/components/tabbar/home/evaluaDetails.vue`)
+            component: evaluaDetails
         },
 
 
         {
             path: '/footprint',
             name: '我的足迹',
-            component: () => import(`@/components/tabbar/account/footprint/index.vue`)
+            component: footprint
         },
 
 
@@ -92,52 +221,52 @@ export default new Router({
         {
             path: '/myOrder',
             name: '我的订单母页',
-            component: () => import(`@/components/tabbar/account/myOrder/myOrderParent`),
+            component: myOrderParent,
             children: [
                 {
                     path: 'myOrderList',
                     name: '我的订单',
-                    component: () => import(`@/components/tabbar/account/myOrder/index`),
+                    component: myOrder,
                 },
                 {
                     path: 'editAddress',
                     name: '我的订单修改地址',
-                    component: () => import(`@/components/tabbar/account/myOrder/editAddress`),
+                    component: editAddress,
                 },
                 {
                     path: 'editAddress/addressList',
                     name: '地址列表',
-                    component: () => import(`@/components/tabbar/account/myOrder/addressList`),
+                    component: addressList,
                 },
                 {
                     path: 'orderDetail',
                     name: '订单详情',   //我的订单,订单详情
-                    component: () => import(`@/components/tabbar/account/myOrder/orderDetail`),
+                    component: orderDetail,
                 },
                 {
                     path: 'orderDetail/returnRefund',
                     name: '退货退款页面',
-                    component: () => import(`@/components/tabbar/account/myOrder/returnRefund`),
+                    component: returnRefund,
                 },
                 {
                     path: 'orderDetail/refund',
                     name: '退款页面',
-                    component: () => import(`@/components/tabbar/account/myOrder/refund`),
+                    component: refund,
                 },
                 {
                     path: 'orderDetail/batchRefund',
                     name: '批量退货退款',
-                    component: () => import(`@/components/tabbar/account/myOrder/batchRefund`),
+                    component: batchRefund,
                 },
                 {
                     path: 'orderDetail/logistrefund',
                     name: '包裹仅退款',
-                    component: () => import(`@/components/tabbar/account/myOrder/logistrefund`),
+                    component: logistrefund,
                 },
                 {
                     path: 'orderDetail/logistics',
                     name: '物流信息',
-                    component: () => import(`@/components/tabbar/account/myOrder/logistics`),
+                    component: logistics,
                 },
             ]
         },
@@ -145,131 +274,131 @@ export default new Router({
         {
             path: '/evaluate',
             name: '评价',
-            component: () => import(`@/components/tabbar/account/evaluate/index`),
+            component: evaluate,
             children: [
                 {
                     path: 'noShopping',
                     name: '评价没有购物',
-                    component: () => import(`@/components/tabbar/account/evaluate/noShopping`),
+                    component: noShopping,
                 },
                 {
                     path: 'evaluateList',
                     name: '评价列表',
-                    component: () => import(`@/components/tabbar/account/evaluate/evaluateList`),
+                    component: evaluateList,
                 },
                 {
                     path: 'evaluateSuccess',
                     name: '评价成功',
-                    component: () => import(`@/components/tabbar/account/evaluate/evaluateSuccess`),
+                    component: evaluateSuccess,
                 },
                 {
                     path: 'evaluateDetail',
                     name: '评价详情',
-                    component: () => import(`@/components/tabbar/account/evaluate/evaluateDetail`),
+                    component: evaluateDetail,
                 },
             ]
         },
         {
             path: '/evaluate/evaluateList/expressedEvaluate',
             name: '发表评价',
-            component: () => import(`@/components/tabbar/account/evaluate/expressedEvaluate`),
+            component: expressedEvaluate,
         },
         {
             path: '/evaluate/evaluateList/appendEvaluate',
             name: '追加评价',
-            component: () => import(`@/components/tabbar/account/evaluate/appendEvaluate`),
+            component: appendEvaluate,
         },
 
 
         {
             path: '/accountSettings',
             name: '账户设置',
-            component: () => import(`@/components/tabbar/account/accountSettings/index`),
+            component: accountSettings,
         },
         {
             path: '/accountSettings/settingsItem',
             name: '账户设置子页面',
-            component: () => import(`@/components/tabbar/account/accountSettings/settingsItem`),
+            component: settingsItem,
             children: [
                 {
                     path: 'accountAddress',
                     name: '收货地址',
-                    component: () => import(`@/components/tabbar/account/accountSettings/accountAddress`),
+                    component: accountAddress,
                 },
                 {
                     path: 'accountAddress/addAddress',
                     name: '新增地址',
-                    component: () => import(`@/components/tabbar/account/accountSettings/addAddress`),
+                    component: addAddress,
                 },
                 {
                     path: 'accountAddress/addAddress/choiceList',
                     name: '选择列表',
-                    component: () => import(`@/multiplexing/choiceList`),
+                    component: choiceList,
                 },
                 {
                     path: 'accountSecurity',
                     name: '账户安全',
-                    component: () => import(`@/components/tabbar/account/accountSettings/accountSecurity`),
+                    component: accountSecurity,
                 },
                 {
                     path: 'accountSecurity/editName',
                     name: '修改昵称',
-                    component: () => import(`@/components/tabbar/account/accountSettings/editName`),
+                    component: editName,
                 },
                 {
                     path: 'accountSecurity/editPhone',
                     name: '修改手机号码',
-                    component: () => import(`@/components/tabbar/account/accountSettings/editPhone`),
+                    component: editPhone,
                 },
                 {
                     path: 'accountSecurity/editPhone/acceptOtp',
                     name: '接受验证码',
-                    component: () => import(`@/components/tabbar/account/accountSettings/acceptOtp`),
+                    component: acceptOtp,
                 },
                 {
                     path: 'accountSecurity/editEmail',
                     name: '修改邮箱',
-                    component: () => import(`@/components/tabbar/account/accountSettings/editEmail`),
+                    component: editEmail,
                 },
                 {
                     path: 'accountSecurity/editLogpawo',
                     name: '修改登录密码',
-                    component: () => import(`@/components/tabbar/account/accountSettings/editLogpawo`),
+                    component: editLogpawo,
                 },
                 {
                     path: 'accountSecurity/editPaypawo',
                     name: '修改支付密码',
-                    component: () => import(`@/components/tabbar/account/accountSettings/editPaypawo`),
+                    component: editPaypawo,
                 },
                 {
                     path: 'accountSecurity/companyInformation',
                     name: '公司信息',
-                    component: () => import(`@/components/tabbar/account/accountSettings/companyInformation`),
+                    component: companyInformation,
                 },
                 {
                     path: 'aboutTospino',
                     name: 'About TOSPINO',
-                    component: () => import(`@/components/tabbar/account/accountSettings/aboutTospino`),
+                    component: aboutTospino,
                     children: [
                         {
                             path: 'helpCenter',
                             name: 'Help Center',
-                            component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/helpCenter`),
+                            component: helpCenter,
                         },
                         {
                             path: 'introduce',
                             name: 'About Tospino',
-                            component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/introduce`),
+                            component: introduce,
                         },
                         {
                             path: 'privacyPolicy',
                             name: 'Privacy Policy',
-                            component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy`),
+                            component: privacyPolicy,
                         },
                         {
                             path: 'userAgreement',
                             name: 'User Agreement',
-                            component: () => import(`@/components/tabbar/account/accountSettings/aboutItem/userAgreement`),
+                            component: userAgreement,
                         },
                     ]
                 },
@@ -282,43 +411,44 @@ export default new Router({
         {
             path: '/accountBalance',
             name: '账户余额',
-            component: () => import(`@/components/tabbar/account/accountBalance/index`),
+            component: accountBalance,
         },
         {
             path: '/accountBalance/commentDetail',
             name: '评论详情',
-            component: () => import(`@/components/tabbar/account/accountBalance/commentDetail`),
+            component: commentDetail,
         },
         {
             path: '/accountBalance/commentDetail/comment',
             name: '我的评论',
-            component: () => import(`@/components/tabbar/account/accountBalance/comment`),
+            component: comment,
         },
         {
             path: '/accountBalance/accountDetails',
             name: '账户明细',
-            component: () => import(`@/components/tabbar/account/accountBalance/accountDetails`),
+            component: accountDetails,
         },
+
         //话费充值
         {
             path: '/rechargeIndex',
             name: '话费充值母页',
-            component: () => import(`@/multiplexing/router.vue`),
+            component: rechargeIndex,
             children: [
                 {
                     path: 'recharge',
                     name: '话费充值',
-                    component: () => import(`@/components/tabbar/account/prepaidRefill/recharge`),
+                    component: recharge,
                 },
                 {
                     path: 'recharge/rechargeDetails',
                     name: '话费充值详情',
-                    component: () => import(`@/components/tabbar/account/prepaidRefill/rechargeDetails`),
+                    component: rechargeDetails,
                 },
                 {
                     path: 'recharge/rechargeFlow',
                     name: '话费充值记录',
-                    component: () => import(`@/components/tabbar/account/prepaidRefill/rechargeFlow`),
+                    component: rechargeFlow,
                 },
             ]
         },
@@ -326,22 +456,22 @@ export default new Router({
         {
             path: '/afterSales',
             name: '售后',
-            component: () => import(`@/components/tabbar/account/afterSales/index`),
+            component: afterSales,
             children: [
                 {
                     path: 'afterSalesContent',
                     name: '售后内容',
-                    component: () => import(`@/components/tabbar/account/afterSales/afterSalesContent`),
+                    component: afterSalesContent,
                 },
                 {
                     path: 'afterSalesContent/afterSalesDetail',
                     name: '售后详情',
-                    component: () => import(`@/components/tabbar/account/afterSales/afterSalesDetail`),
+                    component: afterSalesDetail,
                 },
                 {
                     path: 'afterSalesContent/afterSalesDetail/afterSalesSteps',
                     name: '售后流程',
-                    component: () => import(`@/components/tabbar/account/afterSales/afterSalesSteps`),
+                    component: afterSalesSteps,
                 }
             ]
         },
@@ -349,33 +479,33 @@ export default new Router({
         {
             path: '/resembleGood',
             name: '找相似商品',
-            component: () => import(`@/components/tabbar/account/favorites/resembleGood`)
+            component: resembleGood
         },
 
         {
             path: '/search',
             name: '搜索',
-            component: () => import(`@/components/search/index.vue`),
+            component: search,
             children: [
                 {
                     path: 'searchRecord',
                     name: '历史记录',
-                    component: () => import(`@/components/search/searchRecord.vue`)
+                    component: searchRecord
                 },
                 {
                     path: 'noSearch',
                     name: '无搜索商品',
-                    component: () => import(`@/components/search/noSearch.vue`)
+                    component: noSearch
                 },
                 {
                     path: 'favorites/goodsList',
                     name: '收藏夹搜索商品',
-                    component: () => import(`@/components/tabbar/account/favorites/itemComponents/searGoodList`)
+                    component: searGoodList
                 },
                 {
                     path: 'searchGoodsOne',
                     name: '搜索商品1',
-                    component: () => import(`@/components/search/searchGoodsOne.vue`),
+                    component: searchGoodsOne,
                     meta: {
                         keepAlive: true,
                         isBack: true
@@ -384,59 +514,59 @@ export default new Router({
                 {
                     path: 'favorites/favoriteRecord',
                     name: '收藏夹历史记录',
-                    component: () => import(`@/components/tabbar/account/favorites/favoriteRecord`)
+                    component: favoriteRecord
                 },
                 {
                     path: 'myOrder/searchMyOrder',
                     name: '我的订单历史记录',
-                    component: () => import(`@/components/tabbar/account/myOrder/searchMyOrder`)
+                    component: searchMyOrder
                 },
                 {
                     path: 'myOrder/myOrderGood',
                     name: '我的订单搜索商品',
-                    component: () => import(`@/components/tabbar/account/myOrder/myOrderGood`)
+                    component: myOrderGood
                 },
             ]
         },
         {
             path: '/confirmOrder',
             name: '确认订单',
-            component: () => import(`@/components/confirmOrder/index.vue`),
+            component: confirmOrder,
             children: [
                 {
                     path: 'orderContent',
                     name: '确认订单详情',
-                    component: () => import(`@/components/confirmOrder/orderContent.vue`)
+                    component: orderContent
                 },
                 {
                     path: 'confirmSuccess',
                     name: '确认订单提交成功',
-                    component: () => import(`@/components/confirmOrder/confirmSuccess.vue`)
+                    component: confirmSuccess
                 },
                 {
                     path: 'addBankcar',
                     name: '添加银行卡',
-                    component: () => import(`@/components/confirmOrder/addBankcar.vue`)
+                    component: addBankcar
                 },
                 {
                     path: 'resetPassword',
                     name: '重置支付密码',
-                    component: () => import(`@/components/confirmOrder/resetPassword.vue`)
+                    component: resetPassword
                 },
                 {
                     path: 'passwordSuccess',
                     name: '支付密码设置成功',
-                    component: () => import(`@/components/confirmOrder/passwordSuccess.vue`)
+                    component: passwordSuccess
                 },
                 {
                     path: 'parrwordOtp',
                     name: '支付密码输入验证码',
-                    component: () => import(`@/components/confirmOrder/parrwordOtp.vue`)
+                    component: parrwordOtp
                 },
                 {
                     path: 'orderAddress',
                     name: '确认订单收货地址',
-                    component: () => import(`@/components/confirmOrder/orderAddress.vue`),
+                    component: orderAddress,
                 },
             ]
         },
@@ -444,12 +574,12 @@ export default new Router({
         {
             path: '/control/home/homeItem',
             name: '主页子页面',
-            component: () => import(`@/components/tabbar/home/homeItem/index.vue`),
+            component: homeItem,
             children: [
                 {
                     path: 'flashSale',
                     name: '限时抢购',
-                    component: () => import(`@/components/tabbar/home/homeItem/flashSale.vue`),
+                    component: flashSale,
                 },
             ]
         },
@@ -457,12 +587,12 @@ export default new Router({
         {
             path: '/control',
             name: '控制',
-            component: () => import(`@/components/tabbar/person.vue`),
+            component: person,
             children: [
                 {
                     path: 'home',
                     name: '首页',
-                    component: () => import(`@/components/tabbar/home/index.vue`),
+                    component: home,
                     meta: {
                         keepAlive: true
                     }
@@ -470,7 +600,7 @@ export default new Router({
                 {
                     path: 'classify',
                     name: '分类',
-                    component: () => import(`@/components/tabbar/classify/index.vue`),
+                    component: classify,
                     meta: {
                         keepAlive: true
                     }
@@ -478,58 +608,55 @@ export default new Router({
                 {
                     path: 'shoppingCart',
                     name: '购物车',
-                    component: () => import(`@/components/tabbar/shoppingCart/index.vue`)
+                    component: shoppingCart
                 },
                 {
                     path: 'account',
                     name: '我的',
-                    component: () => import(`@/components/tabbar/account/index.vue`)
+                    component: account
                 }
             ]
         },
         {
             path: '/favorites',
             name: '收藏夹',
-            component: () => import(`@/components/tabbar/account/favorites/index.vue`)
+            component: favorites
         },
 
         {
             path: '/language',
             name: '语言',
-            component: () => import(`@/components/tabbar/account/language/index`)
+            component: language
         },
         {
             path: '/language/languSubPage',
             name: '语言选择页',
-            component: () => import(`@/components/tabbar/account/language/subPage`)
+            component: languSubPage
         },
 
 
         {
             path: '/information',
             name: '消息',
-            component: () => import(`@/components/tabbar/account/information/index`)
+            component: information
         },
         {
             path: '/information/inforDetails',
             name: '消息详情',
-            component: () => import(`@/components/tabbar/account/information/details`)
+            component: inforDetails
         },
 
         {
             path: '/sweepCode',
             name: '扫码',
-            component: () => import(`@/multiplexing/sweepCode`)
+            component: sweepCode
         },
+
+
         {
             path: '/thirdSuccess',
             name: '第三方支付页成功',
-            component: () => import(`@/components/confirmOrder/thirdSuccess`)
-        },
-        {
-            path: '/thirdLose',
-            name: '第三方支付页失败',
-            component: () => import(`@/components/confirmOrder/itemComponents/thirdLose.vue`) // @/components/confirmOrder/thirdLose 
+            component: thirdSuccess
         }
         // {
         //   path: '/thirdPartyPayment',
