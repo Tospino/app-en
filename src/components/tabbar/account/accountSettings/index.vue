@@ -15,8 +15,8 @@
       <van-icon name="arrow" class="arrow c-999" />
     </div>
     <!-- <div class="cell bor-b-1" @click="clearCache">
-            <span>Clear Cache Data</span>
-            <van-icon name="arrow" class="arrow c-999"/>
+      <span>Clear Cache Data</span>
+      <van-icon name="arrow" class="arrow c-999" />
     </div>-->
     <!-- <div class="cell bor-b-1">
             <span>Legal Provision</span>
@@ -51,7 +51,7 @@
           </div>
           <div class="dialog-body">
             <p>Are you sure to clear cache data?</p>
-            <div class="qd-btn" @click="zhezhaoStatus = false">Yes</div>
+            <div class="qd-btn" @click="ClearStroage">Yes</div>
           </div>
         </div>
         <div v-else>
@@ -74,16 +74,17 @@
 <script>
 import zhezhao from "@/multiplexing/zhezhao";
 import { getversion } from "@/api/common/index";
+import { Toast } from "vant";
 // 检查是否有最新版本
 function checkUpdate(version) {
   plus.nativeUI.showWaiting("Check For Updates....");
-  getversion({ version: version }).then(res => {
+  getversion({ version: version }).then((res) => {
     plus.nativeUI.closeWaiting();
     switch (res.code) {
       case 0:
         plus.nativeUI.confirm(
           `Current application version：${version},The latest version is：${res.version},Do you update immediately`,
-          event => {
+          (event) => {
             if (event.index === 0) {
               downWgt(res.downloadurl);
             }
@@ -111,7 +112,7 @@ function downWgt(wgtUrl) {
     "Download the updated file, please do not interrupt..."
   );
   plus.downloader
-    .createDownload(wgtUrl, { filename: "_doc/update/" }, function(d, status) {
+    .createDownload(wgtUrl, { filename: "_doc/update/" }, function (d, status) {
       if (status == 200) {
         console.log("下载更新文件成功：" + d.filename);
         installWgt(d.filename); // 安装wgt包
@@ -129,10 +130,10 @@ function installWgt(path) {
   plus.runtime.install(
     path,
     {},
-    function() {
+    function () {
       plus.nativeUI.closeWaiting();
       // 删除安装包
-      plus.io.resolveLocalFileSystemURL(path, entry => {
+      plus.io.resolveLocalFileSystemURL(path, (entry) => {
         entry.remove(
           () => {
             console.log("文件删除成功" + path);
@@ -146,11 +147,14 @@ function installWgt(path) {
       });
       plus.runtime.restart();
       console.log("安装更新文件成功！");
-      plus.nativeUI.alert("Application resource update complete！", function() {
-        plus.runtime.restart();
-      });
+      plus.nativeUI.alert(
+        "Application resource update complete！",
+        function () {
+          plus.runtime.restart();
+        }
+      );
     },
-    function(e) {
+    function (e) {
       plus.nativeUI.closeWaiting();
       console.log("安装更新文件失败[" + e.code + "]：" + e.message);
       plus.nativeUI.alert(
@@ -159,6 +163,10 @@ function installWgt(path) {
     }
   );
 }
+function clearCacheStroage() {
+  plus.storage.clear();
+}
+
 export default {
   props: {},
   data() {
@@ -167,11 +175,11 @@ export default {
       qchcDialog: false,
       bbh: "新版本：v 1.0.2.0",
       gxStatus: false,
-      zhezhaoStatus: false
+      zhezhaoStatus: false,
+      fileSizeString: 0,
     };
   },
   computed: {},
-  created() {},
   mounted() {},
   watch: {},
   methods: {
@@ -188,6 +196,20 @@ export default {
       this.zhezhaoStatus = true;
       this.qchcDialog = true;
     },
+    // 清除缓存·真
+    ClearStroage() {
+      if (window.plus) {
+        clearCacheStroage();
+        Toast(`清除缓存成功!`);
+        this.zhezhaoStatus = false;
+        this.qchcDialog = false;
+      } else {
+        localStorage.clear();
+        Toast(`清除缓存成功!`);
+        this.zhezhaoStatus = false;
+        this.qchcDialog = false;
+      }
+    },
     //检查更新
     HandleCheckUpdate() {
       //  this.zhezhaoStatus = true;
@@ -195,16 +217,16 @@ export default {
       this.plusReady();
     },
     plusReady() {
-      plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+      plus.runtime.getProperty(plus.runtime.appid, function (inf) {
         console.log("plusReady -> inf", inf);
         let wgtVer = inf.version;
         checkUpdate(wgtVer);
       });
-    }
+    },
   },
   components: {
-    zhezhao
-  }
+    zhezhao,
+  },
 };
 </script>
 

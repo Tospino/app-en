@@ -101,7 +101,7 @@
 import settingsHeader from "./itemComponents/settingsHeader";
 import {
   adduseraddressApi,
-  updateaddressApi
+  updateaddressApi,
 } from "@/api/accountSettings/index.js";
 import { ipgetcountry, areanamegetid, addbasearea } from "@/api/location/index";
 import { Toast } from "vant";
@@ -122,7 +122,7 @@ export default {
         lev3: null,
         lev4: null,
         message: "",
-        checked: true
+        checked: true,
       },
       areaId: "",
       areaNameEng: "",
@@ -131,24 +131,24 @@ export default {
         lev1: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev2: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev3: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev4: {
           id: "",
           name: "",
-          areaCode: ""
-        }
-      }
+          areaCode: "",
+        },
+      },
     };
   },
   computed: {},
@@ -168,27 +168,27 @@ export default {
       let key = "AIzaSyBw4RT57Ny-Cq9hVnpACvAscXoQpQHvOkY";
       let a = this;
       // 通過經緯度 獲取位置信息 例如國家，省，市，區
-      //   await ipgetcountry({ IP: document.cookie }).then(res => {
+      //   await ipgetcountry({ IP: document.cookie }).then((res) => {
       //     latlng = `${res.Data.lat},${res.Data.lon}`;
       //   });
       await axios({
         url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
         method: "POST",
         headers: {
-          "Content-Type": "application/json;charset=utf-8"
-        }
-      }).then(res => {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+      }).then((res) => {
         let data = res.data;
         latlng = `${data.location.lat},${data.location.lng}`;
       });
       let data = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=EN`,
-        method: "GET"
+        method: "GET",
       });
       // 获取中文数据，添加到数据库
       let dataEN = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=CN`,
-        method: "GET"
+        method: "GET",
       });
       let total_data = [...dataEN.data.results, ...data.data.results];
       if (Array.isArray(total_data) && total_data.length !== 0) {
@@ -212,7 +212,9 @@ export default {
           );
         });
         a.form.lev2 =
-          lev2 && lev2.length !== 0 ? lev2[0].formatted_address : "";
+          lev2 && lev2.length !== 0 && this.choiceForm[`lev1`].id
+            ? lev2[0].formatted_address
+            : "";
         a.form.lev2
           ? await a.getAreaId(
               lev2[0].formatted_address,
@@ -222,10 +224,15 @@ export default {
             )
           : "";
         let lev3 = await datas.filter((v, i) => {
-          return v.types.toString().indexOf("locality") !== -1;
+          return (
+            v.types.toString().indexOf("locality") !== -1 ||
+            v.types.toString().indexOf("administrative_area_level_2") !== -1
+          );
         });
         a.form.lev3 =
-          lev3 && lev3.length !== 0 ? lev3[0].formatted_address : "";
+          lev3 && lev3.length !== 0 && this.choiceForm[`lev2`].id
+            ? lev3[0].formatted_address
+            : "";
         a.form.lev3
           ? await a.getAreaId(
               lev3[0].formatted_address,
@@ -236,11 +243,13 @@ export default {
           : "";
         let lev4 = await datas.filter((v, i) => {
           return (
-            v.types.toString().indexOf("administrative_area_level_2") !== -1
+            v.types.toString().indexOf("administrative_area_level_3") !== -1
           );
         });
         a.form.lev4 =
-          lev4 && lev4.length !== 0 ? lev4[0].formatted_address : "";
+          lev4 && lev4.length !== 0 && this.choiceForm[`lev3`].id
+            ? lev4[0].formatted_address
+            : "";
         a.form.lev4
           ? await a.getAreaId(
               lev4[0].formatted_address,
@@ -268,7 +277,7 @@ export default {
       this.choiceShow = false;
       let obj = {
         area_level: level,
-        parent_id: parent
+        parent_id: parent,
       };
       this.$refs.choiceList.formData.area_level = obj.area_level;
       this.$refs.choiceList.formData.parent_id = obj.parent_id;
@@ -355,7 +364,7 @@ export default {
         country: this.form.lev1,
         province: this.form.lev2,
         city: this.form.lev3,
-        district: this.form.lev4
+        district: this.form.lev4,
       };
       if (this.$route.query.type == "edit") {
         this.updateaddress(obj);
@@ -370,7 +379,7 @@ export default {
         arr.push(this.choiceForm[key].id);
       }
       data.addressAreaIds = arr.toString();
-      adduseraddressApi(data).then(res => {
+      adduseraddressApi(data).then((res) => {
         if (res.code == 0) {
           Toast("success");
           setTimeout(() => {
@@ -382,7 +391,7 @@ export default {
     //编辑地址
     updateaddress(data) {
       data.addressId = this.$store.state.posseObj.addressId;
-      updateaddressApi(data).then(res => {
+      updateaddressApi(data).then((res) => {
         if (res.code == 0) {
           Toast("success");
           setTimeout(() => {
@@ -401,7 +410,7 @@ export default {
         let obj = {
           id: data.Data.areaId,
           name: data.Data.areaNameEng,
-          areaCode: data.Data.areaCode
+          areaCode: data.Data.areaCode,
         };
         this.$set(this.choiceForm, `lev${level}`, obj);
       } else {
@@ -415,25 +424,28 @@ export default {
           areaName: name_cn, // 名称
           areaNameEng: name, // 名称英语
           parentId: level == 1 ? 0 : this.choiceForm[`lev${lev}`].id, // 父级ID
-          area_status: 1
+          area_status: 1,
         });
       }
     },
     // 当检索不到数据时，添加地址id
     async addAreaID(params) {
-      await addbasearea(params).then(res => {
-        this.$set(this.choiceForm, `lev${params.areaLevel}`, {
-          id: res.Data.areaId,
-          name: res.Data.areaNameEng,
-          areaCode: res.Data.areaCode
+      console.log("params.parentId", params.parentId);
+      if (params.parentId === 0 || params.parentId) {
+        await addbasearea(params).then((res) => {
+          this.$set(this.choiceForm, `lev${params.areaLevel}`, {
+            id: res.Data.areaId,
+            name: res.Data.areaNameEng,
+            areaCode: res.Data.areaCode,
+          });
         });
-      });
-    }
+      }
+    },
   },
   components: {
     settingsHeader,
-    choiceList
-  }
+    choiceList,
+  },
 };
 </script>
 

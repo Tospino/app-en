@@ -287,72 +287,72 @@ export default {
         businessLicense: "", //营业执照
         legalPersonImg: "", //法人人像照
         legalPersonBack: "", //法人证件反面照
-        legalPersonFront: "" //法人证件正面照
+        legalPersonFront: "", //法人证件正面照
       },
       rules: {
         nickName: {
           required: true,
-          messages: "Enter account"
+          messages: "Enter account",
         },
         phone: {
           required: true,
-          messages: "Enter phone number"
+          messages: "Enter phone number",
         },
         smsCode: {
           required: true,
-          messages: "Enter verification code"
+          messages: "Enter verification code",
         },
         userPwd: {
           required: true,
-          messages: "Enter login password"
+          messages: "Enter login password",
         },
         userPwd2: {
           required: true,
-          messages: "Confirm the password"
-        }
+          messages: "Confirm the password",
+        },
       },
       form: {
         lev1: null,
         lev2: null,
         lev3: null,
-        lev4: null
+        lev4: null,
       },
       choiceForm: {
         lev1: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev2: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev3: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev4: {
           id: "",
           name: "",
-          areaCode: ""
-        }
+          areaCode: "",
+        },
       },
       memberList: [], //主营业务列表
       yzmData: {
         msgphone: "",
         types: "1",
-        areaCode: "233"
+        areaCode: "233",
       },
       zhengce: false,
-      userStatus: false
+      userStatus: false,
     };
   },
   computed: {
     disabledSubmit() {
       return !this.$fn.isDisabled(this.formData, this.rules) && this.xieyi;
-    }
+    },
   },
   async created() {
     this.getLoaction();
@@ -362,21 +362,21 @@ export default {
   },
   watch: {
     eyeStatus: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.eyeStatus
           ? (this.eyeName = "eye-o")
           : (this.eyeName = "closed-eye");
         this.fieldType = this.eyeStatus ? "text" : "password";
-      }
+      },
     },
     eyeStatus1: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.eyeStatus1
           ? (this.eyeName1 = "eye-o")
           : (this.eyeName1 = "closed-eye");
         this.fieldType1 = this.eyeStatus1 ? "text" : "password";
-      }
-    }
+      },
+    },
   },
   methods: {
     // 获取定位地址
@@ -386,27 +386,27 @@ export default {
       let a = this;
 
       // 通過經緯度 獲取位置信息 例如國家，省，市，區
-      await ipgetcountry({ IP: document.cookie }).then(res => {
-        latlng = `${res.Data.lat},${res.Data.lon}`;
-      });
+      //   await ipgetcountry({ IP: document.cookie }).then(res => {
+      //     latlng = `${res.Data.lat},${res.Data.lon}`;
+      //   });
       await axios({
         url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
         method: "POST",
         headers: {
-          "Content-Type": "application/json;charset=utf-8"
-        }
-      }).then(res => {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+      }).then((res) => {
         let data = res.data;
         latlng = `${data.location.lat},${data.location.lng}`;
       });
       let data = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=EN`,
-        method: "GET"
+        method: "GET",
       });
       // 获取中文数据，添加到数据库
       let dataEN = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=CN`,
-        method: "GET"
+        method: "GET",
       });
       let total_data = [...dataEN.data.results, ...data.data.results];
       if (Array.isArray(total_data) && total_data.length !== 0) {
@@ -430,7 +430,9 @@ export default {
           );
         });
         a.form.lev2 =
-          lev2 && lev2.length !== 0 ? lev2[0].formatted_address : "";
+          lev2 && lev2.length !== 0 && this.choiceForm[`lev1`].id
+            ? lev2[0].formatted_address
+            : "";
         a.form.lev2
           ? await a.getAreaId(
               lev2[0].formatted_address,
@@ -440,10 +442,15 @@ export default {
             )
           : "";
         let lev3 = await datas.filter((v, i) => {
-          return v.types.toString().indexOf("locality") !== -1;
+          return (
+            v.types.toString().indexOf("locality") !== -1 ||
+            v.types.toString().indexOf("administrative_area_level_2") !== -1
+          );
         });
         a.form.lev3 =
-          lev3 && lev3.length !== 0 ? lev3[0].formatted_address : "";
+          lev3 && lev3.length !== 0 && this.choiceForm[`lev2`].id
+            ? lev3[0].formatted_address
+            : "";
         a.form.lev3
           ? await a.getAreaId(
               lev3[0].formatted_address,
@@ -454,11 +461,13 @@ export default {
           : "";
         let lev4 = await datas.filter((v, i) => {
           return (
-            v.types.toString().indexOf("administrative_area_level_2") !== -1
+            v.types.toString().indexOf("administrative_area_level_3") !== -1
           );
         });
         a.form.lev4 =
-          lev4 && lev4.length !== 0 ? lev4[0].formatted_address : "";
+          lev4 && lev4.length !== 0 && this.choiceForm[`lev3`].id
+            ? lev4[0].formatted_address
+            : "";
         a.form.lev4
           ? await a.getAreaId(
               lev4[0].formatted_address,
@@ -530,7 +539,7 @@ export default {
       this.choiceShow = false;
       let obj = {
         area_level: level,
-        parent_id: parent
+        parent_id: parent,
       };
       this.$refs.choiceList.formData.area_level = obj.area_level;
       this.$refs.choiceList.formData.parent_id = obj.parent_id;
@@ -560,13 +569,13 @@ export default {
     },
     //主营业务列表
     membertypelit() {
-      membertypelitApi().then(res => {
+      membertypelitApi().then((res) => {
         if (res.code == 0) {
           let arr = res.tpMemberTypeList;
-          arr.forEach(e => {
+          arr.forEach((e) => {
             let obj = {
               name: e.typeTitle,
-              id: e.typeId
+              id: e.typeId,
             };
             this.memberList.push(obj);
           });
@@ -583,7 +592,7 @@ export default {
     },
     //注册
     userregister() {
-      userregisterApi(this.formData).then(res => {
+      userregisterApi(this.formData).then((res) => {
         if (res.code == 0) {
           localStorage.phone = res.user.phone;
           this.show2 = true;
@@ -607,7 +616,7 @@ export default {
     },
     //验证码
     msglist(data) {
-      msglistApi(data).then(res => {
+      msglistApi(data).then((res) => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -655,7 +664,7 @@ export default {
         let obj = {
           id: data.Data.areaId,
           name: data.Data.areaNameEng,
-          areaCode: data.Data.areaCode
+          areaCode: data.Data.areaCode,
         };
         this.$set(this.choiceForm, `lev${level}`, obj);
       } else {
@@ -669,20 +678,23 @@ export default {
           areaName: name_cn, // 名称
           areaNameEng: name, // 名称英语
           parentId: level == 1 ? 0 : this.choiceForm[`lev${lev}`].id, // 父级ID
-          area_status: 1
+          area_status: 1,
         });
       }
     },
     // 当检索不到数据时，添加地址id
     async addAreaID(params) {
-      await addbasearea(params).then(res => {
-        this.$set(this.choiceForm, `lev${params.areaLevel}`, {
-          id: res.Data.areaId,
-          name: res.Data.areaNameEng,
-          areaCode: res.Data.areaCode
+      console.log("params.parentId", params.parentId);
+      if (params.parentId === 0 || params.parentId) {
+        await addbasearea(params).then((res) => {
+          this.$set(this.choiceForm, `lev${params.areaLevel}`, {
+            id: res.Data.areaId,
+            name: res.Data.areaNameEng,
+            areaCode: res.Data.areaCode,
+          });
         });
-      });
-    }
+      }
+    },
   },
   components: {
     navar,
@@ -690,8 +702,8 @@ export default {
     choiceList,
     zhezhao,
     yinsi,
-    userAgreement
-  }
+    userAgreement,
+  },
 };
 </script>
 

@@ -1,7 +1,7 @@
 /*
  * @Author: CJY
  * @Date: 2020-07-09 10:00:20
- * @LastEditTime: 2020-07-23 09:01:03
+ * @LastEditTime: 2020-07-24 15:53:23
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\api\http.js
@@ -118,7 +118,7 @@ mainAxios.interceptors.response.use(function (response) {
     if (error.message == 'timeout of 180000ms exceeded') {
         Toast('Time-out')
     } else {
-        Toast('error');
+        // Toast('error');
     }
     if (error.response) {
         console.log(error.response);
@@ -177,7 +177,7 @@ parkAxios.interceptors.response.use(function (response) {
     if (error.message == 'timeout of 60000ms exceeded') {
         Toast('Time-out')
     } else {
-        Toast('error');
+        // Toast('error');
     }
     if (error.response) {
         Toast("Network is busy, please try again later!");
