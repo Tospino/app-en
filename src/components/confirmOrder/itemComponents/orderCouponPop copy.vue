@@ -1,12 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-07-23 20:08:59
- * @LastEditors: Please set LastEditors
- * @Description: 订单详情中的优惠券接口联调
- * @FilePath: \app-en\src\components\confirmOrder\itemComponents\orderCouponPop.vue
---> 
-
 <template>
   <!-- 订单优惠券弹框 -->
   <div class="orderCouponPop" v-show="order">
@@ -17,60 +8,52 @@
       </div>
       <div class="order-tab" v-if="true">
         <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
-          <van-tab>
-            <template slot="title">Available({{this.coupon.length}})</template>
-          </van-tab>
-          <van-tab>
-            <template slot="title">Not Applicable({{this.couponListCannotUse.length}})</template>
-          </van-tab>
+          <van-tab title="Available(5)"></van-tab>
+          <van-tab title="Not Applicable(5)"></van-tab>
         </van-tabs>
       </div>
       <div class="selection-conten">
         <!-- 可领取优惠券 -->
         <div v-if="active==0">
-          <div
-            class="youhuiquan-item item-one"
-            v-for="couponItem in coupon"
-            :key="couponItem.drawId"
-          >
+          <div class="youhuiquan-item item-one" v-for="i in coupon" :key="i.drawId">
             <div class="youhuiquan-left left-one">
               <span class="youhuiquan-left-biao biao-one">GH{{jn}}</span>
               <p class="youhuiquan-left-money money-one">
-                {{couponItem.reduceAmountWebsite}}
+                {{i.reduceAmountWebsite}}
                 <i>OFF</i>
               </p>
               <div class="youhuiquan-left-ms">
-                <p class="youhuiquan-left-m m-one">Type:{{couponItem.couponTypeNameEng}}</p>
-                <p class="youhuiquan-left-m m-one">valid:{{couponItem.useEndWebsite}}</p>
+                <p class="youhuiquan-left-m m-one">Type:{{i.couponTypeNameEng}}</p>
+                <p class="youhuiquan-left-m m-one">valid:{{i.useEndWebsite}}</p>
               </div>
-              <!-- <progress-bar :progressBar="couponItem.drawPercent" ></progress-bar> -->
+              <progress-bar :progressBar="i.drawPercent"></progress-bar>
               <!-- 根据后台判断是否是新用户 -->
-              <div v-if="couponItem.canDraw==0?0:1">
-                <progress-bar :progressBar="couponItem.drawPercent?couponItem.drawPercent:0"></progress-bar>
-              </div>
+              <!-- <div v-show="btnBox">
+                <progress-bar :progressBar="iSpeed"></progress-bar>
+              </div>-->
             </div>
             <div class="youhuiquan-right">
               <div class="youhuiquan-right-header">
-                <span class="youhuiquan-right-title right-title-one">{{couponItem.couponName}}</span>
+                <span class="youhuiquan-right-title right-title-one">{{i.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main right-main-one">
                 <p
                   class="youhuiquan-left-mc mc-one"
-                  v-if="couponItem.upToAmountWebsite==null?false:true"
-                >For GH {{jn}} {{couponItem.upToAmountWebsite}} consumption</p>
+                  v-if="i.upToAmountWebsite==null?false:true"
+                >For GH {{jn}} {{i.upToAmountWebsite}} consumption</p>
                 <van-button
-                  v-if="couponItem.canDraw==0?0:1"
+                  v-if="i.canDraw==0?0:1"
                   round
                   type="info"
-                  @click="ProBar(couponItem.couponId,couponItem.couponDetailId,couponItem.canDraw)"
+                  @click="ProBar(i.couponId,i.couponDetailId)"
                   class="youhuiquan-right-btn"
                 >Get it now</van-button>
                 <div v-else class="checkedBox">
                   <van-checkbox
-                    v-model="couponItem.isSelected"
-                    :disabled="couponItem.canSelect==0?true:false"
+                    v-model="i.isSelected"
+                    :disabled="i.canSelect==0?true:false"
                     checked-color="#FA5300"
-                    @click="changeCheckbox(couponItem.drawId,couponItem.isSelected)"
+                    @click="changeCheckbox(i.drawId,i.isSelected)"
                   ></van-checkbox>
                 </div>
               </div>
@@ -78,41 +61,40 @@
           </div>
         </div>
         <!-- 不可领取 -->
-        <div
+        <!-- <div
           v-else-if="active==1"
           class="youhuiquan-two"
-          v-for="couponUse in couponListCannotUse"
-          :key="couponUse.couponId"
+          v-for="(i,index) in orderCoupon"
+          :key="index"
         >
           <div class="youhuiquan-item item-two">
             <div class="youhuiquan-left left-two">
-              <span class="youhuiquan-left-biao">GH{{jn}}</span>
+              <span class="youhuiquan-left-biao">{{i.qianBiao}}{{jn}}</span>
               <p class="youhuiquan-left-money">
-                {{couponUse.reduceAmountWebsite}}
-                <i>OFF</i>
+                {{i.money}}
+                <i>{{i.off}}</i>
               </p>
               <div class="youhuiquan-left-ms">
-                <p class="youhuiquan-left-m">Type:{{couponUse.couponTypeNameEng}}</p>
-                <p class="youhuiquan-left-m">valid:{{couponUse.useEndWebsite}}</p>
+                <p class="youhuiquan-left-m">{{i.type}}</p>
+                <p class="youhuiquan-left-m">{{i.valid}}</p>
               </div>
             </div>
             <div class="youhuiquan-right">
               <div class="youhuiquan-right-header">
-                <span class="youhuiquan-right-title right-title-two">{{couponUse.couponName}}</span>
+                <span class="youhuiquan-right-title right-title-two">{{i.title}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <p
-                  class="youhuiquan-left-mc"
-                  v-if="couponUse.upToAmountWebsite==null?false:true"
-                >For GH {{jn}} {{couponUse.upToAmountWebsite}} consumption</p>
+                <p class="youhuiquan-left-mc">For {{i.qianBiao}}{{jn}} {{i.moneys}} consumption</p>
               </div>
             </div>
           </div>
           <div class="youhuiquan-reason">
             <span class="reason-title">Reason for unavailability:</span>
-            <p class="reason-content">{{couponUse.cannotSelectReasonEng}}</p>
+            <p
+              class="reason-content"
+            >Reason why goods are not available Reason why goods are not available Reason why goods are not available.</p>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -137,74 +119,66 @@ export default {
       active: 0,
       orderCouponDraw: "",
       drawPercent: "",
-      // canDraw: "",
-      couponList: [],
-      couponDraw: [],
-      checkbox: true
+      canDraw: "",
+      couponList: []
     };
   },
   computed: {
     // 语法糖
     ...mapState({
-      coupon: state => state.coupons,
-      couponListCannotUse: state => state.couponListUse
+      coupon: state => state.coupons
+      // orderDetail: state => state.orderDetails
     })
   },
-  watch: {
-    // coupon: {
-    //   deep: true,
-    //   handler(newVal) {
-    //     newVal.forEach(e => {
-    //       e.canDraw;
-    //     });
-    //   }
-    // }
+  watch: {},
+  created() {
+    // this.orderCoupon(this.orderDetail);
   },
-  created() {},
   mounted() {},
   methods: {
+    // orderCoupon(order) {
+    //   getconfirmorderApi(order).then(res => {
+    //     if (res.code == 0) {
+    //       this.$store.state.coupons = res.Data.couponList;
+    //     }
+    //   });
+    // },
+
     // 新增-优惠券 只能领取一次
-    async ProBar(data, detail, drawPercent) {
+    ProBar(data, detail) {
       let couponsData = {
         couponId: data,
         couponDetailId: detail
       };
-      this.couponDraw = await couponDrawApi(couponsData);
-      let voucher = [
-        {
-          drawId: this.couponDraw.drawId
-        }
-      ];
-      this.$emit("couponDrawId", voucher);
-    },
 
+      couponDrawApi(couponsData).then(res => {
+        console.log(res, "aaa");
+        // if (res.code == 0) {
+        //   // this.orderCoupon.forEach(i => {
+        //   //   if (data == i.couponId) {
+        //   //     this.drawPercent = i.drawPercent = i.drawPercent + 0.01;
+        //   //     this.canDraw = i.canDraw = 0;
+        //   //     this.checked = i.isSelected == 0 ? 0 : 1;
+        //   //   }
+        //   // });
+        // }
+      });
+    },
     // 选择优惠券
     changeCheckbox(item, val) {
-      if (val == false) {
-        this.coupon.forEach(e => {
-          if (item == e.drawId) {
-            this.couponList.push({ drawId: e.drawId });
-          }
-        });
-      } else {
-        this.coupon.forEach(e => {
-          if (item == e.drawId) {
-            this.couponList.splice(0, 1);
-          }
-        });
-      }
-      this.$emit("changeCheckbox", this.couponList);
+      val != val;
+      this.couponremove(item);
     },
 
-    // // 选择已经选用和删除
-    // couponremove(move) {
-    //   let couponsMove = {
-    //     drawId: move
-    //   };
-    //   // couponRemoveApi(couponsMove).then(res => {
-    //   //   console.log(res, "jjaa");
-    //   // });
-    // },
+    // 选择已经选用和删除
+    couponremove(move) {
+      let couponsMove = {
+        drawId: move
+      };
+      // couponRemoveApi(couponsMove).then(res => {
+      //   console.log(res, "jjaa");
+      // });
+    },
 
     // 关闭
     close() {

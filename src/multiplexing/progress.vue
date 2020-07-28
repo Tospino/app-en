@@ -1,13 +1,21 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-07-20 17:26:48
+ * @LastEditTime: 2020-07-23 17:17:16
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \app-en\src\multiplexing\progress.vue
+--> 
 <template>
   <!-- 封装-进度条 -->
   <div>
     <div class="f">
       <div class="progress">
-        <div class="bar" :style="'width:' + progressBar  + '%'"></div>
+        <div class="bar" :style="'width:' + progressBar.toPrecision(2)*100 + '%'"></div>
       </div>
       <div>
         <h3 class="text-progress">
-          {{progressBar}}%&nbsp;
+          {{progressBar.toPrecision(2)*100}}%&nbsp;
           <span>Received</span>
         </h3>
       </div>
@@ -19,8 +27,7 @@ export default {
   components: {},
   props: ["progressBar"],
   data() {
-    return {
-    };
+    return {};
   },
   computed: {},
   watch: {},

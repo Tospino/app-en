@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-25 16:24:34
+ * @LastEditTime: 2020-07-24 13:58:49
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -257,7 +257,7 @@
     </scroll>
 
     <!-- 新用户弹框 -->
-    <user-popup :sale="sale" :newCoupon="newCoupon" @userPopUp="userPopUp" @evBus="evBus"></user-popup>
+    <user-popup :sale="sale" @userPopUp="userPopUp"></user-popup>
   </div>
 </template>
 
@@ -271,8 +271,6 @@ import {
   APPgetuserIsfullApi
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
-import { couponDrawApi } from "@/api/confirmOrder/index";
-import { Toast } from "vant";
 export default {
   props: {},
   data() {
@@ -322,7 +320,6 @@ export default {
       banner3: {
         advertImg: ""
       },
-      newCouponList: "",
       newCoupon: "",
       sale: false //新用户是否存在
     };
@@ -333,6 +330,7 @@ export default {
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
       this.getuserinfo();
+      // console.log(123123);
     }
     if (localStorage.homeObj) {
       this.homeObj = this.$fn.MyLocalStorage.Cache.get("homeObj");
@@ -370,43 +368,29 @@ export default {
   mounted() {
     this.refreshOrder();
   },
-  watch: {
-    newCouponList: {
-      deep: true,
-      handler: function(val) {
-        console.log("jiant", val);
-        if (val == 0) {
-          this.sale = true;
-        } else if (val == -300) {
-          this.sale = false;
-        }
-      }
-    }
-  },
+  watch: {},
   methods: {
+    jumpRouter(name) {
+      this.$router.push({ name });
+    },
     // 首页新用户优惠券
-    newCoupons() {
-      APPgetuserIsfullApi().then(res => {
-        this.newCouponList = res.code;
-        this.newCoupon = res.Data;
-      });
+    async newCoupons() {
+      this.newCoupon = await APPgetuserIsfullApi();
+      if (this.newCoupon.code == 0) {
+        this.sale = true;
+      } else if (this.newCoupon.code == -300) {
+        this.sale = false;
+      }
+      console.log("首次登录", this.newCoupon);
     },
     // 关闭首页优惠券
     userPopUp() {
       this.sale = false;
     },
-    // 领取优惠按钮
-    evBus(id) {
-      couponDrawApi(id).then(res => {
-        Toast(res.msg);
-      });
-    },
-    jumpRouter(name) {
-      this.$router.push({ name });
-    },
     //首页数据
     homePage(data) {
       homePageApi(data).then(res => {
+        console.log(res, "首页数据");
         if (res.code == 0) {
           this.homeObj = res.Data;
           console.log("aaa", this.homeObj);
@@ -516,6 +500,7 @@ export default {
     //首页广告
     homeAdvertPicture() {
       homeAdvertPictureApi().then(res => {
+        console.log(res, "首页广告");
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
@@ -539,6 +524,7 @@ export default {
     //获取用户信息
     getuserinfo() {
       getuserinfoApi().then(res => {
+        console.log("用户", res);
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }

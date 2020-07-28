@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 16:21:22
+ * @LastEditTime: 2020-07-24 15:00:29
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券-两个字段
  * @FilePath: \app-en\src\components\tabbar\account\myOrder\orderDetail.vue
@@ -99,15 +99,15 @@
           <span>Coupons：</span>
           <span
             class="fl-right font-24"
-          >-{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
+          >-{{detailObj.currencySignWebsite}}{{detailObj.orderCouponAmountWebsite}}</span>
         </div>
 
-        <div class="mingxi">
+        <!-- <div class="mingxi">
           <span>Allowance:</span>
           <span
             class="fl-right font-24"
           >-{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
-        </div>
+        </div>-->
 
         <div class="mingxi">
           <span>Sum:</span>
@@ -306,6 +306,7 @@ export default {
       this.formData.order_id = this.$route.query.id;
       orderinfoApi(this.formData).then(res => {
         if (res.code == 0) {
+          console.log(res, "zzidd");
           this.detailObj = res.Data;
           this.dataList = res.Data.detailList;
         }

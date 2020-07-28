@@ -1,3 +1,12 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-20 17:26:48
+ * @LastEditTime: 2020-07-20 17:44:15
+ * @LastEditors: Please set LastEditors
+ * @Description: 售后进度跳转
+ * @FilePath: \app-en\src\components\tabbar\account\afterSales\afterSalesDetail.vue
+--> 
+
 <template>
   <!-- 售后详情 -->
   <div class="after-sales-detail">
@@ -5,7 +14,7 @@
     <div class="cell">
       <!-- <div class="cell" @click="jumpRouter('售后流程')"> -->
       <span>Process Record</span>
-      <van-icon name="arrow" class="arrow c-999" />
+      <van-icon name="arrow" class="arrow c-999" @click="toProgress"/>
     </div>
     <div class="good-detail">
       <div class="good-detail-header">
@@ -178,7 +187,11 @@ export default {
       clipboard.on("error", function() {
         Toast("Failed! Please choose manual copy!");
       });
-    }
+    },
+    // 售后进度
+      toProgress(){
+          this.$router.push({name:"售后进度"})
+      }
   },
   components: {
     kefu

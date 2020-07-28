@@ -1,18 +1,19 @@
 <template>
   <!-- 新用户弹框 -->
-  <div  id="userPopUp">
+  <div id="userPopUp">
     <!-- 根据后台判断是否为新用户 -->
     <van-overlay :show="sale">
-      <div class="wrapper" >
+      <div class="wrapper">
         <div class="block">
           <img src="@/assets/img/coupon/home@2x.png" class="wrapper-youhui" />
           <div class="wrapper-main">
-            <i>GH{{jn}}</i>200.00
+            <i>GH{{jn}}</i>
+            {{newCoupon.reduceAmount}}
             <i>OFF</i>
           </div>
           <div class="wrapper-btn">
             <p class="wrapper-title">Sitewide</p>
-            <div class="btn" @click="newPre">
+            <div class="btn" @click="newPre(newCoupon.couponId)">
               <img src="@/assets/img/coupon/home-btn@2x.png" />
               <span class="btn-box">Get it now</span>
             </div>
@@ -28,14 +29,15 @@
 </template>
 
 <script>
-import { Toast } from "vant";
+// import { Toast } from "vant";
 export default {
   name: "userPopUp", //新用户弹窗
   components: {},
-  props: {},
+  props: ["sale", "newCoupon"],
   data() {
     return {
-      sale: true
+      userStyle: "",
+      homeCoupons: ""
     };
   },
   computed: {},
@@ -44,15 +46,18 @@ export default {
   mounted() {},
   methods: {
     // 新用户领取
-    newPre() {
+    newPre(Id) {
+      this.homeCoupons = {
+        couponId: Id
+      };
+      console.log(Id, "anchor");
+      this.$emit("evBus", this.homeCoupons);
       this.close();
-      Toast("Get the success.");
     },
     //   关闭
     close() {
-      this.sale = false;
-      let userPopUp = document.getElementById("userPopUp");
-      userPopUp.style.height = 0;
+      this.userStyle = document.getElementById("userPopUp");
+      this.$emit("userPopUp", this.userStyle);
     }
   }
 };
@@ -61,7 +66,7 @@ export default {
 #userPopUp {
   position: fixed;
   width: 100vw;
-  height: 100%;
+  // height: 100%;
   z-index: 5;
   // 优惠券
   .wrapper {

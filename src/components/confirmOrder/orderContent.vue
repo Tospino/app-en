@@ -1,13 +1,13 @@
 <!--
- * @Author: zlj
- * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 14:37:38
+ * @Author: your name
+ * @Date: 2020-07-20 17:26:48
+ * @LastEditTime: 2020-07-27 15:58:56
  * @LastEditors: Please set LastEditors
- * @Description: 添加优惠券--orderCouponPop组件和字段
+ * @Description:  
+ 添加优惠券--orderCouponPop组件的接口联调
+ 领取优惠券
  * @FilePath: \app-en\src\components\confirmOrder\orderContent.vue
 --> 
-
-
 <template>
   <!-- 确认订单填写信息 -->
   <div class="order-content">
@@ -140,11 +140,11 @@
       <div class="youhuiquan-header">
         <span class="youhuiquan-title">Coupons</span>
         <span class="youhuiquan-txt" @click="saleMore">
-          -{{jn}}0.00
+          -{{jn}}{{ this.orderData.allOrderCouponAmountWebsite}}
           <van-icon name="arrow" />
         </span>
       </div>
-      <div class="youhuiquan-main">
+      <!-- <div class="youhuiquan-main">
         <div class="youhuiquan-left">
           <span class="youhuiquan-left-biao">GH{{jn}}</span>
           <p class="youhuiquan-left-money">
@@ -166,7 +166,8 @@
             <van-button round type="info" @click="ProBar" class="youhuiquan-right-btn">Get it now</van-button>
           </div>
         </div>
-      </div>
+      </div>-->
+
       <!-- <div class="youhuiquan-ya">
           <van-row type="flex" justify="space-between">
             <van-col span="12">
@@ -225,7 +226,12 @@
     ></action-sheet-paymen>
 
     <!-- 更多优惠券 -->
-    <order-coupon-pop :order="order" @orderPop="orderPop"></order-coupon-pop>
+    <order-coupon-pop
+      :order="order"
+      @orderPop="orderPop"
+      @changeCheckbox="changeCheckbox"
+      @couponDrawId="couponDrawId"
+    ></order-coupon-pop>
   </div>
 </template>
 
@@ -291,7 +297,8 @@ export default {
       orderSn: [],
       payTypeListLength: 0,
       iSpeed: 0, //进度条,
-      order: false //更多优惠券
+      order: false, //更多优惠券
+      couponList: [] //优惠券领取
     };
   },
   computed: {
@@ -425,10 +432,12 @@ export default {
     //更改数量
     changeNumber() {
       let arr = [];
+      // let coupons = [];
       let data = {
         addressId: this.defaultAdderss.addressId,
         detailList: arr
       };
+      // 商品明细列表
       this.orderData.orderList.forEach(ele => {
         ele.detailList.forEach(item => {
           let obj = {
@@ -438,6 +447,7 @@ export default {
           arr.push(obj);
         });
       });
+      console.log(arr, "数组");
       this.getconfirmorder(data);
     },
     //input失焦事件
@@ -476,11 +486,42 @@ export default {
       });
       this.changeNumber();
     },
+    // 领取优惠券
+    couponDrawId(Id) {
+      this.changeCheckbox(Id);
+    },
+    // 优惠券
+    changeCheckbox(drawId) {
+      let arr = [];
+      let coupon = {
+        addressId: this.defaultAdderss.addressId,
+        detailList: arr,
+        couponDrawList: drawId
+      };
+      // 商品明细列表
+      this.orderData.orderList.forEach(ele => {
+        ele.detailList.forEach(item => {
+          let obj = {
+            skuId: item.skuId,
+            detailNum: Number(item.detailNum)
+          };
+          arr.push(obj);
+        });
+      });
+      // 优惠券选择
+      this.getconfirmorder(coupon);
+    },
     //订单详情
     getconfirmorder(data) {
+      // // 缓存订单数据在vuex
+      // this.$store.state.orderDetails = data;
       getconfirmorderApi(data).then(res => {
         if (res.code == 0) {
           this.orderData = res.Data;
+          console.log("订单详情", this.orderData);
+          // 缓存优惠券列表在vuex
+          this.couponList = this.$store.state.coupons = this.orderData.couponList;
+          this.$store.state.couponListUse = this.orderData.couponListCannotUse;
           if (this.payTypeList.length == 0) {
             //第一次请求
             this.payTypeList = res.Data.payTypeList;
@@ -496,16 +537,17 @@ export default {
     },
     //确认订单提交订单接口
     batchmakeorder(orderObj) {
-      // console.log("订单提交订单",orderObj)
       let obj = {
         addressId: this.defaultAdderss.addressId,
         payType: this.zffs,
         isAnonymous: this.checked ? 1 : 0,
         orderSource: 1,
         orderList: orderObj.orderList,
-        shopcrtList: this.shopcrtList
+        shopcrtList: this.shopcrtList,
+        couponList: this.couponList
       };
       batchmakeorderApi(obj).then(res => {
+        console.log(res, "确认订单");
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -557,7 +599,8 @@ export default {
     refresh() {
       let obj = {
         addressId: this.defaultAdderss.addressId,
-        detailList: this.selectionShopCar
+        detailList: this.selectionShopCar,
+        autoSelectCoupon: 1
       };
       this.getconfirmorder(obj);
     },
@@ -639,7 +682,6 @@ export default {
     },
     // 更多优惠券
     saleMore() {
-      console.log("哈哈哈");
       this.order = true;
     },
     orderPop() {

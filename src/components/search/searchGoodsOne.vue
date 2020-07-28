@@ -138,7 +138,14 @@ export default {
         seraname: "",
         sort: 0,
         categoryId: 0,
-        brandId: 0
+        brandId: 0,
+        locationId: 0,
+        priceEnd: 0,
+        priceTo: 0,
+        sort: 0,
+        isPC: 2,
+        businessId: 24,
+        expIds: 1
       },
       dataList: [],
       footerData: {},
@@ -163,6 +170,14 @@ export default {
     this.formData.brandId = this.$route.query.brandId
       ? this.$route.query.brandId
       : 0;
+
+    this.formData.businessId = this.$route.query.businessId
+      ? this.$route.query.businessId
+      : 24;
+    this.formData.expIds = this.$route.query.expIds
+      ? this.$route.query.expIds
+      : 1;
+
     this.searName = this.$route.query.seraname;
     this.refreshOrder();
   },
@@ -177,6 +192,14 @@ export default {
       this.formData.brandId = this.$route.query.brandId
         ? this.$route.query.brandId
         : 0;
+
+      this.formData.businessId = this.$route.query.businessId
+        ? this.$route.query.businessId
+        : 24;
+      this.formData.expIds = this.$route.query.expIds
+        ? this.$route.query.expIds
+        : 1;
+
       this.searName = this.$route.query.seraname;
       this.refreshOrder();
       try {

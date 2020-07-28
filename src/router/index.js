@@ -1,7 +1,7 @@
 /*
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 15:20:45
+ * @LastEditTime: 2020-07-20 17:45:21
  * @LastEditors: Please set LastEditors
  * @Description: 新增售后进度和优惠券中心页面
  * @FilePath: \app-en\src\router\index.js
@@ -532,7 +532,17 @@ export default new Router({
             name: '第三方支付页失败',
             component: () => import(`@/components/confirmOrder/itemComponents/thirdLose.vue`) // @/components/confirmOrder/thirdLose 
         },
-        
+         // 新增-优惠券
+         {
+            path: '/afterSalesProgress',
+            name: '售后进度',
+            component: () => import(`@/components/tabbar/account/afterSales/afterSalesProgress.vue`),
+        },
+        {
+            path: '/myCoupons',
+            name: '优惠券中心',
+            component: () => import(`@/components/tabbar/account/coupons/myCoupons.vue`),
+        },
         // {
         //   path: '/thirdPartyPayment',
         //   name: '第三方支付页',
