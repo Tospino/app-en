@@ -220,7 +220,8 @@ export default {
           arr.push({
             name: "Balance",
             shortName: "Balance",
-            logourl: this.$webUrl + "/common/image/yuan.png",
+            logourl:
+              "http://47.52.210.251:8091/tospino/test/common/image/yuan.png",
             checked: false,
             type: 201
           });
