@@ -131,7 +131,7 @@ import sweepCode from '@/multiplexing/sweepCode'
 //第三方支付
 import thirdSuccess from "@/components/confirmOrder/thirdSuccess"
 
-import thirdPartyPayment from '@/components/confirmOrder/thirdPartyPayment'
+// import thirdPartyPayment from '@/components/confirmOrder/thirdPartyPayment'
 
 //话费充值
 import rechargeIndex from '@/multiplexing/router.vue'
