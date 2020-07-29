@@ -299,34 +299,35 @@ export default {
         }&otherParams=${encodeURIComponent(otherParams)}`;
         this.showServer = true;
       } else {
-        let otherParams = {
-          productInfo: {
-            // 客户端展示
-            visible: true,
-            actionText: "Send",
-            actionTextColor: "#fff",
-            title: this.detailmData.supplyTitle,
-            sub_title: `${this.jn}${this.detailmData.salePrice}`,
-            img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
-            // 仅在坐席端展示
-            price: `${this.jn}${this.detailmData.salePrice}`,
-            target: location.href,
-            time: "agent",
-            tags: [
-              {
-                label: "商品详情",
-                url: location.href,
-                focusIframe: "iframe名称1",
-              },
-            ],
-            showCardInfoMsg: 1,
-          },
-        };
-        otherParams = JSON.stringify(otherParams);
-        this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&otherParams=${encodeURIComponent(
-          otherParams
-        )}`;
-        this.showServer = true;
+        this.$router.push({ name: "登录" });
+        // let otherParams = {
+        //   productInfo: {
+        //     // 客户端展示
+        //     visible: true,
+        //     actionText: "Send",
+        //     actionTextColor: "#fff",
+        //     title: this.detailmData.supplyTitle,
+        //     sub_title: `${this.jn}${this.detailmData.salePrice}`,
+        //     img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
+        //     // 仅在坐席端展示
+        //     price: `${this.jn}${this.detailmData.salePrice}`,
+        //     target: location.href,
+        //     time: "agent",
+        //     tags: [
+        //       {
+        //         label: "商品详情",
+        //         url: location.href,
+        //         focusIframe: "iframe名称1",
+        //       },
+        //     ],
+        //     showCardInfoMsg: 1,
+        //   },
+        // };
+        // otherParams = JSON.stringify(otherParams);
+        // this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&otherParams=${encodeURIComponent(
+        //   otherParams
+        // )}`;
+        // this.showServer = true;
       }
     },
     //商品详情
