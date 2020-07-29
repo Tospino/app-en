@@ -298,8 +298,8 @@ export default {
           visible: true,
           actionText: "Send",
           actionTextColor: "#fff",
-          title: this.detailObj.orderSn,
-          sub_title: `contacts:${this.detailObj.consignee}，phone:${this.detailObj.mobile}`,
+          title: this.detailObj.detailList[0].skuName, // this.detailObj.orderSn
+          sub_title: `共${this.detailObj.detailList.length}件商品：合计${this.jn}${this.detailObj.orderAmountWebsite}`, //contacts:${this.detailObj.consignee}，phone:${this.detailObj.mobile}
           img: `${this.$webUrl}${this.detailObj.detailList[0].skuImg}`,
           //   // 仅在坐席端展示
           price: `${this.jn}${this.detailObj.orderAmountWebsite}`,

@@ -277,7 +277,7 @@ export default {
             actionText: "Send",
             actionTextColor: "#fff",
             title: this.detailmData.supplyTitle,
-            sub_title: `tsinCode:${this.detailmData.tsinCode},attr:${this.detailmData.skuValuesTitleEng}`,
+            sub_title: `${this.jn}${this.detailmData.salePrice}`,
             img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
             // 仅在坐席端展示
             price: `${this.jn}${this.detailmData.salePrice}`,
@@ -306,7 +306,7 @@ export default {
             actionText: "Send",
             actionTextColor: "#fff",
             title: this.detailmData.supplyTitle,
-            sub_title: `tsinCode:${this.detailmData.tsinCode},attr:${this.detailmData.skuValuesTitleEng}`,
+            sub_title: `${this.jn}${this.detailmData.salePrice}`,
             img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
             // 仅在坐席端展示
             price: `${this.jn}${this.detailmData.salePrice}`,
