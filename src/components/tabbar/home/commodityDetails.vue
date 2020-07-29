@@ -268,8 +268,9 @@ export default {
     service() {
       // 判断是否是游客
       if (localStorage.userinfoShop && localStorage.token) {
+        let userinfoShop = JSON.parse(localStorage.userinfoShop);
         let otherParams = {
-          nickName: `用户名：${this.userinfoShop.nickName},用户ID：${this.userinfoShop.userId}`,
+          nickName: `用户名：${userinfoShop.nickName},用户ID：${userinfoShop.userId}`,
           productInfo: {
             // 客户端展示
             visible: true,
@@ -294,7 +295,7 @@ export default {
         };
         otherParams = JSON.stringify(otherParams);
         this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&clientId=${
-          this.userinfoShop.userId
+          userinfoShop.userId
         }&otherParams=${encodeURIComponent(otherParams)}`;
         this.showServer = true;
       } else {
