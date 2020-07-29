@@ -1,186 +1,198 @@
 <template>
   <!-- 商品详情页 -->
   <div class="commodity-details">
-    <!-- 头部搜索框 -->
-    <details-header></details-header>
-    <div class="commodity-tab" v-if="true">
-      <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
-        <van-tab title="Shot"></van-tab>
-        <!-- <van-tab title="Review"></van-tab> -->
-        <van-tab title="Param"></van-tab>
-        <van-tab title="Details"></van-tab>
-        <van-tab title="Similar"></van-tab>
-      </van-tabs>
-    </div>
-    <div class="commodity-tab-place"></div>
-    <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" v-show="showData">
-      <div class="bscroll-con">
-        <div class="commodity-swipe">
-          <van-swipe @change="onChange" v-if="showData">
-            <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
-              <div class="w1">
-                <img :src="$bigwebUrl+banner.imgUrl" />
-              </div>
-            </van-swipe-item>
-            <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
-          </van-swipe>
-        </div>
-        <div class="good-content">
-          <div v-if="detailmData.quoteMethod == 1">
-            <div class="prices">
-              <span class="mark c-orange">{{jn}}</span>
-              <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
-              <span
-                class="p2 through"
-                v-if="detailmData.salePriceFlag"
-              >{{jn}}{{detailmData.salePrice}}</span>
-            </div>
-            <div>
-              <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
-            </div>
+    <iframe :src="seversUrl" v-if="showServer" width="100%" :height="h"></iframe>
+    <section v-else>
+      <!-- 头部搜索框 -->
+      <details-header></details-header>
+      <div class="commodity-tab" v-if="true">
+        <van-tabs
+          v-model="active"
+          class="tab-list"
+          title-active-color="#FA5300"
+          @change="changeTab"
+        >
+          <van-tab title="Shot"></van-tab>
+          <!-- <van-tab title="Review"></van-tab> -->
+          <van-tab title="Param"></van-tab>
+          <van-tab title="Details"></van-tab>
+          <van-tab title="Similar"></van-tab>
+        </van-tabs>
+      </div>
+      <div class="commodity-tab-place"></div>
+      <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" v-show="showData">
+        <div class="bscroll-con">
+          <div class="commodity-swipe">
+            <van-swipe @change="onChange" v-if="showData">
+              <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
+                <div class="w1">
+                  <img :src="$bigwebUrl+banner.imgUrl" />
+                </div>
+              </van-swipe-item>
+              <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
+            </van-swipe>
           </div>
-          <div class="miaoshu">
-            <span class="p4">{{detailmData.supplyTitle}}</span>
-            <!-- <span>
+          <div class="good-content">
+            <div v-if="detailmData.quoteMethod == 1">
+              <div class="prices">
+                <span class="mark c-orange">{{jn}}</span>
+                <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
+                <span
+                  class="p2 through"
+                  v-if="detailmData.salePriceFlag"
+                >{{jn}}{{detailmData.salePrice}}</span>
+              </div>
+              <div>
+                <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
+              </div>
+            </div>
+            <div class="miaoshu">
+              <span class="p4">{{detailmData.supplyTitle}}</span>
+              <!-- <span>
                     <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
                     <span class="fenxiang-txt">Share</span>
-            </span>-->
-          </div>
-          <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
-            <div v-for="(spc,index) in spclist" :key="index" class="qujianjia-item">
-              <div class="price">
-                <span class="huobi">{{jn}}</span>
-                <span>{{spc.price}}</span>
-              </div>
-              <div class="piece">
-                <span v-show="index == 0">MOQ:</span>
-                <span>{{spc.pcs}}PCS</span>
+              </span>-->
+            </div>
+            <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
+              <div v-for="(spc,index) in spclist" :key="index" class="qujianjia-item">
+                <div class="price">
+                  <span class="huobi">{{jn}}</span>
+                  <span>{{spc.price}}</span>
+                </div>
+                <div class="piece">
+                  <span v-show="index == 0">MOQ:</span>
+                  <span>{{spc.pcs}}PCS</span>
+                </div>
               </div>
             </div>
+            <div>Sales:{{detailmData.skuSalesNum ? detailmData.skuSalesNum:0}}PCS</div>
+            <div class="supplement" v-if="false">
+              <span class="t1">物流</span>
+              <span class="t2">浙江省 金华市</span>
+              <span class="erect-line"></span>
+              <span class="t3">TOSPINO</span>
+            </div>
           </div>
-          <div>Sales:{{detailmData.skuSalesNum ? detailmData.skuSalesNum:0}}PCS</div>
-          <div class="supplement" v-if="false">
-            <span class="t1">物流</span>
-            <span class="t2">浙江省 金华市</span>
-            <span class="erect-line"></span>
-            <span class="t3">TOSPINO</span>
+          <div
+            class="fbm-time"
+            v-if="detailmData.arriveDateRangeStringEng"
+          >Get it as soon as {{detailmData.arriveDateRangeStringEng}}.</div>
+          <van-cell-group class="border-0" @click="changeComStatus(true,false)">
+            <van-field
+              v-model="username"
+              clearable
+              right-icon="arrow"
+              :placeholder="detailmData.skuValuesTitleEng"
+              left-icon="arrow"
+              disabled
+            >
+              <div slot="left-icon" size="small" type="primary" class="text-left">
+                <span>Select</span>
+                <span class="erect-line1"></span>
+              </div>
+            </van-field>
+          </van-cell-group>
+          <div class="fbm-wuliu" v-if="detailmData.expId == 1">
+            <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
+            <span>Ships from {{detailmData.areaNameEng}}</span>
           </div>
-        </div>
-        <div
-          class="fbm-time"
-          v-if="detailmData.arriveDateRangeStringEng"
-        >Get it as soon as {{detailmData.arriveDateRangeStringEng}}.</div>
-        <van-cell-group class="border-0" @click="changeComStatus(true,false)">
-          <van-field
-            v-model="username"
-            clearable
-            right-icon="arrow"
-            :placeholder="detailmData.skuValuesTitleEng"
-            left-icon="arrow"
-            disabled
+          <div
+            class="good-comment"
+            @click="$router.push({name:'商品详情评价',query:{skuid:detailmData.skuId}})"
+            ref="goodComment"
+            v-if="false"
           >
-            <div slot="left-icon" size="small" type="primary" class="text-left">
-              <span>Select</span>
-              <span class="erect-line1"></span>
+            <div v-if="detailmData.evaContent">
+              <div class="comment-top">
+                <span class="p1">Reviews</span>
+                <span class="p2">{{detailmData.starNumber}}</span>
+                <van-rate v-model="detailmData.starNumber" void-color="#FA5300" color="#FA5300" />
+              </div>
+              <div class="comment-describe">
+                <span>{{detailmData.nickName}}:{{detailmData.evaContent}}</span>
+              </div>
+              <div class="comment-specifications">
+                <span>{{detailmData.proUnit}}</span>
+              </div>
+              <div class="comment-arrow">
+                <van-icon name="arrow" />
+              </div>
             </div>
-          </van-field>
-        </van-cell-group>
-        <div class="fbm-wuliu" v-if="detailmData.expId == 1">
-          <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
-          <span>Ships from {{detailmData.areaNameEng}}</span>
-        </div>
-        <div
-          class="good-comment"
-          @click="$router.push({name:'商品详情评价',query:{skuid:detailmData.skuId}})"
-          ref="goodComment"
-          v-if="false"
-        >
-          <div v-if="detailmData.evaContent">
-            <div class="comment-top">
-              <span class="p1">Reviews</span>
-              <span class="p2">{{detailmData.starNumber}}</span>
-              <van-rate v-model="detailmData.starNumber" void-color="#FA5300" color="#FA5300" />
-            </div>
-            <div class="comment-describe">
-              <span>{{detailmData.nickName}}:{{detailmData.evaContent}}</span>
-            </div>
-            <div class="comment-specifications">
-              <span>{{detailmData.proUnit}}</span>
-            </div>
-            <div class="comment-arrow">
-              <van-icon name="arrow" />
+            <div v-else>
+              <div class="comment-top">
+                <span class="p1">Reviews</span>
+                <span class="c-999">No reviews</span>
+              </div>
             </div>
           </div>
-          <div v-else>
-            <div class="comment-top">
-              <span class="p1">Reviews</span>
-              <span class="c-999">No reviews</span>
+          <div ref="guige">
+            <div class="canshu" v-for="(param,index) in detailmData.productParamList" :key="index">
+              <div class="canshu-item fl-left">{{param.paramTitleEng}}</div>
+              <div class="canshu-item fl-left">{{param.pvValueEng}}{{param.paramUnitEng}}</div>
             </div>
+            <div class="shousuo" v-if="shousuoStatus" @click="zankai">
+              <span>open</span>
+              <van-icon name="arrow-down" />
+            </div>
+            <div v-html="detailmData.supplyDetailpara"></div>
           </div>
-        </div>
-        <div ref="guige">
-          <div class="canshu" v-for="(param,index) in detailmData.productParamList" :key="index">
-            <div class="canshu-item fl-left">{{param.paramTitleEng}}</div>
-            <div class="canshu-item fl-left">{{param.pvValueEng}}{{param.paramUnitEng}}</div>
+          <div class="bbxq" ref="xiangqing">
+            <span class="line-left"></span>
+            <span class="bbxq-p1">Details</span>
+            <span class="line-right"></span>
           </div>
-          <div class="shousuo" v-if="shousuoStatus" @click="zankai">
-            <span>open</span>
-            <van-icon name="arrow-down" />
-          </div>
-          <div v-html="detailmData.supplyDetailpara"></div>
+          <div class="banner" v-html="detailmData.supplyDetail"></div>
+          <!-- 推荐宝贝 -->
+          <div ref="tjbb"></div>
+          <footer-exhibition
+            :footerData="footerData"
+            :webUrl="$webUrl"
+            v-if="showfooter"
+            @clickPro="clickPro"
+          ></footer-exhibition>
         </div>
-        <div class="bbxq" ref="xiangqing">
-          <span class="line-left"></span>
-          <span class="bbxq-p1">Details</span>
-          <span class="line-right"></span>
+      </scroll>
+      <!-- 底部导航 -->
+      <van-tabbar v-model="active" class="footer-tab">
+        <div class="icon-collection" @click="cliShoucang">
+          <img
+            src="@/assets/img/tabbar/home/commodityDetails/collection-02@2x.png"
+            v-if="Isfavorites == 1 "
+          />
+          <img src="@/assets/img/tabbar/home/commodityDetails/collection@2x.png" v-else />
+          <div class="icon-collection-p">Collect</div>
         </div>
-        <div class="banner" v-html="detailmData.supplyDetail"></div>
-        <!-- 推荐宝贝 -->
-        <div ref="tjbb"></div>
-        <footer-exhibition
-          :footerData="footerData"
-          :webUrl="$webUrl"
-          v-if="showfooter"
-          @clickPro="clickPro"
-        ></footer-exhibition>
-      </div>
-    </scroll>
-    <!-- 底部导航 -->
-    <van-tabbar v-model="active" class="footer-tab">
-      <div class="icon-collection" @click="cliShoucang">
-        <img
-          src="@/assets/img/tabbar/home/commodityDetails/collection-02@2x.png"
-          v-if="Isfavorites == 1 "
-        />
-        <img src="@/assets/img/tabbar/home/commodityDetails/collection@2x.png" v-else />
-        <div class="icon-collection-p">Collect</div>
-      </div>
-      <div class="icon-service" @click="service">
-        <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
-        <div class="icon-collection-p">Service</div>
-      </div>
-      <van-button
-        type="default"
-        class="add-shopping-cat"
-        @click="changeComStatus(true,true,'Confirm')"
-      >Add to Cart</van-button>
-      <van-button type="primary" class="spend" @click="changeComStatus(true,true,'Buy Now')">Buy Now</van-button>
-    </van-tabbar>
+        <div class="icon-service" @click="service">
+          <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
+          <div class="icon-collection-p">Service</div>
+        </div>
+        <van-button
+          type="default"
+          class="add-shopping-cat"
+          @click="changeComStatus(true,true,'Confirm')"
+        >Add to Cart</van-button>
+        <van-button
+          type="primary"
+          class="spend"
+          @click="changeComStatus(true,true,'Buy Now')"
+        >Buy Now</van-button>
+      </van-tabbar>
 
-    <transition name="updown">
-      <commodity-selection
-        v-show="comStatus"
-        @changeComStatus="changeComStatus"
-        :selectionData="selectionData"
-        :btnStatus="btnStatus"
-        :btnName="btnName"
-      ></commodity-selection>
-    </transition>
+      <transition name="updown">
+        <commodity-selection
+          v-show="comStatus"
+          @changeComStatus="changeComStatus"
+          :selectionData="selectionData"
+          :btnStatus="btnStatus"
+          :btnName="btnName"
+        ></commodity-selection>
+      </transition>
 
-    <van-overlay :show="show2" @click="show2 = false" class="overlay">
-      <!-- 客服电话 -->
-      <kefu></kefu>
-    </van-overlay>
+      <van-overlay :show="show2" @click="show2 = false" class="overlay">
+        <!-- 客服电话 -->
+        <kefu></kefu>
+      </van-overlay>
+    </section>
   </div>
 </template>
 
@@ -191,7 +203,7 @@ import commoditySelection from "@/multiplexing/commoditySelection";
 import { productdetailApi } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
-  adduserfavoritesApi
+  adduserfavoritesApi,
 } from "@/api/favorites/index.js";
 import kefu from "@/multiplexing/kefu.vue";
 import { Toast } from "vant";
@@ -209,7 +221,7 @@ export default {
       detailmData: {},
       leng: 0,
       footerData: {
-        list: []
+        list: [],
       },
       showfooter: false,
       Isfavorites: 0,
@@ -221,11 +233,16 @@ export default {
       productParamList2: [],
       shousuoStatus: false,
       showData: false,
-      spclist: []
+      spclist: [],
+      seversUrl: `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN`,
+      showServer: false, // 是否显示客户弹框
+      h: document.documentElement.clientHeight + "px",
     };
   },
   computed: {},
-  created() {},
+  created() {
+    console.log("window", window);
+  },
   mounted() {
     setTimeout(() => {
       this.productdetail(this.$route.query.skuId);
@@ -244,12 +261,76 @@ export default {
     onChange(index) {
       this.current = index;
     },
+    /**
+     * @description:联系客服
+     * @author: 曹建勇
+     */
     service() {
-      this.show2 = true;
+      // 判断是否是游客
+      if (localStorage.userinfoShop && localStorage.token) {
+        let otherParams = {
+          nickName: `用户名：${this.userinfoShop.nickName},用户ID：${this.userinfoShop.userId}`,
+          productInfo: {
+            // 客户端展示
+            visible: true,
+            actionText: "Send",
+            actionTextColor: "#fff",
+            title: this.detailmData.supplyTitle,
+            sub_title: `tsinCode:${this.detailmData.tsinCode},attr:${this.detailmData.skuValuesTitleEng}`,
+            img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
+            // 仅在坐席端展示
+            price: `${this.jn}${this.detailmData.salePrice}`,
+            target: location.href,
+            time: "agent",
+            tags: [
+              {
+                label: "商品详情",
+                url: location.href,
+                focusIframe: "iframe名称1",
+              },
+            ],
+            showCardInfoMsg: 1,
+          },
+        };
+        otherParams = JSON.stringify(otherParams);
+        this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&clientId=${
+          this.userinfoShop.userId
+        }&otherParams=${encodeURIComponent(otherParams)}`;
+        this.showServer = true;
+      } else {
+        let otherParams = {
+          productInfo: {
+            // 客户端展示
+            visible: true,
+            actionText: "Send",
+            actionTextColor: "#fff",
+            title: this.detailmData.supplyTitle,
+            sub_title: `tsinCode:${this.detailmData.tsinCode},attr:${this.detailmData.skuValuesTitleEng}`,
+            img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
+            // 仅在坐席端展示
+            price: `${this.jn}${this.detailmData.salePrice}`,
+            target: location.href,
+            time: "agent",
+            tags: [
+              {
+                label: "商品详情",
+                url: location.href,
+                focusIframe: "iframe名称1",
+              },
+            ],
+            showCardInfoMsg: 1,
+          },
+        };
+        otherParams = JSON.stringify(otherParams);
+        this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&otherParams=${encodeURIComponent(
+          otherParams
+        )}`;
+        this.showServer = true;
+      }
     },
     //商品详情
     productdetail(id) {
-      productdetailApi({ skuid: id }).then(res => {
+      productdetailApi({ skuid: id }).then((res) => {
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
@@ -299,7 +380,7 @@ export default {
     },
     //增加用户浏览记录数据
     adduserbrowhistory(id) {
-      adduserbrowhistoryApi({ skuid: id }).then(res => {});
+      adduserbrowhistoryApi({ skuid: id }).then((res) => {});
     },
     //点击tab标签
     changeTab(index) {
@@ -326,7 +407,7 @@ export default {
     },
     //加入收藏夹
     adduserfavorites(data) {
-      adduserfavoritesApi(data).then(res => {
+      adduserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           this.Isfavorites = 1;
         }
@@ -336,14 +417,14 @@ export default {
     zankai() {
       this.productParamList = this.productParamList2;
       this.shousuoStatus = false;
-    }
+    },
   },
   components: {
     detailsHeader,
     footerExhibition,
     commoditySelection,
-    kefu
-  }
+    kefu,
+  },
 };
 </script>
 
