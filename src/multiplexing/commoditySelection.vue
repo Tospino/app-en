@@ -291,7 +291,7 @@ export default {
         //添加购物车
         addshopcart(){
             let data = [{
-                    businessId:this.selectionObj.businessId,
+                    businessId:this.selectionObj.Data.businessId,
                     priceId:this.makeItem.priceId,
                     shopNumber:this.goodNumber,
                     skuId:this.makeItem.skuId,
