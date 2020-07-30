@@ -114,7 +114,7 @@ export default {
           // window.location.href = res.Data.payMainNo
           // console.log(res);
           park({
-            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}`,
+            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&orderSource=1`,
             method: "POST"
           }).then(result => {
             // console.log(result);

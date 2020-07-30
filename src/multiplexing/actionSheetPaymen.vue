@@ -158,7 +158,7 @@ export default {
           dataType: "text"
         }).then(res => {
           park({
-            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&provider=${this.payTypeList[0].shortName}`,
+            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&provider=${this.payTypeList[0].shortName}&orderSource=1`,
             method: "POST"
           }).then(result => {
             if (result.status_code) {
