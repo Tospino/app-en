@@ -122,6 +122,7 @@ import language from '@/components/tabbar/account/language/index'
 import languSubPage from '@/components/tabbar/account/language/subPage'
 
 //消息
+import informationlist from '@/components/tabbar/account/information/list'
 import information from '@/components/tabbar/account/information/index'
 import inforDetails from '@/components/tabbar/account/information/details'
 
@@ -138,6 +139,9 @@ import rechargeIndex from '@/multiplexing/router.vue'
 import recharge from '@/components/tabbar/account/prepaidRefill/recharge' //主页
 import rechargeDetails from '@/components/tabbar/account/prepaidRefill/rechargeDetails' //详情
 import rechargeFlow from '@/components/tabbar/account/prepaidRefill/rechargeFlow'
+
+// 客服页面
+import customerService from '@/components/tabbar/account/customerService'
 Vue.use(Router)
 
 export default new Router({
@@ -428,6 +432,11 @@ export default new Router({
             name: '账户明细',
             component: accountDetails,
         },
+        {
+            path: '/customerService',
+            name: '客服',
+            component: customerService,
+        },
 
         //话费充值
         {
@@ -634,7 +643,11 @@ export default new Router({
             component: languSubPage
         },
 
-
+        {
+            path: '/informationlist',
+            name: '消息列表',
+            component: informationlist
+        },
         {
             path: '/information',
             name: '消息',

@@ -1,7 +1,9 @@
 <template>
   <!-- 商品详情页 -->
   <div class="commodity-details">
-    <iframe :src="seversUrl" v-if="showServer" width="100%" :height="h"></iframe>
+    <section v-if="showServer">
+      <customerService :type="1" :data="detailmData" />
+    </section>
     <section v-else>
       <!-- 头部搜索框 -->
       <details-header></details-header>
@@ -200,6 +202,7 @@
 import detailsHeader from "@/multiplexing/detailsHeader";
 import footerExhibition from "@/multiplexing/footerExhibition";
 import commoditySelection from "@/multiplexing/commoditySelection";
+import customerService from "@/components/tabbar/account/customerService.vue";
 import { productdetailApi } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
@@ -234,15 +237,11 @@ export default {
       shousuoStatus: false,
       showData: false,
       spclist: [],
-      seversUrl: `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN`,
       showServer: false, // 是否显示客户弹框
-      h: document.documentElement.clientHeight + "px",
     };
   },
   computed: {},
-  created() {
-    console.log("window", window);
-  },
+  created() {},
   mounted() {
     setTimeout(() => {
       this.productdetail(this.$route.query.skuId);
@@ -266,69 +265,7 @@ export default {
      * @author: 曹建勇
      */
     service() {
-      // 判断是否是游客
-      if (localStorage.userinfoShop && localStorage.token) {
-        let userinfoShop = JSON.parse(localStorage.userinfoShop);
-        let otherParams = {
-          nickName: `用户名：${userinfoShop.nickName},用户ID：${userinfoShop.userId}`,
-          productInfo: {
-            // 客户端展示
-            visible: true,
-            actionText: "Send",
-            actionTextColor: "#fff",
-            title: this.detailmData.supplyTitle,
-            sub_title: `${this.jn}${this.detailmData.salePrice}`,
-            img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
-            // 仅在坐席端展示
-            price: `${this.jn}${this.detailmData.salePrice}`,
-            target: location.href,
-            time: "agent",
-            tags: [
-              {
-                label: "商品详情",
-                url: location.href,
-                focusIframe: "iframe名称1",
-              },
-            ],
-            showCardInfoMsg: 1,
-          },
-        };
-        otherParams = JSON.stringify(otherParams);
-        this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&clientId=${
-          userinfoShop.userId
-        }&otherParams=${encodeURIComponent(otherParams)}`;
-        this.showServer = true;
-      } else {
-        this.$router.push({ name: "登录" });
-        // let otherParams = {
-        //   productInfo: {
-        //     // 客户端展示
-        //     visible: true,
-        //     actionText: "Send",
-        //     actionTextColor: "#fff",
-        //     title: this.detailmData.supplyTitle,
-        //     sub_title: `${this.jn}${this.detailmData.salePrice}`,
-        //     img: `${this.$webUrl}${this.detailmData.productImgList[0].imgUrl}`,
-        //     // 仅在坐席端展示
-        //     price: `${this.jn}${this.detailmData.salePrice}`,
-        //     target: location.href,
-        //     time: "agent",
-        //     tags: [
-        //       {
-        //         label: "商品详情",
-        //         url: location.href,
-        //         focusIframe: "iframe名称1",
-        //       },
-        //     ],
-        //     showCardInfoMsg: 1,
-        //   },
-        // };
-        // otherParams = JSON.stringify(otherParams);
-        // this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&otherParams=${encodeURIComponent(
-        //   otherParams
-        // )}`;
-        // this.showServer = true;
-      }
+      this.showServer = true;
     },
     //商品详情
     productdetail(id) {
@@ -426,6 +363,7 @@ export default {
     footerExhibition,
     commoditySelection,
     kefu,
+    customerService,
   },
 };
 </script>

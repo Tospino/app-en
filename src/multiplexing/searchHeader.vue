@@ -11,7 +11,7 @@
             <div class="icons">
                 <!-- 扫码功能去掉 -->
                 <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
-                <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2" @click="$router.push({name:'消息'})">
+                <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2" @click="$router.push({name:'消息列表'})">
             </div>
         </div>
         <div class="place"></div>
