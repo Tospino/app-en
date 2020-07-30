@@ -1,7 +1,7 @@
 <template>
   <!-- 订单详情 -->
   <div class="order-detail">
-    <iframe :src="seversUrl" v-if="showServer" width="100%" :height="h"></iframe>
+    <customerService :type="2" v-if="showServer" :data="detailObj"></customerService>
     <section v-else>
       <balance-header title="Order Details"></balance-header>
       <div class="address-p1">
@@ -231,6 +231,7 @@ import actionSheetSucess from "@/multiplexing/actionSheetSucess";
 import zhezhao from "@/multiplexing/zhezhao";
 import kefu from "@/multiplexing/kefu.vue";
 import balanceHeader from "./itemComponents/balanceHeader";
+import customerService from "@/components/tabbar/account/customerService.vue";
 import { mapActions } from "vuex";
 import { Toast } from "vant";
 export default {
@@ -269,9 +270,7 @@ export default {
       copyBtn: null, //存储初始化复制按钮事件
       typeLeixing: "",
       payTypeDetail: 201, //余额支付ID,暂时写死
-      seversUrl: `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN`,
       showServer: false, // 是否显示客户弹框
-      h: document.documentElement.clientHeight + "px",
     };
   },
   computed: {},
@@ -291,35 +290,7 @@ export default {
      * @author: 曹建勇
      */
     service() {
-      let otherParams = {
-        nickName: `用户名：${this.userinfoShop.nickName},用户ID：${this.userinfoShop.userId}`,
-        productInfo: {
-          // 客户端展示
-          visible: true,
-          actionText: "Send",
-          actionTextColor: "#fff",
-          title: this.detailObj.detailList[0].skuName, // this.detailObj.orderSn
-          sub_title: `共${this.detailObj.detailList.length}件商品：合计${this.jn}${this.detailObj.orderAmountWebsite}`, //contacts:${this.detailObj.consignee}，phone:${this.detailObj.mobile}
-          img: `${this.$webUrl}${this.detailObj.detailList[0].skuImg}`,
-          //   // 仅在坐席端展示
-          price: `${this.jn}${this.detailObj.orderAmountWebsite}`,
-          target: location.href,
-          time: "agent",
-          tags: [
-            {
-              label: "订单详情",
-              url: location.href,
-              focusIframe: "iframe名称1",
-            },
-          ],
-          showCardInfoMsg: 1,
-        },
-      };
-      otherParams = JSON.stringify(otherParams);
-      this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&priority=true&clientId=${
-        this.userinfoShop.userId
-      }&otherParams=${encodeURIComponent(otherParams)}`;
-      this.showServer = true;
+      //   this.showServer = true;
     },
     orderinfo() {
       this.formData.order_id = this.$route.query.id;
@@ -553,6 +524,7 @@ export default {
     balanceHeader,
     actionSheetPaymen,
     actionSheetSucess,
+    customerService,
   },
 };
 </script>

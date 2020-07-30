@@ -1,7 +1,7 @@
 <template>
   <!-- 个人页 -->
   <section>
-    <iframe :src="seversUrl" v-if="showServer" width="100%" :height="h"></iframe>
+    <customerService :type="0" v-if="showServer"></customerService>
     <div class="account" v-else>
       <div class="header">
         <span class="header-wd">My Tospino</span>
@@ -287,6 +287,7 @@ import xinyong from "@/assets/img/tabbar/my/account/xinyong@2x.png";
 import xinyuandan from "@/assets/img/tabbar/my/account/xinyuandan@2x.png";
 import yiwancheng from "@/assets/img/tabbar/my/account/yiwancheng@2x.png";
 import zuijinliulan from "@/assets/img/tabbar/my/account/zuijinliulan@2x.png";
+import customerService from "@/components/tabbar/account/customerService.vue";
 import { logoutApi } from "@/api/login/index";
 import { selectuserfavoritesApi } from "@/api/favorites/index.js";
 import { walletInfoApi } from "@/api/accountBalance/index.js";
@@ -318,9 +319,7 @@ export default {
         createtime: "",
       },
       show2: false,
-      seversUrl: `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN`,
       showServer: false, // 是否显示客户弹框
-      h: document.documentElement.clientHeight + "px",
     };
   },
   computed: {},
@@ -388,18 +387,12 @@ export default {
      * @author: 曹建勇
      */
     service() {
-      let otherParams = {
-        nickName: `用户名:${this.userinfoShop.nickName},用户ID:${this.userinfoShop.userId}`,
-      };
-      otherParams = JSON.stringify(otherParams);
-      this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&clientId=${
-        this.userinfoShop.userId
-      }&otherParams=${encodeURIComponent(otherParams)}`;
-      this.showServer = true;
+      //   this.showServer = true;
     },
   },
   components: {
     kefu,
+    customerService,
   },
 };
 </script>

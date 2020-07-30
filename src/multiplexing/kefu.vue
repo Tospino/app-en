@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-21 10:03:29
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-29 17:15:26
+ * @LastEditTime: 2020-07-30 16:26:22
  * @Description: 
  * @FilePath: \app-en\src\multiplexing\kefu.vue
 --> 
@@ -20,10 +20,10 @@
       <img src="@/assets/img/goodsDetails/phone@2x.png" alt />
       <span>030 294 9239</span>
     </div>
-    <div class="p1" @click="service">
+    <!-- <div class="p1" @click="service">
       <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" alt />
       <span>Service</span>
-    </div>
+    </div>-->
   </div>
 </template>
 

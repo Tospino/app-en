@@ -28,7 +28,7 @@
           class="icon-style"
         />
       </van-tabbar-item>
-      <van-tabbar-item route to="/customerService" replace>
+      <!-- <van-tabbar-item route to="/customerService" replace>
         <span>Message</span>
         <img
           slot="icon"
@@ -36,7 +36,7 @@
           :src="props.active ? icon.Message1 : icon.Message"
           class="icon-style"
         />
-      </van-tabbar-item>
+      </van-tabbar-item>-->
       <van-tabbar-item route to="/control/shoppingCart" :replace="isreplace">
         <span>Cart</span>
         <img
