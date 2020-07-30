@@ -65,7 +65,8 @@ export default {
             invoiceData:{
                 payMainNo:'',
                 provider:'',
-                phoneNumber:''
+                phoneNumber:'',
+                orderSource:'1'
             },
             customMony:''
         };
@@ -130,6 +131,7 @@ export default {
                 if(res.status_code == 200){
                     this.invoiceData.phoneNumber = 233+this.phone
                     this.invoiceData.payMainNo = res.data.prepaidSn
+
                     if(this.paidMoneyData.paymentType == 1){
                         this.balancePrepaidRecharge({prepaidId:res.data.prepaidId,payPwd:this.payPwd})
                     }else{
