@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-31 11:09:36
+ * @LastEditTime: 2020-07-31 11:23:01
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -107,10 +107,10 @@ export default {
             actionText: "Send",
             actionTextColor: "#fff",
             title: this.data.detailList[0].skuName,
-            sub_title: `共${this.data.detailList.length}件商品：合计${this.jn}${this.data.orderAmountWebsite}`,
+            sub_title: `There are 4${this.data.detailList.length}items in total：total${this.jn}${this.data.orderAmountWebsite}`,
             img: `${this.$webUrl}${this.data.detailList[0].skuImg}`,
-            other_title_one: `订单号：${this.data.orderSn}`,
-            other_title_two: `创建时间：${this.data.orderAddtimeWebsite}`,
+            other_title_one: `orderSn：${this.data.orderSn}`,
+            other_title_two: `creation time：${this.data.orderAddtimeWebsite}`,
             //   // 仅在坐席端展示
             price: `${this.jn}${this.data.orderAmountWebsite}`,
             target: location.href,
