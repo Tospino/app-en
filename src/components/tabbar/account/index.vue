@@ -346,6 +346,7 @@ export default {
       logoutApi().then((res) => {
         if (localStorage.token) {
           localStorage.removeItem("token");
+          localStorage.removeItem("userinfoShop");
         }
         this.$router.push({ name: "登录" });
       });
