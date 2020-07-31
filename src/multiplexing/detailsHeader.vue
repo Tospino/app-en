@@ -72,6 +72,8 @@ export default {
     position: absolute;
     left: 30px;
     top: 50%;
+    width: 100px;
+    text-align: left;
     transform: translateY(-50%);
     img {
       width: 100%;

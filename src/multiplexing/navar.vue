@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-21 10:03:29
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-30 17:11:52
+ * @LastEditTime: 2020-07-31 14:45:38
  * @Description: 
  * @FilePath: \app-en\src\multiplexing\navar.vue
 --> 
@@ -67,6 +67,8 @@ export default {
     top: 20px;
     left: 30px;
     font-size: 40px;
+    width: 100px;
+    text-align: left;
   }
   .header-t1 {
     display: inline-block;

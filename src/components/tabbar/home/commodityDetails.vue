@@ -256,11 +256,11 @@ export default {
     next();
   },
   watch: {
-      $route(){
-          if(this.$route.query.skuId){
-              this.productdetail(this.$route.query.skuId)
-          }
+    $route() {
+      if (this.$route.query.skuId) {
+        this.productdetail(this.$route.query.skuId);
       }
+    },
   },
   methods: {
     onChange(index) {

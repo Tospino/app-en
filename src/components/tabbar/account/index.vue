@@ -349,6 +349,7 @@ export default {
           localStorage.removeItem("userinfoShop");
         }
         this.$router.push({ name: "登录" });
+        location.reload();
       });
     },
     //收藏夹总数

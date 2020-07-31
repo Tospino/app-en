@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-31 11:26:39
+ * @LastEditTime: 2020-07-31 16:55:58
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -10,7 +10,13 @@
   <section class="customerService">
     <!-- 头部搜索框 -->
     <details-header title="Message" v-if="isshow" :isBack="type!==0?true:false"></details-header>
-    <iframe :src="seversUrl" v-if="showServer" width="100%" :height="h"></iframe>
+    <iframe
+      :src="seversUrl"
+      v-if="showServer && token"
+      width="100%"
+      :height="h"
+      @message="HandleMessage"
+    ></iframe>
   </section>
 </template>
 
@@ -44,6 +50,7 @@ export default {
       h: document.documentElement.clientHeight - 40 + "px",
       showServer: false,
       userinfoShop: null,
+      token: null,
       isshow: true,
     };
   },
@@ -53,12 +60,22 @@ export default {
       this.isshow = false;
       this.h = document.documentElement.clientHeight - 55 + "px";
     }
+
     if (localStorage.userinfoShop && localStorage.token) {
       this.userinfoShop = JSON.parse(localStorage.userinfoShop);
       this.getData();
     } else {
       this.$router.push({ name: "登录" });
+      location.reload();
     }
+    if (this.token !== localStorage.token) {
+      this.userinfoShop = JSON.parse(localStorage.userinfoShop);
+      this.getData();
+    }
+    window.addEventListener("message", this.HandleMessage);
+  },
+  destroyed() {
+    window.removeEventListener("message", this.HandleMessage);
   },
   mounted() {},
   watch: {},
@@ -66,6 +83,11 @@ export default {
     getData() {
       let otherParams;
       let nickName = `app用户ID:${this.userinfoShop.userId}`;
+      this.userinfoShop.userId;
+      console.log(
+        "getData -> this.userinfoShop.userId",
+        this.userinfoShop.userId
+      );
       if (this.type === 0) {
         //   普通聊天
         otherParams = {
@@ -124,6 +146,11 @@ export default {
         this.userinfoShop.userId
       }&otherParams=${encodeURIComponent(otherParams)}`;
       this.showServer = true;
+    },
+    HandleMessage(val) {
+      if (val && val.data === "m7ProductClick") {
+        this.type !== 0 ? this.$router.go(0) : this.$router.go(-1);
+      }
     },
   },
   components: { detailsHeader },

@@ -2,7 +2,7 @@
 <!-- 登录页 -->
     <div class="login">
         <div class="logo" >
-            <img src="@/assets/img/login/logo@3x.png">
+            <img @click="$router.push({name:'首页'})" src="@/assets/img/login/logo@3x.png">
         </div>
         <div class="user-name">
             <img src="@/assets/img/login/user@3x.png" alt="图标" class="name-icon">
