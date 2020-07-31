@@ -5,7 +5,7 @@
         <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)" />
         <span class="header-t1">My Browsing</span>
         <span class="header-t2" @click="editBj">{{editBjName}}</span>
-        <van-icon name="chat-o" class="xiaoxi" info @click="$router.push({name:'消息'})" />
+        <van-icon name="chat-o" class="xiaoxi" info @click="$router.push({name:'消息列表'})" />
       </div>
       <div class="place"></div>
       <scroll
@@ -92,7 +92,7 @@ import {
   selectuserbrowhistoryApi,
   selectuserbrowhistorydateApi,
   deleteuserbrowhistoryApi,
-  adduserfavoritesApi
+  adduserfavoritesApi,
 } from "@/api/favorites/index";
 import { Toast } from "vant";
 export default {
@@ -111,9 +111,9 @@ export default {
       formData: {
         page: 1,
         limit: 10,
-        createtime: ""
+        createtime: "",
       },
-      calendarList: []
+      calendarList: [],
     };
   },
   computed: {},
@@ -124,21 +124,21 @@ export default {
   },
   watch: {
     showFooter: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.editBjName = newVal ? "OK" : "Edit";
-      }
+      },
     },
     dataList: {
-      handler: function(newVal) {
+      handler: function (newVal) {
         if (newVal.length == 0) return;
-        newVal.forEach(ele => {
+        newVal.forEach((ele) => {
           ele.checked = false;
-          ele.listhistory.forEach(item => {
+          ele.listhistory.forEach((item) => {
             item.checked = false;
           });
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     //点击编辑
@@ -150,7 +150,7 @@ export default {
       this.$router.push({ name: "商品详情", query: { skuId: skuid } });
     },
     selectuserbrowhistory(data, flag) {
-      selectuserbrowhistoryApi(data).then(res => {
+      selectuserbrowhistoryApi(data).then((res) => {
         if (res.code == 0) {
           if (flag) {
             if (res.Data.list == 0) {
@@ -214,9 +214,9 @@ export default {
     },
     //浏览足迹日期
     selectuserbrowhistorydate() {
-      selectuserbrowhistorydateApi().then(res => {
+      selectuserbrowhistorydateApi().then((res) => {
         if (res.code == 0) {
-          res.Data.forEach(ele => {
+          res.Data.forEach((ele) => {
             this.calendarList.push(this.timeSubstring(ele.browTime));
           });
         }
@@ -229,9 +229,9 @@ export default {
     },
     //全选复选框
     allCheckBox(checkFlag) {
-      this.dataList.forEach(item => {
+      this.dataList.forEach((item) => {
         item.checked = checkFlag;
-        item.listhistory.forEach(ele => {
+        item.listhistory.forEach((ele) => {
           ele.checked = checkFlag;
         });
       });
@@ -241,13 +241,13 @@ export default {
     productCheckBox(productItem, flag, list) {
       productItem.checked = !productItem.checked;
       if (flag == "all") {
-        productItem.listhistory.forEach(ele => {
+        productItem.listhistory.forEach((ele) => {
           ele.checked = productItem.checked;
         });
       } else {
         //点击订单某一个商品的复选框
         let itemFlag = true; //标记
-        list.listhistory.forEach(element => {
+        list.listhistory.forEach((element) => {
           //如果有一个是没选中的
           if (element.checked == false) {
             itemFlag = false;
@@ -266,7 +266,7 @@ export default {
     },
     //删除用户足迹
     deleteuserbrowhistory(data) {
-      deleteuserbrowhistoryApi(data).then(res => {
+      deleteuserbrowhistoryApi(data).then((res) => {
         if (res.code == 0) {
           this.refreshOrder(this.formData);
         }
@@ -275,8 +275,8 @@ export default {
     //删除按钮
     delfootprint() {
       let tableIds = [];
-      this.dataList.forEach(dataItem => {
-        dataItem.listhistory.forEach(item => {
+      this.dataList.forEach((dataItem) => {
+        dataItem.listhistory.forEach((item) => {
           if (item.checked) tableIds.push(item.dataId);
         });
       });
@@ -284,7 +284,7 @@ export default {
     },
     //加入收藏夹
     adduserfavorites(data, item) {
-      adduserfavoritesApi(data).then(res => {
+      adduserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           item.isfavorites = 1;
         }
@@ -293,11 +293,11 @@ export default {
     //跳转商品详情
     toDetail(skuid) {
       this.$router.push({ name: "商品详情", query: { skuId: skuid } });
-    }
+    },
   },
   components: {
-    calendar
-  }
+    calendar,
+  },
 };
 </script>
 

@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 09:57:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-30 16:49:04
+ * @LastEditTime: 2020-07-31 09:20:30
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\information\list.vue
 --> 
@@ -21,7 +21,9 @@
       <div class="flex_space">
         <div>
           <p class="title">{{item.user}}</p>
-          <p class="mt_8">{{item.lastMessage.content}}</p>
+          <p
+            class="mt_8"
+          >{{item.lastMessage && item.lastMessage.content?item.lastMessage.content:""}}</p>
         </div>
         <div class="flex_col flex_end">
           <span class="time">{{item.biUpdateTime}}</span>

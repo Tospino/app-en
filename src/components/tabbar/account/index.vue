@@ -5,7 +5,7 @@
       <div class="header">
         <span class="header-wd">My Tospino</span>
         <div class="fl-right">
-          <van-icon name="chat-o" size="17px" @click="jumpRouter('消息')" />
+          <van-icon name="chat-o" size="17px" @click="jumpRouter('消息列表')" />
         </div>
       </div>
       <div class="head-con">
@@ -169,7 +169,7 @@
                 class="icon-style"
               />
             </van-tabbar-item>
-            <van-tabbar-item @click="jumpRouter('消息')">
+            <van-tabbar-item @click="jumpRouter('消息列表')">
               <span>New Messages</span>
               <img
                 slot="icon"
