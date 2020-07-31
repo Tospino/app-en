@@ -255,7 +255,13 @@ export default {
     }
     next();
   },
-  watch: {},
+  watch: {
+      $route(){
+          if(this.$route.query.skuId){
+              this.productdetail(this.$route.query.skuId)
+          }
+      }
+  },
   methods: {
     onChange(index) {
       this.current = index;

@@ -282,7 +282,13 @@ export default {
     }
     this.copyBtn = new this.clipboard(this.$refs.copy);
   },
-  watch: {},
+  watch: {
+    $route() {
+      if (this.$route.query.id) {
+        this.orderinfo();
+      }
+    },
+  },
   methods: {
     ...mapActions(["setorderdetaillist"]),
     /**

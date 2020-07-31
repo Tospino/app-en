@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-31 11:23:01
+ * @LastEditTime: 2020-07-31 11:26:39
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -107,7 +107,7 @@ export default {
             actionText: "Send",
             actionTextColor: "#fff",
             title: this.data.detailList[0].skuName,
-            sub_title: `There are 4${this.data.detailList.length}items in total：total${this.jn}${this.data.orderAmountWebsite}`,
+            sub_title: `There are ${this.data.detailList.length} items in total：total${this.jn}${this.data.orderAmountWebsite}`,
             img: `${this.$webUrl}${this.data.detailList[0].skuImg}`,
             other_title_one: `orderSn：${this.data.orderSn}`,
             other_title_two: `creation time：${this.data.orderAddtimeWebsite}`,
