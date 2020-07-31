@@ -21,7 +21,7 @@
           :info="shopCarInfo"
           @click="$router.push({name:'购物车'})"
         />
-        <van-icon name="chat-o" class="xiaoxi" info @click="$router.push({name:'消息列表'})" />
+        <van-icon name="chat-o" class="xiaoxi" info @click="$router.push({name:'消息'})" />
       </div>
     </div>
     <div style="height:40px"></div>

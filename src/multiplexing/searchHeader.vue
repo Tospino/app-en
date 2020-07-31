@@ -14,7 +14,7 @@
         <img
           src="@/assets/img/tabbar/home/msg@3x.png"
           class="img2"
-          @click="$router.push({name:'消息列表'})"
+          @click="$router.push({name:'消息'})"
         />
       </div>
     </div>

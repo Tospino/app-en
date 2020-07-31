@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-30 18:05:20
+ * @LastEditTime: 2020-07-31 11:09:36
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -109,17 +109,12 @@ export default {
             title: this.data.detailList[0].skuName,
             sub_title: `共${this.data.detailList.length}件商品：合计${this.jn}${this.data.orderAmountWebsite}`,
             img: `${this.$webUrl}${this.data.detailList[0].skuImg}`,
+            other_title_one: `订单号：${this.data.orderSn}`,
+            other_title_two: `创建时间：${this.data.orderAddtimeWebsite}`,
             //   // 仅在坐席端展示
             price: `${this.jn}${this.data.orderAmountWebsite}`,
             target: location.href,
             time: "agent",
-            tags: [
-              {
-                label: "订单详情",
-                url: location.href,
-                focusIframe: "iframe名称1",
-              },
-            ],
             showCardInfoMsg: 1,
           },
         };
