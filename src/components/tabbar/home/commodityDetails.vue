@@ -265,7 +265,7 @@ export default {
      * @author: 曹建勇
      */
     service() {
-      //   this.showServer = true;
+      this.showServer = true;
     },
     //商品详情
     productdetail(id) {

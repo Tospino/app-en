@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-21 10:03:29
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-30 16:26:22
+ * @LastEditTime: 2020-07-30 17:14:55
  * @Description: 
  * @FilePath: \app-en\src\multiplexing\kefu.vue
 --> 
@@ -20,10 +20,10 @@
       <img src="@/assets/img/goodsDetails/phone@2x.png" alt />
       <span>030 294 9239</span>
     </div>
-    <!-- <div class="p1" @click="service">
+    <div class="p1" @click="service">
       <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" alt />
       <span>Service</span>
-    </div>-->
+    </div>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 560px;
+  padding-bottom: 25px;
   background-color: #fff;
   .kefu-header {
     font-size: 36px;

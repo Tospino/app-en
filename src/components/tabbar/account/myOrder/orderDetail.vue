@@ -290,7 +290,7 @@ export default {
      * @author: 曹建勇
      */
     service() {
-      //   this.showServer = true;
+      this.showServer = true;
     },
     orderinfo() {
       this.formData.order_id = this.$route.query.id;

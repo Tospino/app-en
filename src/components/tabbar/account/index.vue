@@ -1,8 +1,7 @@
 <template>
   <!-- 个人页 -->
   <section>
-    <customerService :type="0" v-if="showServer"></customerService>
-    <div class="account" v-else>
+    <div class="account">
       <div class="header">
         <span class="header-wd">My Tospino</span>
         <div class="fl-right">
@@ -206,7 +205,7 @@
           </div>
         </van-field>
       </van-cell-group>
-      <van-cell-group class="border-0">
+      <van-cell-group class="border-0" @click="service">
         <van-field
           v-model="username"
           clearable
@@ -214,7 +213,6 @@
           placeholder="Customer Service"
           left-icon="arrow"
           disabled
-          @click="show2=true"
         >
           <div slot="left-icon" size="small" type="primary" class="icon-left">
             <img src="@/assets/img/tabbar/my/account/kefu.png" />
@@ -287,7 +285,6 @@ import xinyong from "@/assets/img/tabbar/my/account/xinyong@2x.png";
 import xinyuandan from "@/assets/img/tabbar/my/account/xinyuandan@2x.png";
 import yiwancheng from "@/assets/img/tabbar/my/account/yiwancheng@2x.png";
 import zuijinliulan from "@/assets/img/tabbar/my/account/zuijinliulan@2x.png";
-import customerService from "@/components/tabbar/account/customerService.vue";
 import { logoutApi } from "@/api/login/index";
 import { selectuserfavoritesApi } from "@/api/favorites/index.js";
 import { walletInfoApi } from "@/api/accountBalance/index.js";
@@ -387,12 +384,11 @@ export default {
      * @author: 曹建勇
      */
     service() {
-      //   this.showServer = true;
+      this.$router.push({ path: "/control/customerService" });
     },
   },
   components: {
     kefu,
-    customerService,
   },
 };
 </script>

@@ -432,11 +432,7 @@ export default new Router({
             name: '账户明细',
             component: accountDetails,
         },
-        {
-            path: '/customerService',
-            name: '客服',
-            component: customerService,
-        },
+
 
         //话费充值
         {
@@ -610,6 +606,14 @@ export default new Router({
                     path: 'classify',
                     name: '分类',
                     component: classify,
+                    meta: {
+                        keepAlive: true
+                    }
+                },
+                {
+                    path: 'customerService',
+                    name: '客服',
+                    component: customerService,
                     meta: {
                         keepAlive: true
                     }

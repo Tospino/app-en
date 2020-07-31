@@ -2,22 +2,22 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 09:57:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-30 16:20:35
+ * @LastEditTime: 2020-07-30 16:49:04
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\information\list.vue
 --> 
 <template>
   <section class="infolist">
     <navar title="Messages" />
-    <div class="list_item flex">
-      <img src="@/assets/img/headset.png" alt />
+    <div class="list_item flex" @click="$router.push({ name: '消息' })">
+      <img src="@/assets/img/voice.png" alt />
       <div>
         <p class="title">Notification message</p>
         <p class="mt_8">Website announcement, preferential...</p>
       </div>
     </div>
-    <div class="list_item flex" v-for="item in list" :key="item.sid" @click>
-      <img src="@/assets/img/voice.png" alt />
+    <div class="list_item flex" v-for="item in list" :key="item.sid" @click="HandleShowServer">
+      <img src="@/assets/img/headset.png" alt />
       <div class="flex_space">
         <div>
           <p class="title">{{item.user}}</p>
@@ -25,7 +25,7 @@
         </div>
         <div class="flex_col flex_end">
           <span class="time">{{item.biUpdateTime}}</span>
-          <span class="leakNum">{{item.leakNum}}</span>
+          <!-- <span class="leakNum">{{item.replyMsgCount}}</span> -->
         </div>
       </div>
     </div>
@@ -45,6 +45,7 @@ export default {
       APISecret: "0c0db6c0-d20b-11ea-b22e-698a310ae14a",
       userinfoShop: null,
       list: [],
+      showServer: false,
     };
   },
   computed: {},
@@ -83,42 +84,8 @@ export default {
         console.log("passport -> res", res);
       });
     },
-    async getVersion() {
-      const time = await this.generateTimeReqestNumber();
-      console.log("passport -> time", time);
-      const Authorization = window.btoa(`${this.ACCOUNTID}:${time}`); // 编码
-      const sig = md5(
-        `${this.ACCOUNTID}${this.APISecret}${time}`
-      ).toUpperCase();
-      axios({
-        url: `https://openapis.7moor.com/v20160818/customer/getTemplate/${this.ACCOUNTID}?sig=${sig}`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-          Authorization: Authorization,
-        },
-      }).then((res) => {
-        console.log("passport -> res", res);
-      });
-    },
-    async passport() {
-      const time = await this.generateTimeReqestNumber();
-      console.log("passport -> time", time);
-      const Authorization = window.btoa(`${this.ACCOUNTID}:${time}`); // 编码
-      const sig = md5(
-        `${this.ACCOUNTID}${this.APISecret}${time}`
-      ).toLocaleUpperCase();
-      axios({
-        url: `http://apis.7moor.com/v20160818/customer/select/${this.ACCOUNTID}?sig=${sig}`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-          Authorization: Authorization,
-        },
-        data: { version: "201610100019" },
-      }).then((res) => {
-        console.log("passport -> res", res);
-      });
+    HandleShowServer() {
+      this.$router.push({ name: "客服" });
     },
     generateTimeReqestNumber() {
       var date = new Date();

@@ -2,14 +2,14 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-30 15:37:25
+ * @LastEditTime: 2020-07-30 18:05:20
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
 <template>
   <section class="customerService">
     <!-- 头部搜索框 -->
-    <details-header title="Message"></details-header>
+    <details-header title="Message" v-if="isshow" :isBack="type!==0?true:false"></details-header>
     <iframe :src="seversUrl" v-if="showServer" width="100%" :height="h"></iframe>
   </section>
 </template>
@@ -37,17 +37,22 @@ export default {
       default: () => {},
     },
   },
-  name: "customerService",
+  //   name: "customerService",
   data() {
     return {
       seversUrl: `https://ykf-webchat.7moor.com/wapchat.html?accessId=48ebab00-d14e-11ea-89a3-afb3231772e9&fromUrl=tospino-app&urlTitle=&language=EN`,
-      h: document.documentElement.clientHeight + "px",
+      h: document.documentElement.clientHeight - 40 + "px",
       showServer: false,
       userinfoShop: null,
+      isshow: true,
     };
   },
   computed: {},
   created() {
+    if (this.$route.path === "/control/customerService") {
+      this.isshow = false;
+      this.h = document.documentElement.clientHeight - 55 + "px";
+    }
     if (localStorage.userinfoShop && localStorage.token) {
       this.userinfoShop = JSON.parse(localStorage.userinfoShop);
       this.getData();
