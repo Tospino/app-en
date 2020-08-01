@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-21 10:03:29
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-30 17:14:55
+ * @LastEditTime: 2020-08-01 09:50:20
  * @Description: 
  * @FilePath: \app-en\src\multiplexing\kefu.vue
 --> 
@@ -14,27 +14,18 @@
     </div>
     <div class="p1">
       <img src="@/assets/img/goodsDetails/whatsapp@2x.png" alt />
-      <span>055 927 9978</span>
+      <a href="tel:055 927 9978" @click="toPhone('055 927 9978')">055 927 9978</a>
     </div>
     <div class="p1">
       <img src="@/assets/img/goodsDetails/phone@2x.png" alt />
-      <span>030 294 9239</span>
-    </div>
-    <div class="p1" @click="service">
-      <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" alt />
-      <span>Service</span>
+      <a href="tel:030 294 9239" @click="toPhone('030 294 9239')">030 294 9239</a>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    service: {
-      type: Function,
-      default: () => () => {},
-    },
-  },
+  props: {},
   data() {
     return {};
   },
@@ -42,7 +33,13 @@ export default {
   created() {},
   mounted() {},
   watch: {},
-  methods: {},
+  methods: {
+    toPhone(number) {
+      if (plus) {
+        plus.device.dial(number, true);
+      }
+    },
+  },
   components: {},
 };
 </script>

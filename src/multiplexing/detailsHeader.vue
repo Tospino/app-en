@@ -4,6 +4,19 @@
     <div class="detailsHeader c-b-gray">
       <div class="logo">
         <van-icon name="arrow-left" size="17px" @click="$router.go(-1)" />
+        <!-- v-if="$route.name!=='商品详情' && $route.name==='订单详情'" -->
+        <!-- <van-icon
+          name="arrow-left"
+          size="17px"
+          v-if="$route.name==='商品详情'"
+          @click="$router.push({name:'分类'})"
+        />
+        <van-icon
+          name="arrow-left"
+          size="17px"
+          v-if="$route.name==='订单详情'"
+          @click="$router.push({name:'我的订单'})"
+        />-->
       </div>
       <div class="search">
         <van-search

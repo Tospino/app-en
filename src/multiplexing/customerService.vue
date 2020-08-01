@@ -1,10 +1,10 @@
 <!--
  * @Author: 曹建勇
- * @Date: 2020-07-30 13:39:53
+ * @Date: 2020-08-01 14:04:20
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-01 09:27:21
+ * @LastEditTime: 2020-08-01 14:08:30
  * @Description: 
- * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
+ * @FilePath: \app-en\src\multiplexing\customerService.vue
 --> 
 <template>
   <section class="customerService">

@@ -270,7 +270,7 @@
 
       <van-overlay :show="show2" @click="show2 = false" class="overlay">
         <!-- 客服电话 -->
-        <kefu :service="service"></kefu>
+        <kefu></kefu>
       </van-overlay>
     </div>
   </section>
