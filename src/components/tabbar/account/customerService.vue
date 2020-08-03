@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-01 09:27:21
+ * @LastEditTime: 2020-08-03 11:04:31
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -78,10 +78,6 @@ export default {
       let otherParams;
       let nickName = `app用户ID:${this.userinfoShop.userId}`;
       this.userinfoShop.userId;
-      console.log(
-        "getData -> this.userinfoShop.userId",
-        this.userinfoShop.userId
-      );
       if (this.type === 0) {
         //   普通聊天
         otherParams = {
@@ -104,12 +100,16 @@ export default {
             }`,
             img: `${this.$webUrl}${this.data.productImgList[0].imgUrl}`,
             // 仅在坐席端展示
-            price: `${this.jn}${this.data.salePrice}`,
+            price: `${this.jn}${
+              this.data.discountPrice
+                ? this.data.discountPrice
+                : this.data.salePrice
+            }`,
             target: location.href,
             time: "agent",
             tags: [
               {
-                label: "商品详情",
+                label: "product details",
                 url: location.href,
                 focusIframe: "iframe名称1",
               },

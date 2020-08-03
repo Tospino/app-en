@@ -54,6 +54,11 @@
             @click-right-icon="eyeStatus1 = !eyeStatus1"
             :type="fieldType1"
           />
+          <van-field
+            v-model="formData.recommendCode"
+            placeholder="Enter Recommend Code"
+            class="zyyw"
+          />
         </van-cell-group>
       </div>
       <div class="item-title">Company Info(optional fields)</div>
@@ -288,6 +293,7 @@ export default {
         legalPersonImg: "", //法人人像照
         legalPersonBack: "", //法人证件反面照
         legalPersonFront: "", //法人证件正面照
+        recommendCode: "", // 推荐码
       },
       rules: {
         nickName: {
