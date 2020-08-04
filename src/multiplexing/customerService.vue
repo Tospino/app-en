@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-08-01 14:04:20
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-01 14:08:30
+ * @LastEditTime: 2020-08-04 11:17:09
  * @Description: 
  * @FilePath: \app-en\src\multiplexing\customerService.vue
 --> 
@@ -76,12 +76,8 @@ export default {
   methods: {
     getData() {
       let otherParams;
-      let nickName = `app用户ID:${this.userinfoShop.userId}`;
+      let nickName = `app user ID:${this.userinfoShop.userId}`;
       this.userinfoShop.userId;
-      console.log(
-        "getData -> this.userinfoShop.userId",
-        this.userinfoShop.userId
-      );
       if (this.type === 0) {
         //   普通聊天
         otherParams = {

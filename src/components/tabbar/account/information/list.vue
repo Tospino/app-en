@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 09:57:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-31 09:20:30
+ * @LastEditTime: 2020-08-04 11:17:00
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\information\list.vue
 --> 
@@ -64,7 +64,6 @@ export default {
   methods: {
     async getwebChat() {
       const time = await this.generateTimeReqestNumber();
-      console.log("passport -> time", time);
       const Authorization = window.btoa(`${this.ACCOUNTID}:${time}`); // 编码
       const sig = md5(
         `${this.ACCOUNTID}${this.APISecret}${time}`
@@ -77,13 +76,12 @@ export default {
           Authorization: Authorization,
         },
         data: {
-          sName: `app用户ID:${this.userinfoShop.userId}`,
+          sName: `app user ID:${this.userinfoShop.userId}`,
         },
       }).then((res) => {
         if (res.data.code === 200) {
           this.list = res.data.data.webchatSession;
         }
-        console.log("passport -> res", res);
       });
     },
     HandleShowServer() {
