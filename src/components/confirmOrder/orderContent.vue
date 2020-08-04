@@ -36,14 +36,14 @@
         >{{orderStatus(pay.payType,'payStatus')}}</van-checkbox>
       </div>
     </div>
-    <div class="good-detail" v-for="order in orderData.orderList" :key="order.sortOrder">
+    <div class="good-detail" v-for="(order,index) in orderData.orderList" :key="index">
       <div class="good-detail-header">
         <span>{{order.sortOrder}}</span>
       </div>
       <div
         class="good-detail-content"
         v-for="(product,index) in order.detailList"
-        :key="product.skuId"
+        :key="index"
       >
         <div>
           <van-swipe-cell :right-width="70">

@@ -28,7 +28,7 @@
       <div class="selection-conten">
         <!-- 可领取优惠券 -->
         <div v-if="active==0">
-          <div v-for="couponItem in coupon" :key="couponItem.drawId" class="item-one">
+          <div v-for="(couponItem,index) in coupon" :key="index" class="item-one">
             <div class="youhuiquan-item">
               <div class="youhuiquan-left left-one">
                 <span class="youhuiquan-left-biao biao-one">GH{{jn}}</span>
@@ -67,7 +67,7 @@
                       <van-checkbox
                         v-model="couponItem.isSelected"
                         checked-color="#FA5300"
-                        @click="changeCheckbox(couponItem)"
+                        @change="changeCheckbox(couponItem)"
                       ></van-checkbox>
                     </div>
                   </div>
@@ -90,8 +90,8 @@
         <div
           v-else-if="active==1"
           class="youhuiquan-two"
-          v-for="couponUse in couponListCannotUse"
-          :key="couponUse.couponId"
+          v-for="(couponUse,index) in couponListCannotUse"
+          :key="index"
         >
           <div class="youhuiquan-item item-two">
             <div class="youhuiquan-left left-two">
@@ -150,6 +150,7 @@ export default {
       couponList: [],
       couponDraw: [],
       checkbox: true,
+      flag:true
     };
   },
   computed: {
@@ -159,16 +160,7 @@ export default {
       couponListCannotUse: (state) => state.couponListUse,
     }),
   },
-  watch: {
-    // coupon: {
-    //   deep: true,
-    //   handler(newVal) {
-    //     newVal.forEach(e => {
-    //       e.canDraw;
-    //     });
-    //   }
-    // }
-  },
+  watch: {},
   created() {},
   mounted() {},
   methods: {
@@ -189,26 +181,19 @@ export default {
 
     // 选择优惠券
     changeCheckbox(item) {
-      console.log("val", val);
-      console.log("item", item);
-      // if (val == 0) {
-      //   console.log(this.coupon, "this.coupon");
-      //   this.coupon.forEach((e) => {
-      //     if (item == e.drawId) {
-      //       return this.couponList.push({ drawId: e.drawId });
-      //     }
-      //   });
-      // } else if (val == 1) {
-      //   // this.couponList.splice(item, 1);
-      //   // console.log("changeCheckbox ->  this.couponList", this.couponList);
-      //   // this.coupon.forEach((e) => {
-      //   //   console.log("changeCheckbox -> couponIndex", couponIndex);
-      //   //   if (item == e.drawId) {
-      //   //     return this.couponList.splice(0, 1);
-      //   //   }
-      //   // });
-      // }
-      this.$emit("changeCheckbox", this.couponList);
+      let arr = []
+      this.coupon.forEach((e) => {
+      if (e.isSelected) {
+          arr.push({drawId:e.drawId})
+        }
+      });
+      if(this.flag){
+        this.$emit("changeCheckbox", arr);
+        this.flag = false
+      }
+      setTimeout(()=> {
+        this.flag = true
+      },300)      
     },
 
     // // 选择已经选用和删除
