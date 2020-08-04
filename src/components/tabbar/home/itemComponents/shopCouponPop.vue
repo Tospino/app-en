@@ -7,42 +7,52 @@
         <van-icon name="cross" class="cross" @click="close" />
       </div>
       <div class="selection-conten">
-        <div class="youhuiquan-main" v-for="(i,index) in shopCoupon" :key="index">
-          <img :src="i.src" />
+        <div class="youhuiquan-main" v-for="(couponItem,index) in couponShop" :key="index">
+          <div v-if="couponItem.drawStatus==0||couponItem.drawStatus==null">
+            <img :src="srcUse" />
+          </div>
+          <div v-else-if="couponItem.drawStatus==3">
+            <img :src="srcMore" />
+          </div>
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
-              <span class="youhuiquan-left-biao">{{i.qianBiao}}{{jn}}</span>
+              <span class="youhuiquan-left-biao">GH{{jn}}</span>
               <p class="youhuiquan-left-money">
-                {{ i.money}}
-                <i>{{i.off}}</i>
+                {{ couponItem.reduceAmount}}
+                <i>OFF</i>
               </p>
-              <p class="youhuiquan-left-m">{{i.type}}</p>
-              <p class="youhuiquan-left-m">{{i.valid}}</p>
-              <div v-if="i.btn=='Received'?false:true">
-                <progress-bar :progressBar="iSpeed"></progress-bar>
+              <p
+                class="youhuiquan-left-m"
+              >Type:{{couponItem.couponType==1?"Tospino’s Price-off":couponItem.couponType==2?"Newer Exclusives":couponItem.couponType==3?"Shop’s Price-off":couponItem.couponType==4?"Item Price-off":"Item Price-off"}}</p>
+              <p class="youhuiquan-left-m">Valid:{{couponItem.useEndWebsite}}</p>
+              <div v-if="couponItem.couponType==2?false:true">
+                <progress-bar :progressBar="couponItem.claimRate"></progress-bar>
               </div>
             </div>
 
             <div class="youhuiquan-right">
               <div class="youhuiquan-right-header">
-                <span class="youhuiquan-right-title">{{i.title}}</span>
+                <!-- v-show="couponItem.drawStatus==1?false:true" -->
+                <span class="youhuiquan-right-title">{{couponItem.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <div>For {{i.qianBiao}}{{jn}} {{i.moneys}} consumption</div>
+                <div>For GH{{jn}} {{couponItem.upToAmount}} consumption</div>
                 <van-button
                   style="background: none;border: 0;color:#FEA072 "
-                  round disabled
-                  v-if="i.btn=='Received'?true:false"
+                  round
+                  disabled
+                  v-if="couponItem.drawStatus==0?true:false"
                   type="info"
                   class="youhuiquan-right-btn"
-                >{{i.btn}}</van-button>
+                >Received</van-button>
                 <van-button
                   v-else
                   round
                   type="info"
-                  @click="ProBar"
+                  @click="ProBar(couponItem.couponId,couponItem.couponDetailId)"
                   class="youhuiquan-right-btn"
-                >{{i.btn}}</van-button>
+                >{{couponItem.drawStatus==null?"Get it now":couponItem.drawStatus==3?"Get more":"Delete"}}</van-button>
+                <!-- {{couponItem.drawStatus==null?"Get it now":couponItem.drawStatus==0?"Use it now":couponItem.drawStatus==1?"Get more":couponItem.drawStatus==2?"Delete":"Delete"}} -->
               </div>
             </div>
           </div>
@@ -51,13 +61,15 @@
       <!-- 判断是否有优惠券 -->
       <!-- <div v-else>
         <no-coupon :imgSrc="imgSrc1" describe="There is no coupons"></no-coupon>
-      </div> -->
+      </div>-->
     </div>
   </div>
 </template>
 
 <script>
 import progressBar from "@/multiplexing/progress";
+import { couponDrawApi } from "@/api/confirmOrder/index";
+import { Toast } from "vant";
 // // 无优惠券
 // import noCoupon from "@/multiplexing/noCoupon";
 // import imgSrc1 from "@/assets/img/coupon/noyouhui@2x.png";
@@ -67,64 +79,53 @@ export default {
     progressBar,
     // noCoupon
   },
-  props: ["shop"],
+  props: {
+    shop: {
+      type: Boolean,
+      default: false,
+    },
+    couponShop: Array,
+  },
   data() {
     return {
-      iSpeed: 0,
-      shopCoupon: [
-        {
-          src: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png"),
-          qianBiao: "GH",
-          money: "10.00",
-          off: "OFF",
-          type: "Type:Shop Coupons",
-          valid: "Valid:06/30/2020 23:59",
-          title: "Black Friday Black Black",
-          moneys: "1000.00",
-          btn: "Get it now"
-        },
-        {
-          src: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan-1@2x.png"),
-          qianBiao: "GH",
-          money: "10.00",
-          off: "OFF",
-          type: "Type:Shop Coupons",
-          valid: "Valid:06/30/2020 23:59",
-          title: "Black Friday Black Black",
-          moneys: "1000.00",
-          btn: "Received"
-        },
-        {
-          src: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan-1@2x.png"),
-          qianBiao: "GH",
-          money: "10.00",
-          off: "OFF",
-          type: "Type:Shop Coupons",
-          valid: "Valid:06/30/2020 23:59",
-          title: "Black Friday Black Black",
-          moneys: "1000.00",
-          btn: "Get more"
-        }
-      ],
-    //   imgSrc1: imgSrc1
+      // 未领取和已领取背景
+      srcUse: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png"),
+      // 可领取更多优惠券背景
+      srcMore: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan-1@2x.png"),
+      //   imgSrc1: imgSrc1
     };
   },
   computed: {},
-  watch: {},
+  watch: {
+    couponShop: {
+      handler(newName) {
+        console.log("handler -> newName", newName);
+        // ...
+      },
+      deep: true,
+    },
+  },
   created() {},
   mounted() {},
   methods: {
     // 新增-优惠券 进度条
-    ProBar() {
-      if (this.iSpeed != 100) {
-        this.iSpeed++;
-      }
+    ProBar(id, couponDetail) {
+      let couponsId = {
+        couponId: id,
+        couponDetailId: couponDetail,
+      };
+      // 点击领取优惠券
+      couponDrawApi(couponsId).then((res) => {
+        if (res.code != 0) {
+          Toast(res.msg);
+        }
+      });
     },
     // 关闭
     close() {
       this.$emit("shopPop");
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped lang="less">
@@ -186,7 +187,7 @@ export default {
             color: #fa5300;
           }
           .youhuiquan-left-money {
-            font-size: 60px;
+            font-size: 50px;
             font-weight: bold;
             color: #fa5300;
             i {
@@ -195,7 +196,7 @@ export default {
             }
           }
           .youhuiquan-left-m {
-            font-size: 25px;
+            font-size: 18px;
             color: #333;
             line-height: 34px;
           }

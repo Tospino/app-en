@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-07-24 11:37:51
+ * @LastEditTime: 2020-07-29 11:26:51
  * @LastEditors: Please set LastEditors
  * @Description: 可领取优惠券列表和不可领取优惠券列表数据存储
  * @FilePath: \app-en\src\store\index.js
@@ -56,6 +56,8 @@ const state = {
   coupons: [], //可领取优惠券列表
 
   couponListUse: [] //不可领取优惠券列表
+
+  // couponShop: [] //详情中的优惠券
 }
 const getters = {}
 
@@ -91,6 +93,9 @@ const mutations = {
   GETCOUPONSLISTUSE (state, arr = []) {
     return (state.couponListUse = arr)
   }
+  // GETCOUPONSHOP (state, arr = []) {
+  //   return (state.couponShop = arr)
+  // }
 }
 
 const actions = {
@@ -137,6 +142,10 @@ const actions = {
   getcouponslistuse (context, arr = []) {
     return context.commit('GETCOUPONSLISTUSE', arr)
   }
+  // //  详情优惠中心
+  // getcouponshop (context, arr = []) {
+  //   return context.commit('GETCOUPONSHOP', arr)
+  // }
 }
 
 export default new Vuex.Store({

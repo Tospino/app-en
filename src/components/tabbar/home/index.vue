@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-25 16:24:34
+ * @LastEditTime: 2020-07-29 20:30:58
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -268,7 +268,7 @@ import {
   homePageApi,
   HomePagebottomApi,
   homeAdvertPictureApi,
-  APPgetuserIsfullApi
+  APPgetuserIsfullApi,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -285,15 +285,15 @@ export default {
       fineSaleList2: [],
       brandLogo1: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo2: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo3: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       formData: {
         brandId: 0,
@@ -301,7 +301,7 @@ export default {
         limit: 10,
         page: 1,
         seraname: "",
-        sort: 0
+        sort: 0,
       },
       bottomTabs: [],
       searchgoodDaolist: [],
@@ -314,22 +314,24 @@ export default {
       codeUrl: "",
       topBananerList: [],
       banner1: {
-        advertImg: ""
+        advertImg: "",
       },
       banner2: {
-        advertImg: ""
+        advertImg: "",
       },
       banner3: {
-        advertImg: ""
+        advertImg: "",
       },
-      newCouponList: "",
+      newCouponShow: "", //判断是否为新用户是否展示
       newCoupon: "",
-      sale: false //新用户是否存在
+      sale: false, //新用户是否存在
     };
   },
   computed: {},
   created() {
     this.newCoupons();
+    console.log("created -> this.newCoupons();");
+
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
       this.getuserinfo();
@@ -371,24 +373,40 @@ export default {
     this.refreshOrder();
   },
   watch: {
-    newCouponList: {
+    // 监听首页新用户优惠券是否展示
+    newCouponShow: {
       deep: true,
-      handler: function(val) {
-        console.log("jiant", val);
+      handler: function (val) {
+        console.log("val", val);
         if (val == 0) {
           this.sale = true;
+          console.log("this.sale", this.sale);
         } else if (val == -300) {
           this.sale = false;
         }
-      }
-    }
+      },
+    },
+    // 如果路由有变化,会再次执行该方法
+    $route: {
+      handler(route) {
+        if (route.name === "首页") {
+          // location.reload();
+          this.newCoupons();
+        }
+      },
+      deep: true,
+    },
   },
   methods: {
     // 首页新用户优惠券
     newCoupons() {
-      APPgetuserIsfullApi().then(res => {
-        this.newCouponList = res.code;
-        this.newCoupon = res.Data;
+      APPgetuserIsfullApi().then((res) => {
+        this.newCouponShow = res.code;
+        if (res.code == 0) {
+          this.newCoupon = res.Data;
+        } else {
+          this.$toast.clear();
+        }
       });
     },
     // 关闭首页优惠券
@@ -397,7 +415,7 @@ export default {
     },
     // 领取优惠按钮
     evBus(id) {
-      couponDrawApi(id).then(res => {
+      couponDrawApi(id).then((res) => {
         Toast(res.msg);
       });
     },
@@ -406,10 +424,9 @@ export default {
     },
     //首页数据
     homePage(data) {
-      homePageApi(data).then(res => {
+      homePageApi(data).then((res) => {
         if (res.code == 0) {
           this.homeObj = res.Data;
-          console.log("aaa", this.homeObj);
           this.globalProList = this.homeObj["producteFineBrand"].slice(3);
           this.brandLogo1.brandLogo = this.homeObj[
             "producteFineBrand"
@@ -439,7 +456,7 @@ export default {
     },
     //底部数据分类
     homePagebottom(data, flag) {
-      HomePagebottomApi(data).then(res => {
+      HomePagebottomApi(data).then((res) => {
         if (res.code == 0) {
           this.bottomTabs = res.top;
 
@@ -515,7 +532,7 @@ export default {
     },
     //首页广告
     homeAdvertPicture() {
-      homeAdvertPictureApi().then(res => {
+      homeAdvertPictureApi().then((res) => {
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
@@ -538,17 +555,17 @@ export default {
     },
     //获取用户信息
     getuserinfo() {
-      getuserinfoApi().then(res => {
+      getuserinfoApi().then((res) => {
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }
       });
-    }
+    },
   },
   components: {
     searchHeader,
-    userPopup
-  }
+    userPopup,
+  },
 };
 </script>
 

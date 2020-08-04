@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-24 13:58:49
+ * @LastEditTime: 2020-07-29 16:18:05
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -268,7 +268,7 @@ import {
   homePageApi,
   HomePagebottomApi,
   homeAdvertPictureApi,
-  APPgetuserIsfullApi
+  APPgetuserIsfullApi,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 export default {
@@ -283,15 +283,15 @@ export default {
       fineSaleList2: [],
       brandLogo1: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo2: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo3: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       formData: {
         brandId: 0,
@@ -299,7 +299,7 @@ export default {
         limit: 10,
         page: 1,
         seraname: "",
-        sort: 0
+        sort: 0,
       },
       bottomTabs: [],
       searchgoodDaolist: [],
@@ -312,16 +312,16 @@ export default {
       codeUrl: "",
       topBananerList: [],
       banner1: {
-        advertImg: ""
+        advertImg: "",
       },
       banner2: {
-        advertImg: ""
+        advertImg: "",
       },
       banner3: {
-        advertImg: ""
+        advertImg: "",
       },
       newCoupon: "",
-      sale: false //新用户是否存在
+      sale: false, //新用户是否存在
     };
   },
   computed: {},
@@ -381,7 +381,7 @@ export default {
       } else if (this.newCoupon.code == -300) {
         this.sale = false;
       }
-      console.log("首次登录", this.newCoupon);
+      // console.log("首次登录", this.newCoupon);
     },
     // 关闭首页优惠券
     userPopUp() {
@@ -389,11 +389,9 @@ export default {
     },
     //首页数据
     homePage(data) {
-      homePageApi(data).then(res => {
-        console.log(res, "首页数据");
+      homePageApi(data).then((res) => {
         if (res.code == 0) {
           this.homeObj = res.Data;
-          console.log("aaa", this.homeObj);
           this.globalProList = this.homeObj["producteFineBrand"].slice(3);
           this.brandLogo1.brandLogo = this.homeObj[
             "producteFineBrand"
@@ -423,7 +421,7 @@ export default {
     },
     //底部数据分类
     homePagebottom(data, flag) {
-      HomePagebottomApi(data).then(res => {
+      HomePagebottomApi(data).then((res) => {
         if (res.code == 0) {
           this.bottomTabs = res.top;
 
@@ -499,8 +497,7 @@ export default {
     },
     //首页广告
     homeAdvertPicture() {
-      homeAdvertPictureApi().then(res => {
-        console.log(res, "首页广告");
+      homeAdvertPictureApi().then((res) => {
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
@@ -523,18 +520,17 @@ export default {
     },
     //获取用户信息
     getuserinfo() {
-      getuserinfoApi().then(res => {
-        console.log("用户", res);
+      getuserinfoApi().then((res) => {
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }
       });
-    }
+    },
   },
   components: {
     searchHeader,
-    userPopup
-  }
+    userPopup,
+  },
 };
 </script>
 

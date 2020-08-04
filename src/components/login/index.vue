@@ -112,25 +112,25 @@ export default {
       userData: {
         username: "",
         password: "",
-        username1: ""
+        username1: "",
       },
       rules: {
         username1: {
           required: true,
-          messages: "Enter login username"
+          messages: "Enter login username",
         },
         password: {
           required: true,
-          messages: "Enter login password"
-        }
+          messages: "Enter login password",
+        },
       },
-      zhengce: false
+      zhengce: false,
     };
   },
   computed: {
     disabledSubmit() {
       return !this.$fn.isDisabled(this.userData, this.rules) && this.checked;
-    }
+    },
   },
   created() {},
   mounted() {
@@ -147,15 +147,15 @@ export default {
   }, //生命周期 - 销毁完成
   watch: {
     eyeStatus: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.eyeStatus
           ? (this.eyeName = "eye-o")
           : (this.eyeName = "closed-eye");
         this.eyeStatus
           ? (this.inputType = "text")
           : (this.inputType = "password");
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions(["classifykeep"]),
@@ -169,10 +169,12 @@ export default {
           this.userData.username = this.userData.username1;
         }
 
-        loginApi(this.userData).then(res => {
+        loginApi(this.userData).then((res) => {
           if (res.code == 0) {
             localStorage.token = res.token;
-            localStorage.userinfoShop = JSON.stringify(res.user);
+            //第一次登录：dengluOne
+            let obj = Object.assign(res.user, { dengluOne: true });
+            localStorage.userinfoShop = JSON.stringify(obj);
             this.$router.push({ name: "首页" });
             this.classifykeep(true);
           } else if (res.code == -4) {
@@ -201,12 +203,12 @@ export default {
     },
     jumpRouter(name) {
       this.$router.push({ name });
-    }
+    },
   },
   components: {
     zhezhao,
-    yinsi
-  }
+    yinsi,
+  },
 };
 </script>
 

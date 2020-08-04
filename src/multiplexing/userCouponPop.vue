@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       userStyle: "",
-      homeCoupons: ""
+      homeCoupons: "",
     };
   },
   computed: {},
@@ -48,9 +48,8 @@ export default {
     // 新用户领取
     newPre(Id) {
       this.homeCoupons = {
-        couponId: Id
+        couponId: Id,
       };
-      console.log(Id, "anchor");
       this.$emit("evBus", this.homeCoupons);
       this.close();
     },
@@ -58,8 +57,8 @@ export default {
     close() {
       this.userStyle = document.getElementById("userPopUp");
       this.$emit("userPopUp", this.userStyle);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped lang="less">

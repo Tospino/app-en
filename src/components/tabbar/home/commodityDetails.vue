@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 14:08:00
+ * @LastEditTime: 2020-08-04 10:52:27
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -127,18 +127,6 @@
             </div>
           </div>
         </div>
-        <div ref="guige">
-          <div class="canshu" v-for="(param,index) in detailmData.productParamList" :key="index">
-            <div class="canshu-item fl-left">{{param.paramTitleEng}}</div>
-            <div class="canshu-item fl-left">{{param.pvValueEng}}{{param.paramUnitEng}}</div>
-          </div>
-          <div class="shousuo" v-if="shousuoStatus" @click="zankai">
-            <span>open</span>
-            <van-icon name="arrow-down" />
-          </div>
-          <div v-html="detailmData.supplyDetailpara"></div>
-        </div>
-
         <!-- 新增-优惠券 -->
         <div class="youhuiquan yhq">
           <div class="youhuiquan-header">
@@ -151,30 +139,45 @@
               <div class="youhuiquan-left">
                 <span class="youhuiquan-left-biao">GH{{jn}}</span>
                 <p class="youhuiquan-left-money">
-                  10.00
+                  {{ProModel.Data.reduceAmount}}
                   <i>OFF</i>
                 </p>
-                <p class="youhuiquan-left-m">Type:Shop Coupons</p>
-                <p class="youhuiquan-left-m">Valid:06/30/2020 23:59</p>
-                <progress-bar :progressBar="iSpeed"></progress-bar>
+                <p
+                  class="youhuiquan-left-m"
+                >Type:{{ProModel.Data.couponType==1?"Tospino’s Price-off":ProModel.Data.couponType==2?"Newer Exclusives":ProModel.Data.couponType==3?"Shop’s Price-off":ProModel.Data.couponType==4?"Item Price-off":"Item Price-off"}}</p>
+                <p class="youhuiquan-left-m">Valid:{{ProModel.Data.useBeginWebsite}}</p>
+                <!-- {{ProModel.Data.useEndWebsite}} -->
+                <progress-bar :progressBar="ProModel.Data.claimRate"></progress-bar>
               </div>
 
               <div class="youhuiquan-right">
                 <div class="youhuiquan-right-header">
-                  <span class="youhuiquan-right-title">Black Friday Black Black</span>
+                  <span class="youhuiquan-right-title">{{ProModel.Data.couponName}}</span>
                 </div>
                 <div class="youhuiquan-right-main">
-                  <div>For GH₵ 1000.00 consumption</div>
+                  <div>For GH₵ {{ProModel.Data.upToAmount}} consumption</div>
                   <van-button
                     round
                     type="info"
                     @click="ProBar"
                     class="youhuiquan-right-btn"
-                  >Get it now</van-button>
+                  >{{ProModel.Data.drawStatus==null?"Get it now":ProModel.Data.drawStatus==0?"Use it now":ProModel.Data.drawStatus==1?"Get more":ProModel.Data.drawStatus==2?"Delete":"Delete"}}</van-button>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        <div ref="guige">
+          <div class="canshu" v-for="(param,index) in detailmData.productParamList" :key="index">
+            <div class="canshu-item fl-left">{{param.paramTitleEng}}</div>
+            <div class="canshu-item fl-left">{{param.pvValueEng}}{{param.paramUnitEng}}</div>
+          </div>
+          <div class="shousuo" v-if="shousuoStatus" @click="zankai">
+            <span>open</span>
+            <van-icon name="arrow-down" />
+          </div>
+          <div v-html="detailmData.supplyDetailpara"></div>
         </div>
 
         <div class="bbxq" ref="xiangqing">
@@ -231,7 +234,7 @@
     </van-overlay>
 
     <!-- 更多优惠券 -->
-    <shop-coupon-pop :shop="shop" @shopPop="shopPop"></shop-coupon-pop>
+    <shop-coupon-pop :shop="shop" :couponShop="couponShop" @shopPop="shopPop"></shop-coupon-pop>
   </div>
 </template>
 
@@ -242,10 +245,14 @@ import commoditySelection from "@/multiplexing/commoditySelection";
 import shopCouponPop from "./itemComponents/shopCouponPop";
 import progressBar from "@/multiplexing/progress";
 
-import { productdetailApi } from "@/api/home/commodityDetails";
+import {
+  productdetailApi,
+  AppqureyuserCouponProApi,
+  AppqureyuserCouponProModelApi,
+} from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
-  adduserfavoritesApi
+  adduserfavoritesApi,
 } from "@/api/favorites/index.js";
 import kefu from "@/multiplexing/kefu.vue";
 import { Toast } from "vant";
@@ -263,7 +270,7 @@ export default {
       detailmData: {},
       leng: 0,
       footerData: {
-        list: []
+        list: [],
       },
       showfooter: false,
       Isfavorites: 0,
@@ -277,7 +284,10 @@ export default {
       showData: false,
       spclist: [],
       iSpeed: 0, //进度条,
-      shop: false //更多优惠券
+      shop: false, //更多优惠券
+      couponShop: [],
+      couponMax: "",
+      ProModel: "", //最大优惠券
     };
   },
   computed: {},
@@ -305,10 +315,14 @@ export default {
     },
     //商品详情
     productdetail(id) {
-      productdetailApi({ skuid: id }).then(res => {
+      productdetailApi({ skuid: id }).then((res) => {
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
+          this.couponProModel(
+            this.detailmData.supplyId,
+            this.detailmData.businessId
+          );
           this.leng = res.Data.productImgList.length;
           this.selectionData = res;
           this.detailmData.salePriceFlag = true;
@@ -355,7 +369,7 @@ export default {
     },
     //增加用户浏览记录数据
     adduserbrowhistory(id) {
-      adduserbrowhistoryApi({ skuid: id }).then(res => {});
+      adduserbrowhistoryApi({ skuid: id }).then((res) => {});
     },
     //点击tab标签
     changeTab(index) {
@@ -382,7 +396,7 @@ export default {
     },
     //加入收藏夹
     adduserfavorites(data) {
-      adduserfavoritesApi(data).then(res => {
+      adduserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           this.Isfavorites = 1;
         }
@@ -393,19 +407,28 @@ export default {
       this.productParamList = this.productParamList2;
       this.shousuoStatus = false;
     },
-    // 新增-优惠券 进度条
-    ProBar() {
-      if (this.iSpeed != 100) {
-        this.iSpeed++;
-      }
+    // 显示最高金额的优惠券（卖家>平台）
+    async couponProModel(supplyId, businessId) {
+      this.ProModel = await AppqureyuserCouponProModelApi({
+        supplyId: supplyId,
+        businessId: businessId,
+      });
     },
     // 更多优惠券
     saleMore() {
       this.shop = true;
+      let moreCoupon = {
+        supplyId: this.detailmData.supplyId,
+        businessId: this.detailmData.businessId,
+        expId: this.detailmData.expId,
+      };
+      AppqureyuserCouponProApi(moreCoupon).then((res) => {
+        this.couponShop = res.Data;
+      });
     },
     shopPop() {
       this.shop = false;
-    }
+    },
   },
   components: {
     detailsHeader,
@@ -413,8 +436,8 @@ export default {
     commoditySelection,
     kefu,
     shopCouponPop,
-    progressBar
-  }
+    progressBar,
+  },
 };
 </script>
 

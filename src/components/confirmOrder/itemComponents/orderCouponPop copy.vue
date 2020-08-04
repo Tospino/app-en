@@ -106,12 +106,12 @@ import { mapState } from "vuex";
 import {
   getconfirmorderApi,
   couponDrawApi,
-  couponRemoveApi
+  couponRemoveApi,
 } from "@/api/confirmOrder/index";
 export default {
   name: "orderCouponPop",
   components: {
-    progressBar
+    progressBar,
   },
   props: ["order"],
   data() {
@@ -120,15 +120,15 @@ export default {
       orderCouponDraw: "",
       drawPercent: "",
       canDraw: "",
-      couponList: []
+      couponList: [],
     };
   },
   computed: {
     // 语法糖
     ...mapState({
-      coupon: state => state.coupons
+      coupon: (state) => state.coupons,
       // orderDetail: state => state.orderDetails
-    })
+    }),
   },
   watch: {},
   created() {
@@ -148,11 +148,10 @@ export default {
     ProBar(data, detail) {
       let couponsData = {
         couponId: data,
-        couponDetailId: detail
+        couponDetailId: detail,
       };
 
-      couponDrawApi(couponsData).then(res => {
-        console.log(res, "aaa");
+      couponDrawApi(couponsData).then((res) => {
         // if (res.code == 0) {
         //   // this.orderCoupon.forEach(i => {
         //   //   if (data == i.couponId) {
@@ -173,7 +172,7 @@ export default {
     // 选择已经选用和删除
     couponremove(move) {
       let couponsMove = {
-        drawId: move
+        drawId: move,
       };
       // couponRemoveApi(couponsMove).then(res => {
       //   console.log(res, "jjaa");
@@ -183,8 +182,8 @@ export default {
     // 关闭
     close() {
       this.$emit("orderPop");
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped lang="less">

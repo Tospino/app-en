@@ -121,13 +121,13 @@ export default {
       value3: 0,
       option1: [
         { text: "Overall Rank", value: 0 },
-        { text: "Credit First", value: 1 }
+        { text: "Credit First", value: 1 },
       ],
       option2: [{ text: "Popularity", value: 0 }],
       option3: [
         { text: "Price", value: 0 },
         { text: "Highest Price", value: 1 },
-        { text: "Lowest Price", value: 2 }
+        { text: "Lowest Price", value: 2 },
       ],
       checked: true,
       goodsShow1: true,
@@ -144,8 +144,6 @@ export default {
         priceTo: 0,
         sort: 0,
         isPC: 2,
-        businessId: 24,
-        expIds: 1
       },
       dataList: [],
       footerData: {},
@@ -155,7 +153,7 @@ export default {
       nosear1: nosear1,
       isgo: false,
       iconName: "apps-o",
-      showData: false
+      showData: false,
     };
   },
   computed: {},
@@ -171,12 +169,9 @@ export default {
       ? this.$route.query.brandId
       : 0;
 
-    this.formData.businessId = this.$route.query.businessId
-      ? this.$route.query.businessId
-      : 24;
-    this.formData.expIds = this.$route.query.expIds
-      ? this.$route.query.expIds
-      : 1;
+    this.formData.businessId = this.$route.query.businessId;
+
+    this.formData.expIds = this.$route.query.expIds;
 
     this.searName = this.$route.query.seraname;
     this.refreshOrder();
@@ -193,12 +188,9 @@ export default {
         ? this.$route.query.brandId
         : 0;
 
-      this.formData.businessId = this.$route.query.businessId
-        ? this.$route.query.businessId
-        : 24;
-      this.formData.expIds = this.$route.query.expIds
-        ? this.$route.query.expIds
-        : 1;
+      this.formData.businessId = this.$route.query.businessId;
+
+      this.formData.expIds = this.$route.query.expIds;
 
       this.searName = this.$route.query.seraname;
       this.refreshOrder();
@@ -210,7 +202,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    next(vm => {
+    next((vm) => {
       if (from.name == "首页" || from.name == "分类") {
         vm.isgo = false;
       } else {
@@ -221,10 +213,10 @@ export default {
 
   watch: {
     goodsShow1: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.iconName = newVal ? "apps-o" : "bar-chart-o";
-      }
-    }
+      },
+    },
   },
   methods: {
     saleSort(name, value) {
@@ -262,7 +254,7 @@ export default {
     onSearch() {},
     //搜索商品
     searchProduct(data, flag) {
-      HomeEsApi(data).then(res => {
+      HomeEsApi(data).then((res) => {
         if (res.code == 0) {
           if (flag) {
             this.dataList = res.Data.list;
@@ -287,7 +279,7 @@ export default {
             Toast.clear();
           }, 1000);
         } else {
-          searchProductApi(data).then(res => {
+          searchProductApi(data).then((res) => {
             if (res.code == 0) {
               if (flag) {
                 this.dataList = res.Data.list;
@@ -349,13 +341,13 @@ export default {
       this.formData.limit = 10;
       this.searchProduct(this.formData, true);
       this.pullup = true;
-    }
+    },
   },
   components: {
     searchGoodsTow,
     searchHead,
-    noSearGood
-  }
+    noSearGood,
+  },
 };
 </script>
 

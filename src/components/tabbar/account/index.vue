@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-07-21 09:18:41
+ * @LastEditTime: 2020-07-30 09:36:06
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券中心My coupons
  * @FilePath: \app-en\src\components\tabbar\account\index.vue
@@ -129,11 +129,11 @@
         @click="jumpRouter('优惠券中心')"
       >
         <div slot="left-icon" size="small" type="primary" class="icon-left">
-          <img src="@/assets/img/tabbar/my/account/shouhou@2x.png" />
+          <img src="@/assets/img/tabbar/my/account/youhuiquan@2x.png" />
         </div>
       </van-field>
     </van-cell-group>
-    <van-cell-group class="border-0">
+    <!-- <van-cell-group class="border-0">
       <van-field
         v-model="username"
         clearable
@@ -147,7 +147,7 @@
           <img src="@/assets/img/tabbar/my/account/youhuiquan@2x.png" />
         </div>
       </van-field>
-    </van-cell-group>
+    </van-cell-group>-->
     <van-cell-group class="border-0">
       <van-field
         v-model="username"
@@ -324,7 +324,7 @@ export default {
         xinyong,
         xinyuandan,
         yiwancheng,
-        zuijinliulan
+        zuijinliulan,
       },
       username: "",
       userinfoShop: {},
@@ -334,9 +334,9 @@ export default {
       formData: {
         page: 1,
         limit: 10,
-        createtime: ""
+        createtime: "",
       },
-      show2: false
+      show2: false,
     };
   },
   computed: {},
@@ -363,7 +363,7 @@ export default {
     },
     //登出
     logOut() {
-      logoutApi().then(res => {
+      logoutApi().then((res) => {
         if (localStorage.token) {
           localStorage.removeItem("token");
         }
@@ -376,9 +376,9 @@ export default {
         seraname: "",
         sort: 2,
         page: 1,
-        limit: 10
+        limit: 10,
       };
-      selectuserfavoritesApi(data).then(res => {
+      selectuserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           this.shoucangTotal = res.Data.totalCount;
         }
@@ -386,23 +386,23 @@ export default {
     },
     //钱包信息
     walletInfo() {
-      walletInfoApi().then(res => {
+      walletInfoApi().then((res) => {
         if (res.code == 0) {
           this.walletMoney = res.wallet.walletMoney;
         }
       });
     },
     selectuserbrowhistory(data) {
-      selectuserbrowhistoryApi(data).then(res => {
+      selectuserbrowhistoryApi(data).then((res) => {
         if (res.code == 0) {
           this.zujiTotal = res.browtotal;
         }
       });
-    }
+    },
   },
   components: {
-    kefu
-  }
+    kefu,
+  },
 };
 </script>
 

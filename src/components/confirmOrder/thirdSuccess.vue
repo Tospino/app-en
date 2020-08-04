@@ -28,7 +28,7 @@ import thirdHeader from "./itemComponents/thirdHeader";
 import thirdLose from "./itemComponents/thirdLose";
 import thirdLoading from "./itemComponents/thirdLoading";
 import { main, park } from "@/api/index";
-import {callbackApi} from '@/api/prepaidRefill/index.js'
+import { callbackApi } from "@/api/prepaidRefill/index.js";
 export default {
   props: {},
   data() {
@@ -40,29 +40,27 @@ export default {
       //   cust_ref: "FKD202004301750406499d4a43b4e"
       // }
       show: false,
-      lose: false
+      lose: false,
     };
   },
   computed: {},
   created() {
     // this.getParams();
-    console.log(123123132123);
-    if(this.$route.query.orderType == 1){
+    if (this.$route.query.orderType == 1) {
       this.getPayStatus();
-      console.log(this.$route.query);
-    }else if(this.$route.query.orderType == 2){
+      // console.log(this.$route.query);
+    } else if (this.$route.query.orderType == 2) {
       let obj = {
-        status:this.$route.query.status,
-        transac_id:this.$route.query.transac_id,
-        cust_ref:this.$route.query.cust_ref,
-        pay_token:this.$route.query.pay_token,
-        orderType:this.$route.query.orderType,
-        phoneNumber:this.$route.query.phoneNumber
-      }
-      console.log(obj,'obj');
-      this.callback(obj)
+        status: this.$route.query.status,
+        transac_id: this.$route.query.transac_id,
+        cust_ref: this.$route.query.cust_ref,
+        pay_token: this.$route.query.pay_token,
+        orderType: this.$route.query.orderType,
+        phoneNumber: this.$route.query.phoneNumber,
+      };
+      // console.log(obj,'obj');
+      this.callback(obj);
     }
-    
   },
   mounted() {
     //setTimeout(()=>{
@@ -91,35 +89,35 @@ export default {
           transac_id: this.$route.query.transac_id,
           pay_token: this.$route.query.pay_token,
           cust_ref: this.$route.query.cust_ref,
-          orderType:this.$route.query.orderType
-        }
-      }).then(res => {
-        console.log("GET",res);
+          orderType: this.$route.query.orderType,
+        },
+      }).then((res) => {
+        // console.log("GET",res);
         if (res.status_code === 200) {
           this.show = true;
           // if
           // this.$router.push("/thirdLose");
-        }else if (res.status_code === 100) {
-           this.lose = true;
-        }else{ 
+        } else if (res.status_code === 100) {
+          this.lose = true;
+        } else {
           this.show = false;
           this.lose = false;
         }
       });
     },
     //支付回调接口
-    callback(data){
-      callbackApi(data).then(res => {
+    callback(data) {
+      callbackApi(data).then((res) => {
         if (res.status_code === 200) {
           this.show = true;
-        }else if (res.status_code === 100) {
-           this.lose = true;
-        }else{ 
+        } else if (res.status_code === 100) {
+          this.lose = true;
+        } else {
           this.show = false;
           this.lose = false;
         }
-      })
-    }
+      });
+    },
     // getParams() {
     //   console.log(111111111111111111111);
     //   console.log(this.$route.query);
@@ -134,8 +132,8 @@ export default {
   components: {
     thirdHeader,
     thirdLose,
-    thirdLoading
-  }
+    thirdLoading,
+  },
 };
 </script>
 

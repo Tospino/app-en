@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-20 16:09:32
+ * @LastEditTime: 2020-07-29 21:17:19
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -29,10 +29,12 @@
                 <div class="goods-left">
                   <div
                     class="goods-coupons"
-                  >{{dataitem.coupons!=''?"Shop Coupons":"Tospino Coupons"}}</div>
-                  <span class="goods-coupons-money">{{jn}}100 off for {{jn}}700 buying</span>
+                  >{{dataitem.couponType==1?"Tospino’s Price-off":dataitem.couponType==4?'Item Price-off':''}}</div>
+                  <span
+                    class="goods-coupons-money"
+                  >{{jn}}{{dataitem.reduceAmount}} off for {{jn}}{{dataitem.upToAmount}} buying</span>
                 </div>
-                <p class="goods-add" @click="addOn">
+                <p class="goods-add" @click="addOn(dataitem.businessId,dataitem.expId)">
                   Add-on ltem
                   <van-icon name="arrow" />
                 </p>
@@ -186,7 +188,7 @@ import {
   deleteshopcartApi,
   emptycartApi,
   getproductskunumpricelistApi,
-  addshopcartApi
+  addshopcartApi,
 } from "@/api/shoppingCart/index";
 import { guessyoulikeApi } from "@/api/search/index";
 import { Toast, Dialog } from "vant";
@@ -203,7 +205,7 @@ export default {
       footerShow: false,
       formData: {
         page: 1,
-        limit: 10
+        limit: 10,
       },
       dataList: [],
       youxiaoList: [],
@@ -211,7 +213,7 @@ export default {
       youlikeData: {
         page: 1,
         limit: 6,
-        seraname: ""
+        seraname: "",
       },
       footerData: {},
       shopList: [],
@@ -220,7 +222,7 @@ export default {
       selectionList: [],
       pullUp: true,
       kanmengou: true,
-      shopcarTotal: 0
+      shopcarTotal: 0,
     };
   },
   computed: {
@@ -231,8 +233,8 @@ export default {
       return this.shopcarTotal;
     },
     ...mapState({
-      selectionShopCar: state => state.selectionShopCar
-    })
+      selectionShopCar: (state) => state.selectionShopCar,
+    }),
   },
   created() {},
   mounted() {
@@ -258,7 +260,7 @@ export default {
     toXiangsi(item) {
       this.$router.push({
         name: "找相似商品",
-        query: { categoryId: item.categoryId }
+        query: { categoryId: item.categoryId },
       });
     },
     //获取滚动条距离底部距离
@@ -284,7 +286,7 @@ export default {
     },
     //购物车列表
     shopcartlist(data, flag) {
-      shopcartlistApi(data).then(res => {
+      shopcartlistApi(data).then((res) => {
         let youxiaoList = [],
           wuxiaoList = [];
         if (res.code == 0) {
@@ -299,7 +301,7 @@ export default {
             this.pullUp = false;
           }
 
-          this.shopList.forEach(item => {
+          this.shopList.forEach((item) => {
             if (item.isValid == 1) {
               youxiaoList.push(item);
             } else {
@@ -310,8 +312,8 @@ export default {
           this.wuxiaoList = wuxiaoList;
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessId");
-          this.dataList.forEach(item => {
-            item.list.forEach(listitem => {
+          this.dataList.forEach((item) => {
+            item.list.forEach((listitem) => {
               listitem.checkStatus = false;
             });
           });
@@ -329,7 +331,7 @@ export default {
         for (item in list[i]) {
           if (item == field) {
             obj[list[i][item]] = {
-              list: obj[list[i][field]] ? obj[list[i][field]].list : []
+              list: obj[list[i][field]] ? obj[list[i][field]].list : [],
             };
           }
         }
@@ -338,14 +340,14 @@ export default {
       let att = [];
       for (item in obj) {
         att.push({
-          list: obj[item].list
+          list: obj[item].list,
         });
       }
       return att;
     },
     //猜你喜欢
     guessyoulike() {
-      guessyoulikeApi(this.youlikeData).then(res => {
+      guessyoulikeApi(this.youlikeData).then((res) => {
         if (res.code == 0) {
           this.footerData = res.Data;
           this.footerShow = true;
@@ -357,13 +359,13 @@ export default {
       item.checkStatus = !item.checkStatus;
       if (flag == "all") {
         //订单上的复选框,该订单商品全选中
-        item.list.forEach(ele => {
+        item.list.forEach((ele) => {
           ele.checkStatus = item.checkStatus;
         });
       } else {
         //点击订单某一个商品的复选框
         let itemFlag = true; //标记
-        list.list.forEach(element => {
+        list.list.forEach((element) => {
           //如果有一个是没选中的
           if (element.checkStatus == false) {
             itemFlag = false;
@@ -383,9 +385,9 @@ export default {
     },
     //点击全选
     cliAllcheck(status) {
-      this.dataList.forEach(ele => {
+      this.dataList.forEach((ele) => {
         ele.checkStatus = status;
-        ele.list.forEach(item => {
+        ele.list.forEach((item) => {
           item.checkStatus = status;
         });
       });
@@ -398,31 +400,31 @@ export default {
         Toast("Didn’t choose product");
         return;
       }
-      this.setstopcarlist(this.selectionList.map(o => Object.assign({}, o)));
+      this.setstopcarlist(this.selectionList.map((o) => Object.assign({}, o)));
       this.$router.push({ name: "确认订单详情", query: { type: "shopcar" } });
     },
     //总计计算
     zongji() {
       let arr = [];
       let arr2 = [];
-      this.dataList.forEach(ele => {
-        ele.list.forEach(item => {
+      this.dataList.forEach((ele) => {
+        ele.list.forEach((item) => {
           if (item.checkStatus) {
             let obj = {
               skuId: item.skuId,
               detailNum: item.shopNumber,
-              shopcrtId: item.shopcrtId
+              shopcrtId: item.shopcrtId,
             };
             let obj2 = {
               skuId: item.skuId,
-              num: item.shopNumber
+              num: item.shopNumber,
             };
             arr.push(obj);
             arr2.push(obj2);
           }
         });
       });
-      this.selectionList = arr.map(o => Object.assign({}, o));
+      this.selectionList = arr.map((o) => Object.assign({}, o));
       if (arr2.length == 0) {
         this.totlaMoney = 0;
         this.totlaNum = 0;
@@ -435,14 +437,14 @@ export default {
       let arr = [];
       let addshopcartObj = {
         shopcrtId: itemdetail.shopcrtId,
-        shopNumber: itemdetail.shopNumber
+        shopNumber: itemdetail.shopNumber,
       };
-      this.dataList.forEach(ele => {
-        ele.list.forEach(item => {
+      this.dataList.forEach((ele) => {
+        ele.list.forEach((item) => {
           if (item.checkStatus) {
             let obj = {
               num: item.shopNumber,
-              skuId: item.skuId
+              skuId: item.skuId,
             };
             arr.push(obj);
           }
@@ -462,14 +464,14 @@ export default {
     //删除商品
     delgood() {
       let arr = [];
-      this.selectionList.forEach(item => {
+      this.selectionList.forEach((item) => {
         arr.push(item.shopcrtId);
       });
       this.deleteshopcart(arr);
     },
     //删除购物车商品
     deleteshopcart(dataList) {
-      deleteshopcartApi(dataList).then(res => {
+      deleteshopcartApi(dataList).then((res) => {
         if (res.code == 0) {
           this.shopcartlist(this.formData);
           this.guessyoulike();
@@ -479,7 +481,7 @@ export default {
     },
     //清空失效商品
     emptycart() {
-      emptycartApi({ name: "no" }).then(res => {
+      emptycartApi({ name: "no" }).then((res) => {
         if (res.code == 0) {
           this.shopcartlist(this.formData);
           this.guessyoulike();
@@ -493,8 +495,8 @@ export default {
     //移入收藏夹
     adduserfavor() {
       let arr = [];
-      this.dataList.forEach(ele => {
-        ele.list.forEach(item => {
+      this.dataList.forEach((ele) => {
+        ele.list.forEach((item) => {
           if (item.checkStatus) {
             arr.push(item.skuId);
           }
@@ -508,7 +510,7 @@ export default {
     },
     //加入收藏夹
     adduserfavorites(data) {
-      adduserfavoritesApi(data).then(res => {
+      adduserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           Toast("Collected");
         }
@@ -516,13 +518,13 @@ export default {
     },
     //根据商品skuid与商品数量获取优惠价
     getproductskunumpricelist(data) {
-      getproductskunumpricelistApi(data).then(res => {
+      getproductskunumpricelistApi(data).then((res) => {
         if (res.code == 0) {
           this.totlaMoney = res.totalprice;
           this.totlaNum = res.totalnum;
-          this.dataList.forEach(ele => {
-            ele.list.forEach(item => {
-              res.Data.forEach(dataItem => {
+          this.dataList.forEach((ele) => {
+            ele.list.forEach((item) => {
+              res.Data.forEach((dataItem) => {
                 if (item.skuId == dataItem.skuId) {
                   if (item.discountPrice) {
                     item.discountPrice = dataItem.price;
@@ -538,18 +540,27 @@ export default {
     },
     //添加购物车
     addshopcart(data) {
-      addshopcartApi(data).then(res => {
+      addshopcartApi(data).then((res) => {
         if (res.code == 0) {
         }
       });
     },
-    addOn() {
-      this.$router.push({ name: "搜索商品1" });
-    }
+    // 更多
+    addOn(businessId, expId) {
+      if (businessId != null) {
+        this.$router.push({
+          name: "搜索商品1",
+          query: {
+            businessId: businessId,
+            expId: expId,
+          },
+        });
+      }
+    },
   },
   components: {
-    footerExhibition
-  }
+    footerExhibition,
+  },
 };
 </script>
 

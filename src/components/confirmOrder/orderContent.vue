@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-07-27 15:58:56
+ * @LastEditTime: 2020-08-04 15:07:24
  * @LastEditors: Please set LastEditors
  * @Description:  
  添加优惠券--orderCouponPop组件的接口联调
@@ -246,7 +246,7 @@ import orderCouponPop from "./itemComponents/orderCouponPop";
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
-  batchmakeorderApi
+  batchmakeorderApi,
 } from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
@@ -260,22 +260,22 @@ export default {
       option1: [
         { text: "全部商品", value: 0 },
         { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 }
+        { text: "活动商品", value: 2 },
       ],
       option2: [
         { text: "默认排序", value: "a" },
         { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" }
+        { text: "销量排序", value: "c" },
       ],
       payStatus: [
         {
           type: 1,
-          name: "Cash"
+          name: "Cash",
         },
         {
           type: 2,
-          name: "Online"
-        }
+          name: "Online",
+        },
       ],
       showPayment: false,
       checked: false,
@@ -296,15 +296,14 @@ export default {
       userinfoShop: {},
       orderSn: [],
       payTypeListLength: 0,
-      iSpeed: 0, //进度条,
       order: false, //更多优惠券
-      couponList: [] //优惠券领取
+      couponList: [], //优惠券领取
     };
   },
   computed: {
     ...mapState({
-      selectionShopCar: state => state.selectionShopCar
-    })
+      selectionShopCar: (state) => state.selectionShopCar,
+    }),
   },
   mounted() {
     //如果在收件地址里面选了地址就从vuex里面找,如果是刚进来的就请求默认地址
@@ -317,10 +316,10 @@ export default {
     //通过购物车进来
     if (this.$route.query.type == "shopcar") {
       let arr = this.$store.state.selectionShopCar;
-      arr.forEach(shopCar => {
+      arr.forEach((shopCar) => {
         let shopCarObj = {
           shopcrtId: shopCar.shopcrtId,
-          skuId: shopCar.skuId
+          skuId: shopCar.skuId,
         };
         this.shopcrtList.push(shopCarObj);
       });
@@ -341,14 +340,14 @@ export default {
         Notify({
           message: "Choose the method of payment.",
           color: "#fff",
-          type: "danger"
+          type: "danger",
         });
         return;
       }
       let flag = true;
       let flag2 = true;
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(ele2 => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((ele2) => {
           if (ele2.canSell == 0 || ele2.stockEnough == 0) {
             flag = false;
           }
@@ -376,7 +375,7 @@ export default {
     //编译状态
     orderStatus(type, list) {
       let name = "";
-      this[list].forEach(statu => {
+      this[list].forEach((statu) => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -404,7 +403,7 @@ export default {
     },
     //获取用户默认收货地址信息
     querydefaultObject() {
-      querydefaultObjectApi().then(res => {
+      querydefaultObjectApi().then((res) => {
         if (res.code == 0) {
           if (res.Data == null) {
             this.jumpRouter("确认订单收货地址");
@@ -435,19 +434,18 @@ export default {
       // let coupons = [];
       let data = {
         addressId: this.defaultAdderss.addressId,
-        detailList: arr
+        detailList: arr,
       };
       // 商品明细列表
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(item => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((item) => {
           let obj = {
             skuId: item.skuId,
-            detailNum: Number(item.detailNum)
+            detailNum: Number(item.detailNum),
           };
           arr.push(obj);
         });
       });
-      console.log(arr, "数组");
       this.getconfirmorder(data);
     },
     //input失焦事件
@@ -470,7 +468,7 @@ export default {
         return;
       }
       this.orderData.orderList.forEach((ele, eleIndex) => {
-        ele.detailList.forEach(item => {
+        ele.detailList.forEach((item) => {
           if (item.skuId == good.skuId) {
             ele.detailList.splice(goodindex, 1);
             this.shopcrtList.forEach((shopcrt, shopcrtIndex) => {
@@ -496,14 +494,14 @@ export default {
       let coupon = {
         addressId: this.defaultAdderss.addressId,
         detailList: arr,
-        couponDrawList: drawId
+        couponDrawList: drawId,
       };
       // 商品明细列表
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(item => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((item) => {
           let obj = {
             skuId: item.skuId,
-            detailNum: Number(item.detailNum)
+            detailNum: Number(item.detailNum),
           };
           arr.push(obj);
         });
@@ -515,10 +513,9 @@ export default {
     getconfirmorder(data) {
       // // 缓存订单数据在vuex
       // this.$store.state.orderDetails = data;
-      getconfirmorderApi(data).then(res => {
+      getconfirmorderApi(data).then((res) => {
         if (res.code == 0) {
           this.orderData = res.Data;
-          console.log("订单详情", this.orderData);
           // 缓存优惠券列表在vuex
           this.couponList = this.$store.state.coupons = this.orderData.couponList;
           this.$store.state.couponListUse = this.orderData.couponListCannotUse;
@@ -544,10 +541,9 @@ export default {
         orderSource: 1,
         orderList: orderObj.orderList,
         shopcrtList: this.shopcrtList,
-        couponList: this.couponList
+        couponList: this.couponList,
       };
-      batchmakeorderApi(obj).then(res => {
-        console.log(res, "确认订单");
+      batchmakeorderApi(obj).then((res) => {
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -557,7 +553,7 @@ export default {
           } else {
             //弹出支付弹框
             this.showpaymen();
-            res.Data.forEach(item => {
+            res.Data.forEach((item) => {
               orderIdArr.push({ orderId: Number(item.orderId) });
             });
             this.orderIdList = orderIdArr;
@@ -600,14 +596,14 @@ export default {
       let obj = {
         addressId: this.defaultAdderss.addressId,
         detailList: this.selectionShopCar,
-        autoSelectCoupon: 1
+        autoSelectCoupon: 1,
       };
       this.getconfirmorder(obj);
     },
 
     //订单发起支付
     orderlaunchpay(data) {
-      orderlaunchpayApi(data).then(res => {
+      orderlaunchpayApi(data).then((res) => {
         // console.log(data);
 
         if (res.code == 0) {
@@ -655,7 +651,7 @@ export default {
       let obj = {
         payTypeDetail: this.payTypeDetail,
         payPwd: value,
-        orderList: this.orderIdList
+        orderList: this.orderIdList,
       };
 
       this.orderlaunchpay(obj);
@@ -667,18 +663,12 @@ export default {
     },
     //选择支付方式
     changePaymen(dataItem) {
-      this.payTypeList.forEach(item => {
+      this.payTypeList.forEach((item) => {
         item.checked = false;
       });
       dataItem.checked = true;
       this.zffs = dataItem.payType;
       this.$forceUpdate();
-    },
-    // 新增-优惠券 进度条
-    ProBar() {
-      if (this.iSpeed != 100) {
-        this.iSpeed++;
-      }
     },
     // 更多优惠券
     saleMore() {
@@ -686,7 +676,7 @@ export default {
     },
     orderPop() {
       this.order = false;
-    }
+    },
   },
   components: {
     actionSheetPaymen,
@@ -694,8 +684,8 @@ export default {
     actionSheetPassword,
     balanceHeader,
     progressBar,
-    orderCouponPop
-  }
+    orderCouponPop,
+  },
 };
 </script>
 
