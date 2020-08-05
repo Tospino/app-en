@@ -193,6 +193,7 @@ export default {
       loading: false,
       finished: false,
       Status: "",
+      isOne: true,
     };
   },
   computed: {},
@@ -225,55 +226,82 @@ export default {
       this.shopCoupon = [];
       this.shopCouponUsed = [];
       this.shopCouponEx = [];
-      // this.getListData();
+      window.scrollTo({ top: 10 });
     },
     // 全部可用优惠券
-    async getListData() {
+    async getListData(flag) {
       let couponList = await APPgetuserallCouponListApi({
         page: this.page,
         limit: this.limit,
         usetype: this.active + 1,
       });
-      this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
-      // console.log("getListData ->  this.shopCoupon", this.shopCoupon);
-      // 列表数据懒加载
-      if (couponList.Data.totalPage >= couponList.Data.currPage) {
-        this.page = this.page + 1;
+
+      if (flag) {
+        this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
       } else {
+        this.shopCoupon = couponList.Data.list;
+      }
+
+      // 列表数据懒加载
+      if (this.shopCoupon.length >= couponList.Data.totalCount) {
         this.finished = true;
+      } else {
+        this.page = this.page + 1;
       }
       this.loading = false; // 加载状态结束
     },
 
     // 已使用和已过期优惠券
-    async getUseData() {
+    async getUseData(flag) {
       let couponList = await APPgetuserallcouponlistexpireApi({
         page: this.page,
         limit: this.limit,
         usetype: this.active + 1,
       });
-      // 如果shopCoupon长度大于数据总长度
-      if (couponList.Data.totalPage >= couponList.Data.currPage) {
-        // 获取数据
-        if (this.active == 1) {
+      // 获取数据
+      if (this.active == 1) {
+        if (flag) {
           this.shopCouponUsed = this.shopCouponUsed.concat(
             couponList.Data.list
           );
-        } else if (this.active == 2) {
-          this.shopCouponEx = this.shopCouponEx.concat(couponList.Data.list);
+        } else {
+          this.shopCouponUsed = couponList.Data.list;
         }
-      } else {
-        this.finished = true;
+
+        // 如果shopCouponUsed长度大于数据总长度
+        if (this.shopCouponUsed.length >= couponList.Data.totalCount) {
+          this.finished = true;
+        } else {
+          this.page = this.page + 1;
+        }
+      } else if (this.active == 2) {
+        if (flag) {
+          this.shopCouponEx = this.shopCouponEx.concat(couponList.Data.list);
+        } else {
+          this.shopCouponEx = couponList.Data.list;
+        }
+        // 如果shopCouponUsed长度大于数据总长度
+        if (this.shopCouponEx.length >= couponList.Data.totalCount) {
+          this.finished = true;
+        } else {
+          this.page = this.page + 1;
+        }
       }
       this.loading = false; // 加载状态结束
     },
     // 懒加载数据
     onLoad() {
-      if (this.active == 0) {
-        this.getListData();
-      } else {
-        this.getUseData();
+      if (this.isOne) {
+        if (this.active == 0) {
+          this.getListData(true);
+        } else {
+          this.getUseData(true);
+        }
+        this.isOne = false;
       }
+      setTimeout(() => {
+        this.isOne = true;
+      }, 300);
     },
     // 新增-优惠券 进度条
     ProBar(id, Detail, Status, Type, businessId, expIds, skuId, sellFlag) {
@@ -306,7 +334,8 @@ export default {
       couponDrawApi(couponsId).then((res) => {
         if (res.code == 0) {
           Toast("Get the success");
-          window.location.reload();
+          // window.location.reload();
+          this.getListData(false);
         } else {
           this.$toast.clear();
         }
@@ -320,6 +349,7 @@ export default {
       couponRemoveApi(delIds).then((res) => {
         if (res.code == 0) {
           Toast("Delete the success");
+          this.getUseData(false);
         } else {
           this.$toast.clear();
         }

@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-29 21:17:19
+ * @LastEditTime: 2020-08-05 20:09:20
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -312,6 +312,7 @@ export default {
           this.wuxiaoList = wuxiaoList;
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessId");
+          console.log("shopcartlist ->   this.dataList", this.dataList);
           this.dataList.forEach((item) => {
             item.list.forEach((listitem) => {
               listitem.checkStatus = false;

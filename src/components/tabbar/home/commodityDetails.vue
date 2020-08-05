@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-04 21:37:54
+ * @LastEditTime: 2020-08-05 20:25:00
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -133,7 +133,7 @@
             <span class="youhuiquan-title">Coupons</span>
             <span class="youhuiquan-txt" @click="saleMore">More</span>
           </div>
-          <!-- <div class="youhuiquan-main" v-show="ProModel.Data===null?false:true">
+          <div class="youhuiquan-main" v-if="ProModel.Data?true:false">
             <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png" />
             <div class="youhuiquan-box">
               <div class="youhuiquan-left">
@@ -147,7 +147,7 @@
                 >Type:{{ProModel.Data.couponType==1?"Tospino’s Price-off":ProModel.Data.couponType==2?"Newer Exclusives":ProModel.Data.couponType==3?"Shop’s Price-off":ProModel.Data.couponType==4?"Item Price-off":"Item Price-off"}}</p>
                 <p class="youhuiquan-left-m">Valid:{{ProModel.Data.useBeginWebsite}}</p>
                 {{ProModel.Data.useEndWebsite}}
-                <progress-bar :progressBar="ProModel.Data.claimRate"></progress-bar>
+                <progress-bar :progressBar="ProModel.Data.claimRate ? ProModel.Data.claimRate : 0"></progress-bar>
               </div>
 
               <div class="youhuiquan-right">
@@ -159,13 +159,12 @@
                   <van-button
                     round
                     type="info"
-                    @click="ProBar"
                     class="youhuiquan-right-btn"
                   >{{ProModel.Data.drawStatus==null?"Get it now":ProModel.Data.drawStatus==0?"Use it now":ProModel.Data.drawStatus==1?"Get more":ProModel.Data.drawStatus==2?"Delete":"Delete"}}</van-button>
                 </div>
               </div>
             </div>
-          </div>-->
+          </div>
         </div>
 
         <div ref="guige">
