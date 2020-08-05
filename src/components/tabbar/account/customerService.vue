@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-03 11:14:17
+ * @LastEditTime: 2020-08-04 17:40:46
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -46,7 +46,7 @@ export default {
   //   name: "customerService",
   data() {
     return {
-      seversUrl: `https://ykf-webchat.7moor.com/wapchat.html?accessId=48ebab00-d14e-11ea-89a3-afb3231772e9&fromUrl=tospino-app&urlTitle=&language=EN`,
+      seversUrl: `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN`,
       h: document.documentElement.clientHeight - 40 + "px",
       showServer: false,
       userinfoShop: null,
@@ -61,8 +61,8 @@ export default {
       this.isshow = false;
       this.h = document.documentElement.clientHeight - 55 + "px";
     }
-    if (localStorage.userinfoShop && localStorage.token) {
-      this.token = localStorage.token;
+    if (localStorage.userinfoShop && this.$storage.get("token")) {
+      this.token = this.$storage.get("token");
       this.userinfoShop = JSON.parse(localStorage.userinfoShop);
       this.getData();
     } else {
@@ -140,7 +140,7 @@ export default {
         };
       }
       otherParams = JSON.stringify(otherParams);
-      this.seversUrl = `https://ykf-webchat.7moor.com/wapchat.html?accessId=48ebab00-d14e-11ea-89a3-afb3231772e9&fromUrl=tospino-app&urlTitle=&language=EN&clientId=${
+      this.seversUrl = `https://webchat.7moor.com/wapchat.html?accessId=8171fc80-d163-11ea-bfcd-0ba873f67cbc&fromUrl=tospino-app&urlTitle=&language=EN&clientId=${
         this.userinfoShop.userId
       }&otherParams=${encodeURIComponent(otherParams)}`;
       this.showServer = true;

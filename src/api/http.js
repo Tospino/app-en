@@ -1,7 +1,7 @@
 /*
  * @Author: CJY
  * @Date: 2020-07-09 10:00:20
- * @LastEditTime: 2020-07-24 15:53:23
+ * @LastEditTime: 2020-08-04 17:40:24
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\api\http.js
@@ -10,6 +10,7 @@
 import axios from 'axios';
 import main from '@/main.js'
 import { Toast } from 'vant';
+import storage from 'storejs';
 import Qs from 'qs'
 //form Data格式
 const mainAxios = axios.create({
@@ -49,8 +50,8 @@ mainAxios.interceptors.request.use(function (config) {
 
 // 添加请求拦截器
 parkAxios.interceptors.request.use(function (config) {
-    if (localStorage.token) {
-        config.headers.token = localStorage.token;
+    if (storage.get('token')) {
+        config.headers.token = storage.get('token');
     }
     if (config.method === 'get' || config.method === 'GET') {
         config.params = config.data
@@ -138,16 +139,16 @@ parkAxios.interceptors.response.use(function (response) {
                 data.msg = "Please login again"
                 Toast(data.msg);
                 setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
-                if (localStorage.token) { localStorage.removeItem('token') }
+                if (storage.get('token')) { storage.remove('token') }
             } else if (data.code == -2) {
                 data.msg = "No account information! Please login again."
                 setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
-                if (localStorage.token) { localStorage.removeItem('token') }
+                if (storage.get('token')) { storage.remove('token') }
                 Toast(data.msg);
             } else if (data.code == -3) {
                 data.msg = "The login is invalid. Please login again."
                 setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
-                if (localStorage.token) { localStorage.removeItem('token') }
+                if (storage.get('token')) { storage.remove('token') }
                 Toast(data.msg);
             } else if (data.code == -4) {
                 data.msg = "Non-existent account/incorrect password"

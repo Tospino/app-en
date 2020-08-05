@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-09 10:00:20
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-18 11:15:21
+ * @LastEditTime: 2020-08-04 17:37:12
  * @Description: 
  * @FilePath: \app-en\src\main.js
  */
@@ -69,8 +69,6 @@ Object.keys(mycomponents).forEach(key => {
 })
 
 
-
-
 // router.afterEach((to,from,next) => {
 //   window.scroll(200, 200);
 //   console.log(window.scrollY);
@@ -83,6 +81,9 @@ Vue.use(VueLazyload, {
     loading: '../static/goods_default.jpg', // loading图片，未加载时显示的
     attempt: 1
 })
+// 引入缓存插件
+import storage from 'storejs';
+Vue.prototype.$storage = storage
 
 /* eslint-disable no-new */
 const main = new Vue({

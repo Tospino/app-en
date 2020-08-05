@@ -344,8 +344,9 @@ export default {
     //登出
     logOut() {
       logoutApi().then((res) => {
-        if (localStorage.token) {
-          localStorage.removeItem("token");
+        if (this.$storage.get("token")) {
+          this.$storage.remove("token");
+          //   localStorage.removeItem("token");
           localStorage.removeItem("userinfoShop");
         }
         this.$router.push({ name: "登录" });

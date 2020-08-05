@@ -310,9 +310,9 @@ export default {
   computed: {},
   created() {
     if (this.$route.query.token && this.$route.query.token != "undefined") {
-      localStorage.token = this.$route.query.token;
+      this.$storage.set("token", this.$route.query.token);
+      //   localStorage.token = this.$route.query.token;
       this.getuserinfo();
-      // console.log(123123);
     }
     if (localStorage.homeObj) {
       this.homeObj = this.$fn.MyLocalStorage.Cache.get("homeObj");

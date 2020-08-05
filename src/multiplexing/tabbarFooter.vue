@@ -93,7 +93,7 @@ export default {
   computed: {},
   created() {},
   mounted() {
-    this.isreplace = localStorage.token ? true : false;
+    this.isreplace = this.$storage.get("token") ? true : false;
   },
   watch: {},
   methods: {},

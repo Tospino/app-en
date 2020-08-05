@@ -50,10 +50,10 @@ export default {
         country: "",
         language: "",
         currency: "",
-        webUrl: ""
+        webUrl: "",
       },
       china: china,
-      gana: gana
+      gana: gana,
     };
   },
   mounted() {
@@ -68,7 +68,7 @@ export default {
         flag = this.china;
       }
       return flag;
-    }
+    },
   },
   methods: {
     toyuyan() {
@@ -76,7 +76,7 @@ export default {
     },
     //获取站点的国家语言信息
     getcountryWebUrl() {
-      getcountryWebUrlApi().then(res => {
+      getcountryWebUrlApi().then((res) => {
         if (res.code == 0) {
           try {
             if (this.$route.query.type == 1) {
@@ -96,15 +96,15 @@ export default {
         window.location.href =
           this.countryItem.webUrl +
           "#/control/home/?token=" +
-          localStorage.token;
+          this.$storage.get("token");
       } else {
         Toast("The current languagge is English");
       }
-    }
+    },
   },
   components: {
-    balanceHeader
-  }
+    balanceHeader,
+  },
 };
 </script> 
 
