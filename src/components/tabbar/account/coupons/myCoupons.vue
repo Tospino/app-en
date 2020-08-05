@@ -17,7 +17,7 @@
     <!-- 优惠券列表 -->
     <div class="selection-conten" v-if="active==0">
       <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
-        <div class="youhuiquan-main" v-for="(shops,index) in shopCoupon" :key="index">
+        <van-cell class="youhuiquan-main" v-for="(shops,index) in shopCoupon" :key="index">
           <div v-if="shops.drawStatus==0||shops.drawStatus==null">
             <img :src="srcUse" />
           </div>
@@ -46,7 +46,7 @@
                 <span class="youhuiquan-right-title right-title-a">{{shops.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <div>For GH{{jn}} {{shops.upToAmount}} consumption</div>
+                <div>Mini Spend GH{{jn}} {{shops.upToAmount}}</div>
                 <van-button
                   round
                   type="info"
@@ -56,13 +56,13 @@
               </div>
             </div>
           </div>
-        </div>
+        </van-cell>
       </van-list>
     </div>
 
     <div class="selection-conten" v-else-if="active==1">
       <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
-        <div class="youhuiquan-main" v-for="(shopone,index) in shopCouponUsed" :key="index">
+        <van-cell class="youhuiquan-main" v-for="(shopone,index) in shopCouponUsed" :key="index">
           <img :src="srcDel" />
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
@@ -82,7 +82,7 @@
                 <span class="youhuiquan-right-title right-title-b">{{shopone.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <div>For GH{{jn}} {{shopone.upToAmount}} consumption</div>
+                <div>Mini Spend GH{{jn}} {{shopone.upToAmount}}</div>
                 <van-button
                   round
                   type="info"
@@ -93,13 +93,13 @@
               </div>
             </div>
           </div>
-        </div>
+        </van-cell>
       </van-list>
     </div>
     <!-- 已过期 -->
     <div class="selection-conten" v-else-if="active==2">
       <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
-        <div class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
+        <van-cell class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
           <img :src="srcDel" />
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
@@ -132,7 +132,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </van-cell>
       </van-list>
     </div>
     <!-- 判断是否有优惠券 -->
@@ -192,13 +192,29 @@ export default {
       couponsDataId: "", //点击领取
       loading: false,
       finished: false,
+      Status: "",
     };
   },
   computed: {},
-  watch: {},
+  watch: {
+    shopCoupon: {
+      handler(newVal) {},
+      deep: true,
+    },
+  },
   created() {},
   mounted() {},
-  beforeUpdate() {},
+  beforeUpdate() {
+    // if (this.active != 0) {
+    //   this.shopCoupon = [];
+    // } else {
+    //   if (this.active == 1) {
+    //     this.shopCouponUsed = [];
+    //   } else {
+    //     this.shopCouponEx = [];
+    //   }
+    // }
+  },
   methods: {
     //  导航栏tab切换
     userDrawCoupon(active) {
@@ -206,23 +222,27 @@ export default {
       this.page = 1;
       this.loading = false;
       this.finished = false;
-      // this.getUseData();
+      this.shopCoupon = [];
+      this.shopCouponUsed = [];
+      this.shopCouponEx = [];
+      this.getListData();
     },
     // 全部可用优惠券
     async getListData() {
       let couponList = await APPgetuserallCouponListApi({
         page: this.page,
         limit: this.limit,
-        usetype: 1,
+        usetype: this.active + 1,
       });
       this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
+      console.log("getListData ->  this.shopCoupon", this.shopCoupon);
       // 列表数据懒加载
       if (couponList.Data.totalPage >= couponList.Data.currPage) {
         this.page = this.page + 1;
       } else {
-        this.loading = false;
         this.finished = true;
       }
+      this.loading = false; // 加载状态结束
     },
 
     // 已使用和已过期优惠券
@@ -232,7 +252,6 @@ export default {
         limit: this.limit,
         usetype: this.active + 1,
       });
-      this.page = this.page + 1;
       // 如果shopCoupon长度大于数据总长度
       if (couponList.Data.totalPage >= couponList.Data.currPage) {
         // 获取数据
@@ -244,7 +263,6 @@ export default {
           this.shopCouponEx = this.shopCouponEx.concat(couponList.Data.list);
         }
       } else {
-        this.loading = false;
         this.finished = true;
       }
       this.loading = false; // 加载状态结束
@@ -288,6 +306,7 @@ export default {
       couponDrawApi(couponsId).then((res) => {
         if (res.code == 0) {
           Toast("Get the success");
+          window.location.reload();
         } else {
           this.$toast.clear();
         }
@@ -325,11 +344,19 @@ export default {
 }
 .coupons-top {
   position: fixed;
+  top: 0;
   width: 100%;
   z-index: 1;
 }
 .selection-conten {
-  padding: 200px 40px 60px;
+  // padding: 200px 40px 60px;
+  position: relative;
+  top: 160px;
+  height: 100%;
+  /deep/ .van-cell {
+    padding: 0 20px;
+    background-color: #f5f5f5;
+  }
   .youhuiquan-main {
     max-width: 100%;
     height: 210px;
@@ -343,17 +370,18 @@ export default {
       display: flex;
       position: relative;
       top: -209px;
-      left: 20px;
 
       .youhuiquan-left {
-        width: 40%;
-        padding-top: 16px;
+        width: 70%;
+        padding-top: 30px;
+        padding-left: 20px;
         .youhuiquan-left-biao {
           font-size: 12px;
           color: #fa5300;
         }
         .youhuiquan-left-money {
-          font-size: 50px;
+          padding-top: 10px;
+          font-size: 32px;
           font-weight: bold;
           color: #fa5300;
           i {
@@ -364,7 +392,7 @@ export default {
         .youhuiquan-left-m {
           font-size: 12px;
           color: #333;
-          line-height: 34px;
+          line-height: 36px;
         }
       }
 
@@ -383,12 +411,12 @@ export default {
           background: #cecece;
         }
         .youhuiquan-right-title {
-          font-size: 20px;
-          padding: 10px 30px;
+          font-size: 12px;
+          padding: 10px;
         }
         .youhuiquan-right-main {
           padding-top: 46px;
-          font-size: 24px;
+          font-size: 14px;
           color: rgba(255, 255, 255, 1);
           .right-btn-a {
             color: #fa5300;
@@ -404,7 +432,7 @@ export default {
             border: 1px solid #fff;
             font-size: 30px;
             font-weight: bold;
-            padding: 30px 42px;
+            padding: 30px 30px;
           }
           /deep/ .van-button {
             // height: 0;

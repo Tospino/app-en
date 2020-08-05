@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-04 10:52:27
+ * @LastEditTime: 2020-08-04 21:37:54
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -133,7 +133,7 @@
             <span class="youhuiquan-title">Coupons</span>
             <span class="youhuiquan-txt" @click="saleMore">More</span>
           </div>
-          <div class="youhuiquan-main">
+          <!-- <div class="youhuiquan-main" v-show="ProModel.Data===null?false:true">
             <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png" />
             <div class="youhuiquan-box">
               <div class="youhuiquan-left">
@@ -146,7 +146,7 @@
                   class="youhuiquan-left-m"
                 >Type:{{ProModel.Data.couponType==1?"Tospino’s Price-off":ProModel.Data.couponType==2?"Newer Exclusives":ProModel.Data.couponType==3?"Shop’s Price-off":ProModel.Data.couponType==4?"Item Price-off":"Item Price-off"}}</p>
                 <p class="youhuiquan-left-m">Valid:{{ProModel.Data.useBeginWebsite}}</p>
-                <!-- {{ProModel.Data.useEndWebsite}} -->
+                {{ProModel.Data.useEndWebsite}}
                 <progress-bar :progressBar="ProModel.Data.claimRate"></progress-bar>
               </div>
 
@@ -165,7 +165,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div>-->
         </div>
 
         <div ref="guige">

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-07-23 17:17:16
+ * @LastEditTime: 2020-08-04 17:57:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\multiplexing\progress.vue
@@ -33,7 +33,7 @@ export default {
   watch: {},
   created() {},
   mounted() {},
-  methods: {}
+  methods: {},
 };
 </script>
 <style scoped lang="less">
