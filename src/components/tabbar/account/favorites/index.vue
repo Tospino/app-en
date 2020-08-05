@@ -44,7 +44,7 @@
           checked-color="#FA5300"
           @change="allCheck"
         ></van-checkbox>
-        <span class="btn1" @click="delet">Cancel CollectIon</span>
+        <span class="btn1" @click="delet">Cancel Collection</span>
         <span class="p1">All</span>
       </span>
     </div>
