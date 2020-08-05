@@ -225,7 +225,7 @@ export default {
       this.shopCoupon = [];
       this.shopCouponUsed = [];
       this.shopCouponEx = [];
-      this.getListData();
+      // this.getListData();
     },
     // 全部可用优惠券
     async getListData() {
@@ -235,7 +235,7 @@ export default {
         usetype: this.active + 1,
       });
       this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
-      console.log("getListData ->  this.shopCoupon", this.shopCoupon);
+      // console.log("getListData ->  this.shopCoupon", this.shopCoupon);
       // 列表数据懒加载
       if (couponList.Data.totalPage >= couponList.Data.currPage) {
         this.page = this.page + 1;
