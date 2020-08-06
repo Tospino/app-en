@@ -28,6 +28,7 @@
       @toParnet="fnParent"
       @change="onChangePayMethod"
       :showList="showList"
+      :paymoeny="paymoeny"
     ></action-sheet-yinhang>
 
     <zhezhao v-if="zhezhaoStatus">
@@ -69,12 +70,6 @@ export default {
   data() {
     return {
       showAction: false,
-      // payTypeList: [
-      //   {
-      //     type: 201,
-      //     name: "Balance"
-      //   }
-      // ],
       payTypeList: [
         {
           type: 203,
@@ -94,12 +89,6 @@ export default {
     };
   },
   computed: {
-    // oneTypeName() {
-    //   let name = "";
-    //   if (this.list.length == 0) return;
-    //   name = this.orderStatus(this.list[0].payTypeDetail, "payTypeList");
-    //   return name;
-    // },
     paymoeny() {
       return this.moeny;
     },
@@ -125,7 +114,6 @@ export default {
     // 付款方式
     fnParent(e) {
       this.oneTypeName = e.name;
-      // console.log("付款方式", e);
       this.payTypeList = [
         {
           name: e.name,
@@ -135,7 +123,7 @@ export default {
       ];
       this.list[0].payTypeList = e.type;
       this.list[0].payTypeDetail = e.name;
-      this.$refs.actionSheetYinhang.showAction = false;
+      this.confirm();
     },
     // 立即支付
     confirm() {
@@ -165,11 +153,7 @@ export default {
         }).then((result) => {
           if (result.status_code) {
             // 第三方支付页面跳转
-            // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
-            // console.log(this.$store.state.thirdPartyPaymentUrl)
-            // this.$router.push("/thirdPartyPayment")
             window.location.href = result.data.resultUrl;
-            // window.open( result.data.resultUrl, "_blank");
           }
         });
       });
@@ -178,9 +162,6 @@ export default {
       getonlinepaytypelistApi({}).then((res) => {
         if (res.code == 0) {
           this.list = res.Data;
-          // console.log(res.Data);
-          // this.oneTypeName = this.oneTypeName =
-          // this.list.length > 0 ? this.orderStatus(this.list[0].payTypeDetail, "payTypeList") : "";
         }
       });
     },

@@ -29,7 +29,7 @@
       <div class="wuliu">
         <div class="wuliu-title">
           <span class="t1">{{expressName}}</span>
-          <span class="t2">Customer Service：61465656</span>
+          <span class="t2">Customer Service：0302949239</span>
         </div>
         <div class="wuliu-num">
           <span>Tracking No:</span>
@@ -81,10 +81,10 @@ export default {
       footerFromData: {
         page: 1,
         limit: 6,
-        seraname: ""
+        seraname: "",
       },
       footerData: {},
-      copyBtn: null //存储初始化复制按钮事件
+      copyBtn: null, //存储初始化复制按钮事件
     };
   },
   computed: {},
@@ -97,7 +97,7 @@ export default {
   watch: {},
   methods: {
     getlogisticsorder(id) {
-      getlogisticsorderApi({ orderId: id }).then(res => {
+      getlogisticsorderApi({ orderId: id }).then((res) => {
         if (res.code == 0) {
           this.dataList = res.Data.logisticsOrderList;
           this.logisticsList = this.dataList[0].actionList;
@@ -114,10 +114,10 @@ export default {
     },
     //猜你喜欢
     guessyoulike(data) {
-      guessyoulikeApi(data).then(res => {
+      guessyoulikeApi(data).then((res) => {
         if (res.code == 0) {
           this.footerData = res.Data;
-          this.footerData.list.forEach(item => {
+          this.footerData.list.forEach((item) => {
             if (item.discountPrice == null) {
               item.discountPrice = item.salePrice;
             }
@@ -129,25 +129,25 @@ export default {
     tuikuan(parcel) {
       this.$router.push({
         name: "包裹仅退款",
-        query: { orderId: parcel.orderId }
+        query: { orderId: parcel.orderId },
       });
     },
     //复制
     copyLink() {
       let _this = this;
       let clipboard = _this.copyBtn;
-      clipboard.on("success", function() {
+      clipboard.on("success", function () {
         Toast("Successful copy!");
       });
-      clipboard.on("error", function() {
+      clipboard.on("error", function () {
         Toast("Failed! Please choose manual copy!");
       });
-    }
+    },
   },
   components: {
     balanceHeader,
-    footerExhibition
-  }
+    footerExhibition,
+  },
 };
 </script>
 

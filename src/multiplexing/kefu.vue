@@ -13,8 +13,8 @@
       <van-icon name="cross" class="cross" />
     </div>
     <div class="p1">
-      <img src="@/assets/img/goodsDetails/whatsapp@2x.png" alt />
-      <a href="tel:055 927 9978" @click="toPhone('055 927 9978')">055 927 9978</a>
+      <img src="@/assets/img/goodsDetails/phone@2x.png" alt />
+      <a href="tel:030 294 9688" @click="toPhone('030 294 9688')">030 294 9688</a>
     </div>
     <div class="p1">
       <img src="@/assets/img/goodsDetails/phone@2x.png" alt />

@@ -24,7 +24,7 @@
           ></van-checkbox>
         </div>
       </div>
-      <div class="btn-ljzf" @click="pay()   ">Confirm</div>
+      <div class="btn-ljzf" @click="pay">Pay GHS {{paymoeny}}</div>
     </van-action-sheet>
   </div>
 </template>
@@ -45,6 +45,11 @@ export default {
       default: () => {
         return [];
       },
+    },
+    //支付金额
+    paymoeny: {
+      type: [String, Number],
+      default: 0,
     },
   },
   data() {
@@ -81,8 +86,7 @@ export default {
         ele.checked = index == i;
       });
     },
-    pay(index) {
-      this.showAction = false;
+    pay() {
       let trueItem = {};
       this.list.forEach((ele) => {
         if (ele.checked) {

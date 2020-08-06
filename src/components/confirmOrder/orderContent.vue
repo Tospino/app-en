@@ -88,7 +88,7 @@
         >{{order.orderFareWebsite==0 ?'': order.currencySignWebsite}}{{order.orderFareWebsite==0 ? 'Free Shipping':order.orderFareWebsite}}</span>
       </div>
       <div class="payment b-t-1">
-        <span>Transporation</span>
+        <span>Transportation</span>
         <div
           class="select"
           v-if="order.deliverType==1 || order.deliverType==2"
@@ -313,7 +313,7 @@ export default {
     },
     //弹出支付
     showpaymen() {
-      this.$refs.actionSheetPaymen.showAction = true;
+      this.$refs.actionSheetPaymen.showyinhang();
     },
     //弹出支付成功
     showsucess() {

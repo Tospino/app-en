@@ -78,7 +78,7 @@
         block
       >Retrieves the location address</van-button>
       <div class="cell">
-        <span class="c-333">Set it as dafault address</span>
+        <span class="c-333">Set it as default address</span>
         <van-switch
           v-model="form.checked"
           class="switch"
