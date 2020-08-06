@@ -174,7 +174,7 @@ import balanceHeader from "./itemComponents/balanceHeader";
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
-  batchmakeorderApi
+  batchmakeorderApi,
 } from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
@@ -188,22 +188,22 @@ export default {
       option1: [
         { text: "全部商品", value: 0 },
         { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 }
+        { text: "活动商品", value: 2 },
       ],
       option2: [
         { text: "默认排序", value: "a" },
         { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" }
+        { text: "销量排序", value: "c" },
       ],
       payStatus: [
         {
           type: 1,
-          name: "Cash"
+          name: "Cash on delivery",
         },
         {
           type: 2,
-          name: "Online"
-        }
+          name: "Online payment",
+        },
       ],
       showPayment: false,
       checked: false,
@@ -223,13 +223,13 @@ export default {
       // 用户支付
       userinfoShop: {},
       orderSn: [],
-      payTypeListLength: 0
+      payTypeListLength: 0,
     };
   },
   computed: {
     ...mapState({
-      selectionShopCar: state => state.selectionShopCar
-    })
+      selectionShopCar: (state) => state.selectionShopCar,
+    }),
   },
   mounted() {
     //如果在收件地址里面选了地址就从vuex里面找,如果是刚进来的就请求默认地址
@@ -242,10 +242,10 @@ export default {
     //通过购物车进来
     if (this.$route.query.type == "shopcar") {
       let arr = this.$store.state.selectionShopCar;
-      arr.forEach(shopCar => {
+      arr.forEach((shopCar) => {
         let shopCarObj = {
           shopcrtId: shopCar.shopcrtId,
-          skuId: shopCar.skuId
+          skuId: shopCar.skuId,
         };
         this.shopcrtList.push(shopCarObj);
       });
@@ -266,14 +266,14 @@ export default {
         Notify({
           message: "Choose the method of payment.",
           color: "#fff",
-          type: "danger"
+          type: "danger",
         });
         return;
       }
       let flag = true;
       let flag2 = true;
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(ele2 => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((ele2) => {
           if (ele2.canSell == 0 || ele2.stockEnough == 0) {
             flag = false;
           }
@@ -301,7 +301,7 @@ export default {
     //编译状态
     orderStatus(type, list) {
       let name = "";
-      this[list].forEach(statu => {
+      this[list].forEach((statu) => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -329,7 +329,7 @@ export default {
     },
     //获取用户默认收货地址信息
     querydefaultObject() {
-      querydefaultObjectApi().then(res => {
+      querydefaultObjectApi().then((res) => {
         if (res.code == 0) {
           if (res.Data == null) {
             this.jumpRouter("确认订单收货地址");
@@ -359,13 +359,13 @@ export default {
       let arr = [];
       let data = {
         addressId: this.defaultAdderss.addressId,
-        detailList: arr
+        detailList: arr,
       };
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(item => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((item) => {
           let obj = {
             skuId: item.skuId,
-            detailNum: Number(item.detailNum)
+            detailNum: Number(item.detailNum),
           };
           arr.push(obj);
         });
@@ -392,7 +392,7 @@ export default {
         return;
       }
       this.orderData.orderList.forEach((ele, eleIndex) => {
-        ele.detailList.forEach(item => {
+        ele.detailList.forEach((item) => {
           if (item.skuId == good.skuId) {
             ele.detailList.splice(goodindex, 1);
             this.shopcrtList.forEach((shopcrt, shopcrtIndex) => {
@@ -410,7 +410,7 @@ export default {
     },
     //订单详情
     getconfirmorder(data) {
-      getconfirmorderApi(data).then(res => {
+      getconfirmorderApi(data).then((res) => {
         if (res.code == 0) {
           this.orderData = res.Data;
           if (this.payTypeList.length == 0) {
@@ -435,9 +435,9 @@ export default {
         isAnonymous: this.checked ? 1 : 0,
         orderSource: 1,
         orderList: orderObj.orderList,
-        shopcrtList: this.shopcrtList
+        shopcrtList: this.shopcrtList,
       };
-      batchmakeorderApi(obj).then(res => {
+      batchmakeorderApi(obj).then((res) => {
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -447,7 +447,7 @@ export default {
           } else {
             //弹出支付弹框
             this.showpaymen();
-            res.Data.forEach(item => {
+            res.Data.forEach((item) => {
               orderIdArr.push({ orderId: Number(item.orderId) });
             });
             this.orderIdList = orderIdArr;
@@ -489,14 +489,14 @@ export default {
     refresh() {
       let obj = {
         addressId: this.defaultAdderss.addressId,
-        detailList: this.selectionShopCar
+        detailList: this.selectionShopCar,
       };
       this.getconfirmorder(obj);
     },
 
     //订单发起支付
     orderlaunchpay(data) {
-      orderlaunchpayApi(data).then(res => {
+      orderlaunchpayApi(data).then((res) => {
         // console.log(data);
 
         if (res.code == 0) {
@@ -544,7 +544,7 @@ export default {
       let obj = {
         payTypeDetail: this.payTypeDetail,
         payPwd: value,
-        orderList: this.orderIdList
+        orderList: this.orderIdList,
       };
 
       this.orderlaunchpay(obj);
@@ -556,20 +556,20 @@ export default {
     },
     //选择支付方式
     changePaymen(dataItem) {
-      this.payTypeList.forEach(item => {
+      this.payTypeList.forEach((item) => {
         item.checked = false;
       });
       dataItem.checked = true;
       this.zffs = dataItem.payType;
       this.$forceUpdate();
-    }
+    },
   },
   components: {
     actionSheetPaymen,
     actionSheetSucess,
     actionSheetPassword,
-    balanceHeader
-  }
+    balanceHeader,
+  },
 };
 </script>
 

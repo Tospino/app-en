@@ -52,19 +52,19 @@ import { getonlinepaytypelistApi } from "@/api/myOrder/index";
 import actionSheetYinhang from "@/multiplexing/actionSheetYinhang";
 import { listPayOptionsApi } from "@/api/confirmOrder/index";
 import { park } from "@/api";
-import {Toast} from 'vant'
+import { Toast } from "vant";
 export default {
   props: {
     moeny: {
       type: Number,
-      default: 0
+      default: 0,
     },
     orderSn: {
       type: Array,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -79,17 +79,18 @@ export default {
         {
           type: 203,
           name: "MTN Mobile Money",
-          shortName: "MTN_MONEY"
+          shortName: "MTN_MONEY",
         },
       ],
       list: [],
-      nalist:[],
+      nalist: [],
       oneTypeName: "",
       showList: [],
-      zhezhaoStatus:false,
-      tips1:'Are you sure to leave the checkout counter?',
-      tips2:'Unpaid order will be canceled within 30 minutes. Please pay ASAP!',
-      payStatus:false
+      zhezhaoStatus: false,
+      tips1: "Are you sure to leave the checkout counter?",
+      tips2:
+        "Unpaid order will be canceled within 30 minutes. Please pay ASAP!",
+      payStatus: false,
     };
   },
   computed: {
@@ -101,7 +102,7 @@ export default {
     // },
     paymoeny() {
       return this.moeny;
-    }
+    },
   },
   created() {},
   mounted() {
@@ -115,8 +116,8 @@ export default {
       this.payTypeList = [
         {
           name: item.name,
-          type: item.type
-        }
+          type: item.type,
+        },
       ];
       this.list[0].payTypeList = item.type;
       this.list[0].payTypeDetail = item.name;
@@ -129,8 +130,8 @@ export default {
         {
           name: e.name,
           type: e.type,
-          shortName: e.shortName
-        }
+          shortName: e.shortName,
+        },
       ];
       this.list[0].payTypeList = e.type;
       this.list[0].payTypeDetail = e.name;
@@ -139,41 +140,42 @@ export default {
     // 立即支付
     confirm() {
       if (this.payTypeList[0].type === 203) {
-        this.zhezhaoStatus = true
-        this.payStatus = true
-        this.tips2 = 'The advanced logout during payment process will cause failed order payment. The order will be canceled automatically if it cannot be paid within 30 minutes.'
-        this.tips1 = ''
+        this.zhezhaoStatus = true;
+        this.payStatus = true;
+        this.tips2 =
+          "The advanced logout during payment process will cause failed order payment. The order will be canceled automatically if it cannot be paid within 30 minutes.";
+        this.tips1 = "";
       } else {
         this.$emit("showPassWord", true, "支付");
       }
     },
-    orderlaunchpay(){
+    orderlaunchpay() {
       park({
-          url: `/appsaleorder/orderlaunchpay`,
+        url: `/appsaleorder/orderlaunchpay`,
+        method: "POST",
+        data: {
+          payTypeDetail: 203,
+          orderList: this.orderSn,
+        },
+        dataType: "text",
+      }).then((res) => {
+        park({
+          url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&provider=${this.payTypeList[0].shortName}&orderSource=1`,
           method: "POST",
-          data: {
-            payTypeDetail: 203,
-            orderList: this.orderSn
-          },
-          dataType: "text"
-        }).then(res => {
-          park({
-            url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&provider=${this.payTypeList[0].shortName}&orderSource=1`,
-            method: "POST"
-          }).then(result => {
-            if (result.status_code) {
-              // 第三方支付页面跳转
-              // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
-              // console.log(this.$store.state.thirdPartyPaymentUrl)
-              // this.$router.push("/thirdPartyPayment")
-              window.location.href = result.data.resultUrl;
-              // window.open( result.data.resultUrl, "_blank");
-            }
-          });
+        }).then((result) => {
+          if (result.status_code) {
+            // 第三方支付页面跳转
+            // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
+            // console.log(this.$store.state.thirdPartyPaymentUrl)
+            // this.$router.push("/thirdPartyPayment")
+            window.location.href = result.data.resultUrl;
+            // window.open( result.data.resultUrl, "_blank");
+          }
         });
+      });
     },
     getonlinepaytypelist() {
-      getonlinepaytypelistApi({}).then(res => {
+      getonlinepaytypelistApi({}).then((res) => {
         if (res.code == 0) {
           this.list = res.Data;
           // console.log(res.Data);
@@ -183,9 +185,9 @@ export default {
       });
     },
     //编译状态
-    orderStatus(type, list,shortName) {
+    orderStatus(type, list, shortName) {
       let name = "";
-      this[list].forEach(statu => {
+      this[list].forEach((statu) => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -199,20 +201,22 @@ export default {
     //付款方式列表
     listPayOptions() {
       let arr = [];
-      listPayOptionsApi().then(res => {
+      listPayOptionsApi().then((res) => {
         // console.log("付款方式列表",res.data)
         if (res.status_code == 200) {
           this.nalist = res.data;
           this.oneTypeName = this.oneTypeName =
-          this.list.length > 0 ? this.orderStatus(203, "payTypeList",this.nalist[4].shortName) : "";
+            this.list.length > 0
+              ? this.orderStatus(203, "payTypeList", this.nalist[4].shortName)
+              : "";
           //支付方式
-          res.data.forEach(item => {
+          res.data.forEach((item) => {
             let itemObj = {
               name: item.name,
               shortName: item.shortName,
               logourl: item.logourl,
               checked: false,
-              type: 203
+              type: 203,
             };
             arr.push(itemObj);
           });
@@ -222,34 +226,35 @@ export default {
             shortName: "Balance",
             logourl: this.$webUrl + "/common/image/yuan.png",
             checked: false,
-            type: 201
+            type: 201,
           });
           this.showList = arr;
         }
-        Toast.clear()
+        Toast.clear();
       });
     },
     //确认离开
-    leavePay(){
-      this.zhezhaoStatus = false
-      this.showAction = false
+    leavePay() {
+      this.zhezhaoStatus = false;
+      this.showAction = false;
       sessionStorage.setItem("activeIndex", 1);
-      if(this.$route.name != '我的订单'){
+      if (this.$route.name != "我的订单") {
         this.$router.replace({ name: "我的订单" });
       }
     },
     //点击关闭面板
-    cancelSheet(el){
-      this.showAction = true
-      this.zhezhaoStatus = true
-      this.payStatus = false
-      this.tips1 = 'Are you sure to leave the checkout counter?'
-      this.tips2 = 'Unpaid order will be canceled within 30 minutes. Please pay ASAP!'
-    }
+    cancelSheet(el) {
+      this.showAction = true;
+      this.zhezhaoStatus = true;
+      this.payStatus = false;
+      this.tips1 = "Are you sure to leave the checkout counter?";
+      this.tips2 =
+        "Unpaid order will be canceled within 30 minutes. Please pay ASAP!";
+    },
   },
   components: {
-    actionSheetYinhang
-  }
+    actionSheetYinhang,
+  },
 };
 </script>
 
@@ -303,13 +308,13 @@ export default {
     }
   }
 }
-.zhezhao{
+.zhezhao {
   z-index: 3000 !important;
-  .tanchuang{
+  .tanchuang {
     position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 67px 30px 43px;
     background-color: #fff;
     line-height: 27px;
@@ -317,27 +322,27 @@ export default {
     width: 600px;
     color: #333;
     box-sizing: border-box;
-    .p1{
-      font-weight:bold;
+    .p1 {
+      font-weight: bold;
     }
-    .p2{
+    .p2 {
       margin: 16px 0 42px;
     }
-    .btn-left{
-      width:260px;
-      height:60px;
-      border:1px solid rgba(153,153,153,1);
+    .btn-left {
+      width: 260px;
+      height: 60px;
+      border: 1px solid rgba(153, 153, 153, 1);
       line-height: 60px;
       text-align: center;
-      font-size:28px;
+      font-size: 28px;
     }
-    .btn-right{
-      width:260px;
-      height:60px;
-      background:rgba(250,83,0,1);
+    .btn-right {
+      width: 260px;
+      height: 60px;
+      background: rgba(250, 83, 0, 1);
       line-height: 60px;
       text-align: center;
-      font-size:28px;
+      font-size: 28px;
       color: #fff;
     }
   }

@@ -34,25 +34,25 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Choose the method of payment"
+      default: "Choose the method of payment",
     },
     orderId: {
       type: Number,
-      default: 0
+      default: 0,
     },
     showList: {
       type: Array,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       list: [],
       showAction: false,
       remark: "",
-      id: 0
+      id: 0,
     };
   },
   computed: {},
@@ -60,20 +60,20 @@ export default {
   mounted() {},
   watch: {
     orderId: {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.id = newVal;
-        this.reasonList.forEach(item => {
+        this.reasonList.forEach((item) => {
           item.istrue = true;
         });
         this.remark = "";
-      }
+      },
     },
     showList: {
-      handler: function(newVal) {
-        this.list = newVal.map(o => Object.assign({}, o));
+      handler: function (newVal) {
+        this.list = newVal.map((o) => Object.assign({}, o));
         this.list[4].checked = true;
-      }
-    }
+      },
+    },
   },
   methods: {
     cliItem(index) {
@@ -84,15 +84,15 @@ export default {
     pay(index) {
       this.showAction = false;
       let trueItem = {};
-      this.list.forEach(ele => {
+      this.list.forEach((ele) => {
         if (ele.checked) {
           trueItem = ele;
         }
       });
       this.$emit("toParnet", trueItem);
-    }
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 
@@ -110,7 +110,7 @@ export default {
   }
   .paymen-content {
     width: 100%;
-    height: 440px;
+    // height: 440px;
     background-color: #fff;
     box-sizing: border-box;
     padding: 0px 0px 0;
