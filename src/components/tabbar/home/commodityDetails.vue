@@ -143,7 +143,7 @@
             <span class="bbxq-p1">Details</span>
             <span class="line-right"></span>
           </div>
-          <div class="banner" v-html="detailmData.supplyDetail"></div>
+          <div class="banner" v-html="supplyDetail"></div>
           <!-- 推荐宝贝 -->
           <div ref="tjbb"></div>
           <footer-exhibition
@@ -159,7 +159,7 @@
         <div class="icon-collection" @click="cliShoucang">
           <img
             src="@/assets/img/tabbar/home/commodityDetails/collection-02@2x.png"
-            v-if="Isfavorites == 1 "
+            v-if="Isfavorites == 1"
           />
           <img src="@/assets/img/tabbar/home/commodityDetails/collection@2x.png" v-else />
           <div class="icon-collection-p">Collect</div>
@@ -203,7 +203,11 @@ import detailsHeader from "@/multiplexing/detailsHeader";
 import footerExhibition from "@/multiplexing/footerExhibition";
 import commoditySelection from "@/multiplexing/commoditySelection";
 import customerService from "@/components/tabbar/account/customerService.vue";
-import { productdetailApi } from "@/api/home/commodityDetails";
+import {
+  productdetailApi,
+  getsupplyDetailApi,
+  getGuessyouLikeApi,
+} from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
   adduserfavoritesApi,
@@ -238,6 +242,7 @@ export default {
       showData: false,
       spclist: [],
       showServer: false, // 是否显示客户弹框
+      supplyDetail: null, //商品详情图片
     };
   },
   computed: {},
@@ -286,25 +291,41 @@ export default {
             this.detailmData.discountPrice = this.detailmData.salePrice;
             this.detailmData.salePriceFlag = false;
           }
-          this.footerData.list = res.GuessyouLike;
-          this.showfooter = true; //数据回调回来,显示猜你喜欢
           this.Isfavorites = res.Data.isfavorites; //收藏状态
-
           this.spclist = res.spclist;
           this.productParamList = res.Data.productParamList.slice(0, 5);
           this.productParamList2 = res.Data.productParamList;
+          this.getsupplyDetail(this.detailmData.supplyId);
           if (res.Data.productParamList.length > 5) {
             this.shousuoStatus = true;
           }
           setTimeout(() => {
             this.showData = true;
             Toast.clear();
-          }, 1000);
+          }, 300);
         } else if (res.code == -326) {
           Toast("Sold Out");
           setTimeout(() => {
             this.$router.go(-1);
           }, 1000);
+        }
+      });
+    },
+    //详情介绍图片
+    getsupplyDetail(id) {
+      getsupplyDetailApi({ supplyId: id }).then((res) => {
+        if (res.code == 0) {
+          this.supplyDetail = res.supplyDetail;
+        }
+        this.getGuessyouLike(this.detailmData.categoryId);
+      });
+    },
+    //猜你喜欢
+    getGuessyouLike(id) {
+      getGuessyouLikeApi({ categoryId: id }).then((res) => {
+        if (res.code == 0) {
+          this.footerData.list = res.GuessyouLike;
+          this.showfooter = true; //数据回调回来,显示猜你喜欢
         }
       });
     },

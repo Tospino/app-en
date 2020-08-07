@@ -13,7 +13,7 @@
         <input
           type="text"
           class="name-input"
-          placeholder="Enter your username"
+          placeholder="Enter your Number"
           v-model="userData.username1"
         />
       </div>
