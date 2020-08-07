@@ -26,15 +26,18 @@
           </div>
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
-              <span class="youhuiquan-left-biao">GH{{jn}}</span>
+              <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
               <p class="youhuiquan-left-money">
+                <span class="youhuiquan-left-biao">GH{{jn}}</span>
                 {{ shops.reduceAmount}}
                 <i>OFF</i>
               </p>
               <p
                 class="youhuiquan-left-m"
               >Type:{{shops.couponType==1?"Tospino’s Price-off":shops.couponType==2?"Newer Exclusives":shops.couponType==3?"Shop’s Price-off":shops.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p class="youhuiquan-left-m">Valid:{{shops.useEndWebsite}}</p>
+              <p
+                class="youhuiquan-left-m"
+              >Valid:{{shops.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shops.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
               <div v-if="shops.couponType==2?false:true">
                 <progress-bar :progressBar="shops.claimRate"></progress-bar>
               </div>
@@ -46,7 +49,7 @@
                 <span class="youhuiquan-right-title right-title-a">{{shops.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <div>Mini Spend GH{{jn}} {{shops.upToAmount}}</div>
+                <div>Mini Spend GH{{jn}} {{shops.upToAmount!=null?shops.upToAmount:shops.reduceAmount}}</div>
                 <van-button
                   round
                   type="info"
@@ -66,15 +69,17 @@
           <img :src="srcDel" />
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
-              <span class="youhuiquan-left-biao">GH{{jn}}</span>
               <p class="youhuiquan-left-money">
+                <span class="youhuiquan-left-biao">GH{{jn}}</span>
                 {{shopone.reduceAmount}}
                 <i>OFF</i>
               </p>
               <p
                 class="youhuiquan-left-m"
               >Type:{{shopone.couponType==1?"Tospino’s Price-off":shopone.couponType==2?"Newer Exclusives":shopone.couponType==3?"Shop’s Price-off":shopone.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p class="youhuiquan-left-m">Valid:{{shopone.useEndWebsite}}</p>
+              <p
+                class="youhuiquan-left-m"
+              >Valid:{{shopone.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopone.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
             </div>
 
             <div class="youhuiquan-right">
@@ -82,13 +87,13 @@
                 <span class="youhuiquan-right-title right-title-b">{{shopone.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <div>Mini Spend GH{{jn}} {{shopone.upToAmount}}</div>
+                <div>Mini Spend GH{{jn}} {{shopone.upToAmount!=null?shopone.upToAmount:shopone.reduceAmount}}</div>
                 <van-button
                   round
                   type="info"
                   @click="usedDel(shopone.drawId)"
                   class="youhuiquan-right-btn right-btn-b"
-                >{{shopone.drawStatus==null?"Get it now":shopone.drawStatus==0?"Use it now":shopone.drawStatus==1?"Get more":shopone.drawStatus==2?"Delete":"Delete"}}</van-button>
+                >Delete</van-button>
                 <!-- {{shopone.drawStatus==null?"Get it now":shopone.drawStatus==0?"Use it now":shopone.drawStatus==1?"Get more":shopone.drawStatus==2?"Delete":"Delete"}} -->
               </div>
             </div>
@@ -103,15 +108,17 @@
           <img :src="srcDel" />
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
-              <span class="youhuiquan-left-biao">GH{{jn}}</span>
               <p class="youhuiquan-left-money">
+                <span class="youhuiquan-left-biao">GH{{jn}}</span>
                 {{ shopDel.reduceAmount}}
                 <i>OFF</i>
               </p>
               <p
                 class="youhuiquan-left-m"
               >Type:{{shopDel.couponType==1?"Tospino’s Price-off":shopDel.couponType==2?"Newer Exclusives":shopDel.couponType==3?"Shop’s Price-off":shopDel.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p class="youhuiquan-left-m">Valid:{{shopDel.useEndWebsite}}</p>
+              <p
+                class="youhuiquan-left-m"
+              >Valid:{{shopDel.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopDel.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
             </div>
 
             <div class="youhuiquan-right">
@@ -122,7 +129,7 @@
                 >{{shopDel.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <div>For GH{{jn}} {{shopDel.upToAmount}} consumption</div>
+                <div>Mini Spend GH{{jn}} {{shopDel.upToAmount!=null?shopDel.upToAmount:shopDel.reduceAmount}}</div>
                 <van-button
                   round
                   type="info"
@@ -261,6 +268,7 @@ export default {
       // 获取数据
       if (this.active == 1) {
         if (flag) {
+          console.log("getUseData -> flag", flag);
           this.shopCouponUsed = this.shopCouponUsed.concat(
             couponList.Data.list
           );
@@ -334,7 +342,6 @@ export default {
       couponDrawApi(couponsId).then((res) => {
         if (res.code == 0) {
           Toast("Get the success");
-          // window.location.reload();
           this.getListData(false);
         } else {
           this.$toast.clear();
@@ -406,23 +413,25 @@ export default {
         padding-top: 30px;
         padding-left: 20px;
         .youhuiquan-left-biao {
-          font-size: 12px;
+          font-size: 25px;
+          font-weight: bold;
           color: #fa5300;
         }
         .youhuiquan-left-money {
           padding-top: 10px;
-          font-size: 32px;
+          padding-bottom: 20px;
+          font-size: 60px;
           font-weight: bold;
           color: #fa5300;
           i {
-            font-size: 14px;
-            font-weight: normal;
+            font-size: 25px;
+            font-weight: bold;
           }
         }
         .youhuiquan-left-m {
-          font-size: 12px;
+          font-size: 20px;
           color: #333;
-          line-height: 36px;
+          line-height: 30px;
         }
       }
 
@@ -445,8 +454,8 @@ export default {
           padding: 10px;
         }
         .youhuiquan-right-main {
-          padding-top: 46px;
-          font-size: 14px;
+          padding-top: 40px;
+          font-size: 24px;
           color: rgba(255, 255, 255, 1);
           .right-btn-a {
             color: #fa5300;

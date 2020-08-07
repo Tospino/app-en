@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-05 20:25:00
+ * @LastEditTime: 2020-08-06 17:08:33
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -137,29 +137,33 @@
             <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png" />
             <div class="youhuiquan-box">
               <div class="youhuiquan-left">
-                <span class="youhuiquan-left-biao">GH{{jn}}</span>
+                <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
                 <p class="youhuiquan-left-money">
+                  <span class="youhuiquan-left-biao">GH{{jn}}</span>
                   {{ProModel.Data.reduceAmount}}
                   <i>OFF</i>
                 </p>
                 <p
                   class="youhuiquan-left-m"
                 >Type:{{ProModel.Data.couponType==1?"Tospino’s Price-off":ProModel.Data.couponType==2?"Newer Exclusives":ProModel.Data.couponType==3?"Shop’s Price-off":ProModel.Data.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-                <p class="youhuiquan-left-m">Valid:{{ProModel.Data.useBeginWebsite}}</p>
-                {{ProModel.Data.useEndWebsite}}
+                <p
+                  class="youhuiquan-left-m"
+                >Valid:{{ProModel.Data.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{ProModel.Data.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
                 <progress-bar :progressBar="ProModel.Data.claimRate ? ProModel.Data.claimRate : 0"></progress-bar>
               </div>
 
               <div class="youhuiquan-right">
                 <div class="youhuiquan-right-header">
+                  <!-- 测试完后注释掉 -->
                   <span class="youhuiquan-right-title">{{ProModel.Data.couponName}}</span>
                 </div>
                 <div class="youhuiquan-right-main">
-                  <div>For GH₵ {{ProModel.Data.upToAmount}} consumption</div>
+                  <div>Mini Spend GH₵ {{ProModel.Data.upToAmount}}</div>
                   <van-button
                     round
                     type="info"
                     class="youhuiquan-right-btn"
+                    @click="couponsClick(ProModel.Data.couponsId,ProModel.Data.couponDetailId,ProModel.Data.supplyId,ProModel.Data.businessId)"
                   >{{ProModel.Data.drawStatus==null?"Get it now":ProModel.Data.drawStatus==0?"Use it now":ProModel.Data.drawStatus==1?"Get more":ProModel.Data.drawStatus==2?"Delete":"Delete"}}</van-button>
                 </div>
               </div>
@@ -233,7 +237,12 @@
     </van-overlay>
 
     <!-- 更多优惠券 -->
-    <shop-coupon-pop :shop="shop" :couponShop="couponShop" @shopPop="shopPop"></shop-coupon-pop>
+    <shop-coupon-pop
+      :shop="shop"
+      :couponShop="couponShop"
+      @shopPop="shopPop"
+      @couponSucceed="couponSucceed"
+    ></shop-coupon-pop>
   </div>
 </template>
 
@@ -253,6 +262,8 @@ import {
   adduserbrowhistoryApi,
   adduserfavoritesApi,
 } from "@/api/favorites/index.js";
+// 领取优惠券
+import { couponDrawApi } from "@/api/confirmOrder/index";
 import kefu from "@/multiplexing/kefu.vue";
 import { Toast } from "vant";
 export default {
@@ -408,10 +419,26 @@ export default {
     },
     // 显示最高金额的优惠券（卖家>平台）
     async couponProModel(supplyId, businessId) {
+      console.log("couponProModel -> businessId", businessId);
+      console.log("couponProModel -> supplyId", supplyId);
       this.ProModel = await AppqureyuserCouponProModelApi({
         supplyId: supplyId,
         businessId: businessId,
       });
+      console.log("couponProModel -> this.ProModel", this.ProModel);
+    },
+    // 最高金额优惠券领取
+    async couponsClick(couponsId, DetailId, supplyId, businessId) {
+      let couponDraw = await couponDrawApi({
+        couponsId: couponsId,
+        couponDetailId: DetailId,
+      });
+      if (couponDraw.code == 0) {
+        Toast("Get the success");
+        this.saleMore();
+      } else {
+        this.$toast.clear();
+      }
     },
     // 更多优惠券
     saleMore() {
@@ -424,6 +451,17 @@ export default {
       AppqureyuserCouponProApi(moreCoupon).then((res) => {
         this.couponShop = res.Data;
       });
+    },
+    // 子组件领取的优惠券
+    async couponSucceed(id) {
+      let couponDraw = await couponDrawApi(id);
+      console.log("couponSucceed -> couponDraw", couponDraw);
+      if (couponDraw.code == 0) {
+        Toast("Get the success");
+        this.saleMore();
+      } else {
+        this.$toast.clear();
+      }
     },
     shopPop() {
       this.shop = false;
@@ -717,13 +755,15 @@ export default {
         display: flex;
         position: relative;
         top: -209px;
-        left: 20px;
+        // left: 20px;
 
         .youhuiquan-left {
-          width: 40%;
+          width: 70%;
           padding-top: 16px;
+          padding-left: 20px;
           .youhuiquan-left-biao {
             font-size: 25px;
+            font-weight: bold;
             color: #fa5300;
           }
           .youhuiquan-left-money {
@@ -732,11 +772,12 @@ export default {
             color: #fa5300;
             i {
               font-size: 25px;
-              font-weight: normal;
+              font-weight: bold;
             }
           }
           .youhuiquan-left-m {
-            font-size: 25px;
+            padding-top: 10px;
+            font-size: 20px;
             color: #333;
             line-height: 34px;
           }

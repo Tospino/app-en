@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-08-04 15:57:24
+ * @LastEditTime: 2020-08-06 21:41:43
  * @LastEditors: Please set LastEditors
  * @Description: 订单详情中的优惠券接口联调
  * @FilePath: \app-en\src\components\confirmOrder\itemComponents\orderCouponPop.vue
@@ -11,19 +11,21 @@
   <!-- 订单优惠券弹框 -->
   <div class="orderCouponPop" v-show="order">
     <div class="order-selection">
-      <div class="order-title">
-        <div class="order-txt">Coupons</div>
-        <van-icon name="cross" class="cross" @click="close" />
-      </div>
-      <div class="order-tab" v-if="true">
-        <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
-          <van-tab>
-            <template slot="title">Available({{this.coupon.length}})</template>
-          </van-tab>
-          <van-tab>
-            <template slot="title">Not Applicable({{this.couponListCannotUse.length}})</template>
-          </van-tab>
-        </van-tabs>
+      <div class="order-heard">
+        <div class="order-title">
+          <div class="order-txt">Coupons</div>
+          <van-icon name="cross" class="cross" @click="close" />
+        </div>
+        <div class="order-tab" v-if="true">
+          <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
+            <van-tab>
+              <template slot="title">Available({{this.coupon.length}})</template>
+            </van-tab>
+            <van-tab>
+              <template slot="title">Not Applicable({{this.couponListCannotUse.length}})</template>
+            </van-tab>
+          </van-tabs>
+        </div>
       </div>
       <div class="selection-conten">
         <!-- 可领取优惠券 -->
@@ -31,14 +33,21 @@
           <div v-for="(couponItem,index) in coupon" :key="index" class="item-one">
             <div class="youhuiquan-item">
               <div class="youhuiquan-left left-one">
-                <span class="youhuiquan-left-biao biao-one">GH{{jn}}</span>
+                <!-- <span class="youhuiquan-left-biao biao-one">GH{{jn}}</span> -->
                 <p class="youhuiquan-left-money money-one">
+                  <span class="youhuiquan-left-biao biao-one">GH{{jn}}</span>
                   {{couponItem.reduceAmountWebsite}}
                   <i>OFF</i>
                 </p>
                 <div class="youhuiquan-left-ms">
+                  <!-- v-if="couponItem.upToAmountWebsite==null?false:true" -->
+                  <p
+                    class="youhuiquan-left-mc mc-one"
+                  >Mini Spend GH {{jn}} {{couponItem.upToAmountWebsite!=null?couponItem.upToAmountWebsite:couponItem.reduceAmountWebsite}}</p>
                   <p class="youhuiquan-left-m m-one">Type:{{couponItem.couponTypeNameEng}}</p>
-                  <p class="youhuiquan-left-m m-one">valid:{{couponItem.useEndWebsite}}</p>
+                  <p
+                    class="youhuiquan-left-m m-one"
+                  >valid:{{couponItem.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{couponItem.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
                 </div>
                 <!-- <progress-bar :progressBar="couponItem.drawPercent" ></progress-bar> -->
                 <!-- 根据后台判断是否是新用户 -->
@@ -48,13 +57,14 @@
               </div>
               <div class="youhuiquan-right">
                 <div class="youhuiquan-right-header">
+                  <!-- 此标题到时候注释 -->
                   <span class="youhuiquan-right-title right-title-one">{{couponItem.couponName}}</span>
                 </div>
                 <div class="youhuiquan-right-main right-main-one">
-                  <p
+                  <!-- <p
                     class="youhuiquan-left-mc mc-one"
                     v-if="couponItem.upToAmountWebsite==null?false:true"
-                  >For GH {{jn}} {{couponItem.upToAmountWebsite}} consumption</p>
+                  >For GH {{jn}} {{couponItem.upToAmountWebsite}} consumption</p>-->
                   <van-button
                     v-if="couponItem.canDraw==0?0:1"
                     round
@@ -83,7 +93,10 @@
               </div>
             </div>
             <!-- 原因 -->
-            <div class="cause-text">{{couponItem.cannotSelectReasonEng}}</div>
+            <div
+              class="cause-text"
+              v-if="couponItem.cannotSelectReasonEng==null?false:true"
+            >{{couponItem.cannotSelectReasonEng}}</div>
           </div>
         </div>
         <!-- 不可领取 -->
@@ -102,7 +115,9 @@
               </p>
               <div class="youhuiquan-left-ms">
                 <p class="youhuiquan-left-m">Type:{{couponUse.couponTypeNameEng}}</p>
-                <p class="youhuiquan-left-m">valid:{{couponUse.useEndWebsite}}</p>
+                <p
+                  class="youhuiquan-left-m"
+                >valid:{{couponUse.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{couponUse.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
               </div>
             </div>
             <div class="youhuiquan-right">
@@ -110,10 +125,10 @@
                 <span class="youhuiquan-right-title right-title-two">{{couponUse.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
+                <!-- v-if="couponUse.upToAmountWebsite==null?false:true" -->
                 <p
                   class="youhuiquan-left-mc"
-                  v-if="couponUse.upToAmountWebsite==null?false:true"
-                >For GH {{jn}} {{couponUse.upToAmountWebsite}} consumption</p>
+                >Mini Spend GH {{jn}} {{couponUse.upToAmountWebsite!=null?couponUse.upToAmountWebsite:couponUse.reduceAmountWebsite}}</p>
               </div>
             </div>
           </div>
@@ -150,7 +165,7 @@ export default {
       couponList: [],
       couponDraw: [],
       checkbox: true,
-      flag:true
+      flag: true,
     };
   },
   computed: {
@@ -181,30 +196,20 @@ export default {
 
     // 选择优惠券
     changeCheckbox(item) {
-      let arr = []
+      let arr = [];
       this.coupon.forEach((e) => {
-      if (e.isSelected) {
-          arr.push({drawId:e.drawId})
+        if (e.isSelected) {
+          arr.push({ drawId: e.drawId });
         }
       });
-      if(this.flag){
+      if (this.flag) {
         this.$emit("changeCheckbox", arr);
-        this.flag = false
+        this.flag = false;
       }
-      setTimeout(()=> {
-        this.flag = true
-      },300)      
+      setTimeout(() => {
+        this.flag = true;
+      }, 300);
     },
-
-    // // 选择已经选用和删除
-    // couponremove(move) {
-    //   let couponsMove = {
-    //     drawId: move
-    //   };
-    //   // couponRemoveApi(couponsMove).then(res => {
-    //   //   console.log(res, "jjaa");
-    //   // });
-    // },
 
     // 关闭
     close() {
@@ -226,11 +231,15 @@ export default {
   .order-selection {
     width: 100%;
     background: #fff;
-    max-height: 90%;
+    height: 70%;
     position: absolute;
     bottom: 0;
-    overflow: auto;
-
+    .order-heard {
+      position: fixed;
+      width: 100%;
+      z-index: 1;
+      background: #fff;
+    }
     .order-title {
       width: 100%;
       height: 89px;
@@ -262,7 +271,10 @@ export default {
     }
   }
   .selection-conten {
-    overflow: hidden;
+    overflow: auto;
+    position: relative;
+    top: 200px;
+    height: 80%;
     padding: 0 20px 100px 20px;
     .item-one {
       background: #fff3eb;
@@ -278,6 +290,14 @@ export default {
       .m-one {
         color: #fa5300;
       }
+    }
+    .youhuiquan-left-mc {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 10px 0;
+    }
+    .mc-one {
+      color: #fa5300;
     }
     .item-two {
       color: #fff;
@@ -308,14 +328,15 @@ export default {
       .youhuiquan-left {
         width: 46%;
         .youhuiquan-left-biao {
-          font-size: 25px;
+          font-size: 26px;
+          font-weight: bold;
         }
         .youhuiquan-left-money {
           font-size: 60px;
           font-weight: bold;
           i {
-            font-size: 25px;
-            font-weight: normal;
+            font-size: 26px;
+            font-weight: bold;
           }
         }
         .youhuiquan-left-m {
@@ -334,9 +355,6 @@ export default {
       }
       .right-main-one {
         color: rgba(255, 255, 255, 1);
-        .mc-one {
-          color: #fa5300;
-        }
       }
 
       .right-title-two {
@@ -354,10 +372,10 @@ export default {
         padding-top: 30px;
         font-size: 24px;
 
-        .youhuiquan-left-mc {
-          font-size: 24px;
-          padding-top: 6px;
-        }
+        // .youhuiquan-left-mc {
+        //   font-size: 24px;
+        //   padding-top: 6px;
+        // }
         .youhuiquan-right-btn {
           margin-top: 30px;
         }
@@ -381,8 +399,9 @@ export default {
       }
     }
     .cause-text {
-      color: #333;
-      padding: 20px 0 16px 20px;
+      color: #a1a1a1;
+      padding: 5px 0 16px 20px;
+      line-height: 24px;
     }
   }
 }

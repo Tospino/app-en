@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-05 20:09:20
+ * @LastEditTime: 2020-08-06 20:56:05
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -25,11 +25,11 @@
           <div class="good-box" v-for="(dataitem,index) in data.list" :key="index">
             <!-- 新增-第二版 -->
             <div class="goods-content">
-              <div class="goods-header">
+              <div class="goods-header" v-if="dataitem.couponId==null?false:true">
                 <div class="goods-left">
                   <div
                     class="goods-coupons"
-                  >{{dataitem.couponType==1?"Tospino’s Price-off":dataitem.couponType==4?'Item Price-off':''}}</div>
+                  >{{dataitem.couponType==1?"Tospino’s Price-off":dataitem.couponType==3?'Item Price-off':''}}</div>
                   <span
                     class="goods-coupons-money"
                   >{{jn}}{{dataitem.reduceAmount}} off for {{jn}}{{dataitem.upToAmount}} buying</span>
@@ -645,7 +645,7 @@ export default {
               background-color: #fa5300;
               padding: 7px 13px;
               color: #fff;
-              font-size: 24px;
+              font-size: 20px;
             }
             .goods-coupons-money {
               font-size: 22px;
@@ -753,9 +753,9 @@ export default {
           }
           .price-batch-right {
             position: relative;
-            left: 50%;
+            left: 45%;
             font-size: 24px;
-            width: 140px;
+            width: 150px;
             border: 2px solid rgba(219, 144, 0, 1);
             border-radius: 20px;
             padding: 10px 20px;

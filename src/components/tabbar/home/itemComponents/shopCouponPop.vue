@@ -16,15 +16,18 @@
           </div>
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
-              <span class="youhuiquan-left-biao">GH{{jn}}</span>
+              <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
               <p class="youhuiquan-left-money">
+                <span class="youhuiquan-left-biao">GH{{jn}}</span>
                 {{ couponItem.reduceAmount}}
                 <i>OFF</i>
               </p>
               <p
                 class="youhuiquan-left-m"
               >Type:{{couponItem.couponType==1?"Tospino’s Price-off":couponItem.couponType==2?"Newer Exclusives":couponItem.couponType==3?"Shop’s Price-off":couponItem.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p class="youhuiquan-left-m">Valid:{{couponItem.useEndWebsite}}</p>
+              <p
+                class="youhuiquan-left-m"
+              >Valid:{{couponItem.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{couponItem.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
               <div v-if="couponItem.couponType==2?false:true">
                 <progress-bar :progressBar="couponItem.claimRate"></progress-bar>
               </div>
@@ -36,7 +39,7 @@
                 <span class="youhuiquan-right-title">{{couponItem.couponName}}</span>
               </div>
               <div class="youhuiquan-right-main">
-                <div>For GH{{jn}} {{couponItem.upToAmount}} consumption</div>
+                <div>Mini Spend GH{{jn}} {{couponItem.upToAmount!=null?couponItem.upToAmount:couponItem.reduceAmount}}</div>
                 <van-button
                   style="background: none;border: 0;color:#FEA072 "
                   round
@@ -68,7 +71,7 @@
 
 <script>
 import progressBar from "@/multiplexing/progress";
-import { couponDrawApi } from "@/api/confirmOrder/index";
+// import { couponDrawApi } from "@/api/confirmOrder/index";
 import { Toast } from "vant";
 // // 无优惠券
 // import noCoupon from "@/multiplexing/noCoupon";
@@ -97,13 +100,13 @@ export default {
   },
   computed: {},
   watch: {
-    couponShop: {
-      handler(newName) {
-        console.log("handler -> newName", newName);
-        // ...
-      },
-      deep: true,
-    },
+    // couponShop: {
+    //   handler(newName) {
+    //     console.log("handler -> newName", newName);
+    //     // ...
+    //   },
+    //   deep: true,
+    // },
   },
   created() {},
   mounted() {},
@@ -114,12 +117,13 @@ export default {
         couponId: id,
         couponDetailId: couponDetail,
       };
-      // 点击领取优惠券
-      couponDrawApi(couponsId).then((res) => {
-        if (res.code != 0) {
-          Toast(res.msg);
-        }
-      });
+      this.$emit("couponSucceed", couponsId);
+      // // 点击领取优惠券
+      // couponDrawApi(couponsId).then((res) => {
+      //   if (res.code != 0) {
+      //     Toast(res.msg);
+      //   }
+      // });
     },
     // 关闭
     close() {
@@ -177,11 +181,11 @@ export default {
         display: flex;
         position: relative;
         top: -209px;
-        left: 20px;
 
         .youhuiquan-left {
-          width: 40%;
+          width: 70%;
           padding-top: 16px;
+          padding-left: 20px;
           .youhuiquan-left-biao {
             font-size: 25px;
             color: #fa5300;
