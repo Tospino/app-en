@@ -6,6 +6,7 @@
       :title="title"
       class="action-sheet-yinhang"
       :close-on-click-overlay="false"
+      @cancel="closeYinggang"
     >
       <div class="paymen-content">
         <div
@@ -94,6 +95,11 @@ export default {
         }
       });
       this.$emit("toParnet", trueItem);
+    },
+    //关闭弹窗
+    closeYinggang() {
+      this.showAction = true;
+      this.$emit("cancelSheet");
     },
   },
   components: {},

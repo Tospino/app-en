@@ -28,6 +28,7 @@
       @toParnet="fnParent"
       :showList="showList"
       :paymoeny="paymoeny"
+      @cancelSheet="cancelSheet"
     ></action-sheet-yinhang>
 
     <zhezhao v-if="zhezhaoStatus">
@@ -190,13 +191,14 @@ export default {
     //确认离开
     leavePay() {
       this.zhezhaoStatus = false;
-      this.showAction = false;
+      // this.showAction = false;
+      this.$refs.actionSheetYinhang.showAction = false;
     },
     //点击关闭面板
     cancelSheet(el) {
-      this.showAction = true;
+      // this.showAction = true;
       this.zhezhaoStatus = true;
-      this.payStatus = false;
+      // this.payStatus = false;
       this.tips1 = "Are you sure to leave the checkout counter?";
       this.tips2 =
         "Unpaid order will be canceled within 30 minutes. Please pay ASAP!";
