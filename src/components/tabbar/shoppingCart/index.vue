@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-06 20:56:05
+ * @LastEditTime: 2020-08-08 17:10:59
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -29,12 +29,15 @@
                 <div class="goods-left">
                   <div
                     class="goods-coupons"
-                  >{{dataitem.couponType==1?"Tospino’s Price-off":dataitem.couponType==3?'Item Price-off':''}}</div>
+                  >{{dataitem.couponType==1?"Tospino's Price-off":dataitem.couponType==3?"Shop's Price-off":''}}</div>
                   <span
                     class="goods-coupons-money"
                   >{{jn}}{{dataitem.reduceAmount}} off for {{jn}}{{dataitem.upToAmount}} buying</span>
                 </div>
-                <p class="goods-add" @click="addOn(dataitem.businessId,dataitem.expId)">
+                <p
+                  class="goods-add"
+                  @click="addOn(dataitem.businessId,dataitem.expId,dataitem.couponType)"
+                >
                   Add-on ltem
                   <van-icon name="arrow" />
                 </p>
@@ -547,14 +550,20 @@ export default {
       });
     },
     // 更多
-    addOn(businessId, expId) {
-      if (businessId != null) {
+    addOn(businessId, expId, couponType) {
+      console.log("addOn -> expId", expId);
+      // 根据类型couponType为3就带参数跳转
+      if (couponType == 3) {
         this.$router.push({
           name: "搜索商品1",
           query: {
             businessId: businessId,
             expId: expId,
           },
+        });
+      } else {
+        this.$router.push({
+          name: "搜索商品1",
         });
       }
     },
@@ -643,7 +652,7 @@ export default {
             align-items: center;
             .goods-coupons {
               background-color: #fa5300;
-              padding: 7px 13px;
+              padding: 7px;
               color: #fff;
               font-size: 20px;
             }

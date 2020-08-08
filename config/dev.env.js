@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-09 10:00:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-06 09:36:14
+ * @LastEditTime: 2020-08-08 16:30:25
  * @Description:
  * @FilePath: \app-en\config\dev.env.js
  */
@@ -16,5 +16,5 @@ module.exports = merge(prodEnv, {
   // SHOP_API:'"https://serviceapp.tospino.com"',   //正式环境
   // SHOP_API: '"http://192.168.3.8:83"' //宏恩环境
   // SHOP_API:'"http://192.168.3.108:93"',   //彬哥环境
-  // SHOP_API: '"http://192.168.3.107:83"' //彬哥环境
+  // SHOP_API: '"http://192.168.3.32:83"' //彬哥环境
 })

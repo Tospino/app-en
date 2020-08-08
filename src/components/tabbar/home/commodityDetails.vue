@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-06 17:08:33
+ * @LastEditTime: 2020-08-08 16:34:52
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -158,13 +158,22 @@
                   <span class="youhuiquan-right-title">{{ProModel.Data.couponName}}</span>
                 </div>
                 <div class="youhuiquan-right-main">
-                  <div>Mini Spend GH₵ {{ProModel.Data.upToAmount}}</div>
+                  <div>Mini Spend GH₵ {{ProModel.Data.upToAmount!=null?ProModel.Data.upToAmount:ProModel.Data.reduceAmount}}</div>
                   <van-button
+                    style="background: none;border: 0;color:#FEA072 "
+                    round
+                    disabled
+                    v-if="ProModel.Data.drawStatus==0?true:false"
+                    type="info"
+                    class="youhuiquan-right-btn"
+                  >Received</van-button>
+                  <van-button
+                    v-else
                     round
                     type="info"
                     class="youhuiquan-right-btn"
-                    @click="couponsClick(ProModel.Data.couponsId,ProModel.Data.couponDetailId,ProModel.Data.supplyId,ProModel.Data.businessId)"
-                  >{{ProModel.Data.drawStatus==null?"Get it now":ProModel.Data.drawStatus==0?"Use it now":ProModel.Data.drawStatus==1?"Get more":ProModel.Data.drawStatus==2?"Delete":"Delete"}}</van-button>
+                    @click="couponsClick(ProModel.Data.couponId,ProModel.Data.couponDetailId,ProModel.Data.supplyId,ProModel.Data.businessId,ProModel.Data.ProModel.Data.businessId)"
+                  >{{ProModel.Data.drawStatus==null?"Get it now":ProModel.Data.drawStatus==1?"Get more":"Delete"}}</van-button>
                 </div>
               </div>
             </div>
@@ -331,7 +340,8 @@ export default {
           this.detailmData = res.Data;
           this.couponProModel(
             this.detailmData.supplyId,
-            this.detailmData.businessId
+            this.detailmData.businessId,
+            this.detailmData.expId
           );
           this.leng = res.Data.productImgList.length;
           this.selectionData = res;
@@ -418,24 +428,22 @@ export default {
       this.shousuoStatus = false;
     },
     // 显示最高金额的优惠券（卖家>平台）
-    async couponProModel(supplyId, businessId) {
-      console.log("couponProModel -> businessId", businessId);
-      console.log("couponProModel -> supplyId", supplyId);
+    async couponProModel(supplyId, businessId, expId) {
       this.ProModel = await AppqureyuserCouponProModelApi({
         supplyId: supplyId,
         businessId: businessId,
+        expId: expId,
       });
-      console.log("couponProModel -> this.ProModel", this.ProModel);
     },
     // 最高金额优惠券领取
-    async couponsClick(couponsId, DetailId, supplyId, businessId) {
+    async couponsClick(couponId, DetailId, supplyId, businessId, expId) {
       let couponDraw = await couponDrawApi({
-        couponsId: couponsId,
+        couponId: couponId,
         couponDetailId: DetailId,
       });
       if (couponDraw.code == 0) {
         Toast("Get the success");
-        this.saleMore();
+        this.couponProModel(supplyId, businessId, expId);
       } else {
         this.$toast.clear();
       }
@@ -455,10 +463,10 @@ export default {
     // 子组件领取的优惠券
     async couponSucceed(id) {
       let couponDraw = await couponDrawApi(id);
-      console.log("couponSucceed -> couponDraw", couponDraw);
+      this.saleMore();
       if (couponDraw.code == 0) {
+        console.log();
         Toast("Get the success");
-        this.saleMore();
       } else {
         this.$toast.clear();
       }

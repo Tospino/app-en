@@ -53,7 +53,7 @@
                 <van-button
                   round
                   type="info"
-                  @click="ProBar(shops.couponId,shops.couponDetailId,shops.drawStatus,shops.couponType,shops.businessId,shops.expIds,shops.skuId,shops.sellFlag)"
+                  @click="ProBar(shops.couponId,shops.couponDetailId,shops.drawStatus,shops.couponType,shops.businessId,shops.expIds,shops.skuId,shops.sellFlag,shops.isToUse)"
                   class="youhuiquan-right-btn right-btn-a"
                 >{{shops.drawStatus==null?"Get it now":shops.drawStatus==0?"Use it now":shops.drawStatus==3?"Get more":"删除"}}</van-button>
               </div>
@@ -247,6 +247,7 @@ export default {
         this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
       } else {
         this.shopCoupon = couponList.Data.list;
+        console.log("getListData -> this.shopCoupon", this.shopCoupon);
       }
 
       // 列表数据懒加载
@@ -265,10 +266,10 @@ export default {
         limit: this.limit,
         usetype: this.active + 1,
       });
+      console.log("getUseData -> couponList", couponList);
       // 获取数据
       if (this.active == 1) {
         if (flag) {
-          console.log("getUseData -> flag", flag);
           this.shopCouponUsed = this.shopCouponUsed.concat(
             couponList.Data.list
           );
@@ -312,21 +313,35 @@ export default {
       }, 300);
     },
     // 新增-优惠券 进度条
-    ProBar(id, Detail, Status, Type, businessId, expIds, skuId, sellFlag) {
+    ProBar(
+      id,
+      Detail,
+      Status,
+      Type,
+      businessId,
+      expIds,
+      skuId,
+      sellFlag,
+      isToUse
+    ) {
       // 判断优惠券平台跳转
       if (Status == 0) {
-        if (Type == 1 || Type == 2) {
-          this.$router.push({ name: "搜索商品1" });
-        } else if (Type == 3) {
-          this.$router.push({
-            name: "搜索商品1",
-            query: { businessId: businessId, expIds: expIds },
-          });
+        if (isToUse == 1) {
+          Toast("Out of time");
         } else {
-          if (sellFlag == 0) {
-            Toast("The goods is not available");
+          if (Type == 1 || Type == 2) {
+            this.$router.push({ name: "搜索商品1" });
+          } else if (Type == 3) {
+            this.$router.push({
+              name: "搜索商品1",
+              query: { businessId: businessId, expIds: expIds },
+            });
           } else {
-            this.$router.push({ name: "商品详情", query: { skuId: skuId } });
+            if (sellFlag == 0) {
+              Toast("The goods is not available");
+            } else {
+              this.$router.push({ name: "商品详情", query: { skuId: skuId } });
+            }
           }
         }
       } else {
@@ -356,7 +371,11 @@ export default {
       couponRemoveApi(delIds).then((res) => {
         if (res.code == 0) {
           Toast("Delete the success");
-          this.getUseData(false);
+          if (this.active == 1) {
+            this.getUseData(false);
+          } else if (this.active == 2) {
+            this.getUseData(false);
+          }
         } else {
           this.$toast.clear();
         }

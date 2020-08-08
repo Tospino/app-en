@@ -205,7 +205,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      if (from.name == "首页" || from.name == "分类") {
+      if (from.name == "首页" || from.name == "分类" || from.name == "购物车") {
         vm.isgo = false;
       } else {
         vm.isgo = true;
