@@ -41,7 +41,7 @@
         </div>
         <div v-else>
           <div class="fl-left btn-left" @click="leavePay">Leave</div>
-          <div class="fl-right btn-right" @click="zhezhaoStatus = false">Continue Paying</div>
+          <div class="fl-right btn-right" @click="zhezhaoStatus = false">Proceed To Pay</div>
         </div>
       </div>
     </zhezhao>
@@ -80,9 +80,9 @@ export default {
       oneTypeName: "",
       showList: [],
       zhezhaoStatus: false,
-      tips1: "Are you sure to leave the checkout counter?",
+      tips1: "Are you sure want to leave?",
       tips2:
-        "Unpaid order will be canceled within 30 minutes. Please pay ASAP!",
+        "This order will automatically be cancelled if not paid for within 30 minutes.",
       payStatus: false,
     };
   },
@@ -199,9 +199,9 @@ export default {
       // this.showAction = true;
       this.zhezhaoStatus = true;
       // this.payStatus = false;
-      this.tips1 = "Are you sure to leave the checkout counter?";
+      this.tips1 = "Are you sure want to leave?";
       this.tips2 =
-        "Unpaid order will be canceled within 30 minutes. Please pay ASAP!";
+        "This order will automatically be cancelled if not paid for within 30 minutes.";
     },
   },
   components: {

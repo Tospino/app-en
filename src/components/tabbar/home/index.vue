@@ -483,7 +483,7 @@ export default {
     },
     //点击轮播图
     swipeClick(el) {
-      if (!el.linkUrl) return;
+      if (!el.linkUrlEng) return;
       window.location.href = el.linkUrlEng;
     },
     //获取用户信息

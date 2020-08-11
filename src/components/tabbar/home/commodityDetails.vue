@@ -22,7 +22,14 @@
         </van-tabs>
       </div>
       <div class="commodity-tab-place"></div>
-      <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" v-show="showData">
+      <scroll
+        class="bscroll-wrapper"
+        ref="wrapper"
+        :data="recordGroup"
+        v-show="showData"
+        :listenScroll="true"
+        @scroll="scrollto"
+      >
         <div class="bscroll-con">
           <div class="commodity-swipe">
             <van-swipe @change="onChange" v-if="showData">
@@ -243,6 +250,7 @@ export default {
       spclist: [],
       showServer: false, // 是否显示客户弹框
       supplyDetail: null, //商品详情图片
+      scrollFlag: true,
     };
   },
   computed: {},
@@ -295,7 +303,7 @@ export default {
           this.spclist = res.spclist;
           this.productParamList = res.Data.productParamList.slice(0, 5);
           this.productParamList2 = res.Data.productParamList;
-          this.getsupplyDetail(this.detailmData.supplyId);
+
           if (res.Data.productParamList.length > 5) {
             this.shousuoStatus = true;
           }
@@ -383,6 +391,15 @@ export default {
     zankai() {
       this.productParamList = this.productParamList2;
       this.shousuoStatus = false;
+    },
+    //滚动事件
+    scrollto(pos) {
+      if (!this.scrollFlag) return;
+      console.log(pos.y, "pos");
+      if (pos.y < -10) {
+        this.scrollFlag = false;
+        this.getsupplyDetail(this.detailmData.supplyId);
+      }
     },
   },
   components: {

@@ -2,15 +2,20 @@
   <!-- 首页搜索框 -->
   <div>
     <div class="search-header c-b-gray">
-      <div class="logo" @click="$router.push({name:'语言',query:{type:1}})">
-        <img src="@/assets/img/tabbar/home/logo@3x.png" />
-      </div>
       <div class="search">
-        <van-search v-model="value" shape="round" @click="toSearch" />
+        <van-search v-model="value" shape="round" @click="toSearch">
+          <template #right-icon>
+            <van-icon name="scan" size="20" style="margin-top:6px" />
+          </template>
+        </van-search>
       </div>
       <div class="icons">
         <!-- 扫码功能去掉 -->
-        <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1" />
+        <img
+          src="@/assets/img/tabbar/home/Message_.png"
+          class="img1"
+          @click="$router.push({path:'/control/customerService'})"
+        />
         <img
           src="@/assets/img/tabbar/home/msg@3x.png"
           class="img2"
@@ -41,6 +46,7 @@ export default {
     saoma() {
       this.$router.push({ name: "扫码" });
     },
+    onSearch() {},
   },
   components: {},
 };
@@ -65,9 +71,9 @@ export default {
   }
   .search {
     position: absolute;
-    left: 145px;
+    left: 20px;
     top: 20px;
-    width: 450px;
+    width: 600px;
     height: 58px;
     overflow: hidden;
     /deep/ .van-search {
