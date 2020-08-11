@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-07-29 11:26:51
+ * @LastEditTime: 2020-08-11 15:59:57
  * @LastEditors: Please set LastEditors
  * @Description: 可领取优惠券列表和不可领取优惠券列表数据存储
  * @FilePath: \app-en\src\store\index.js
@@ -57,7 +57,7 @@ const state = {
 
   couponListUse: [] //不可领取优惠券列表
 
-  // couponShop: [] //详情中的优惠券
+  // couponShop: [] //用户中心的优惠券
 }
 const getters = {}
 
@@ -142,7 +142,7 @@ const actions = {
   getcouponslistuse (context, arr = []) {
     return context.commit('GETCOUPONSLISTUSE', arr)
   }
-  // //  详情优惠中心
+  // //   用户优惠券中心
   // getcouponshop (context, arr = []) {
   //   return context.commit('GETCOUPONSHOP', arr)
   // }

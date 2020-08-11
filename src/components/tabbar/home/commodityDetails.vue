@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-08 16:34:52
+ * @LastEditTime: 2020-08-10 18:26:13
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -128,12 +128,12 @@
           </div>
         </div>
         <!-- 新增-优惠券 -->
-        <div class="youhuiquan yhq">
+        <div class="youhuiquan yhq" v-if="moreShop">
           <div class="youhuiquan-header">
             <span class="youhuiquan-title">Coupons</span>
             <span class="youhuiquan-txt" @click="saleMore">More</span>
           </div>
-          <div class="youhuiquan-main" v-if="ProModel.Data?true:false">
+          <div class="youhuiquan-main">
             <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png" />
             <div class="youhuiquan-box">
               <div class="youhuiquan-left">
@@ -172,7 +172,7 @@
                     round
                     type="info"
                     class="youhuiquan-right-btn"
-                    @click="couponsClick(ProModel.Data.couponId,ProModel.Data.couponDetailId,ProModel.Data.supplyId,ProModel.Data.businessId,ProModel.Data.ProModel.Data.businessId)"
+                    @click="couponsClick(ProModel.Data.couponId,ProModel.Data.couponDetailId,ProModel.Data.supplyId,ProModel.Data.businessId)"
                   >{{ProModel.Data.drawStatus==null?"Get it now":ProModel.Data.drawStatus==1?"Get more":"Delete"}}</van-button>
                 </div>
               </div>
@@ -307,6 +307,7 @@ export default {
       couponShop: [],
       couponMax: "",
       ProModel: "", //最大优惠券
+      moreShop: false, //优惠券领取
     };
   },
   computed: {},
@@ -434,6 +435,12 @@ export default {
         businessId: businessId,
         expId: expId,
       });
+      if (this.ProModel.code == 0) {
+        this.moreShop = true;
+      } else {
+        this.moreShop = false;
+      }
+      // console.log("couponProModel ->  this.ProModel", this.ProModel.code);
     },
     // 最高金额优惠券领取
     async couponsClick(couponId, DetailId, supplyId, businessId, expId) {
@@ -443,6 +450,7 @@ export default {
       });
       if (couponDraw.code == 0) {
         Toast("Get the success");
+        this.moreShop = true;
         this.couponProModel(supplyId, businessId, expId);
       } else {
         this.$toast.clear();
