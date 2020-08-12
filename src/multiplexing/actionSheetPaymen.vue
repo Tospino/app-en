@@ -41,7 +41,7 @@
           <div class="fl-right btn-right" @click="this.orderlaunchpay">OK</div>
         </div>
         <div v-else>
-          <div class="fl-left btn-left" @click="leavePay">Leave</div>
+          <div class="fl-left btn-left" @click="leavePay">Leave without paying</div>
           <div class="fl-right btn-right" @click="zhezhaoStatus = false">Proceed To Pay</div>
         </div>
       </div>
@@ -228,7 +228,7 @@ export default {
     cancelSheet(el) {
       // this.showAction = true;
       this.zhezhaoStatus = true;
-      // this.payStatus = false;
+      this.payStatus = false;
       this.tips1 = "Are you sure want to leave?";
       this.tips2 =
         "This order will automatically be cancelled if not paid for within 30 minutes.";
@@ -316,7 +316,7 @@ export default {
       border: 1px solid rgba(153, 153, 153, 1);
       line-height: 60px;
       text-align: center;
-      font-size: 28px;
+      font-size: 24px;
     }
     .btn-right {
       width: 260px;
@@ -324,7 +324,7 @@ export default {
       background: rgba(250, 83, 0, 1);
       line-height: 60px;
       text-align: center;
-      font-size: 28px;
+      font-size: 24px;
       color: #fff;
     }
   }
