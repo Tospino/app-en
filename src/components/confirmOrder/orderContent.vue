@@ -428,7 +428,6 @@ export default {
     },
     //确认订单提交订单接口
     batchmakeorder(orderObj) {
-      // console.log("订单提交订单",orderObj)
       let obj = {
         addressId: this.defaultAdderss.addressId,
         payType: this.zffs,
@@ -497,8 +496,6 @@ export default {
     //订单发起支付
     orderlaunchpay(data) {
       orderlaunchpayApi(data).then((res) => {
-        // console.log(data);
-
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
@@ -550,8 +547,6 @@ export default {
       this.orderlaunchpay(obj);
     },
     showPassWord(flag) {
-      // console.log(flag);
-      // console.log("第三方支付弹起");
       this.$refs.actionSheetPassword.showAction = flag;
     },
     //选择支付方式

@@ -113,7 +113,6 @@ export default {
     if (localStorage.userinfoShop) {
       this.userinfoShop = JSON.parse(localStorage.userinfoShop);
       this.paidMoneyData.userId = this.userinfoShop.userId;
-      console.log(this.paidMoneyData.userId, "this.paidMoneyData.userId");
     }
     this.topupFlexiProductList();
   },
@@ -144,10 +143,8 @@ export default {
           this.showsucess();
           Toast.clear();
         } else if (res.status_code == 101) {
-          console.log(123465);
           Toast("Wrong payment password");
         } else if (res.status_code == 102) {
-          console.log(789);
           Toast("Insufficient balance");
         } else {
           Toast("error");
@@ -156,7 +153,6 @@ export default {
     },
     //生成话费充值订单
     addPhoneRechargeOrder(data) {
-      console.log(data);
       addPhoneRechargeOrderApi(data).then((res) => {
         if (res.status_code == 200) {
           this.invoiceData.phoneNumber = 233 + this.phone;

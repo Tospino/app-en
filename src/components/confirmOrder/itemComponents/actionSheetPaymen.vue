@@ -39,12 +39,12 @@ export default {
   props: {
     moeny: {
       type: Number,
-      default: 0
+      default: 0,
     },
     orderSn: {
-      type: String
+      type: String,
       // type: text
-    }
+    },
   },
   data() {
     return {
@@ -52,10 +52,10 @@ export default {
       payTypeList: [
         {
           type: 201,
-          name: "Balance"
-        }
+          name: "Balance",
+        },
       ],
-      list: []
+      list: [],
     };
   },
   computed: {
@@ -67,7 +67,7 @@ export default {
     // },
     paymoeny() {
       return this.moeny;
-    }
+    },
   },
   created() {},
   mounted() {
@@ -77,12 +77,11 @@ export default {
   methods: {
     onChangePayMethod(item) {
       this.oneTypeName = item.msg;
-      // console.log("paymethod", item);
       this.payTypeList = [
         {
           name: item.name,
-          type: item.type
-        }
+          type: item.type,
+        },
       ];
       this.list[0].payTypeList = item.type;
       this.list[0].payTypeDetail = item.name;
@@ -93,8 +92,8 @@ export default {
       this.payTypeList = [
         {
           name: e.name,
-          type: e.type
-        }
+          type: e.type,
+        },
       ];
       this.list[0].payTypeList = e.type;
       this.list[0].payTypeDetail = e.name;
@@ -108,20 +107,16 @@ export default {
           method: "POST",
           data: {
             payTypeDetail: 203,
-            orderList: [{ orderId: this.orderSn }]
-          }
-        }).then(res => {
-          // window.location.href = res.Data.payMainNo
-          // console.log(res);
+            orderList: [{ orderId: this.orderSn }],
+          },
+        }).then((res) => {
           park({
             url: `/appWallet/CreateInvoice?payMainNo=${res.Data.payMainNo}&orderSource=1`,
-            method: "POST"
-          }).then(result => {
-            // console.log(result);
+            method: "POST",
+          }).then((result) => {
             if (result.status_code === 200) {
               // 第三方支付页面跳转
               // this.$store.commit("GETTHIRDPARTYPAYMENTURL",result.data.resultUrl);
-              // console.log(this.$store.state.thirdPartyPaymentUrl)
               // this.$router.push("/thirdPartyPayment")
               //   window.location.href = result.data.resultUrl;
               window.open(res.data.resultUrl, "_blank");
@@ -134,7 +129,7 @@ export default {
       }
     },
     getonlinepaytypelist() {
-      getonlinepaytypelistApi({}).then(res => {
+      getonlinepaytypelistApi({}).then((res) => {
         if (res.code == 0) {
           this.list = res.Data;
           this.oneTypeName = this.oneTypeName =
@@ -147,7 +142,7 @@ export default {
     //编译状态
     orderStatus(type, list) {
       let name = "";
-      this[list].forEach(statu => {
+      this[list].forEach((statu) => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -156,14 +151,12 @@ export default {
     },
     //展示支付方式列表
     showyinhang() {
-      // console.log("---打开-----");
-      // console.log(this.$refs.actionSheetYinhang.showAction);
       this.$refs.actionSheetYinhang.showAction = true;
-    }
+    },
   },
   components: {
-    actionSheetYinhang
-  }
+    actionSheetYinhang,
+  },
 };
 </script>
 

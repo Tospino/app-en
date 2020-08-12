@@ -29,6 +29,7 @@
         v-show="showData"
         :listenScroll="true"
         @scroll="scrollto"
+        :probeType="3"
       >
         <div class="bscroll-con">
           <div class="commodity-swipe">
@@ -395,8 +396,7 @@ export default {
     //滚动事件
     scrollto(pos) {
       if (!this.scrollFlag) return;
-      console.log(pos.y, "pos");
-      if (pos.y < -10) {
+      if (pos.y <= 0) {
         this.scrollFlag = false;
         this.getsupplyDetail(this.detailmData.supplyId);
       }

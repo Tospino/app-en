@@ -114,10 +114,8 @@ function downWgt(wgtUrl) {
   plus.downloader
     .createDownload(wgtUrl, { filename: "_doc/update/" }, function (d, status) {
       if (status == 200) {
-        console.log("下载更新文件成功：" + d.filename);
         installWgt(d.filename); // 安装wgt包
       } else {
-        console.log("下载更新文件失败！");
         plus.nativeUI.alert("Download update file failed！");
       }
       plus.nativeUI.closeWaiting();
@@ -136,17 +134,14 @@ function installWgt(path) {
       plus.io.resolveLocalFileSystemURL(path, (entry) => {
         entry.remove(
           () => {
-            console.log("文件删除成功" + path);
             // plus.runtime.restart();
           },
           () => {
-            console.log("文件删除失败" + path);
             // plus.runtime.restart();
           }
         );
       });
       plus.runtime.restart();
-      console.log("安装更新文件成功！");
       plus.nativeUI.alert(
         "Application resource update complete！",
         function () {
@@ -156,7 +151,6 @@ function installWgt(path) {
     },
     function (e) {
       plus.nativeUI.closeWaiting();
-      console.log("安装更新文件失败[" + e.code + "]：" + e.message);
       plus.nativeUI.alert(
         "Failed to install update file[" + e.code + "]：" + e.message
       );
@@ -218,7 +212,6 @@ export default {
     },
     plusReady() {
       plus.runtime.getProperty(plus.runtime.appid, function (inf) {
-        console.log("plusReady -> inf", inf);
         let wgtVer = inf.version;
         checkUpdate(wgtVer);
       });

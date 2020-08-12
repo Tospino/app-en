@@ -184,7 +184,6 @@ export default {
     listPayOptions() {
       let arr = [];
       listPayOptionsApi().then((res) => {
-        // console.log("付款方式列表",res.data)
         if (res.status_code == 200) {
           this.nalist = res.data;
           this.oneTypeName = this.oneTypeName =
@@ -219,6 +218,7 @@ export default {
     leavePay() {
       this.zhezhaoStatus = false;
       this.showAction = false;
+      this.$refs.actionSheetYinhang.showAction = false;
       sessionStorage.setItem("activeIndex", 1);
       if (this.$route.name != "我的订单") {
         this.$router.replace({ name: "我的订单" });

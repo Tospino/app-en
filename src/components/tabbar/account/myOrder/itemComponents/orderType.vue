@@ -102,8 +102,8 @@ export default {
       type: Array,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -111,7 +111,7 @@ export default {
         dfk: true,
         dsh: false,
         pj: false,
-        scdd: false
+        scdd: false,
       },
       dfkDataList: [],
       arrowDown: true,
@@ -120,10 +120,10 @@ export default {
         { type: 1, name: "Undelivered" },
         { type: 2, name: "Unreceived" },
         { type: 3, name: "Done" },
-        { type: 4, name: "Closed" }
+        { type: 4, name: "Closed" },
       ],
       show: false,
-      userinfoShop: {}
+      userinfoShop: {},
     };
   },
   computed: {},
@@ -135,10 +135,10 @@ export default {
   },
   watch: {
     dfkList: {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.getData();
-      }
-    }
+      },
+    },
   },
   methods: {
     toOrderDetail(id) {
@@ -149,12 +149,12 @@ export default {
     },
     //获取数据
     getData() {
-      this.dfkDataList = this.dfkList.map(o => Object.assign({}, o));
+      this.dfkDataList = this.dfkList.map((o) => Object.assign({}, o));
       this.shousuo(this.dfkDataList);
     },
     //收缩栏逻辑
     shousuo(list) {
-      list.forEach(item => {
+      list.forEach((item) => {
         if (item.detailList.length > 2) {
           item.detailListFlag = true;
           item.lengcha = item.detailList.length - 2;
@@ -168,7 +168,7 @@ export default {
     //查看全部商品
     lookTotal() {
       if (this.arrowDown) {
-        this.dfkDataList.forEach(item => {
+        this.dfkDataList.forEach((item) => {
           item.detailList2 = item.detailList;
         });
       } else {
@@ -179,7 +179,7 @@ export default {
     //编译订单状态
     orderStatus(type) {
       let name = "";
-      this.status.forEach(statu => {
+      this.status.forEach((statu) => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -201,9 +201,9 @@ export default {
     //确认收货
     receiGood(alldata) {
       this.$emit("showPassWord", true, "确认收货", alldata);
-    }
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

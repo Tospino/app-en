@@ -690,7 +690,6 @@ export default {
     },
     // 当检索不到数据时，添加地址id
     async addAreaID(params) {
-      console.log("params.parentId", params.parentId);
       if (params.parentId === 0 || params.parentId) {
         await addbasearea(params).then((res) => {
           this.$set(this.choiceForm, `lev${params.areaLevel}`, {
