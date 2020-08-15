@@ -162,7 +162,21 @@
       :moeny="Number(orderData.allOrderAmountWebsite)"
       @showPassWord="showPassWord"
       @showpaymen="showpaymen"
+      @duanxin="duanxin"
     ></action-sheet-paymen>
+
+    <!-- 返现弹窗 -->
+    <van-dialog v-model="fanxianStatus" class="fanxian-style" confirm-button-text="OK">
+      <p>Warm prompt:You can get the corresponding reward if the order amount meets the following requirements for online payment.</p>
+      <br />
+      <p v-for="(fanxian,index) in fanxianList" :key="index">
+        {{index+1}}. {{fanxian.returnCashAmountWebsite}} cedis for
+        {{fanxian.orderAmountWebsiteEnd ? (fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
+        ('order over ' + fanxian.orderAmountWebsiteStart)}} cedis {{fanxian.orderAmountWebsiteEnd ? 'order': ''}}
+      </p>
+      <br />
+      <p>After the goods has been received,the bounty would be paid into your account automatically, and there is no reward if you refuse or return the goods</p>
+    </van-dialog>
   </div>
 </template>
 
@@ -175,6 +189,7 @@ import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
   batchmakeorderApi,
+  onlineorderrewardmsgApi,
 } from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
@@ -224,6 +239,8 @@ export default {
       userinfoShop: {},
       orderSn: [],
       payTypeListLength: 0,
+      fanxianStatus: false, //返现弹窗
+      fanxianList: [], //返现列表
     };
   },
   computed: {
@@ -418,6 +435,10 @@ export default {
             this.payTypeList = res.Data.payTypeList;
             this.payTypeListLength = this.payTypeList.length;
             this.zffs = "";
+            if (res.Data.rewardRegionList.length > 0) {
+              this.fanxianStatus = true;
+              this.fanxianList = res.Data.rewardRegionList;
+            }
           } else if (this.payTypeList.length != res.Data.payTypeList.length) {
             this.payTypeList = res.Data.payTypeList;
             this.payTypeListLength = this.payTypeList.length;
@@ -557,6 +578,11 @@ export default {
       dataItem.checked = true;
       this.zffs = dataItem.payType;
       this.$forceUpdate();
+    },
+    //返现短信
+    duanxin() {
+      let data = this.orderIdList;
+      onlineorderrewardmsgApi({ orderList: data }).then((res) => {});
     },
   },
   components: {
@@ -904,7 +930,22 @@ export default {
     }
   }
 }
-
+.fanxian-style {
+  width: 600px;
+  padding: 30px 30px 0;
+  font-size: 28px;
+  line-height: 40px;
+  /deep/ .van-dialog__footer {
+    margin-top: 30px;
+    .van-button.van-button--default.van-button--large.van-dialog__confirm {
+      height: 80px;
+      .van-button__text {
+        font-size: 40px;
+        color: #000;
+      }
+    }
+  }
+}
 .m-b-20 {
   margin-bottom: 20px;
 }

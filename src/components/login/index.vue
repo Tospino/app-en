@@ -13,7 +13,7 @@
         <input
           type="text"
           class="name-input"
-          placeholder="Enter your Number"
+          placeholder="Account or Mobile Number"
           v-model="userData.username1"
         />
       </div>

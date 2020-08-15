@@ -223,6 +223,7 @@ export default {
       if (this.$route.name != "我的订单") {
         this.$router.replace({ name: "我的订单" });
       }
+      this.$emit("duanxin");
     },
     //点击关闭面板
     cancelSheet(el) {

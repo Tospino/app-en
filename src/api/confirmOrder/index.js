@@ -1,27 +1,36 @@
-import {main, park} from '@/api/index'
+import { main, park } from '@/api/index'
 //确认订单订单详情
 export function getconfirmorderApi(params) {
     return park({
-        url:`/appsaleorder/getconfirmorder`,
+        url: `/appsaleorder/getconfirmorder`,
         method: 'POST',
-        data:params
+        data: params
     })
 }
 
 //确认订单提交订单
 export function batchmakeorderApi(params) {
     return park({
-        url:`/appsaleorder/batchmakeorder`,
+        url: `/appsaleorder/batchmakeorder`,
         method: 'POST',
-        data:params
+        data: params
     })
 }
 
 //付款方式列表
 export function listPayOptionsApi(params) {
     return park({
-        url:`/appWallet/ListPayOptions`,
+        url: `/appWallet/ListPayOptions`,
         method: 'POST',
-        data:params
+        data: params
+    })
+}
+
+//返现短信
+export function onlineorderrewardmsgApi(params) {
+    return park({
+        url: `/appsaleorder/onlineorderrewardmsg`,
+        method: 'POST',
+        data: params
     })
 }
