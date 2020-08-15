@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-14 15:58:33
+ * @LastEditTime: 2020-08-15 17:18:53
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -433,7 +433,7 @@ export default {
       this.ProModel = await AppqureyuserCouponProModelApi({
         supplyId: supplyId,
         businessId: businessId,
-        expIds: expId,
+        expId: expId,
       });
       if (this.ProModel.code == 0) {
         this.moreShop = true;
@@ -461,7 +461,7 @@ export default {
       let moreCoupon = {
         supplyId: this.detailmData.supplyId,
         businessId: this.detailmData.businessId,
-        expIds: this.detailmData.expId,
+        expId: this.detailmData.expId,
       };
       AppqureyuserCouponProApi(moreCoupon).then((res) => {
         this.couponShop = res.Data;
@@ -472,7 +472,6 @@ export default {
       let couponDraw = await couponDrawApi(id);
       this.saleMore();
       if (couponDraw.code == 0) {
-        console.log();
         Toast("Get the success");
       } else {
         this.$toast.clear();

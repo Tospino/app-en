@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-13 17:48:40
+ * @LastEditTime: 2020-08-15 16:42:19
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -248,6 +248,13 @@ export default {
   beforeDestroy() {
     window.removeEventListener("scroll", this.menu, true);
   },
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由的 meta
+    if (to.name == "搜索商品1") {
+      to.meta.isBack = true;
+    }
+    next();
+  },
   watch: {},
   methods: {
     ...mapActions(
@@ -315,7 +322,6 @@ export default {
           this.wuxiaoList = wuxiaoList;
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessId");
-          console.log("shopcartlist ->   this.dataList", this.dataList);
           this.dataList.forEach((item) => {
             item.list.forEach((listitem) => {
               listitem.checkStatus = false;

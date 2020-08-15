@@ -244,7 +244,6 @@ export default {
       });
       if (flag) {
         this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
-        console.log("true", this.shopCoupon);
       } else {
         this.shopCoupon = couponList.Data.list;
       }
@@ -265,7 +264,6 @@ export default {
         limit: this.limit,
         usetype: this.active + 1,
       });
-      console.log("getUseData -> couponList", couponList);
       // 获取数据
       if (this.active == 1) {
         if (flag) {
@@ -311,20 +309,6 @@ export default {
         this.isOne = true;
       }, 300);
     },
-    // 上拉
-    // onRefresh() {
-    //   // 清除当前列表中的所有的数据
-    //   this.loading = false;
-    //   this.finished = false;
-    //   this.shopCoupon = [];
-    //   this.shopCouponUsed = [];
-    //   this.shopCouponEx = [];
-    //   this.isLoading = false;
-    //   this.page = 1;
-    //   this.limit = 10;
-    //   // 重新加载数据
-    //   this.onLoad();
-    // },
     // 新增-优惠券 进度条
     ProBar(
       id,

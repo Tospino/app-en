@@ -224,6 +224,13 @@ export default {
   watch: {},
   created() {},
   mounted() {},
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由的 meta
+    if (to.name == "搜索商品1") {
+      to.meta.isBack = true;
+    }
+    next();
+  },
   methods: {
     //  更改tab切换
     userDrawCoupon(active) {
@@ -245,6 +252,7 @@ export default {
     },
     // 全部可用优惠券
     async getListData(data, flag) {
+      window.scrollTo({ top: 10 });
       let couponList = await APPgetuserallCouponListApi(data);
       if (flag) {
         this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
@@ -262,6 +270,7 @@ export default {
     },
     // 已使用和已过期优惠券
     async getUseData(data, flag) {
+      window.scrollTo({ top: 10 });
       let couponList = await APPgetuserallcouponlistexpireApi(data);
       // 获取数据
       if (this.active == 1) {
@@ -320,7 +329,7 @@ export default {
           } else if (Type == 3) {
             this.$router.push({
               name: "搜索商品1",
-              query: { businessId: busId, expIds: expIds, seraname: "" },
+              query: { businessId: busId, expIds: expIds },
             });
           } else {
             if (sellFlag == 0) {

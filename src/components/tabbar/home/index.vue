@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-13 18:18:47
+ * @LastEditTime: 2020-08-15 19:29:13
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -330,8 +330,6 @@ export default {
   computed: {},
   created() {
     this.newCoupons();
-    console.log("created -> this.newCoupons();");
-
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
       this.getuserinfo();
@@ -377,10 +375,8 @@ export default {
     newCouponShow: {
       deep: true,
       handler: function (val) {
-        console.log("val", val);
         if (val == 0) {
           this.sale = true;
-          console.log("this.sale", this.sale);
         } else if (val == -300) {
           this.sale = false;
         }
@@ -416,7 +412,7 @@ export default {
     // 领取优惠按钮
     evBus(id) {
       couponDrawApi(id).then((res) => {
-        Toast(res.msg);
+        Toast("Get the success");
       });
     },
     jumpRouter(name) {

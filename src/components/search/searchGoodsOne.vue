@@ -176,11 +176,10 @@ export default {
     this.formData.expIds = this.$route.query.expIds;
 
     this.searName = this.$route.query.seraname;
-    console.log(123123132);
+
     this.refreshOrder();
   },
   activated() {
-    console.log(8888888);
     if (this.$route.meta.isBack) {
       this.formData.seraname = this.$route.query.seraname
         ? this.$route.query.seraname

@@ -381,7 +381,6 @@ export default {
       } else if (this.newCoupon.code == -300) {
         this.sale = false;
       }
-      // console.log("首次登录", this.newCoupon);
     },
     // 关闭首页优惠券
     userPopUp() {
