@@ -161,6 +161,7 @@ export default {
   computed: {},
   created() {},
   mounted() {
+    console.log(2);
     this.formData.seraname = this.$route.query.seraname
       ? this.$route.query.seraname
       : "";
@@ -179,6 +180,7 @@ export default {
     this.refreshOrder();
   },
   activated() {
+    console.log(1);
     if (this.$route.meta.isBack) {
       this.formData.seraname = this.$route.query.seraname
         ? this.$route.query.seraname
