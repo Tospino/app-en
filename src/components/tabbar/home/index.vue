@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-29 20:30:58
+ * @LastEditTime: 2020-08-13 18:18:47
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -119,8 +119,8 @@
             <div class="brand-p-2">
               <img
                 v-lazy="$webUrl+globalPro.brandLogo"
-                v-for="globalPro in globalProList"
-                :key="globalPro.brandId"
+                v-for="(globalPro,index) in globalProList"
+                :key="index"
                 @click="toSearOne(globalPro.brandId,'brandId')"
               />
             </div>
@@ -138,7 +138,7 @@
                 class="good-world-best-p1"
                 :class="'cximg'+(index+1)"
                 v-for="(fineSale1,index) in fineSaleList1"
-                :key="fineSale1.skuId"
+                :key="index"
               >
                 <img v-lazy="$webUrl+fineSale1.imgUrl" @click="toDetail(fineSale1.skuId)" />
                 <div class="good-name">{{fineSale1.supplyTitle}}</div>

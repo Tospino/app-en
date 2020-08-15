@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-10 18:26:13
+ * @LastEditTime: 2020-08-14 15:58:33
  * @LastEditors: Please set LastEditors
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -433,14 +433,13 @@ export default {
       this.ProModel = await AppqureyuserCouponProModelApi({
         supplyId: supplyId,
         businessId: businessId,
-        expId: expId,
+        expIds: expId,
       });
       if (this.ProModel.code == 0) {
         this.moreShop = true;
       } else {
         this.moreShop = false;
       }
-      // console.log("couponProModel ->  this.ProModel", this.ProModel.code);
     },
     // 最高金额优惠券领取
     async couponsClick(couponId, DetailId, supplyId, businessId, expId) {
@@ -462,7 +461,7 @@ export default {
       let moreCoupon = {
         supplyId: this.detailmData.supplyId,
         businessId: this.detailmData.businessId,
-        expId: this.detailmData.expId,
+        expIds: this.detailmData.expId,
       };
       AppqureyuserCouponProApi(moreCoupon).then((res) => {
         this.couponShop = res.Data;
@@ -758,6 +757,8 @@ export default {
       font-weight: bold;
     }
     .youhuiquan-txt {
+      width: 140px;
+      text-align: right;
       font-size: 20px;
       color: rgba(102, 102, 102, 1);
       margin-top: 10px;

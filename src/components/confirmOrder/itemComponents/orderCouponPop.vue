@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-08-06 21:41:43
+ * @LastEditTime: 2020-08-14 16:27:18
  * @LastEditors: Please set LastEditors
  * @Description: 订单详情中的优惠券接口联调
  * @FilePath: \app-en\src\components\confirmOrder\itemComponents\orderCouponPop.vue
@@ -13,8 +13,11 @@
     <div class="order-selection">
       <div class="order-heard">
         <div class="order-title">
-          <div class="order-txt">Coupons</div>
-          <van-icon name="cross" class="cross" @click="close" />
+          <div class="order-txt">
+            Coupons
+            <i class="cross" @click="close">×</i>
+          </div>
+          <!-- <van-icon name="cross" class="cross" @click="close" /> -->
         </div>
         <div class="order-tab" v-if="true">
           <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
@@ -246,15 +249,18 @@ export default {
       border-bottom: 2px solid #dcdcdc;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       .order-txt {
         font-size: 36px;
         text-align: center;
         width: 94%;
       }
       .cross {
-        flex: 1;
-        font-size: 29px;
+        width: 120px;
+        position: absolute;
+        right: 10px;
+        text-align: center;
+        font-size: 36px;
         color: #666666;
       }
     }

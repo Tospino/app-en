@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-08 17:10:59
+ * @LastEditTime: 2020-08-13 17:48:40
  * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -558,7 +558,7 @@ export default {
           name: "搜索商品1",
           query: {
             businessId: businessId,
-            expId: expId,
+            expIds: expId,
           },
         });
       } else {

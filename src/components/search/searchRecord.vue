@@ -173,14 +173,12 @@ export default {
     },
     toSearchGood(goodName) {
       this.$router.push({ name: "搜索商品1", query: { seraname: goodName } });
-      console.log("toSearchGood -> goodName", goodName);
     },
     //搜索发现
     searchFind() {
       searchFindApi().then((res) => {
         if (res.code == 0) {
           this.findList = res.Data;
-          console.log("searchFind ->  this.findList ", this.findList);
         }
       });
     },

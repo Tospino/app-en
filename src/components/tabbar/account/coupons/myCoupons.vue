@@ -10,151 +10,152 @@
           title-active-color="#FA5300"
           @click="userDrawCoupon(active)"
         >
-          <van-tab :title="tab.name" v-for="(tab) in typeList" :key="tab.id"></van-tab>
+          <van-tab :title="tab.name" v-for="(tab,index) in typeList" :key="index"></van-tab>
         </van-tabs>
       </div>
     </div>
     <!-- 优惠券列表 -->
+    {{formData.page}}
     <div class="selection-conten" v-if="active==0">
-      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-        <van-list
-          class="activity"
-          v-model="loading"
-          :finished="finished"
-          @load="onLoad"
-          :offset="130"
-        >
-          <van-cell class="youhuiquan-main" v-for="(shops,index) in shopCoupon" :key="index">
-            <div v-if="shops.drawStatus==0||shops.drawStatus==null">
-              <img :src="srcUse" />
-            </div>
-            <div v-else-if="shops.drawStatus==3">
-              <img :src="srcMore" />
-            </div>
-            <div class="youhuiquan-box">
-              <div class="youhuiquan-left">
-                <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
-                <p class="youhuiquan-left-money">
-                  <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                  {{ shops.reduceAmount}}
-                  <i>OFF</i>
-                </p>
-                <p
-                  class="youhuiquan-left-m"
-                >Type:{{shops.couponType==1?"Tospino’s Price-off":shops.couponType==2?"Newer Exclusives":shops.couponType==3?"Shop’s Price-off":shops.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-                <p
-                  class="youhuiquan-left-m"
-                >Valid:{{shops.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shops.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
-                <div v-if="shops.couponType==2?false:true">
-                  <progress-bar :progressBar="shops.claimRate"></progress-bar>
-                </div>
+      <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
+      <van-list
+        class="activity"
+        v-model="loading"
+        :finished="finished"
+        @load="onLoad"
+        :offset="130"
+      >
+        <van-cell class="youhuiquan-main" v-for="(shops,index) in shopCoupon" :key="index">
+          <div v-if="shops.drawStatus==0||shops.drawStatus==null">
+            <img :src="srcUse" />
+          </div>
+          <div v-else-if="shops.drawStatus==3">
+            <img :src="srcMore" />
+          </div>
+          <div class="youhuiquan-box">
+            <div class="youhuiquan-left">
+              <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
+              <p class="youhuiquan-left-money">
+                <span class="youhuiquan-left-biao">GH{{jn}}</span>
+                {{ shops.reduceAmount}}
+                <i>OFF</i>
+              </p>
+              <p
+                class="youhuiquan-left-m"
+              >Type:{{shops.couponType==1?"Tospino’s Price-off":shops.couponType==2?"Newer Exclusives":shops.couponType==3?"Shop’s Price-off":shops.couponType==4?"Item Price-off":"Item Price-off"}}</p>
+              <p
+                class="youhuiquan-left-m"
+              >Valid:{{shops.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shops.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+              <div v-if="shops.couponType==2?false:true">
+                <progress-bar :progressBar="shops.claimRate"></progress-bar>
               </div>
+            </div>
 
-              <div class="youhuiquan-right">
-                <div class="youhuiquan-right-header">
-                  <!-- v-show="shops.drawStatus==1?false:true" -->
-                  <span class="youhuiquan-right-title right-title-a">{{shops.couponName}}</span>
-                </div>
-                <div class="youhuiquan-right-main">
-                  <div>Mini Spend GH{{jn}} {{shops.upToAmount!=null?shops.upToAmount:shops.reduceAmount}}</div>
-                  <van-button
-                    id="btn"
-                    round
-                    type="info"
-                    @click="ProBar(shops.couponId,shops.couponDetailId,shops.drawStatus,shops.couponType,shops.businessId,shops.expIds,shops.skuId,shops.sellFlag,shops.isToUse)"
-                    class="youhuiquan-right-btn right-btn-a"
-                  >{{shops.drawStatus==null?"Get it now":shops.drawStatus==0?"Use it now":shops.drawStatus==3?"Get more":"删除"}}</van-button>
-                </div>
+            <div class="youhuiquan-right">
+              <div class="youhuiquan-right-header">
+                <!-- v-show="shops.drawStatus==1?false:true" -->
+                <span class="youhuiquan-right-title right-title-a">{{shops.couponName}}</span>
+              </div>
+              <div class="youhuiquan-right-main">
+                <div>Mini Spend GH{{jn}} {{shops.upToAmount!=null?shops.upToAmount:shops.reduceAmount}}</div>
+                <van-button
+                  id="btn"
+                  round
+                  type="info"
+                  @click="ProBar(shops.couponId,shops.couponDetailId,shops.drawStatus,shops.couponType,shops.businessId,shops.expIds,shops.skuId,shops.sellFlag,shops.isToUse)"
+                  class="youhuiquan-right-btn right-btn-a"
+                >{{shops.drawStatus==null?"Get it now":shops.drawStatus==0?"Use it now":shops.drawStatus==3?"Get more":"删除"}}</van-button>
               </div>
             </div>
-          </van-cell>
-        </van-list>
-      </van-pull-refresh>
+          </div>
+        </van-cell>
+      </van-list>
+      <!-- </van-pull-refresh> -->
       <!-- <div @click="returnPage">返回</div> -->
     </div>
 
     <div class="selection-conten" v-else-if="active==1">
-      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-        <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
-          <van-cell class="youhuiquan-main" v-for="(shopone,index) in shopCouponUsed" :key="index">
-            <img :src="srcDel" />
-            <div class="youhuiquan-box">
-              <div class="youhuiquan-left">
-                <p class="youhuiquan-left-money">
-                  <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                  {{shopone.reduceAmount}}
-                  <i>OFF</i>
-                </p>
-                <p
-                  class="youhuiquan-left-m"
-                >Type:{{shopone.couponType==1?"Tospino’s Price-off":shopone.couponType==2?"Newer Exclusives":shopone.couponType==3?"Shop’s Price-off":shopone.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-                <p
-                  class="youhuiquan-left-m"
-                >Valid:{{shopone.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopone.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
-              </div>
+      <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
+      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
+        <van-cell class="youhuiquan-main" v-for="(shopone,index) in shopCouponUsed" :key="index">
+          <img :src="srcDel" />
+          <div class="youhuiquan-box">
+            <div class="youhuiquan-left">
+              <p class="youhuiquan-left-money">
+                <span class="youhuiquan-left-biao">GH{{jn}}</span>
+                {{shopone.reduceAmount}}
+                <i>OFF</i>
+              </p>
+              <p
+                class="youhuiquan-left-m"
+              >Type:{{shopone.couponType==1?"Tospino’s Price-off":shopone.couponType==2?"Newer Exclusives":shopone.couponType==3?"Shop’s Price-off":shopone.couponType==4?"Item Price-off":"Item Price-off"}}</p>
+              <p
+                class="youhuiquan-left-m"
+              >Valid:{{shopone.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopone.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+            </div>
 
-              <div class="youhuiquan-right">
-                <div class="youhuiquan-right-header">
-                  <span class="youhuiquan-right-title right-title-b">{{shopone.couponName}}</span>
-                </div>
-                <div class="youhuiquan-right-main">
-                  <div>Mini Spend GH{{jn}} {{shopone.upToAmount!=null?shopone.upToAmount:shopone.reduceAmount}}</div>
-                  <van-button
-                    round
-                    type="info"
-                    @click="usedDel(shopone.drawId)"
-                    class="youhuiquan-right-btn right-btn-b"
-                  >Delete</van-button>
-                  <!-- {{shopone.drawStatus==null?"Get it now":shopone.drawStatus==0?"Use it now":shopone.drawStatus==1?"Get more":shopone.drawStatus==2?"Delete":"Delete"}} -->
-                </div>
+            <div class="youhuiquan-right">
+              <div class="youhuiquan-right-header">
+                <span class="youhuiquan-right-title right-title-b">{{shopone.couponName}}</span>
+              </div>
+              <div class="youhuiquan-right-main">
+                <div>Mini Spend GH{{jn}} {{shopone.upToAmount!=null?shopone.upToAmount:shopone.reduceAmount}}</div>
+                <van-button
+                  round
+                  type="info"
+                  @click="usedDel(shopone.drawId)"
+                  class="youhuiquan-right-btn right-btn-b"
+                >Delete</van-button>
+                <!-- {{shopone.drawStatus==null?"Get it now":shopone.drawStatus==0?"Use it now":shopone.drawStatus==1?"Get more":shopone.drawStatus==2?"Delete":"Delete"}} -->
               </div>
             </div>
-          </van-cell>
-        </van-list>
-      </van-pull-refresh>
+          </div>
+        </van-cell>
+      </van-list>
+      <!-- </van-pull-refresh> -->
     </div>
     <!-- 已过期 -->
     <div class="selection-conten" v-else-if="active==2">
-      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-        <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
-          <van-cell class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
-            <img :src="srcDel" />
-            <div class="youhuiquan-box">
-              <div class="youhuiquan-left">
-                <p class="youhuiquan-left-money">
-                  <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                  {{ shopDel.reduceAmount}}
-                  <i>OFF</i>
-                </p>
-                <p
-                  class="youhuiquan-left-m"
-                >Type:{{shopDel.couponType==1?"Tospino’s Price-off":shopDel.couponType==2?"Newer Exclusives":shopDel.couponType==3?"Shop’s Price-off":shopDel.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-                <p
-                  class="youhuiquan-left-m"
-                >Valid:{{shopDel.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopDel.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
-              </div>
+      <!-- <van-pull-refresh v-model="loading" @refresh="onRefresh"> -->
+      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
+        <van-cell class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
+          <img :src="srcDel" />
+          <div class="youhuiquan-box">
+            <div class="youhuiquan-left">
+              <p class="youhuiquan-left-money">
+                <span class="youhuiquan-left-biao">GH{{jn}}</span>
+                {{ shopDel.reduceAmount}}
+                <i>OFF</i>
+              </p>
+              <p
+                class="youhuiquan-left-m"
+              >Type:{{shopDel.couponType==1?"Tospino’s Price-off":shopDel.couponType==2?"Newer Exclusives":shopDel.couponType==3?"Shop’s Price-off":shopDel.couponType==4?"Item Price-off":"Item Price-off"}}</p>
+              <p
+                class="youhuiquan-left-m"
+              >Valid:{{shopDel.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopDel.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+            </div>
 
-              <div class="youhuiquan-right">
-                <div class="youhuiquan-right-header">
-                  <span
-                    class="youhuiquan-right-title right-title-b"
-                    v-show="shopDel.drawStatus==1?false:true"
-                  >{{shopDel.couponName}}</span>
-                </div>
-                <div class="youhuiquan-right-main">
-                  <div>Mini Spend GH{{jn}} {{shopDel.upToAmount!=null?shopDel.upToAmount:shopDel.reduceAmount}}</div>
-                  <van-button
-                    round
-                    type="info"
-                    @click="usedDel(shopDel.drawId)"
-                    class="youhuiquan-right-btn right-btn-b"
-                  >Delete</van-button>
-                </div>
+            <div class="youhuiquan-right">
+              <div class="youhuiquan-right-header">
+                <span
+                  class="youhuiquan-right-title right-title-b"
+                  v-show="shopDel.drawStatus==1?false:true"
+                >{{shopDel.couponName}}</span>
+              </div>
+              <div class="youhuiquan-right-main">
+                <div>Mini Spend GH{{jn}} {{shopDel.upToAmount!=null?shopDel.upToAmount:shopDel.reduceAmount}}</div>
+                <van-button
+                  round
+                  type="info"
+                  @click="usedDel(shopDel.drawId)"
+                  class="youhuiquan-right-btn right-btn-b"
+                >Delete</van-button>
               </div>
             </div>
-          </van-cell>
-        </van-list>
-      </van-pull-refresh>
+          </div>
+        </van-cell>
+      </van-list>
+      <!-- </van-pull-refresh> -->
     </div>
 
     <!-- 判断是否有优惠券 -->
@@ -208,15 +209,15 @@ export default {
       shopCouponUsed: [], //已使用优惠券
       shopCouponEx: [], //已过期优惠券
       imgSrc1: imgSrc1, //没有券背景图
-      page: 1, //分页
-      limit: 10, //页数
-      total: 0, //数据总条数
+      formData: {
+        page: 1, //分页
+        limit: 10, //页数
+        usetype: 1, //优惠券
+      },
       couponsDataId: "", //点击领取
       loading: false,
       finished: false,
-      // Status: "",
       isOne: true,
-      isLoading: false,
     };
   },
   computed: {},
@@ -224,48 +225,44 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    //  导航栏tab切换
+    //  更改tab切换
     userDrawCoupon(active) {
+      // 数据重新加载
+      this.formData.usetype = active + 1;
       this.active = active;
-      this.page = 1;
+      this.refreshCoupon();
+      window.scrollTo({ top: 10 });
+    },
+    // 刷新页面
+    refreshCoupon() {
+      this.formData.page = 1;
+      this.formData.limit = 10;
       this.loading = false;
       this.finished = false;
       this.shopCoupon = [];
       this.shopCouponUsed = [];
       this.shopCouponEx = [];
-      window.scrollTo({ top: 10 });
     },
     // 全部可用优惠券
-    async getListData(flag) {
-      let couponList = await APPgetuserallCouponListApi({
-        page: this.page,
-        limit: this.limit,
-        usetype: this.active + 1,
-      });
+    async getListData(data, flag) {
+      let couponList = await APPgetuserallCouponListApi(data);
       if (flag) {
         this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
-        console.log("true", this.shopCoupon);
       } else {
         this.shopCoupon = couponList.Data.list;
       }
-
       // 列表数据懒加载
       if (this.shopCoupon.length >= couponList.Data.totalCount) {
         this.finished = true;
       } else {
-        this.page = this.page + 1;
+        // 监听pege的数据返回
+        this.$set(this.formData, "page", this.formData.page + 1);
       }
       this.loading = false; // 加载状态结束
     },
-
     // 已使用和已过期优惠券
-    async getUseData(flag) {
-      let couponList = await APPgetuserallcouponlistexpireApi({
-        page: this.page,
-        limit: this.limit,
-        usetype: this.active + 1,
-      });
-      console.log("getUseData -> couponList", couponList);
+    async getUseData(data, flag) {
+      let couponList = await APPgetuserallcouponlistexpireApi(data);
       // 获取数据
       if (this.active == 1) {
         if (flag) {
@@ -275,12 +272,11 @@ export default {
         } else {
           this.shopCouponUsed = couponList.Data.list;
         }
-
-        // 如果shopCouponUsed长度大于数据总长度
+        // 如果数组长度大于数据总长度
         if (this.shopCouponUsed.length >= couponList.Data.totalCount) {
           this.finished = true;
         } else {
-          this.page = this.page + 1;
+          this.$set(this.formData, "page", this.formData.page + 1);
         }
       } else if (this.active == 2) {
         if (flag) {
@@ -288,22 +284,23 @@ export default {
         } else {
           this.shopCouponEx = couponList.Data.list;
         }
-        // 如果shopCouponUsed长度大于数据总长度
+        // 如果数组长度大于数据总长度
         if (this.shopCouponEx.length >= couponList.Data.totalCount) {
           this.finished = true;
         } else {
-          this.page = this.page + 1;
+          this.$set(this.formData, "page", this.formData.page + 1);
         }
       }
       this.loading = false; // 加载状态结束
     },
-    // 懒加载数据
+    // 下拉更新数据
     onLoad() {
+      // 使用开关器
       if (this.isOne) {
         if (this.active == 0) {
-          this.getListData(true);
+          this.getListData(this.formData, true);
         } else {
-          this.getUseData(true);
+          this.getUseData(this.formData, true);
         }
         this.isOne = false;
       }
@@ -311,39 +308,8 @@ export default {
         this.isOne = true;
       }, 300);
     },
-    async onRefresh() {
-      // 清除当前列表中的所有的数据
-      this.loading = false;
-      this.finished = false;
-      this.shopCoupon = [];
-      this.shopCouponUsed = [];
-      this.shopCouponEx = [];
-      this.isLoading = false;
-      this.page = 1;
-      // 重新加载数据
-      await this.onLoad();
-    },
-    // 新增-优惠券 进度条
-    ProBar(
-      id,
-      Detail,
-      Status,
-      Type,
-      businessId,
-      expIds,
-      skuId,
-      sellFlag,
-      isToUse
-    ) {
-      let btn = document.getElementById("btn");
-      let x = btn.offsetTop;
-      let timer = setInterval(() => {
-        document.documentElement.scrollTop += 100;
-        if (document.documentElement.scrollTop >= x) {
-          clearInterval(timer);
-        }
-      }, 20);
-
+    // 优惠券按钮
+    ProBar(id, Detail, Status, Type, busId, expIds, skuId, sellFlag, isToUse) {
       // 判断优惠券平台跳转
       if (Status == 0) {
         if (isToUse == 1) {
@@ -354,7 +320,7 @@ export default {
           } else if (Type == 3) {
             this.$router.push({
               name: "搜索商品1",
-              query: { businessId: businessId, expIds: expIds },
+              query: { businessId: busId, expIds: expIds, seraname: "" },
             });
           } else {
             if (sellFlag == 0) {
@@ -369,15 +335,20 @@ export default {
           couponId: id,
           couponDetailId: Detail,
         };
+        // 调用领取优惠券
         this.availableCoupon(this.couponsDataId);
       }
     },
     // 领取优惠券
     availableCoupon(couponsId) {
+      // 清空数据，重新加载
+      this.refreshCoupon();
       couponDrawApi(couponsId).then((res) => {
         if (res.code == 0) {
           Toast("Get the success");
-          this.getListData(false);
+          if (this.active == 0) {
+            this.onLoad();
+          }
         } else {
           this.$toast.clear();
         }
@@ -385,25 +356,20 @@ export default {
     },
     // 删除使用优惠券
     usedDel(delId) {
+      // 清空数据，重新加载
+      this.refreshCoupon();
       let delIds = {
         drawId: delId,
       };
       couponRemoveApi(delIds).then((res) => {
         if (res.code == 0) {
           Toast("Delete the success");
-          if (this.active == 1) {
-            this.getUseData(false);
-          } else if (this.active == 2) {
-            this.getUseData(false);
-          }
+          this.onLoad();
         } else {
           this.$toast.clear();
         }
       });
     },
-    // returnPage() {
-    //   this.shopCoupon = JSON.parse(JSON.stringify(this.storagelist));
-    // },
   },
 };
 </script>

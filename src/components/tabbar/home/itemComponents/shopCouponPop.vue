@@ -3,8 +3,11 @@
   <div class="shopCouponPop" v-show="shop">
     <div class="shop-selection">
       <div class="shop-title">
-        <div class="shop-txt">Coupons</div>
-        <van-icon name="cross" class="cross" @click="close" />
+        <div class="shop-txt">
+          Coupons
+          <i class="cross" @click="close">×</i>
+        </div>
+        <!-- <van-icon name="cross" class="cross" @click="close" /> -->
       </div>
       <div class="selection-conten">
         <div class="youhuiquan-main" v-for="(couponItem,index) in couponShop" :key="index">
@@ -61,21 +64,13 @@
           </div>
         </div>
       </div>
-      <!-- 判断是否有优惠券 -->
-      <!-- <div v-else>
-        <no-coupon :imgSrc="imgSrc1" describe="There is no coupons"></no-coupon>
-      </div>-->
     </div>
   </div>
 </template>
 
 <script>
 import progressBar from "@/multiplexing/progress";
-// import { couponDrawApi } from "@/api/confirmOrder/index";
 import { Toast } from "vant";
-// // 无优惠券
-// import noCoupon from "@/multiplexing/noCoupon";
-// import imgSrc1 from "@/assets/img/coupon/noyouhui@2x.png";
 export default {
   name: "shopCouponPop",
   components: {
@@ -95,19 +90,10 @@ export default {
       srcUse: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png"),
       // 可领取更多优惠券背景
       srcMore: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan-1@2x.png"),
-      //   imgSrc1: imgSrc1
     };
   },
   computed: {},
-  watch: {
-    // couponShop: {
-    //   handler(newName) {
-    //     console.log("handler -> newName", newName);
-    //     // ...
-    //   },
-    //   deep: true,
-    // },
-  },
+  watch: {},
   created() {},
   mounted() {},
   methods: {
@@ -118,12 +104,6 @@ export default {
         couponDetailId: couponDetail,
       };
       this.$emit("couponSucceed", couponsId);
-      // // 点击领取优惠券
-      // couponDrawApi(couponsId).then((res) => {
-      //   if (res.code != 0) {
-      //     Toast(res.msg);
-      //   }
-      // });
     },
     // 关闭
     close() {
@@ -156,15 +136,18 @@ export default {
       border-bottom: 2px solid #dcdcdc;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       .shop-txt {
         font-size: 36px;
-        text-align: center;
-        width: 94%;
+        // text-align: center;
+        // width: 94%;
       }
       .cross {
-        flex: 1;
-        font-size: 29px;
+        width: 120px;
+        position: absolute;
+        right: 10px;
+        text-align: center;
+        font-size: 36px;
         color: #666666;
       }
     }
