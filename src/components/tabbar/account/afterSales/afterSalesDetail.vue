@@ -1,3 +1,12 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-20 17:26:48
+ * @LastEditTime: 2020-07-20 17:44:15
+ * @LastEditors: Please set LastEditors
+ * @Description: 售后进度跳转
+ * @FilePath: \app-en\src\components\tabbar\account\afterSales\afterSalesDetail.vue
+--> 
+
 <template>
   <!-- 售后详情 -->
   <div class="after-sales-detail">
@@ -5,7 +14,7 @@
     <div class="cell">
       <!-- <div class="cell" @click="jumpRouter('售后流程')"> -->
       <span>Process Record</span>
-      <van-icon name="arrow" class="arrow c-999" />
+      <van-icon name="arrow" class="arrow c-999" @click="toProgress" />
     </div>
     <div class="good-detail">
       <div class="good-detail-header">
@@ -103,13 +112,13 @@ export default {
         { type: 2, name: "Pending Refund" },
         { type: 3, name: "Refunded" },
         { type: 4, name: "Refused" },
-        { type: 5, name: "Canceled" }
+        { type: 5, name: "Canceled" },
       ],
       backTypeList: [
         { type: 1, name: "仅退款" },
-        { type: 2, name: "退货退款" }
+        { type: 2, name: "退货退款" },
       ],
-      copyBtn: null //存储初始化复制按钮事件
+      copyBtn: null, //存储初始化复制按钮事件
     };
   },
   computed: {},
@@ -125,7 +134,7 @@ export default {
     },
     //售后详情
     backorderinfo(id) {
-      backorderinfoApi({ order_id: id }).then(res => {
+      backorderinfoApi({ order_id: id }).then((res) => {
         if (res.code == 0) {
           this.detailData = res.Data;
         }
@@ -134,7 +143,7 @@ export default {
     //编译状态
     orderStatus(type, list) {
       let name = "";
-      this[list].forEach(statu => {
+      this[list].forEach((statu) => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -146,7 +155,7 @@ export default {
       this.revokebackorder(this.detailData.orderId);
     },
     revokebackorder(id) {
-      revokebackorderApi({ orderId: id }).then(res => {
+      revokebackorderApi({ orderId: id }).then((res) => {
         if (res.code == 0) {
           this.backorderinfo(id);
         } else if (res.code == 1) {
@@ -172,17 +181,21 @@ export default {
     copyLink() {
       let _this = this;
       let clipboard = _this.copyBtn;
-      clipboard.on("success", function() {
+      clipboard.on("success", function () {
         Toast("Successful copy!");
       });
-      clipboard.on("error", function() {
+      clipboard.on("error", function () {
         Toast("Failed! Please choose manual copy!");
       });
-    }
+    },
+    // 售后进度
+    toProgress() {
+      this.$router.push({ name: "售后进度" });
+    },
   },
   components: {
-    kefu
-  }
+    kefu,
+  },
 };
 </script>
 

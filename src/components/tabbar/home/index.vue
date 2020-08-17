@@ -1,3 +1,12 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-18 17:45:35
+ * @LastEditTime: 2020-08-15 19:29:13
+ * @LastEditors: Please set LastEditors
+ * @Description: 添加优惠券userPopup
+ * @FilePath: \app-en\src\components\tabbar\home\index.vue
+--> 
+
 <template>
   <!-- 首页 -->
   <div class="home">
@@ -26,7 +35,7 @@
               @click="swipeClick(banner)"
             >
               <div class="w1">
-                <img :src="$webUrl+banner.advertImg" />
+                <img v-lazy="$webUrl+banner.advertImg" />
               </div>
             </van-swipe-item>
             <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
@@ -68,6 +77,7 @@
           <div class="flash-sale-1">
             <span class="put-line"></span>
             <span class="t1">Selectives</span>
+            <!-- <span class="t2">查看更多</span> -->
           </div>
           <div class="flash-sale-2">
             <div class="pictures">
@@ -109,8 +119,8 @@
             <div class="brand-p-2">
               <img
                 v-lazy="$webUrl+globalPro.brandLogo"
-                v-for="globalPro in globalProList"
-                :key="globalPro.brandId"
+                v-for="(globalPro,index) in globalProList"
+                :key="index"
                 @click="toSearOne(globalPro.brandId,'brandId')"
               />
             </div>
@@ -128,7 +138,7 @@
                 class="good-world-best-p1"
                 :class="'cximg'+(index+1)"
                 v-for="(fineSale1,index) in fineSaleList1"
-                :key="fineSale1.skuId"
+                :key="index"
               >
                 <img v-lazy="$webUrl+fineSale1.imgUrl" @click="toDetail(fineSale1.skuId)" />
                 <div class="good-name">{{fineSale1.supplyTitle}}</div>
@@ -245,17 +255,24 @@
         </div>
       </div>
     </scroll>
+
+    <!-- 新用户弹框 -->
+    <user-popup :sale="sale" :newCoupon="newCoupon" @userPopUp="userPopUp" @evBus="evBus"></user-popup>
   </div>
 </template>
 
 <script>
+import userPopup from "@/multiplexing/userCouponPop";
 import searchHeader from "@/multiplexing/searchHeader";
 import {
   homePageApi,
   HomePagebottomApi,
   homeAdvertPictureApi,
+  APPgetuserIsfullApi,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
+import { couponDrawApi } from "@/api/confirmOrder/index";
+import { Toast } from "vant";
 export default {
   props: {},
   data() {
@@ -305,13 +322,16 @@ export default {
       banner3: {
         advertImg: "",
       },
+      newCouponShow: "", //判断是否为新用户是否展示
+      newCoupon: "",
+      sale: false, //新用户是否存在
     };
   },
   computed: {},
   created() {
+    this.newCoupons();
     if (this.$route.query.token && this.$route.query.token != "undefined") {
-      this.$storage.set("token", this.$route.query.token);
-      //   localStorage.token = this.$route.query.token;
+      localStorage.token = this.$route.query.token;
       this.getuserinfo();
     }
     if (localStorage.homeObj) {
@@ -350,8 +370,51 @@ export default {
   mounted() {
     this.refreshOrder();
   },
-  watch: {},
+  watch: {
+    // 监听首页新用户优惠券是否展示
+    newCouponShow: {
+      deep: true,
+      handler: function (val) {
+        if (val == 0) {
+          this.sale = true;
+        } else if (val == -300) {
+          this.sale = false;
+        }
+      },
+    },
+    // 如果路由有变化,会再次执行该方法
+    $route: {
+      handler(route) {
+        if (route.name === "首页") {
+          // location.reload();
+          this.newCoupons();
+        }
+      },
+      deep: true,
+    },
+  },
   methods: {
+    // 首页新用户优惠券
+    newCoupons() {
+      APPgetuserIsfullApi().then((res) => {
+        this.newCouponShow = res.code;
+        if (res.code == 0) {
+          this.newCoupon = res.Data;
+        } else {
+          this.$toast.clear();
+        }
+      });
+    },
+    // 关闭首页优惠券
+    userPopUp() {
+      this.sale = false;
+    },
+    // 领取优惠按钮
+    evBus(id) {
+      couponDrawApi(id).then((res) => {
+        Toast("Get the success");
+      });
+    },
     jumpRouter(name) {
       this.$router.push({ name });
     },
@@ -483,7 +546,7 @@ export default {
     },
     //点击轮播图
     swipeClick(el) {
-      if (!el.linkUrlEng) return;
+      if (!el.linkUrl) return;
       window.location.href = el.linkUrlEng;
     },
     //获取用户信息
@@ -497,6 +560,7 @@ export default {
   },
   components: {
     searchHeader,
+    userPopup,
   },
 };
 </script>

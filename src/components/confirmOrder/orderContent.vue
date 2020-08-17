@@ -1,3 +1,13 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-07-20 17:26:48
+ * @LastEditTime: 2020-08-04 15:07:24
+ * @LastEditors: Please set LastEditors
+ * @Description:  
+ 添加优惠券--orderCouponPop组件的接口联调
+ 领取优惠券
+ * @FilePath: \app-en\src\components\confirmOrder\orderContent.vue
+--> 
 <template>
   <!-- 确认订单填写信息 -->
   <div class="order-content">
@@ -26,22 +36,18 @@
         >{{orderStatus(pay.payType,'payStatus')}}</van-checkbox>
       </div>
     </div>
-    <div class="good-detail" v-for="order in orderData.orderList" :key="order.sortOrder">
+    <div class="good-detail" v-for="(order,index) in orderData.orderList" :key="index">
       <div class="good-detail-header">
         <span>{{order.sortOrder}}</span>
       </div>
-      <div
-        class="good-detail-content"
-        v-for="(product,index) in order.detailList"
-        :key="product.skuId"
-      >
+      <div class="good-detail-content" v-for="(product,index) in order.detailList" :key="index">
         <div>
           <van-swipe-cell :right-width="70">
             <template slot="right">
               <van-button square type="danger" text="Delete" @click="delItem(product,index)" />
             </template>
             <div class="good-detail-img">
-              <img :src="$webUrl+product.skuImg" />
+              <img v-lazy="$webUrl+product.skuImg" />
               <div
                 class="img-nochange"
                 v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0"
@@ -88,7 +94,7 @@
         >{{order.orderFareWebsite==0 ?'': order.currencySignWebsite}}{{order.orderFareWebsite==0 ? 'Free Shipping':order.orderFareWebsite}}</span>
       </div>
       <div class="payment b-t-1">
-        <span>Transportation</span>
+        <span>Transporation</span>
         <div
           class="select"
           v-if="order.deliverType==1 || order.deliverType==2"
@@ -123,6 +129,57 @@
           />
         </van-cell-group>
       </div>
+    </div>
+
+    <!-- 新增-优惠券 -->
+    <div class="youhuiquan-item">
+      <div class="youhuiquan-header">
+        <span class="youhuiquan-title">Coupons</span>
+        <span class="youhuiquan-txt" @click="saleMore">
+          -{{jn}}{{ this.orderData.allOrderCouponAmountWebsite}}
+          <van-icon name="arrow" />
+        </span>
+      </div>
+      <!-- <div class="youhuiquan-main">
+        <div class="youhuiquan-left">
+          <span class="youhuiquan-left-biao">GH{{jn}}</span>
+          <p class="youhuiquan-left-money">
+            10.00
+            <i>OFF</i>
+          </p>
+          <div class="youhuiquan-left-ms">
+            <p class="youhuiquan-left-m">Type:Shop Coupons</p>
+            <p class="youhuiquan-left-m">Valid:06/30/2020 23:59</p>
+          </div>
+          <progress-bar :progressBar="iSpeed"></progress-bar>
+        </div>
+        <div class="youhuiquan-right">
+          <div class="youhuiquan-right-header">
+            <span class="youhuiquan-right-title">Black Friday Black Black</span>
+          </div>
+          <div class="youhuiquan-right-main">
+            <p class="youhuiquan-left-mc">For GH₵ 1000.00 consumption</p>
+            <van-button round type="info" @click="ProBar" class="youhuiquan-right-btn">Get it now</van-button>
+          </div>
+        </div>
+      </div>-->
+
+      <!-- <div class="youhuiquan-ya">
+          <van-row type="flex" justify="space-between">
+            <van-col span="12">
+              <div class="youhuiquan-title">
+                   <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan-icon.png" />
+                   <span class="youhuiquan-txt">618 allowance</span>
+             </div>
+             <div class="youhuiquan-ts">
+                 <span class="youhuiquan-txt">(Only supported online payment)</span>
+             </div>
+            </van-col>
+            <van-col span="6">
+              <van-checkbox v-model="checked" checked-color="#FA5300">-{{jn}} 20.36</van-checkbox>
+            </van-col>
+          </van-row>
+      </div>-->
     </div>
 
     <div class="m-b-20 fbm-beizhu" v-if="orderData.hasFBM == 1">
@@ -162,8 +219,15 @@
       :moeny="Number(orderData.allOrderAmountWebsite)"
       @showPassWord="showPassWord"
       @showpaymen="showpaymen"
-      @duanxin="duanxin"
     ></action-sheet-paymen>
+
+    <!-- 更多优惠券 -->
+    <order-coupon-pop
+      :order="order"
+      @orderPop="orderPop"
+      @changeCheckbox="changeCheckbox"
+      @couponDrawId="couponDrawId"
+    ></order-coupon-pop>
 
     <!-- 返现弹窗 -->
     <van-dialog v-model="fanxianStatus" class="fanxian-style" confirm-button-text="OK">
@@ -185,11 +249,13 @@ import actionSheetSucess from "@/multiplexing/actionSheetSucess";
 import actionSheetPaymen from "@/multiplexing/actionSheetPaymen";
 import actionSheetPassword from "@/multiplexing/actionSheetPassword";
 import balanceHeader from "./itemComponents/balanceHeader";
+import progressBar from "@/multiplexing/progress";
+import orderCouponPop from "./itemComponents/orderCouponPop";
+
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
   batchmakeorderApi,
-  onlineorderrewardmsgApi,
 } from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
@@ -213,11 +279,11 @@ export default {
       payStatus: [
         {
           type: 1,
-          name: "Cash on delivery",
+          name: "Cash",
         },
         {
           type: 2,
-          name: "Online payment",
+          name: "Online",
         },
       ],
       showPayment: false,
@@ -239,6 +305,8 @@ export default {
       userinfoShop: {},
       orderSn: [],
       payTypeListLength: 0,
+      order: false, //更多优惠券
+      couponList: [], //优惠券领取
       fanxianStatus: false, //返现弹窗
       fanxianList: [], //返现列表
     };
@@ -330,7 +398,7 @@ export default {
     },
     //弹出支付
     showpaymen() {
-      this.$refs.actionSheetPaymen.showyinhang();
+      this.$refs.actionSheetPaymen.showAction = true;
     },
     //弹出支付成功
     showsucess() {
@@ -374,10 +442,12 @@ export default {
     //更改数量
     changeNumber() {
       let arr = [];
+      // let coupons = [];
       let data = {
         addressId: this.defaultAdderss.addressId,
         detailList: arr,
       };
+      // 商品明细列表
       this.orderData.orderList.forEach((ele) => {
         ele.detailList.forEach((item) => {
           let obj = {
@@ -425,11 +495,41 @@ export default {
       });
       this.changeNumber();
     },
+    // 领取优惠券
+    couponDrawId(Id) {
+      this.changeCheckbox(Id);
+    },
+    // 优惠券
+    changeCheckbox(drawId) {
+      let arr = [];
+      let coupon = {
+        addressId: this.defaultAdderss.addressId,
+        detailList: arr,
+        couponDrawList: drawId,
+      };
+      // 商品明细列表
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((item) => {
+          let obj = {
+            skuId: item.skuId,
+            detailNum: Number(item.detailNum),
+          };
+          arr.push(obj);
+        });
+      });
+      // 优惠券选择
+      this.getconfirmorder(coupon);
+    },
     //订单详情
     getconfirmorder(data) {
+      // // 缓存订单数据在vuex
+      // this.$store.state.orderDetails = data;
       getconfirmorderApi(data).then((res) => {
         if (res.code == 0) {
           this.orderData = res.Data;
+          // 缓存优惠券列表在vuex
+          this.couponList = this.$store.state.coupons = this.orderData.couponList;
+          this.$store.state.couponListUse = this.orderData.couponListCannotUse;
           if (this.payTypeList.length == 0) {
             //第一次请求
             this.payTypeList = res.Data.payTypeList;
@@ -456,6 +556,7 @@ export default {
         orderSource: 1,
         orderList: orderObj.orderList,
         shopcrtList: this.shopcrtList,
+        couponList: this.couponList,
       };
       batchmakeorderApi(obj).then((res) => {
         let orderIdArr = [];
@@ -510,6 +611,7 @@ export default {
       let obj = {
         addressId: this.defaultAdderss.addressId,
         detailList: this.selectionShopCar,
+        autoSelectCoupon: 1,
       };
       this.getconfirmorder(obj);
     },
@@ -517,6 +619,8 @@ export default {
     //订单发起支付
     orderlaunchpay(data) {
       orderlaunchpayApi(data).then((res) => {
+        // console.log(data);
+
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
@@ -568,6 +672,8 @@ export default {
       this.orderlaunchpay(obj);
     },
     showPassWord(flag) {
+      // console.log(flag);
+      // console.log("第三方支付弹起");
       this.$refs.actionSheetPassword.showAction = flag;
     },
     //选择支付方式
@@ -579,10 +685,12 @@ export default {
       this.zffs = dataItem.payType;
       this.$forceUpdate();
     },
-    //返现短信
-    duanxin() {
-      let data = this.orderIdList;
-      onlineorderrewardmsgApi({ orderList: data }).then((res) => {});
+    // 更多优惠券
+    saleMore() {
+      this.order = true;
+    },
+    orderPop() {
+      this.order = false;
     },
   },
   components: {
@@ -590,6 +698,8 @@ export default {
     actionSheetSucess,
     actionSheetPassword,
     balanceHeader,
+    progressBar,
+    orderCouponPop,
   },
 };
 </script>
@@ -850,6 +960,131 @@ export default {
       }
     }
   }
+
+  // 新增-优惠券
+  .youhuiquan-item {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 20px 30px;
+    box-sizing: border-box;
+    .youhuiquan-header {
+      display: flex;
+      justify-content: space-between;
+      .youhuiquan-title {
+        font-size: 30px;
+        font-weight: bold;
+      }
+      .youhuiquan-txt {
+        margin-top: 10px;
+        font-size: 24px;
+        color: #fa5300;
+        /deep/ .van-icon {
+          color: #000;
+        }
+      }
+    }
+
+    .youhuiquan-main {
+      display: flex;
+      background: #fff3eb;
+      margin-top: 15px;
+      .youhuiquan-left {
+        width: 46%;
+        padding: 20px 0 16px 20px;
+        .youhuiquan-left-biao {
+          font-size: 25px;
+          color: #fa5300;
+        }
+        .youhuiquan-left-money {
+          font-size: 60px;
+          font-weight: bold;
+          color: #fa5300;
+          i {
+            font-size: 25px;
+            font-weight: normal;
+          }
+        }
+        .youhuiquan-left-m {
+          font-size: 20px;
+          color: #fa5300;
+          padding-top: 6px;
+        }
+      }
+    }
+    .youhuiquan-right {
+      width: 54%;
+      text-align: center;
+      .youhuiquan-right-header {
+        margin-top: 11px;
+      }
+      .youhuiquan-right-title {
+        font-size: 20px;
+        color: #fa5300;
+        padding: 10px 30px;
+        background: rgba(253, 193, 154, 1);
+      }
+      .youhuiquan-right-main {
+        padding-top: 54px;
+        font-size: 24px;
+        color: rgba(255, 255, 255, 1);
+        .youhuiquan-left-mc {
+          font-size: 24px;
+          color: #fa5300;
+          padding-top: 6px;
+        }
+        .youhuiquan-right-btn {
+          margin-top: 15px;
+        }
+        /deep/ .van-button--info {
+          color: #fff;
+          background: #fa5300;
+          border: 1px solid #fff;
+          font-size: 30px;
+          padding: 30px 42px;
+        }
+        /deep/ .van-button {
+          line-height: 0;
+        }
+      }
+    }
+    .youhuiquan-ya {
+      padding-top: 36px;
+      .youhuiquan-title {
+        display: flex;
+        img {
+          max-width: 50px;
+          max-height: 32px;
+          height: 32px;
+        }
+        .youhuiquan-txt {
+          line-height: 32px;
+          padding-left: 9px;
+          font-size: 26px;
+        }
+      }
+      .youhuiquan-ts {
+        padding-top: 18px;
+        font-size: 20px;
+        color: #666;
+      }
+      /deep/ .van-col--6 {
+        text-align: right;
+      }
+      /deep/ .van-checkbox {
+        display: inline-block;
+        .van-checkbox__icon {
+          vertical-align: sub;
+          display: inline-block;
+          font-size: 36px;
+          padding-top: 14px;
+        }
+        .van-checkbox__label {
+          font-size: 28px;
+        }
+      }
+    }
+  }
+
   .fbm-beizhu {
     color: rgba(235, 2, 2, 1);
     font-size: 20px;

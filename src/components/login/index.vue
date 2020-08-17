@@ -2,7 +2,7 @@
   <!-- 登录页 -->
   <div class="login">
     <div class="logo">
-      <img @click="$router.push({name:'首页'})" src="@/assets/img/login/logo@3x.png" />
+      <img src="@/assets/img/login/logo@3x.png" />
     </div>
     <div class="user-name">
       <img src="@/assets/img/login/user@3x.png" alt="图标" class="name-icon" />
@@ -13,7 +13,7 @@
         <input
           type="text"
           class="name-input"
-          placeholder="Account or Mobile Number"
+          placeholder="Enter your username"
           v-model="userData.username1"
         />
       </div>
@@ -171,9 +171,10 @@ export default {
 
         loginApi(this.userData).then((res) => {
           if (res.code == 0) {
-            this.$storage.set("token", res.token);
-            // localStorage.token = res.token
-            localStorage.userinfoShop = JSON.stringify(res.user);
+            localStorage.token = res.token;
+            //第一次登录：dengluOne
+            let obj = Object.assign(res.user, { dengluOne: true });
+            localStorage.userinfoShop = JSON.stringify(obj);
             this.$router.push({ name: "首页" });
             this.classifykeep(true);
           } else if (res.code == -4) {

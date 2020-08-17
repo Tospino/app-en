@@ -1,208 +1,257 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-18 17:45:35
+ * @LastEditTime: 2020-08-15 17:18:53
+ * @LastEditors: Please set LastEditors
+ * @Description: 添加优惠券--shopCouponPop组件和字段
+ * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
+--> 
+
 <template>
   <!-- 商品详情页 -->
   <div class="commodity-details">
-    <section v-if="showServer">
-      <customerService :type="1" :data="detailmData" />
-    </section>
-    <section v-else>
-      <!-- 头部搜索框 -->
-      <details-header></details-header>
-      <div class="commodity-tab" v-if="true">
-        <van-tabs
-          v-model="active"
-          class="tab-list"
-          title-active-color="#FA5300"
-          @change="changeTab"
-        >
-          <van-tab title="Shot"></van-tab>
-          <!-- <van-tab title="Review"></van-tab> -->
-          <van-tab title="Param"></van-tab>
-          <van-tab title="Details"></van-tab>
-          <van-tab title="Similar"></van-tab>
-        </van-tabs>
-      </div>
-      <div class="commodity-tab-place"></div>
-      <scroll
-        class="bscroll-wrapper"
-        ref="wrapper"
-        :data="recordGroup"
-        v-show="showData"
-        :listenScroll="true"
-        @scroll="scrollto"
-        :probeType="3"
-      >
-        <div class="bscroll-con">
-          <div class="commodity-swipe">
-            <van-swipe @change="onChange" v-if="showData">
-              <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
-                <div class="w1">
-                  <img :src="$bigwebUrl+banner.imgUrl" />
-                </div>
-              </van-swipe-item>
-              <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
-            </van-swipe>
-          </div>
-          <div class="good-content">
-            <div v-if="detailmData.quoteMethod == 1">
-              <div class="prices">
-                <span class="mark c-orange">{{jn}}</span>
-                <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
-                <span
-                  class="p2 through"
-                  v-if="detailmData.salePriceFlag"
-                >{{jn}}{{detailmData.salePrice}}</span>
+    <!-- 头部搜索框 -->
+    <details-header></details-header>
+    <div class="commodity-tab" v-if="true">
+      <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
+        <van-tab title="Shot"></van-tab>
+        <!-- <van-tab title="Review"></van-tab> -->
+        <van-tab title="Param"></van-tab>
+        <van-tab title="Details"></van-tab>
+        <van-tab title="Similar"></van-tab>
+      </van-tabs>
+    </div>
+    <div class="commodity-tab-place"></div>
+    <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" v-show="showData">
+      <div class="bscroll-con">
+        <div class="commodity-swipe">
+          <van-swipe @change="onChange" v-if="showData">
+            <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
+              <div class="w1">
+                <img v-lazy="$bigwebUrl+banner.imgUrl" />
               </div>
-              <div>
-                <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
-              </div>
+            </van-swipe-item>
+            <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
+          </van-swipe>
+        </div>
+        <div class="good-content">
+          <div v-if="detailmData.quoteMethod == 1">
+            <div class="prices">
+              <span class="mark c-orange">{{jn}}</span>
+              <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
+              <span
+                class="p2 through"
+                v-if="detailmData.salePriceFlag"
+              >{{jn}}{{detailmData.salePrice}}</span>
             </div>
-            <div class="miaoshu">
-              <span class="p4">{{detailmData.supplyTitle}}</span>
-              <!-- <span>
-                    <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
-                    <span class="fenxiang-txt">Share</span>
-              </span>-->
-            </div>
-            <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
-              <div v-for="(spc,index) in spclist" :key="index" class="qujianjia-item">
-                <div class="price">
-                  <span class="huobi">{{jn}}</span>
-                  <span>{{spc.price}}</span>
-                </div>
-                <div class="piece">
-                  <span v-show="index == 0">MOQ:</span>
-                  <span>{{spc.pcs}}PCS</span>
-                </div>
-              </div>
-            </div>
-            <div>Sales:{{detailmData.skuSalesNum ? detailmData.skuSalesNum:0}}PCS</div>
-            <div class="supplement" v-if="false">
-              <span class="t1">物流</span>
-              <span class="t2">浙江省 金华市</span>
-              <span class="erect-line"></span>
-              <span class="t3">TOSPINO</span>
+            <div>
+              <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
             </div>
           </div>
-          <div
-            class="fbm-time"
-            v-if="detailmData.arriveDateRangeStringEng"
-          >Get it as soon as {{detailmData.arriveDateRangeStringEng}}.</div>
-          <van-cell-group class="border-0" @click="changeComStatus(true,false)">
-            <van-field
-              v-model="username"
-              clearable
-              right-icon="arrow"
-              :placeholder="detailmData.skuValuesTitleEng"
-              left-icon="arrow"
-              disabled
-            >
-              <div slot="left-icon" size="small" type="primary" class="text-left">
-                <span>Select</span>
-                <span class="erect-line1"></span>
-              </div>
-            </van-field>
-          </van-cell-group>
-          <div class="fbm-wuliu" v-if="detailmData.expId == 1">
-            <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
-            <span>Ships from {{detailmData.areaNameEng}}</span>
+          <div class="miaoshu">
+            <span class="p4">{{detailmData.supplyTitle}}</span>
+            <!-- <span>
+                            <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
+                            <span class="fenxiang-txt">Share</span>
+            </span>-->
           </div>
-          <div
-            class="good-comment"
-            @click="$router.push({name:'商品详情评价',query:{skuid:detailmData.skuId}})"
-            ref="goodComment"
-            v-if="false"
+          <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
+            <div v-for="(spc,index) in spclist" :key="index" class="qujianjia-item">
+              <div class="price">
+                <span class="huobi">{{jn}}</span>
+                <span>{{spc.price}}</span>
+              </div>
+              <div class="piece">
+                <span v-show="index == 0">MOQ:</span>
+                <span>{{spc.pcs}}PCS</span>
+              </div>
+            </div>
+          </div>
+          <div>Sales:{{detailmData.skuSalesNum ? detailmData.skuSalesNum:0}}PCS</div>
+          <div class="supplement" v-if="false">
+            <span class="t1">物流</span>
+            <span class="t2">浙江省 金华市</span>
+            <span class="erect-line"></span>
+            <span class="t3">TOSPINO</span>
+          </div>
+        </div>
+        <div
+          class="fbm-time"
+          v-if="detailmData.arriveDateRangeStringEng"
+        >Get it as soon as {{detailmData.arriveDateRangeStringEng}}.</div>
+        <van-cell-group class="border-0" @click="changeComStatus(true,false)">
+          <van-field
+            v-model="username"
+            clearable
+            right-icon="arrow"
+            :placeholder="detailmData.skuValuesTitleEng"
+            left-icon="arrow"
+            disabled
           >
-            <div v-if="detailmData.evaContent">
-              <div class="comment-top">
-                <span class="p1">Reviews</span>
-                <span class="p2">{{detailmData.starNumber}}</span>
-                <van-rate v-model="detailmData.starNumber" void-color="#FA5300" color="#FA5300" />
-              </div>
-              <div class="comment-describe">
-                <span>{{detailmData.nickName}}:{{detailmData.evaContent}}</span>
-              </div>
-              <div class="comment-specifications">
-                <span>{{detailmData.proUnit}}</span>
-              </div>
-              <div class="comment-arrow">
-                <van-icon name="arrow" />
-              </div>
+            <div slot="left-icon" size="small" type="primary" class="text-left">
+              <span>Select</span>
+              <span class="erect-line1"></span>
             </div>
-            <div v-else>
-              <div class="comment-top">
-                <span class="p1">Reviews</span>
-                <span class="c-999">No reviews</span>
-              </div>
+          </van-field>
+        </van-cell-group>
+        <div class="fbm-wuliu" v-if="detailmData.expId == 1">
+          <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
+          <span>Ships from {{detailmData.areaNameEng}}</span>
+        </div>
+        <div
+          class="good-comment"
+          @click="$router.push({name:'商品详情评价',query:{skuid:detailmData.skuId}})"
+          ref="goodComment"
+          v-if="false"
+        >
+          <div v-if="detailmData.evaContent">
+            <div class="comment-top">
+              <span class="p1">Reviews</span>
+              <span class="p2">{{detailmData.starNumber}}</span>
+              <van-rate v-model="detailmData.starNumber" void-color="#FA5300" color="#FA5300" />
+            </div>
+            <div class="comment-describe">
+              <span>{{detailmData.nickName}}:{{detailmData.evaContent}}</span>
+            </div>
+            <div class="comment-specifications">
+              <span>{{detailmData.proUnit}}</span>
+            </div>
+            <div class="comment-arrow">
+              <van-icon name="arrow" />
             </div>
           </div>
-          <div ref="guige">
-            <div class="canshu" v-for="(param,index) in detailmData.productParamList" :key="index">
-              <div class="canshu-item fl-left">{{param.paramTitleEng}}</div>
-              <div class="canshu-item fl-left">{{param.pvValueEng}}{{param.paramUnitEng}}</div>
+          <div v-else>
+            <div class="comment-top">
+              <span class="p1">Reviews</span>
+              <span class="c-999">No reviews</span>
             </div>
-            <div class="shousuo" v-if="shousuoStatus" @click="zankai">
-              <span>open</span>
-              <van-icon name="arrow-down" />
-            </div>
-            <div v-html="detailmData.supplyDetailpara"></div>
           </div>
-          <div class="bbxq" ref="xiangqing">
-            <span class="line-left"></span>
-            <span class="bbxq-p1">Details</span>
-            <span class="line-right"></span>
+        </div>
+        <!-- 新增-优惠券 -->
+        <div class="youhuiquan yhq" v-if="moreShop">
+          <div class="youhuiquan-header">
+            <span class="youhuiquan-title">Coupons</span>
+            <span class="youhuiquan-txt" @click="saleMore">More</span>
           </div>
-          <div class="banner" v-html="supplyDetail"></div>
-          <!-- 推荐宝贝 -->
-          <div ref="tjbb"></div>
-          <footer-exhibition
-            :footerData="footerData"
-            :webUrl="$webUrl"
-            v-if="showfooter"
-            @clickPro="clickPro"
-          ></footer-exhibition>
-        </div>
-      </scroll>
-      <!-- 底部导航 -->
-      <van-tabbar v-model="active" class="footer-tab">
-        <div class="icon-collection" @click="cliShoucang">
-          <img
-            src="@/assets/img/tabbar/home/commodityDetails/collection-02@2x.png"
-            v-if="Isfavorites == 1"
-          />
-          <img src="@/assets/img/tabbar/home/commodityDetails/collection@2x.png" v-else />
-          <div class="icon-collection-p">Collect</div>
-        </div>
-        <div class="icon-service" @click="service">
-          <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
-          <div class="icon-collection-p">Service</div>
-        </div>
-        <van-button
-          type="default"
-          class="add-shopping-cat"
-          @click="changeComStatus(true,true,'Confirm')"
-        >Add to Cart</van-button>
-        <van-button
-          type="primary"
-          class="spend"
-          @click="changeComStatus(true,true,'Buy Now')"
-        >Buy Now</van-button>
-      </van-tabbar>
+          <div class="youhuiquan-main">
+            <img src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png" />
+            <div class="youhuiquan-box">
+              <div class="youhuiquan-left">
+                <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
+                <p class="youhuiquan-left-money">
+                  <span class="youhuiquan-left-biao">GH{{jn}}</span>
+                  {{ProModel.Data.reduceAmount}}
+                  <i>OFF</i>
+                </p>
+                <p
+                  class="youhuiquan-left-m"
+                >Type:{{ProModel.Data.couponType==1?"Tospino’s Price-off":ProModel.Data.couponType==2?"Newer Exclusives":ProModel.Data.couponType==3?"Shop’s Price-off":ProModel.Data.couponType==4?"Item Price-off":"Item Price-off"}}</p>
+                <p
+                  class="youhuiquan-left-m"
+                >Valid:{{ProModel.Data.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{ProModel.Data.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+                <progress-bar :progressBar="ProModel.Data.claimRate ? ProModel.Data.claimRate : 0"></progress-bar>
+              </div>
 
-      <transition name="updown">
-        <commodity-selection
-          v-show="comStatus"
-          @changeComStatus="changeComStatus"
-          :selectionData="selectionData"
-          :btnStatus="btnStatus"
-          :btnName="btnName"
-        ></commodity-selection>
-      </transition>
+              <div class="youhuiquan-right">
+                <div class="youhuiquan-right-header">
+                  <!-- 测试完后注释掉 -->
+                  <span class="youhuiquan-right-title">{{ProModel.Data.couponName}}</span>
+                </div>
+                <div class="youhuiquan-right-main">
+                  <div>Mini Spend GH₵ {{ProModel.Data.upToAmount!=null?ProModel.Data.upToAmount:ProModel.Data.reduceAmount}}</div>
+                  <van-button
+                    style="background: none;border: 0;color:#FEA072 "
+                    round
+                    disabled
+                    v-if="ProModel.Data.drawStatus==0?true:false"
+                    type="info"
+                    class="youhuiquan-right-btn"
+                  >Received</van-button>
+                  <van-button
+                    v-else
+                    round
+                    type="info"
+                    class="youhuiquan-right-btn"
+                    @click="couponsClick(ProModel.Data.couponId,ProModel.Data.couponDetailId,ProModel.Data.supplyId,ProModel.Data.businessId)"
+                  >{{ProModel.Data.drawStatus==null?"Get it now":ProModel.Data.drawStatus==1?"Get more":"Delete"}}</van-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <van-overlay :show="show2" @click="show2 = false" class="overlay">
-        <!-- 客服电话 -->
-        <kefu></kefu>
-      </van-overlay>
-    </section>
+        <div ref="guige">
+          <div class="canshu" v-for="(param,index) in detailmData.productParamList" :key="index">
+            <div class="canshu-item fl-left">{{param.paramTitleEng}}</div>
+            <div class="canshu-item fl-left">{{param.pvValueEng}}{{param.paramUnitEng}}</div>
+          </div>
+          <div class="shousuo" v-if="shousuoStatus" @click="zankai">
+            <span>open</span>
+            <van-icon name="arrow-down" />
+          </div>
+          <div v-html="detailmData.supplyDetailpara"></div>
+        </div>
+
+        <div class="bbxq" ref="xiangqing">
+          <span class="line-left"></span>
+          <span class="bbxq-p1">Details</span>
+          <span class="line-right"></span>
+        </div>
+        <div class="banner" v-html="detailmData.supplyDetail"></div>
+        <!-- 推荐宝贝 -->
+        <div ref="tjbb"></div>
+        <footer-exhibition
+          :footerData="footerData"
+          :webUrl="$webUrl"
+          v-if="showfooter"
+          @clickPro="clickPro"
+        ></footer-exhibition>
+      </div>
+    </scroll>
+    <!-- 底部导航 -->
+    <van-tabbar v-model="active" class="footer-tab">
+      <div class="icon-collection" @click="cliShoucang">
+        <img
+          src="@/assets/img/tabbar/home/commodityDetails/collection-02@2x.png"
+          v-if="Isfavorites == 1 "
+        />
+        <img src="@/assets/img/tabbar/home/commodityDetails/collection@2x.png" v-else />
+        <div class="icon-collection-p">Collect</div>
+      </div>
+      <div class="icon-service" @click="service">
+        <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
+        <div class="icon-collection-p">Service</div>
+      </div>
+      <van-button
+        type="default"
+        class="add-shopping-cat"
+        @click="changeComStatus(true,true,'Confirm')"
+      >Add to Cart</van-button>
+      <van-button type="primary" class="spend" @click="changeComStatus(true,true,'Buy Now')">Buy Now</van-button>
+    </van-tabbar>
+
+    <transition name="updown">
+      <commodity-selection
+        v-show="comStatus"
+        @changeComStatus="changeComStatus"
+        :selectionData="selectionData"
+        :btnStatus="btnStatus"
+        :btnName="btnName"
+      ></commodity-selection>
+    </transition>
+
+    <van-overlay :show="show2" @click="show2 = false" class="overlay">
+      <!-- 客服电话 -->
+      <kefu></kefu>
+    </van-overlay>
+
+    <!-- 更多优惠券 -->
+    <shop-coupon-pop
+      :shop="shop"
+      :couponShop="couponShop"
+      @shopPop="shopPop"
+      @couponSucceed="couponSucceed"
+    ></shop-coupon-pop>
   </div>
 </template>
 
@@ -210,16 +259,20 @@
 import detailsHeader from "@/multiplexing/detailsHeader";
 import footerExhibition from "@/multiplexing/footerExhibition";
 import commoditySelection from "@/multiplexing/commoditySelection";
-import customerService from "@/components/tabbar/account/customerService.vue";
+import shopCouponPop from "./itemComponents/shopCouponPop";
+import progressBar from "@/multiplexing/progress";
+
 import {
   productdetailApi,
-  getsupplyDetailApi,
-  getGuessyouLikeApi,
+  AppqureyuserCouponProApi,
+  AppqureyuserCouponProModelApi,
 } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
   adduserfavoritesApi,
 } from "@/api/favorites/index.js";
+// 领取优惠券
+import { couponDrawApi } from "@/api/confirmOrder/index";
 import kefu from "@/multiplexing/kefu.vue";
 import { Toast } from "vant";
 export default {
@@ -249,9 +302,12 @@ export default {
       shousuoStatus: false,
       showData: false,
       spclist: [],
-      showServer: false, // 是否显示客户弹框
-      supplyDetail: null, //商品详情图片
-      scrollFlag: true,
+      iSpeed: 0, //进度条,
+      shop: false, //更多优惠券
+      couponShop: [],
+      couponMax: "",
+      ProModel: "", //最大优惠券
+      moreShop: false, //优惠券领取
     };
   },
   computed: {},
@@ -269,23 +325,13 @@ export default {
     }
     next();
   },
-  watch: {
-    $route() {
-      if (this.$route.query.skuId) {
-        this.productdetail(this.$route.query.skuId);
-      }
-    },
-  },
+  watch: {},
   methods: {
     onChange(index) {
       this.current = index;
     },
-    /**
-     * @description:联系客服
-     * @author: 曹建勇
-     */
     service() {
-      this.showServer = true;
+      this.show2 = true;
     },
     //商品详情
     productdetail(id) {
@@ -293,6 +339,11 @@ export default {
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
+          this.couponProModel(
+            this.detailmData.supplyId,
+            this.detailmData.businessId,
+            this.detailmData.expId
+          );
           this.leng = res.Data.productImgList.length;
           this.selectionData = res;
           this.detailmData.salePriceFlag = true;
@@ -300,41 +351,25 @@ export default {
             this.detailmData.discountPrice = this.detailmData.salePrice;
             this.detailmData.salePriceFlag = false;
           }
+          this.footerData.list = res.GuessyouLike;
+          this.showfooter = true; //数据回调回来,显示猜你喜欢
           this.Isfavorites = res.Data.isfavorites; //收藏状态
+
           this.spclist = res.spclist;
           this.productParamList = res.Data.productParamList.slice(0, 5);
           this.productParamList2 = res.Data.productParamList;
-
           if (res.Data.productParamList.length > 5) {
             this.shousuoStatus = true;
           }
           setTimeout(() => {
             this.showData = true;
             Toast.clear();
-          }, 300);
+          }, 1000);
         } else if (res.code == -326) {
           Toast("Sold Out");
           setTimeout(() => {
             this.$router.go(-1);
           }, 1000);
-        }
-      });
-    },
-    //详情介绍图片
-    getsupplyDetail(id) {
-      getsupplyDetailApi({ supplyId: id }).then((res) => {
-        if (res.code == 0) {
-          this.supplyDetail = res.supplyDetail;
-        }
-        this.getGuessyouLike(this.detailmData.categoryId);
-      });
-    },
-    //猜你喜欢
-    getGuessyouLike(id) {
-      getGuessyouLikeApi({ categoryId: id }).then((res) => {
-        if (res.code == 0) {
-          this.footerData.list = res.GuessyouLike;
-          this.showfooter = true; //数据回调回来,显示猜你喜欢
         }
       });
     },
@@ -393,13 +428,57 @@ export default {
       this.productParamList = this.productParamList2;
       this.shousuoStatus = false;
     },
-    //滚动事件
-    scrollto(pos) {
-      if (!this.scrollFlag) return;
-      if (pos.y <= 0) {
-        this.scrollFlag = false;
-        this.getsupplyDetail(this.detailmData.supplyId);
+    // 显示最高金额的优惠券（卖家>平台）
+    async couponProModel(supplyId, businessId, expId) {
+      this.ProModel = await AppqureyuserCouponProModelApi({
+        supplyId: supplyId,
+        businessId: businessId,
+        expId: expId,
+      });
+      if (this.ProModel.code == 0) {
+        this.moreShop = true;
+      } else {
+        this.moreShop = false;
       }
+    },
+    // 最高金额优惠券领取
+    async couponsClick(couponId, DetailId, supplyId, businessId, expId) {
+      let couponDraw = await couponDrawApi({
+        couponId: couponId,
+        couponDetailId: DetailId,
+      });
+      if (couponDraw.code == 0) {
+        Toast("Get the success");
+        this.moreShop = true;
+        this.couponProModel(supplyId, businessId, expId);
+      } else {
+        this.$toast.clear();
+      }
+    },
+    // 更多优惠券
+    saleMore() {
+      this.shop = true;
+      let moreCoupon = {
+        supplyId: this.detailmData.supplyId,
+        businessId: this.detailmData.businessId,
+        expId: this.detailmData.expId,
+      };
+      AppqureyuserCouponProApi(moreCoupon).then((res) => {
+        this.couponShop = res.Data;
+      });
+    },
+    // 子组件领取的优惠券
+    async couponSucceed(id) {
+      let couponDraw = await couponDrawApi(id);
+      this.saleMore();
+      if (couponDraw.code == 0) {
+        Toast("Get the success");
+      } else {
+        this.$toast.clear();
+      }
+    },
+    shopPop() {
+      this.shop = false;
     },
   },
   components: {
@@ -407,7 +486,8 @@ export default {
     footerExhibition,
     commoditySelection,
     kefu,
-    customerService,
+    shopCouponPop,
+    progressBar,
   },
 };
 </script>
@@ -660,6 +740,102 @@ export default {
       vertical-align: text-bottom;
     }
   }
+  // 新增-优惠券
+  .yhq {
+    width: 100%;
+    background-color: #f2f3f5;
+    position: relative;
+    padding: 20px 30px;
+    box-sizing: border-box;
+    .youhuiquan-header {
+      display: flex;
+      justify-content: space-between;
+    }
+    .youhuiquan-title {
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .youhuiquan-txt {
+      width: 140px;
+      text-align: right;
+      font-size: 20px;
+      color: rgba(102, 102, 102, 1);
+      margin-top: 10px;
+    }
+    .youhuiquan-main {
+      max-width: 100%;
+      height: 210px;
+      margin-top: 15px;
+      overflow: hidden;
+      .youhuiquan-box {
+        display: flex;
+        position: relative;
+        top: -209px;
+        // left: 20px;
+
+        .youhuiquan-left {
+          width: 70%;
+          padding-top: 16px;
+          padding-left: 20px;
+          .youhuiquan-left-biao {
+            font-size: 25px;
+            font-weight: bold;
+            color: #fa5300;
+          }
+          .youhuiquan-left-money {
+            font-size: 60px;
+            font-weight: bold;
+            color: #fa5300;
+            i {
+              font-size: 25px;
+              font-weight: bold;
+            }
+          }
+          .youhuiquan-left-m {
+            padding-top: 10px;
+            font-size: 20px;
+            color: #333;
+            line-height: 34px;
+          }
+        }
+
+        .youhuiquan-right {
+          width: 57%;
+          text-align: center;
+          .youhuiquan-right-header {
+            margin-top: 11px;
+          }
+          .youhuiquan-right-title {
+            font-size: 20px;
+            color: #fa5300;
+            padding: 10px 30px;
+            background: rgba(253, 193, 154, 1);
+          }
+          .youhuiquan-right-main {
+            padding-top: 54px;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 1);
+            .youhuiquan-right-btn {
+              margin-top: 15px;
+            }
+            /deep/ .van-button--info {
+              color: #fa5300;
+              background: #fff;
+              border: 1px solid #fff;
+              font-size: 30px;
+              font-weight: bold;
+              padding: 30px 42px;
+            }
+            /deep/ .van-button {
+              // height: 0;
+              line-height: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .bbxq {
     width: 100%;
     height: 85px;
