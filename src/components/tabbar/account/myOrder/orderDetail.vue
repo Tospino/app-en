@@ -1,8 +1,8 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-07-29 16:17:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-17 17:08:29
+ * @LastEditors: 曹建勇
  * @Description: 新增优惠券-两个字段
  * @FilePath: \app-en\src\components\tabbar\account\myOrder\orderDetail.vue
 --> 
@@ -11,228 +11,241 @@
 <template>
   <!-- 订单详情 -->
   <div class="order-detail">
-    <balance-header title="Order Details"></balance-header>
-    <div class="address-p1">
-      <div class="p1-top">{{orderStatus(detailObj.orderStatusApp,'status')}}</div>
-    </div>
-    <div class="address-p2">
-      <div class="p2-top">
-        <div class="car-icon">
-          <img src="@/assets/img/confirmOrder/logistics@2x.png" />
-        </div>
-        <span v-if="detailObj.expId == 2">{{orderStatus(detailObj.deliverType,'deliverTypes')}}</span>
-        <span v-if="detailObj.expId == 1">
-          <img class="zhida" :src="$webUrl+'/common/image/zhiyou.png'" />
-          Ships from {{detailObj.businessCountryNameEng}}
-        </span>
-        <div
-          class="fl-right"
-          v-if="detailObj.hasLogistics == 1"
-          @click="toLogistics(detailObj.orderId)"
-        >
-          <van-icon name="arrow" size="21" class="arrow-icon" />
-        </div>
+    <customerService :type="2" v-if="showServer" :data="detailObj"></customerService>
+    <section v-else>
+      <balance-header title="Order Details"></balance-header>
+      <div class="address-p1">
+        <div class="p1-top">{{orderStatus(detailObj.orderStatusApp,'status')}}</div>
       </div>
-      <div class="p2-bottom">
-        <div class="bottom-left">
-          <div class="add-icon">
-            <img src="@/assets/img/confirmOrder/add-02@2x.png" />
+      <div class="address-p2">
+        <div class="p2-top">
+          <div class="car-icon">
+            <img src="@/assets/img/confirmOrder/logistics@2x.png" />
           </div>
-        </div>
-        <div class="bottom-right">
-          <span class="name">{{detailObj.consignee}}</span>
-          <span class="phone">233-{{detailObj.mobile}}</span>
+          <span v-if="detailObj.expId == 2">{{orderStatus(detailObj.deliverType,'deliverTypes')}}</span>
+          <span v-if="detailObj.expId == 1">
+            <img class="zhida" :src="$webUrl+'/common/image/zhiyou.png'" />
+            Ships from {{detailObj.businessCountryNameEng}}
+          </span>
           <div
-            class="addre"
-          >{{detailObj.country}}{{detailObj.province}}{{detailObj.city}}{{detailObj.district}}{{detailObj.address}}</div>
+            class="fl-right"
+            v-if="detailObj.hasLogistics == 1"
+            @click="toLogistics(detailObj.orderId)"
+          >
+            <van-icon name="arrow" size="21" class="arrow-icon" />
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="address-p3">
-      <div class="p3-header">Product Info</div>
-      <div class="good-detail">
-        <div class="good-detail-content" v-for="data in dataList" :key="data.detailId">
-          <div class="good-detail-img" @click="toDetail(data.skuId)">
-            <img v-lazy="$webUrl+data.skuImg" />
-          </div>
-          <div class="good-detail-title" @click="toDetail(data.skuId)">
-            <span class="name">{{data.skuName}}</span>
-            <div class="guige">{{data.skuValuesTitleEng}}</div>
-          </div>
-          <div class="price">
-            <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
-            <div
-              class="p4 through"
-              v-if="data.originPriceWebsite"
-            >{{data.currencySignWebsite}}{{data.originPriceWebsite}}</div>
-            <div class="p4">x{{data.detailNum}}</div>
-            <div class="p2">
-              <span v-if="data.applyRefund == 1">Refund</span>
-              <span v-if="data.applyReturn == 1">Return</span>
-              <span v-if="data.applyReturnAndRefund == 1">Return & Refund</span>
+        <div class="p2-bottom">
+          <div class="bottom-left">
+            <div class="add-icon">
+              <img src="@/assets/img/confirmOrder/add-02@2x.png" />
             </div>
           </div>
-          <!-- 售后成功:按钮审核中或者退款成功 -->
-          <div v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3">
+          <div class="bottom-right">
+            <span class="name">{{detailObj.consignee}}</span>
+            <span class="phone">233-{{detailObj.mobile}}</span>
             <div
-              class="sqsh"
-              @click="toReturnRefund(data)"
-              v-if="data.canReturn == 1"
-            >Return & Refund</div>
+              class="addre"
+            >{{detailObj.country}}{{detailObj.province}}{{detailObj.city}}{{detailObj.district}}{{detailObj.address}}</div>
           </div>
-          <!-- <div class="fl-right c-jinse">申请中</div> -->
-          <!-- <div class="fl-right c-jinse">退款成功</div> -->
         </div>
-        <div class="mingxi m-t-29">
-          <span>Subtotal:</span>
-          <span
-            class="fl-right"
-          >{{detailObj.currencySignWebsite}}{{detailObj.orderProductAmountWebsite}}</span>
-        </div>
-        <div class="mingxi">
-          <span>Freight:</span>
-          <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderFareWebsite}}</span>
-        </div>
+      </div>
+      <div class="address-p3">
+        <div class="p3-header">Product Info</div>
+        <div class="good-detail">
+          <div class="good-detail-content" v-for="data in dataList" :key="data.detailId">
+            <div class="good-detail-img" @click="toDetail(data.skuId)">
+              <img v-lazy="$webUrl+data.skuImg" />
+            </div>
+            <div class="good-detail-title" @click="toDetail(data.skuId)">
+              <span class="name">{{data.skuName}}</span>
+              <div class="guige">{{data.skuValuesTitleEng}}</div>
+            </div>
+            <div class="price">
+              <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
+              <div
+                class="p4 through"
+                v-if="data.originPriceWebsite"
+              >{{data.currencySignWebsite}}{{data.originPriceWebsite}}</div>
+              <div class="p4">x{{data.detailNum}}</div>
+              <div class="p2">
+                <span v-if="data.applyRefund == 1">Refund</span>
+                <span v-if="data.applyReturn == 1">Return</span>
+                <span v-if="data.applyReturnAndRefund == 1">Return & Refund</span>
+              </div>
+            </div>
+            <!-- 售后成功:按钮审核中或者退款成功 -->
+            <div v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3">
+              <div
+                class="sqsh"
+                @click="toReturnRefund(data)"
+                v-if="data.canReturn == 1"
+              >Return & Refund</div>
+            </div>
+            <!-- <div class="fl-right c-jinse">申请中</div> -->
+            <!-- <div class="fl-right c-jinse">退款成功</div> -->
+          </div>
+          <div class="mingxi m-t-29">
+            <span>Subtotal:</span>
+            <span
+              class="fl-right"
+            >{{detailObj.currencySignWebsite}}{{detailObj.orderProductAmountWebsite}}</span>
+          </div>
+          <div class="mingxi">
+            <span>Freight:</span>
+            <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderFareWebsite}}</span>
+          </div>
 
-        <!-- 新增两个字段 -->
-        <div class="mingxi">
-          <span>Coupons：</span>
-          <span
-            class="fl-right font-24"
-          >-{{detailObj.currencySignWebsite}}{{detailObj.orderCouponAmountWebsite}}</span>
-        </div>
+          <!-- 新增两个字段 -->
+          <div class="mingxi">
+            <span>Coupons：</span>
+            <span
+              class="fl-right font-24"
+            >-{{detailObj.currencySignWebsite}}{{detailObj.orderCouponAmountWebsite}}</span>
+          </div>
 
-        <!-- <div class="mingxi">
+          <!-- <div class="mingxi">
           <span>Allowance:</span>
           <span
             class="fl-right font-24"
           >-{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
-        </div>-->
+          </div>-->
 
-        <div class="mingxi">
-          <span>Sum:</span>
-          <span
-            class="fl-right c-orange font-24"
-          >{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
-        </div>
-        <div class="mingxi" v-if="detailObj.arriveDateRangeString">
-          <span class="fbm-time">Get it as soon as {{detailObj.arriveDateRangeStringEng}}.</span>
+          <div class="mingxi">
+            <span>Sum:</span>
+            <span
+              class="fl-right c-orange font-24"
+            >{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
+          </div>
+          <div class="mingxi" v-if="detailObj.arriveDateRangeString">
+            <span class="fbm-time">Get it as soon as {{detailObj.arriveDateRangeStringEng}}.</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="m-b-30 fbm-beizhu" v-if="detailObj.expId == 1">
-      Tips: DM products do not support online after-sales services.
-      <br />Please contact customer service personnel for consulting!!!
-    </div>
-    <div class="address-p4">
-      <div class="p4-top">Order Info</div>
-      <div class="p4-middle">
-        <div class="middle-p1">
-          <span>Note:</span>
-          <span>{{detailObj.orderRemark}}</span>
-        </div>
-        <div class="middle-p2">
-          <span>Order No:</span>
-          <span id="orderSn">{{detailObj.orderSn}}</span>
-          <span
-            class="fl-right c-orange"
-            ref="copy"
-            data-clipboard-action="copy"
-            data-clipboard-target="#orderSn"
-            @click="copyLink"
-          >Copy</span>
-        </div>
-        <div class="middle-p1">
-          <span>Starts from:</span>
-          <span>{{detailObj.orderAddtimeWebsite}}</span>
-        </div>
-        <div class="middle-p1">
-          <span>Time of Payment:</span>
-          <span>{{detailObj.orderPaytimeWebsite}}</span>
-        </div>
-        <div class="middle-p1">
-          <span>Pay (by):</span>
-          <span>{{orderStatus(detailObj.payType,'payTypes')}}</span>
+      <div class="m-b-30 fbm-beizhu" v-if="detailObj.expId == 1">
+        Tips: DM products do not support online after-sales services.
+        <br />Please contact customer service personnel for consulting!!!
+      </div>
+      <div class="address-p4">
+        <div class="p4-top">Order Info</div>
+        <div class="p4-middle">
+          <div class="middle-p1">
+            <span>Note:</span>
+            <span>{{detailObj.orderRemark}}</span>
+          </div>
+          <div class="middle-p2">
+            <span>Order No:</span>
+            <span id="orderSn">{{detailObj.orderSn}}</span>
+            <span
+              class="fl-right c-orange"
+              ref="copy"
+              data-clipboard-action="copy"
+              data-clipboard-target="#orderSn"
+              @click="copyLink"
+            >Copy</span>
+          </div>
+          <div class="middle-p1">
+            <span>Starts from:</span>
+            <span>{{detailObj.orderAddtimeWebsite}}</span>
+          </div>
+          <div class="middle-p1">
+            <span>Time of Payment:</span>
+            <span>{{detailObj.orderPaytimeWebsite}}</span>
+          </div>
+          <div class="middle-p1">
+            <span>Pay (by):</span>
+            <span>{{orderStatus(detailObj.payType,'payTypes')}}</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="address-p5">
-      <div class="phone-icon">
-        <img src="@/assets/img/confirmOrder/phone@2x.png" />
+      <!-- <div class="address-p5">
+        <div class="phone-icon">
+          <img src="@/assets/img/confirmOrder/phone@2x.png" />
+        </div>
+        <span @click="show3 = true">Dialing</span>
+      </div>-->
+      <div class="address-p5 flex">
+        <div class="icon-service flex_center2" @click="service">
+          <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
+          <div class="icon-collection-p">Service</div>
+        </div>
+        <div class="phone-icon flex_center2">
+          <img src="@/assets/img/confirmOrder/phone@2x.png" />
+          <span @click="show3 = true">Dialing</span>
+        </div>
       </div>
-      <span @click="show3 = true">Dialing</span>
-    </div>
-    <div style="height:100px"></div>
-    <div class="good-detail-footer">
-      <!-- 待付款按钮栏 -->
-      <div
-        class="btn-qzf fl-right c-orange"
-        @click="showPay"
-        v-if="detailObj.orderStatusApp == 0"
-      >Pay Now</div>
-      <!-- <div class="btn-xgdz fl-right" @click="toEditAddress" v-if="detailObj.orderStatusApp == 0">Change Address</div> -->
-      <div
-        class="btn-xgdz fl-right"
-        v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3"
-        @click="toLogistics(detailObj.orderId)"
-      >Check Logistics</div>
-      <!-- <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 3">Review</div> -->
-      <!-- <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 4">Delete</div> -->
+      <div style="height:100px"></div>
+      <div class="good-detail-footer">
+        <!-- 待付款按钮栏 -->
+        <div
+          class="btn-qzf fl-right c-orange"
+          @click="showPay"
+          v-if="detailObj.orderStatusApp == 0"
+        >Pay Now</div>
+        <!-- <div class="btn-xgdz fl-right" @click="toEditAddress" v-if="detailObj.orderStatusApp == 0">Change Address</div> -->
+        <div
+          class="btn-xgdz fl-right"
+          v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3"
+          @click="toLogistics(detailObj.orderId)"
+        >Check Logistics</div>
+        <!-- <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 3">Review</div> -->
+        <!-- <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 4">Delete</div> -->
 
-      <div
-        class="btn-qxdd fl-right"
-        @click="closeOverlay(true,detailObj.orderId)"
-        v-if="detailObj.canRevoke == 1"
-      >Cancel Order</div>
+        <div
+          class="btn-qxdd fl-right"
+          @click="closeOverlay(true,detailObj.orderId)"
+          v-if="detailObj.canRevoke == 1"
+        >Cancel Order</div>
 
-      <div
-        class="btn-qzf fl-right c-orange"
-        @click="toRefund"
-        v-if="detailObj.canRefund == 1"
-      >Refund</div>
-      <div
-        class="btn-qzf fl-right c-orange"
-        @click="showPassWord(true,'确认收货')"
-        v-if="detailObj.canComplete == 1"
-      >Confirm Receipt</div>
-      <div
-        class="btn-xgdz fl-right"
-        @click="toReturnRefund"
-        v-if="dataList.length == 1 && detailObj.canReturn == 1"
-      >Return & Refund</div>
-      <div
-        class="btn-xgdz fl-right"
-        @click="toBatchRefund"
-        v-if="dataList.length > 1 && detailObj.canReturn == 1"
-      >Return & Refund</div>
-    </div>
+        <div
+          class="btn-qzf fl-right c-orange"
+          @click="toRefund"
+          v-if="detailObj.canRefund == 1"
+        >Refund</div>
+        <div
+          class="btn-qzf fl-right c-orange"
+          @click="showPassWord(true,'确认收货')"
+          v-if="detailObj.canComplete == 1"
+        >Confirm Receipt</div>
+        <div
+          class="btn-xgdz fl-right"
+          @click="toReturnRefund"
+          v-if="dataList.length == 1 && detailObj.canReturn == 1"
+        >Return & Refund</div>
+        <div
+          class="btn-xgdz fl-right"
+          @click="toBatchRefund"
+          v-if="dataList.length > 1 && detailObj.canReturn == 1"
+        >Return & Refund</div>
+      </div>
 
-    <van-overlay :show="show3" @click="show3 = false" class="overlay">
-      <!-- 客服电话 -->
-      <kefu></kefu>
-    </van-overlay>
+      <van-overlay :show="show3" @click="show3 = false" class="overlay">
+        <!-- 客服电话 -->
+        <kefu></kefu>
+      </van-overlay>
 
-    <transition name="canorder">
-      <zhezhao v-show="show">
-        <cancel-order
-          @closeOverlay="closeOverlay"
-          :orderId="orderId"
-          ref="cancelorder"
-          @refreshOrder="refreshOrder"
-        ></cancel-order>
-      </zhezhao>
-    </transition>
+      <transition name="canorder">
+        <zhezhao v-show="show">
+          <cancel-order
+            @closeOverlay="closeOverlay"
+            :orderId="orderId"
+            ref="cancelorder"
+            @refreshOrder="refreshOrder"
+          ></cancel-order>
+        </zhezhao>
+      </transition>
 
-    <!-- 支付成功弹窗 -->
-    <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
-    <!-- 密码弹窗 -->
-    <action-sheet-password
-      ref="actionSheetPassword"
-      @getPassWord="getPassWord"
-      :typeLeixing="typeLeixing"
-    ></action-sheet-password>
-    <!-- 付款方式弹窗 -->
-    <action-sheet-paymen ref="actionSheetPaymen" :moeny="moeny" @showPassWord="showPassWord"></action-sheet-paymen>
+      <!-- 支付成功弹窗 -->
+      <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
+      <!-- 密码弹窗 -->
+      <action-sheet-password
+        ref="actionSheetPassword"
+        @getPassWord="getPassWord"
+        :typeLeixing="typeLeixing"
+      ></action-sheet-password>
+      <!-- 付款方式弹窗 -->
+      <action-sheet-paymen ref="actionSheetPaymen" :moeny="moeny" @showPassWord="showPassWord"></action-sheet-paymen>
+    </section>
   </div>
 </template>
 
@@ -250,6 +263,7 @@ import actionSheetSucess from "@/multiplexing/actionSheetSucess";
 import zhezhao from "@/multiplexing/zhezhao";
 import kefu from "@/multiplexing/kefu.vue";
 import balanceHeader from "./itemComponents/balanceHeader";
+import customerService from "@/components/tabbar/account/customerService.vue";
 import { mapActions } from "vuex";
 import { Toast } from "vant";
 export default {
@@ -288,6 +302,7 @@ export default {
       copyBtn: null, //存储初始化复制按钮事件
       typeLeixing: "",
       payTypeDetail: 201, //余额支付ID,暂时写死
+      showServer: false, // 是否显示客户弹框
     };
   },
   computed: {},
@@ -302,6 +317,13 @@ export default {
   watch: {},
   methods: {
     ...mapActions(["setorderdetaillist"]),
+    /**
+     * @description:联系客服
+     * @author: 曹建勇
+     */
+    service() {
+      this.showServer = true;
+    },
     orderinfo() {
       this.formData.order_id = this.$route.query.id;
       orderinfoApi(this.formData).then((res) => {
@@ -534,11 +556,23 @@ export default {
     balanceHeader,
     actionSheetPaymen,
     actionSheetSucess,
+    customerService,
   },
 };
 </script>
 
 <style scoped lang="less">
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flex_center2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .order-detail {
   .address-p1 {
     height: 200px;
@@ -651,11 +685,25 @@ export default {
     text-align: center;
     font-size: 26px;
     color: #666;
+    > div {
+      width: 50%;
+    }
     .phone-icon {
-      width: 40px;
-      height: 40px;
-      display: inline-block;
-      vertical-align: sub;
+      cursor: pointer;
+      border-left: 1px solid #eee;
+      img {
+        margin-right: 10px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+    .icon-service {
+      cursor: pointer;
+      img {
+        margin-right: 10px;
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 }
