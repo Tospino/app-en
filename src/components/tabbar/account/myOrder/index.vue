@@ -292,7 +292,7 @@ export default {
       this.$refs.sucess.showAction = true;
       setTimeout(() => {
         this.$refs.sucess.showAction = false;
-        this.showPay(false);
+        this.$refs.actionSheetPaymen.closeyinhang();
         this.showPassWord(false);
         this.refreshOrder();
       }, 1000);

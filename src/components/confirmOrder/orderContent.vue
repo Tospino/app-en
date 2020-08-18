@@ -219,6 +219,7 @@
       :moeny="Number(orderData.allOrderAmountWebsite)"
       @showPassWord="showPassWord"
       @showpaymen="showpaymen"
+      @duanxin="duanxin"
     ></action-sheet-paymen>
 
     <!-- 更多优惠券 -->
@@ -251,11 +252,11 @@ import actionSheetPassword from "@/multiplexing/actionSheetPassword";
 import balanceHeader from "./itemComponents/balanceHeader";
 import progressBar from "@/multiplexing/progress";
 import orderCouponPop from "./itemComponents/orderCouponPop";
-
 import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
   batchmakeorderApi,
+  onlineorderrewardmsgApi,
 } from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
@@ -279,11 +280,11 @@ export default {
       payStatus: [
         {
           type: 1,
-          name: "Cash",
+          name: "Cash on delivery",
         },
         {
           type: 2,
-          name: "Online",
+          name: "Online payment",
         },
       ],
       showPayment: false,
@@ -398,7 +399,7 @@ export default {
     },
     //弹出支付
     showpaymen() {
-      this.$refs.actionSheetPaymen.showAction = true;
+      this.$refs.actionSheetPaymen.showyinhang();
     },
     //弹出支付成功
     showsucess() {
@@ -672,8 +673,6 @@ export default {
       this.orderlaunchpay(obj);
     },
     showPassWord(flag) {
-      // console.log(flag);
-      // console.log("第三方支付弹起");
       this.$refs.actionSheetPassword.showAction = flag;
     },
     //选择支付方式
@@ -691,6 +690,11 @@ export default {
     },
     orderPop() {
       this.order = false;
+    },
+    //返现短信
+    duanxin() {
+      let data = this.orderIdList;
+      onlineorderrewardmsgApi({ orderList: data }).then((res) => {});
     },
   },
   components: {
