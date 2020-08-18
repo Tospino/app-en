@@ -620,8 +620,6 @@ export default {
     //订单发起支付
     orderlaunchpay(data) {
       orderlaunchpayApi(data).then((res) => {
-        // console.log(data);
-
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {

@@ -46,7 +46,7 @@
               </p>
             </div>
           </div>
-          <div class="good-box" v-for="(dataitem,index) in data.list" :key="index">
+          <div class="good-box" v-for="(dataitem,index) in data.list" :key="index+'a'">
             <!-- 新增-第二版 -->
             <div class="goods-content">
               <!-- <div class="goods-header" v-if="dataitem.couponId==null?false:true">
@@ -581,7 +581,6 @@ export default {
     },
     // 更多
     addOn(businessId, expId, couponType) {
-      console.log("addOn -> expId", expId);
       // 根据类型couponType为3就带参数跳转
       if (couponType == 3) {
         this.$router.push({
@@ -627,8 +626,8 @@ export default {
   }
   .shopping-cart-content {
     width: 100%;
-    background-color: #f2f3f5;
-    // margin-bottom: 20px;//这个是原始样式
+    background-color: #fff;
+    margin-bottom: 20px; //这个是原始样式
     overflow: hidden;
     .shopping-cart-l {
       padding-left: 30px;
