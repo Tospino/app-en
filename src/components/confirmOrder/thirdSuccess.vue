@@ -17,7 +17,6 @@
     <div v-else>
       <thirdLose></thirdLose>
     </div>
-    
   </div>
 </template>
 
@@ -33,12 +32,11 @@ export default {
   },
   computed: {},
   created() {
-    if(this.$route.query.status == 1){
-      this.show = true
-    }else if(this.$route.query.status == 0){
-      this.show = false
+    if (this.$route.query.status == 1) {
+      this.show = true;
+    } else if (this.$route.query.status == 0) {
+      this.show = false;
     }
-
   },
   mounted() {},
   watch: {},
@@ -49,8 +47,8 @@ export default {
   },
   components: {
     thirdHeader,
-    thirdLose
-  }
+    thirdLose,
+  },
 };
 </script>
 

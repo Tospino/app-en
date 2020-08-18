@@ -10,7 +10,7 @@
       <span class="line-right"></span>
     </div>
     <div class="exhibition-con clearfix">
-      <div v-for="good in dataList" :key="good.skuId">
+      <div v-for="(good,index) in dataList" :key="index">
         <div v-if="good.canSalesNum > 0" class="exhibition-left" @click="toProduDetail(good.skuId)">
           <img v-lazy="$webUrl+good.imgUrl" />
           <div class="produced">
@@ -52,20 +52,20 @@ export default {
   props: {
     showIlike: {
       type: Boolean,
-      default: true
+      default: true,
     },
     footerData: {
       type: Object,
       default: () => {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       value: 1,
       footerObj: {},
-      dataList: []
+      dataList: [],
     };
   },
   computed: {},
@@ -75,10 +75,10 @@ export default {
   },
   watch: {
     footerData: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.getData();
-      }
-    }
+      },
+    },
   },
   methods: {
     jumpRouter(name) {
@@ -93,9 +93,9 @@ export default {
       this.footerObj = Object.assign({}, this.footerObj, this.footerData);
       if (!this.footerObj.list) return;
       this.dataList = this.footerObj.list;
-    }
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

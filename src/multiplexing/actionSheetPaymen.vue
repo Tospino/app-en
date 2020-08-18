@@ -180,6 +180,10 @@ export default {
     showyinhang() {
       this.$refs.actionSheetYinhang.showAction = true;
     },
+    //关闭支付方式列表
+    closeyinhang() {
+      this.$refs.actionSheetYinhang.showAction = false;
+    },
     //付款方式列表
     listPayOptions() {
       let arr = [];

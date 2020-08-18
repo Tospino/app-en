@@ -1,3 +1,13 @@
+<!--
+ * @Author: zlj
+ * @Date: 2020-07-18 17:45:35
+ * @LastEditTime: 2020-08-17 17:08:29
+ * @LastEditors: 曹建勇
+ * @Description: 新增优惠券-两个字段
+ * @FilePath: \app-en\src\components\tabbar\account\myOrder\orderDetail.vue
+--> 
+
+
 <template>
   <!-- 订单详情 -->
   <div class="order-detail">
@@ -85,6 +95,22 @@
             <span>Freight:</span>
             <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderFareWebsite}}</span>
           </div>
+
+          <!-- 新增两个字段 -->
+          <div class="mingxi">
+            <span>Coupons：</span>
+            <span
+              class="fl-right font-24"
+            >-{{detailObj.currencySignWebsite}}{{detailObj.orderCouponAmountWebsite}}</span>
+          </div>
+
+          <!-- <div class="mingxi">
+          <span>Allowance:</span>
+          <span
+            class="fl-right font-24"
+          >-{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
+          </div>-->
+
           <div class="mingxi">
             <span>Sum:</span>
             <span
@@ -132,6 +158,12 @@
           </div>
         </div>
       </div>
+      <!-- <div class="address-p5">
+        <div class="phone-icon">
+          <img src="@/assets/img/confirmOrder/phone@2x.png" />
+        </div>
+        <span @click="show3 = true">Dialing</span>
+      </div>-->
       <div class="address-p5 flex">
         <div class="icon-service flex_center2" @click="service">
           <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
@@ -282,13 +314,7 @@ export default {
     }
     this.copyBtn = new this.clipboard(this.$refs.copy);
   },
-  watch: {
-    $route() {
-      if (this.$route.query.id) {
-        this.orderinfo();
-      }
-    },
-  },
+  watch: {},
   methods: {
     ...mapActions(["setorderdetaillist"]),
     /**
