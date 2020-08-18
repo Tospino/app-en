@@ -117,6 +117,21 @@
           v-model="username"
           clearable
           right-icon="arrow"
+          placeholder="My coupons"
+          left-icon="arrow"
+          disabled
+          @click="jumpRouter('优惠券中心')"
+        >
+          <div slot="left-icon" size="small" type="primary" class="icon-left">
+            <img src="@/assets/img/tabbar/my/account/youhuiquan@2x.png" />
+          </div>
+        </van-field>
+      </van-cell-group>
+      <van-cell-group class="border-0">
+        <van-field
+          v-model="username"
+          clearable
+          right-icon="arrow"
           placeholder="我的优惠券"
           left-icon="arrow"
           disabled

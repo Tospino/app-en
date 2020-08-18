@@ -1,10 +1,10 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-15 16:42:19
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-18 10:26:21
+ * @LastEditors: 曹建勇
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
- * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
+ * @FilePath: \xin\src\components\tabbar\shoppingCart\index.vue
 --> 
 
 <template>
@@ -19,13 +19,37 @@
       <!-- 有商品的页面 -->
       <div v-if="dataList.length>0">
         <div class="shopping-cart-content" v-for="(data,index) in dataList" :key="index">
-          <!-- <div class="serial-number">
-                        <van-checkbox v-model="data.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(data,'all')"></van-checkbox>
-          </div>-->
+          <div class="serial-number shopping-cart-l">
+            <van-checkbox
+              v-model="data.checkStatus"
+              icon-size="24px"
+              checked-color="#F83600"
+              @click="changeCheckbox(data,'all')"
+            ></van-checkbox>
+          </div>
+          <div v-for="(dataitem,index) in data.list" :key="index">
+            <div class="goods-header" v-if="dataitem.couponId==null?false:true">
+              <div class="goods-left">
+                <div
+                  class="goods-coupons"
+                >{{dataitem.couponType==1?"Tospino's Price-off":dataitem.couponType==3?"Shop's Price-off":''}}</div>
+                <span
+                  class="goods-coupons-money"
+                >{{jn}}{{dataitem.reduceAmount}} off for {{jn}}{{dataitem.upToAmount}} buying</span>
+              </div>
+              <p
+                class="goods-add"
+                @click="addOn(dataitem.businessId,dataitem.expId,dataitem.couponType)"
+              >
+                Add-on ltem
+                <van-icon name="arrow" />
+              </p>
+            </div>
+          </div>
           <div class="good-box" v-for="(dataitem,index) in data.list" :key="index">
             <!-- 新增-第二版 -->
             <div class="goods-content">
-              <div class="goods-header" v-if="dataitem.couponId==null?false:true">
+              <!-- <div class="goods-header" v-if="dataitem.couponId==null?false:true">
                 <div class="goods-left">
                   <div
                     class="goods-coupons"
@@ -41,7 +65,7 @@
                   Add-on ltem
                   <van-icon name="arrow" />
                 </p>
-              </div>
+              </div>-->
               <div class="good-item">
                 <div class="good-item-l">
                   <van-checkbox
@@ -606,16 +630,20 @@ export default {
     background-color: #f2f3f5;
     // margin-bottom: 20px;//这个是原始样式
     overflow: hidden;
+    .shopping-cart-l {
+      padding-left: 30px;
+    }
     .serial-number {
       width: 100%;
+      //   background: #fff;
       // height: 72px;
       padding-top: 30px;
       box-sizing: border-box;
       /deep/ .van-checkbox {
         height: 50px;
-        .van-checkbox__icon {
-          margin-left: 30px;
-        }
+        // .van-checkbox__icon {
+        //   margin-left: 30px;
+        // }
         .van-checkbox__label {
           margin-left: 29px;
           font-size: 32px;
@@ -639,47 +667,45 @@ export default {
     .good-box {
       background-color: #fff;
       // padding-bottom: 120px;
-      margin-bottom: 20px;
+      //   margin-bottom: 20px;
       .goods-content {
         width: 100%;
         height: 100%;
         box-sizing: border-box;
-
-        .goods-header {
-          padding-top: 20px;
-          height: 100px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 30px;
-          box-sizing: border-box;
-          .goods-left {
-            display: flex;
-            align-items: center;
-            .goods-coupons {
-              background-color: #fa5300;
-              padding: 7px;
-              color: #fff;
-              font-size: 20px;
-            }
-            .goods-coupons-money {
-              font-size: 22px;
-              color: #999;
-              padding-left: 8px;
-            }
-          }
-          .goods-add {
-            display: flex;
-            align-items: center;
-            color: #fa5300;
-            /deep/ .van-icon {
-              color: #999;
-            }
-          }
+      }
+    }
+    .goods-header {
+      padding-top: 20px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      box-sizing: border-box;
+      .goods-left {
+        display: flex;
+        align-items: center;
+        .goods-coupons {
+          background-color: #fa5300;
+          padding: 7px;
+          color: #fff;
+          font-size: 20px;
+        }
+        .goods-coupons-money {
+          font-size: 22px;
+          color: #999;
+          padding-left: 8px;
+        }
+      }
+      .goods-add {
+        display: flex;
+        align-items: center;
+        color: #fa5300;
+        /deep/ .van-icon {
+          color: #999;
         }
       }
     }
-
     .good-item {
       display: flex;
       align-items: center;
