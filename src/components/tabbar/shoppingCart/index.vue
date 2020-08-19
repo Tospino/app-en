@@ -337,6 +337,7 @@ export default {
 
           this.shopList.forEach((item) => {
             if (item.isValid == 1) {
+              item.businessIdtwo = item.businessId + "aaa";
               youxiaoList.push(item);
             } else {
               wuxiaoList.push(item);
@@ -345,12 +346,12 @@ export default {
           this.youxiaoList = youxiaoList;
           this.wuxiaoList = wuxiaoList;
           //根据businessId分类
-          this.dataList = this.groupArr(this.youxiaoList, "businessId");
-          this.dataList.forEach((item) => {
-            item.list.forEach((listitem) => {
-              listitem.checkStatus = false;
-            });
-          });
+          this.dataList = this.groupArr(this.youxiaoList, "businessIdtwo");
+          // this.dataList.forEach((item) => {
+          //   item.list.forEach((listitem) => {
+          //     listitem.checkStatus = false;
+          //   });
+          // });
         } else {
           this.kanmengou = false;
         }

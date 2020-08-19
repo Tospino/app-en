@@ -42,6 +42,7 @@
             class="c-999 f-22"
           >(Freight Included)</span>
         </span>
+        <div>The refund is your actual payment.</div>
       </div>
     </div>
     <div class="cell">
@@ -67,7 +68,7 @@ import uploadAll from "@/multiplexing/uploadAll.vue";
 import balanceHeader from "./itemComponents/balanceHeader";
 import {
   getconfirmrefundorderApi,
-  refundorderApi
+  refundorderApi,
 } from "@/api/myOrder/index.js";
 import { Toast } from "vant";
 export default {
@@ -84,10 +85,10 @@ export default {
         reason: "Choose one",
         remark: "",
         detailList: [],
-        imgList: []
+        imgList: [],
       },
       detailObj: {},
-      dataList: []
+      dataList: [],
     };
   },
   computed: {},
@@ -115,7 +116,7 @@ export default {
     },
     //订单申请仅退款页面获取订单和订单商品明细
     getconfirmrefundorder(data) {
-      getconfirmrefundorderApi(data).then(res => {
+      getconfirmrefundorderApi(data).then((res) => {
         if (res.code == 0) {
           this.detailObj = res.Data.order;
           this.dataList = this.detailObj.detailList;
@@ -138,7 +139,7 @@ export default {
     //订单申请仅退款
     refundorder(data) {
       data.reason = data.reason == "Choose one" ? "" : data.reason;
-      refundorderApi(data).then(res => {
+      refundorderApi(data).then((res) => {
         if (res.code == 0) {
           Toast("Success");
           setTimeout(() => {
@@ -186,30 +187,30 @@ export default {
       let arr = [];
       let imgList = [];
       // this.formData.imgList = this.uploadList
-      this.uploadList.forEach(ele => {
+      this.uploadList.forEach((ele) => {
         let obj = {
-          imgUrl: ele
+          imgUrl: ele,
         };
         imgList.push(obj);
       });
       this.formData.imgList = imgList;
 
-      this.dataList.forEach(item => {
+      this.dataList.forEach((item) => {
         let obj = {
           detailId: item.detailId,
-          detailNum: item.shouldRefundNum
+          detailNum: item.shouldRefundNum,
         };
         arr.push(obj);
       });
       this.formData.detailList = arr;
       this.refundorder(this.formData);
-    }
+    },
   },
   components: {
     refundReason,
     uploadAll,
-    balanceHeader
-  }
+    balanceHeader,
+  },
 };
 </script>
 

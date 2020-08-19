@@ -56,6 +56,7 @@
           <span>{{orderData.currencySignWebsite}}{{orderData.orderAmountWebsite}}</span>
           <span class="c-999 f-22"></span>
         </span>
+        <div>The refund is your actual payment.</div>
       </div>
     </div>
     <div class="cell">
@@ -80,7 +81,7 @@ import uploadAll from "@/multiplexing/uploadAll.vue";
 import balanceHeader from "./itemComponents/balanceHeader";
 import {
   getconfirmreturnorderApi,
-  returnorderApi
+  returnorderApi,
 } from "@/api/myOrder/index.js";
 import { mapState, mapActions } from "vuex";
 import { Toast } from "vant";
@@ -100,21 +101,21 @@ export default {
         reason: "Choose one",
         remark: "",
         detailList: [],
-        imgList: []
+        imgList: [],
       },
-      go: null
+      go: null,
     };
   },
   computed: {
     ...mapState({
-      orderdetailList: state => state.orderdetailList
-    })
+      orderdetailList: (state) => state.orderdetailList,
+    }),
   },
   created() {},
   mounted() {
     this.getconfirmreturnorder({
       orderId: this.$route.query.orderId,
-      detailList: this.orderdetailList
+      detailList: this.orderdetailList,
     });
     this.formData.orderId = this.$route.query.orderId;
   },
@@ -122,7 +123,7 @@ export default {
     this.setorderdetaillist([]);
   },
   beforeRouteEnter(to, from, next) {
-    next(vm => {
+    next((vm) => {
       if (from.name == "订单详情") {
         vm.go = -1;
       } else if (from.name == "批量退货退款") {
@@ -147,7 +148,7 @@ export default {
     },
     //批量退货退款明细
     getconfirmreturnorder(data) {
-      getconfirmreturnorderApi(data).then(res => {
+      getconfirmreturnorderApi(data).then((res) => {
         if (res.code == 0) {
           this.orderData = res.Data.order;
           this.dataList = res.Data.order.detailList;
@@ -162,18 +163,18 @@ export default {
       }
       let arr = [];
       let imgList = [];
-      this.uploadList.forEach(ele => {
+      this.uploadList.forEach((ele) => {
         let obj = {
-          imgUrl: ele
+          imgUrl: ele,
         };
         imgList.push(obj);
       });
       this.formData.imgList = imgList;
 
-      this.dataList.forEach(item => {
+      this.dataList.forEach((item) => {
         let obj = {
           detailId: item.detailId,
-          detailNum: item.shouldReturnNum
+          detailNum: item.shouldReturnNum,
         };
         arr.push(obj);
       });
@@ -182,7 +183,7 @@ export default {
     },
     //订单申请退货退款
     returnorder(data) {
-      returnorderApi(data).then(res => {
+      returnorderApi(data).then((res) => {
         if (res.code == 0) {
           this.$router.go(this.go);
         } else if (res.code == 1) {
@@ -250,23 +251,23 @@ export default {
     changeNumber() {
       let orderData = {
         orderId: this.$route.query.orderId,
-        detailList: []
+        detailList: [],
       };
-      this.dataList.forEach(ele => {
+      this.dataList.forEach((ele) => {
         let obj = {
           detailId: ele.detailId,
-          detailNum: ele.shouldReturnNum
+          detailNum: ele.shouldReturnNum,
         };
         orderData.detailList.push(obj);
       });
       this.getconfirmreturnorder(orderData);
-    }
+    },
   },
   components: {
     refundReason,
     uploadAll,
-    balanceHeader
-  }
+    balanceHeader,
+  },
 };
 </script>
 
