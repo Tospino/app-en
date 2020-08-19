@@ -119,7 +119,7 @@
       <!-- <van-pull-refresh v-model="loading" @refresh="onRefresh"> -->
       <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
         <van-cell class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
-          <img :src="srcDel" />
+          <img :src="srcEx" />
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
               <p class="youhuiquan-left-money">
@@ -206,6 +206,7 @@ export default {
       shopCoupon: [], //全部优惠券
       // 删除背景图
       srcDel: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan-del@2x.png"),
+      srcEx: require("@/assets/img/tabbar/home/commodityDetails/youhuiquan-ex@2x.png"),
       shopCouponUsed: [], //已使用优惠券
       shopCouponEx: [], //已过期优惠券
       imgSrc1: imgSrc1, //没有券背景图
