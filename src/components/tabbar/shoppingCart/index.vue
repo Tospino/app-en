@@ -1,8 +1,8 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-18 10:26:21
- * @LastEditors: 曹建勇
+ * @LastEditTime: 2020-08-20 13:53:02
+ * @LastEditors: Please set LastEditors
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \xin\src\components\tabbar\shoppingCart\index.vue
 --> 
@@ -233,6 +233,7 @@ export default {
       formData: {
         page: 1,
         limit: 10,
+        businessId:0,
       },
       dataList: [],
       youxiaoList: [],
@@ -326,8 +327,13 @@ export default {
         if (res.code == 0) {
           if (flag) {
             this.shopList = this.shopList.concat(res.Data.list);
+            // console.log(arrShopList[Object.keys(this.shopList)[Object.keys(this.shopList).length-1]],"5555747");
           } else {
             this.shopList = res.Data.list;
+             // 取最后一个对象数组
+            let arrShopList=this.shopList;
+            let arrLast=arrShopList[Object.keys(this.shopList)[Object.keys(this.shopList).length-1]]
+            this.formData.businessId=arrLast.businessId
           }
           this.kanmengou = true;
           this.shopcarTotal = res.Data.totalCount;
