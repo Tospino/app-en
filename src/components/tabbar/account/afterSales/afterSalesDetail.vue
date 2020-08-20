@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-07-20 17:44:15
+ * @LastEditTime: 2020-08-20 11:04:36
  * @LastEditors: Please set LastEditors
  * @Description: 售后进度跳转
  * @FilePath: \app-en\src\components\tabbar\account\afterSales\afterSalesDetail.vue
@@ -13,8 +13,9 @@
     <div class="after-sales-status">{{orderStatus(detailData.orderStatusApp,'statusList')}}</div>
     <div class="cell">
       <!-- <div class="cell" @click="jumpRouter('售后流程')"> -->
-      <span>Process Record</span>
-      <van-icon name="arrow" class="arrow c-999" @click="toProgress" />
+       <span>Process Record</span>
+      <!-- @click="toProgress" -->
+      <van-icon name="arrow" class="arrow c-999"  />
     </div>
     <div class="good-detail">
       <div class="good-detail-header">
@@ -189,9 +190,9 @@ export default {
       });
     },
     // 售后进度
-    toProgress() {
-      this.$router.push({ name: "售后进度" });
-    },
+    // toProgress() {
+    //   this.$router.push({ name: "售后进度" });
+    // },
   },
   components: {
     kefu,
