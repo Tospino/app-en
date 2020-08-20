@@ -402,7 +402,7 @@ export default {
         let itemFlag = true; //标记
         list.list.forEach((element) => {
           //如果有一个是没选中的
-          if (element.checkStatus == false) {
+          if (!element.checkStatus) {
             itemFlag = false;
           }
         });

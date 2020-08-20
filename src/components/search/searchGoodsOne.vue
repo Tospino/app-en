@@ -114,7 +114,6 @@ export default {
       recordGroup: [],
       pullup: true,
       pulldown: true,
-
       value: 2,
       value1: 0,
       value2: 0,
@@ -129,7 +128,6 @@ export default {
         { text: "Highest Price", value: 1 },
         { text: "Lowest Price", value: 2 },
       ],
-      checked: true,
       goodsShow1: true,
       guanmengou: true, //看门狗
       formData: {
@@ -170,13 +168,9 @@ export default {
     this.formData.brandId = this.$route.query.brandId
       ? this.$route.query.brandId
       : 0;
-
     this.formData.businessId = this.$route.query.businessId;
-
     this.formData.expIds = this.$route.query.expIds;
-
     this.searName = this.$route.query.seraname;
-
     this.refreshOrder();
   },
   activated() {
@@ -190,14 +184,10 @@ export default {
       this.formData.brandId = this.$route.query.brandId
         ? this.$route.query.brandId
         : 0;
-
       this.formData.businessId = this.$route.query.businessId;
-
       this.formData.expIds = this.$route.query.expIds;
-
       this.searName = this.$route.query.seraname;
       this.refreshOrder();
-
       try {
         this.$refs.wrapper.scrollTo(0, 0);
       } catch (error) {
