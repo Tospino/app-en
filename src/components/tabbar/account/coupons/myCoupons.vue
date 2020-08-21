@@ -24,6 +24,7 @@
         :finished="finished"
         @load="onLoad"
         :offset="130"
+        loading-text=" "
       >
         <van-cell class="youhuiquan-main" v-for="(shops,index) in shopCoupon" :key="index">
           <div v-if="shops.drawStatus==0||shops.drawStatus==null">
@@ -76,7 +77,7 @@
 
     <div class="selection-conten" v-else-if="active==1">
       <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
-      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
+      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad" loading-text=" ">
         <van-cell class="youhuiquan-main" v-for="(shopone,index) in shopCouponUsed" :key="index">
           <img :src="srcDel" />
           <div class="youhuiquan-box">
@@ -117,7 +118,7 @@
     <!-- 已过期 -->
     <div class="selection-conten" v-else-if="active==2">
       <!-- <van-pull-refresh v-model="loading" @refresh="onRefresh"> -->
-      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad">
+      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad" loading-text=" ">
         <van-cell class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
           <img :src="srcEx" />
           <div class="youhuiquan-box">
