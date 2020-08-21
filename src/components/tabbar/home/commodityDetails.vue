@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-17 16:56:37
+ * @LastEditTime: 2020-08-21 14:34:58
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -159,7 +159,7 @@
                     class="youhuiquan-left-m"
                   >Valid:{{ProModel.Data.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{ProModel.Data.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
                   <progress-bar
-                    :progressBar="ProModel.Data.claimRate ? ProModel.Data.claimRate : 0"
+                    :progressBar="ProModel.Data.claimRate ? (ProModel.Data.claimRate)*100 : 0"
                   ></progress-bar>
                 </div>
 
@@ -469,10 +469,14 @@ export default {
         couponId: couponId,
         couponDetailId: DetailId,
       });
+      this.couponProModel(supplyId, businessId, expId);
       if (couponDraw.code == 0) {
         Toast("Get the success");
         this.moreShop = true;
-        this.couponProModel(supplyId, businessId, expId);
+      } else if (couponDraw.code == 25) {
+        setTimeout(() => {
+          Toast("The coupon has been collected");
+        }, 500);
       } else {
         this.$toast.clear();
       }
@@ -495,6 +499,10 @@ export default {
       this.saleMore();
       if (couponDraw.code == 0) {
         Toast("Get the success");
+      } else if (couponDraw.code == 25) {
+        setTimeout(() => {
+          Toast("The coupon has been collected");
+        }, 500);
       } else {
         this.$toast.clear();
       }

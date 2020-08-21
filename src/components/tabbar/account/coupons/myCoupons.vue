@@ -48,7 +48,7 @@
                 class="youhuiquan-left-m"
               >Valid:{{shops.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shops.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
               <div v-if="shops.couponType==2?false:true">
-                <progress-bar :progressBar="shops.claimRate"></progress-bar>
+                <progress-bar :progressBar="shops.claimRate*100"></progress-bar>
               </div>
             </div>
 
@@ -77,7 +77,13 @@
 
     <div class="selection-conten" v-else-if="active==1">
       <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
-      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad" loading-text=" ">
+      <van-list
+        class="activity"
+        v-model="loading"
+        :finished="finished"
+        @load="onLoad"
+        loading-text=" "
+      >
         <van-cell class="youhuiquan-main" v-for="(shopone,index) in shopCouponUsed" :key="index">
           <img :src="srcDel" />
           <div class="youhuiquan-box">
@@ -118,7 +124,13 @@
     <!-- 已过期 -->
     <div class="selection-conten" v-else-if="active==2">
       <!-- <van-pull-refresh v-model="loading" @refresh="onRefresh"> -->
-      <van-list class="activity" v-model="loading" :finished="finished" @load="onLoad" loading-text=" ">
+      <van-list
+        class="activity"
+        v-model="loading"
+        :finished="finished"
+        @load="onLoad"
+        loading-text=" "
+      >
         <van-cell class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
           <img :src="srcEx" />
           <div class="youhuiquan-box">
@@ -357,9 +369,15 @@ export default {
       couponDrawApi(couponsId).then((res) => {
         if (res.code == 0) {
           Toast("Get the success");
-          if (this.active == 0) {
-            this.onLoad();
-          }
+          setTimeout(() => {
+            if (this.active == 0) {
+              this.onLoad();
+            }
+          }, 1000);
+        } else if (res.code == 25 || res.code == 26) {
+          setTimeout(() => {
+            Toast("The coupon has been collected");
+          }, 500);
         } else {
           this.$toast.clear();
         }
@@ -375,7 +393,9 @@ export default {
       couponRemoveApi(delIds).then((res) => {
         if (res.code == 0) {
           Toast("Delete the success");
-          this.onLoad();
+          setTimeout(() => {
+            this.onLoad();
+          }, 1000);
         } else {
           this.$toast.clear();
         }

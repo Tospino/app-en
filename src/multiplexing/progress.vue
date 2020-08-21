@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-08-04 17:57:51
+ * @LastEditTime: 2020-08-21 10:18:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\multiplexing\progress.vue
@@ -11,11 +11,11 @@
   <div>
     <div class="f">
       <div class="progress">
-        <div class="bar" :style="'width:' + progressBar.toPrecision(2)*100 + '%'"></div>
+        <div class="bar" :style="'width:' + progressBar.toFixed(0) + '%'"></div>
       </div>
       <div>
         <h3 class="text-progress">
-          {{progressBar.toPrecision(2)*100}}%&nbsp;
+          {{progressBar.toFixed(0)}}%&nbsp;
           <span>Received</span>
         </h3>
       </div>

@@ -32,7 +32,7 @@
                 class="youhuiquan-left-m"
               >Valid:{{couponItem.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{couponItem.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
               <div v-if="couponItem.couponType==2?false:true">
-                <progress-bar :progressBar="couponItem.claimRate"></progress-bar>
+                <progress-bar :progressBar="couponItem.claimRate*100"></progress-bar>
               </div>
             </div>
 
