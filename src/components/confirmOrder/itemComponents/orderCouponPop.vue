@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-08-21 10:20:17
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-21 15:59:25
+ * @LastEditors: 曹建勇
  * @Description: 订单详情中的优惠券接口联调
  * @FilePath: \app-en\src\components\confirmOrder\itemComponents\orderCouponPop.vue
 --> 
@@ -55,13 +55,15 @@
                 <!-- <progress-bar :progressBar="couponItem.drawPercent" ></progress-bar> -->
                 <!-- 根据后台判断是否是新用户 -->
                 <div v-if="couponItem.canDraw==0?0:1">
-                  <progress-bar :progressBar="couponItem.drawPercent?Number(couponItem.drawPercent)*100:0"></progress-bar>
+                  <progress-bar
+                    :progressBar="couponItem.drawPercent?Number(couponItem.drawPercent)*100:0"
+                  ></progress-bar>
                 </div>
               </div>
               <div class="youhuiquan-right">
                 <div class="youhuiquan-right-header">
                   <!-- 此标题到时候注释 -->
-                  <span class="youhuiquan-right-title right-title-one">{{couponItem.couponName}}</span>
+                  <!-- <span class="youhuiquan-right-title right-title-one">{{couponItem.couponName}}</span> -->
                 </div>
                 <div class="youhuiquan-right-main right-main-one">
                   <!-- <p
@@ -125,7 +127,7 @@
             </div>
             <div class="youhuiquan-right">
               <div class="youhuiquan-right-header">
-                <span class="youhuiquan-right-title right-title-two">{{couponUse.couponName}}</span>
+                <!-- <span class="youhuiquan-right-title right-title-two">{{couponUse.couponName}}</span> -->
               </div>
               <div class="youhuiquan-right-main">
                 <!-- v-if="couponUse.upToAmountWebsite==null?false:true" -->

@@ -53,7 +53,7 @@
               <div class="youhuiquan-right">
                 <div class="youhuiquan-right-header">
                   <!-- v-show="shops.drawStatus==1?false:true" -->
-                  <span class="youhuiquan-right-title right-title-a">{{shops.couponName}}</span>
+                  <!-- <span class="youhuiquan-right-title right-title-a">{{shops.couponName}}</span> -->
                 </div>
                 <div class="youhuiquan-right-main">
                   <div>Mini Spend GH{{jn}} {{shops.upToAmount!=null?shops.upToAmount:shops.reduceAmount}}</div>
@@ -95,7 +95,7 @@
 
               <div class="youhuiquan-right">
                 <div class="youhuiquan-right-header">
-                  <span class="youhuiquan-right-title right-title-b">{{shopone.couponName}}</span>
+                  <!-- <span class="youhuiquan-right-title right-title-b">{{shopone.couponName}}</span> -->
                 </div>
                 <div class="youhuiquan-right-main">
                   <div>Mini Spend GH{{jn}} {{shopone.upToAmount!=null?shopone.upToAmount:shopone.reduceAmount}}</div>
@@ -136,10 +136,10 @@
 
               <div class="youhuiquan-right">
                 <div class="youhuiquan-right-header">
-                  <span
+                  <!-- <span
                     class="youhuiquan-right-title right-title-b"
                     v-show="shopDel.drawStatus==1?false:true"
-                  >{{shopDel.couponName}}</span>
+                  >{{shopDel.couponName}}</span>-->
                 </div>
                 <div class="youhuiquan-right-main">
                   <div>Mini Spend GH{{jn}} {{shopDel.upToAmount!=null?shopDel.upToAmount:shopDel.reduceAmount}}</div>

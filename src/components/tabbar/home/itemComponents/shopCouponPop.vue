@@ -39,7 +39,7 @@
             <div class="youhuiquan-right">
               <div class="youhuiquan-right-header">
                 <!-- v-show="couponItem.drawStatus==1?false:true" -->
-                <span class="youhuiquan-right-title">{{couponItem.couponName}}</span>
+                <!-- <span class="youhuiquan-right-title">{{couponItem.couponName}}</span> -->
               </div>
               <div class="youhuiquan-right-main">
                 <div>Mini Spend GH{{jn}} {{couponItem.upToAmount!=null?couponItem.upToAmount:couponItem.reduceAmount}}</div>

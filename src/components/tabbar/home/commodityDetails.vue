@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-21 14:34:58
+ * @LastEditTime: 2020-08-21 16:00:41
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -166,7 +166,7 @@
                 <div class="youhuiquan-right">
                   <div class="youhuiquan-right-header">
                     <!-- 测试完后注释掉 -->
-                    <span class="youhuiquan-right-title">{{ProModel.Data.couponName}}</span>
+                    <!-- <span class="youhuiquan-right-title">{{ProModel.Data.couponName}}</span> -->
                   </div>
                   <div class="youhuiquan-right-main">
                     <div>Mini Spend GH₵ {{ProModel.Data.upToAmount!=null?ProModel.Data.upToAmount:ProModel.Data.reduceAmount}}</div>
