@@ -172,6 +172,9 @@ export default {
         loginApi(this.userData).then((res) => {
           if (res.code == 0) {
             localStorage.token = res.token;
+            if (this.$storage.get("historyList")[0].userId != res.user.userId) {
+              this.$storage.remove("historyList");
+            }
             //第一次登录：dengluOne
             let obj = Object.assign(res.user, { dengluOne: true });
             localStorage.userinfoShop = JSON.stringify(obj);

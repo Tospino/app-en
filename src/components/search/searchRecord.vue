@@ -71,7 +71,6 @@
 import searchHead from "@/multiplexing/searchHead.vue";
 import {
   searchGoodApi,
-  searchHistoryApi,
   searchFindApi,
   delHistoryApi,
 } from "@/api/search/index";
@@ -94,9 +93,11 @@ export default {
   created() {},
 
   mounted() {
-    this.searchHistory();
     this.searchFind();
     this.searName = this.$store.state.serchName;
+    if (this.$storage("?historyList")) {
+      this.searchHistory();
+    }
   },
   beforeDestroy() {
     this.$store.state.serchName = "";
@@ -157,11 +158,9 @@ export default {
     },
     //历史记录
     searchHistory() {
-      searchHistoryApi().then((res) => {
-        if (res.code == 0) {
-          this.historyList = res.dataList;
-        }
-      });
+      this.historyList = this.$storage("?historyList")
+        ? this.$storage("historyList")
+        : [];
     },
     //点击搜索按钮
     onSearch() {
@@ -170,7 +169,27 @@ export default {
         query: { seraname: this.goodName },
       });
       this.$store.state.serchName = this.goodName;
+      if (!this.goodName || !this.$storage("?userinfoShop")) return;
+      //储存历史数据
+      let obj = {
+        keyWord: this.goodName,
+        userId: this.$storage("userinfoShop").userId,
+      };
+      if (this.$storage("?historyList")) {
+        let arr = this.$storage("historyList");
+        arr.unshift(obj);
+        arr = unique(arr, "keyWord");
+        this.$storage.set("historyList", arr);
+      } else {
+        this.$storage.set("historyList", [obj]);
+      }
+      //属性值进行去重
+      function unique(arr1, key) {
+        const res = new Map();
+        return arr1.filter((a) => !res.has(a[key]) && res.set(a[key], 1));
+      }
     },
+
     toSearchGood(goodName) {
       this.$router.push({ name: "搜索商品1", query: { seraname: goodName } });
     },
@@ -187,8 +206,8 @@ export default {
       delHistoryApi().then((res) => {
         if (res.code == 0) {
           this.redordshow = false;
+          this.$storage.remove("historyList");
           this.searchHistory();
-          this.searchFind();
         }
       });
     },
