@@ -31,7 +31,15 @@
         </van-tabs>
       </div>
       <div class="commodity-tab-place"></div>
-      <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" v-show="showData">
+      <scroll
+        class="bscroll-wrapper"
+        ref="wrapper"
+        :data="recordGroup"
+        v-show="showData"
+        :listenScroll="true"
+        @scroll="scrollto"
+        :probeType="2"
+      >
         <div class="bscroll-con">
           <div class="commodity-swipe">
             <van-swipe @change="onChange" v-if="showData">
@@ -208,7 +216,7 @@
             <span class="bbxq-p1">Details</span>
             <span class="line-right"></span>
           </div>
-          <div class="banner" v-html="detailmData.supplyDetail"></div>
+          <div class="banner" v-html="supplyDetail"></div>
           <!-- 推荐宝贝 -->
           <div ref="tjbb"></div>
           <footer-exhibition
@@ -283,6 +291,8 @@ import {
   productdetailApi,
   AppqureyuserCouponProApi,
   AppqureyuserCouponProModelApi,
+  getsupplyDetailApi,
+  getGuessyouLikeApi,
 } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
@@ -326,6 +336,8 @@ export default {
       ProModel: "", //最大优惠券
       moreShop: false, //优惠券领取
       showServer: false, // 是否显示客户弹框
+      supplyDetail: null, //商品详情图片
+      scrollFlag: true,
     };
   },
   computed: {},
@@ -373,10 +385,7 @@ export default {
             this.detailmData.discountPrice = this.detailmData.salePrice;
             this.detailmData.salePriceFlag = false;
           }
-          this.footerData.list = res.GuessyouLike;
-          this.showfooter = true; //数据回调回来,显示猜你喜欢
           this.Isfavorites = res.Data.isfavorites; //收藏状态
-
           this.spclist = res.spclist;
           this.productParamList = res.Data.productParamList.slice(0, 5);
           this.productParamList2 = res.Data.productParamList;
@@ -386,7 +395,7 @@ export default {
           setTimeout(() => {
             this.showData = true;
             Toast.clear();
-          }, 1000);
+          }, 300);
         } else if (res.code == -326) {
           Toast("Sold Out");
           setTimeout(() => {
@@ -509,6 +518,32 @@ export default {
     },
     shopPop() {
       this.shop = false;
+    },
+    //滚动事件
+    scrollto(pos) {
+      if (!this.scrollFlag) return;
+      if (pos.y < -10) {
+        this.scrollFlag = false;
+        this.getsupplyDetail(this.detailmData.supplyId);
+      }
+    },
+    //猜你喜欢
+    getGuessyouLike(id) {
+      getGuessyouLikeApi({ categoryId: id }).then((res) => {
+        if (res.code == 0) {
+          this.footerData.list = res.GuessyouLike;
+          this.showfooter = true; //数据回调回来,显示猜你喜欢
+        }
+      });
+    },
+    //详情介绍图片
+    getsupplyDetail(id) {
+      getsupplyDetailApi({ supplyId: id }).then((res) => {
+        if (res.code == 0) {
+          this.supplyDetail = res.supplyDetail;
+        }
+        this.getGuessyouLike(this.detailmData.categoryId);
+      });
     },
   },
   components: {
