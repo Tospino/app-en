@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-21 16:00:41
+ * @LastEditTime: 2020-08-22 14:01:45
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -43,9 +43,29 @@
               <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
             </van-swipe>
           </div>
+          <div class="clearSale_content flex" v-if="isClearSale">
+            <div class="clearSale_left flex_col">
+              <span class="goods_discount flex_center2">54% off</span>
+              <div class="flex mt_12">
+                <span class="goods_price">₵ 299.00</span>
+                <span class="goods_dis_price">₵ 399.00</span>
+              </div>
+              <span class="goods_code">MOQ:30PCS</span>
+            </div>
+            <div class="clearSale_right flex_col_center2">
+              <h2 class="active_title">Clearance Sale</h2>
+              <div class="active_time flex" v-show="true">
+                <span v-if="true">starts at</span>
+                <span v-else>ends at</span>
+                <h2>14:20:30</h2>
+              </div>
+              <!-- 特价进行中 -->
+              <div v-show="false" class="active_desc">While supplies last</div>
+            </div>
+          </div>
           <div class="good-content">
             <div v-if="detailmData.quoteMethod == 1">
-              <div class="prices">
+              <div class="prices" v-if="!isClearSale">
                 <span class="mark c-orange">{{jn}}</span>
                 <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
                 <span
@@ -53,7 +73,7 @@
                   v-if="detailmData.salePriceFlag"
                 >{{jn}}{{detailmData.salePrice}}</span>
               </div>
-              <div>
+              <div v-if="!isClearSale">
                 <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
               </div>
             </div>
@@ -326,6 +346,7 @@ export default {
       ProModel: "", //最大优惠券
       moreShop: false, //优惠券领取
       showServer: false, // 是否显示客户弹框
+      isClearSale: true, // 是否是特价清仓商品
     };
   },
   computed: {},
@@ -576,8 +597,9 @@ export default {
   }
   .good-content {
     width: 100%;
-    padding: 30px 30px 0;
+    padding: 36px 30px 10px 29px;
     box-sizing: border-box;
+    background-color: #fff;
   }
   .fbm-time {
     padding: 0 30px;
@@ -904,9 +926,8 @@ export default {
       display: inline-block;
       color: #666;
       overflow: hidden;
-      padding: 15px 0;
+      padding: 15px 30px;
       text-align: center;
-      margin: 0 30px;
       img {
         width: 48px;
         height: 48px;
@@ -986,9 +1007,10 @@ export default {
   .p4 {
     display: inline-block;
     width: 606px;
-    // height: 60px;
+    font-weight: 500;
+    line-height: 45px;
     font-size: 30px;
-    color: #010101;
+    color: #000000;
   }
   .overlay {
     z-index: 7 !important;
@@ -998,6 +1020,77 @@ export default {
       height: 1062px;
       position: absolute;
       bottom: 0;
+    }
+  }
+}
+
+.clearSale_content {
+  width: 100%;
+  height: 140px;
+  .clearSale_left {
+    padding: 0 30px;
+    width: 60%;
+    height: 140px;
+    background-image: linear-gradient(#25d79d, #02a973); // 活动未开始
+    // background-image: linear-gradient(#fd7b30, #fd260f); // 活动中
+    // background-image: linear-gradient(#d8d8d8, #b4b4b4); // 活动结束
+    .goods_discount {
+      margin-top: 15px;
+      width: 100px;
+      height: 26px;
+      background: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(255, 255, 255, 1);
+      border-radius: 13px;
+      color: #00a56f;
+    }
+    .goods_price {
+      font-size: 42px;
+      font-weight: bold;
+      color: rgba(255, 254, 254, 1);
+    }
+    .goods_dis_price {
+      font-size: 20px;
+      font-weight: 500;
+      text-decoration: line-through;
+      color: rgba(255, 254, 254, 1);
+      margin-left: 8px;
+    }
+    .goods_code {
+      font-size: 20px;
+      font-weight: 500;
+      color: rgba(255, 254, 254, 1);
+      margin-top: 12px;
+    }
+  }
+  .clearSale_right {
+    width: 40%;
+    height: 140px;
+    color: rgba(255, 254, 254, 1);
+    padding-left: 20px;
+    align-items: flex-start;
+    background-color: #00a670; // 活动未开始
+    // background-color: #ff9502; // 活动中
+    // background-color: #a9a9a9; // 活动结束
+    .active_title {
+      font-size: 32px;
+      font-weight: 800;
+    }
+    .active_time {
+      margin-top: 22px;
+      > span:first-child {
+        font-size: 26px;
+        font-weight: 500;
+      }
+      > span:last-child {
+        font-size: 30px;
+        font-weight: bold;
+        margin-left: 11px;
+      }
+    }
+    .active_desc {
+      margin-top: 22px;
+      font-size: 28px;
+      font-weight: bold;
     }
   }
 }

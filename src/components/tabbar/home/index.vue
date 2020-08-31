@@ -1,8 +1,8 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-15 19:29:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-25 16:03:42
+ * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
 --> 
@@ -88,6 +88,47 @@
                   class="good-price1"
                 >{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span>
                 <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 特价清仓 -->
+        <div class="good-Clearance box">
+          <div class="flash-sale-1 flex flex_space">
+            <div class="flex">
+              <span class="put-line"></span>
+              <span class="t1">Clearance Sale</span>
+              <span class="desc ml_20" v-show="!isExit">Starts at 14:20:30</span>
+            </div>
+            <div class="flex" @click="toClearance">
+              <span class="t2">More</span>
+              <van-icon name="arrow" />
+            </div>
+          </div>
+          <div class="flash-sale-2">
+            <div class="flex goods_items flex_start" v-for="item in clear_list" :key="item.skuId">
+              <img
+                class="goods_img"
+                v-lazy="$webUrl+item.skuImg"
+                @click="$router.push({name:'商品详情',query:{skuId:item.skuId,isClear:true}})"
+              />
+              <div class="flex_col w100">
+                <div class="good-name line2">{{item.skuName}}</div>
+                <div class="flex_end">
+                  <span
+                    class="goods_discount"
+                    :class="{'on_fb':item.activityState===1}"
+                  >{{((1-(item.activityPrice/item.salePrice))*100).toFixed(2)}}% off</span>
+                </div>
+                <div>
+                  <span
+                    class="goods_price"
+                    :class="{'on_fc':item.activityState===1}"
+                  >{{jn}}{{item.activityPrice}}</span>
+                  <span class="goods_dis_price">{{jn}}{{(item.salePrice).toFixed(2)}}</span>
+                </div>
+                <span class="goods_btn flex_center2" v-if="item.activityState===0">Not started</span>
+                <span class="goods_btn on_fb flex_center2" v-if="item.activityState===1">Buy now</span>
               </div>
             </div>
           </div>
@@ -269,6 +310,7 @@ import {
   HomePagebottomApi,
   homeAdvertPictureApi,
   APPgetuserIsfullApi,
+  gethomeClearanceList,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -325,6 +367,8 @@ export default {
       newCouponShow: "", //判断是否为新用户是否展示
       newCoupon: "",
       sale: false, //新用户是否存在
+      clear_list: [],
+      isExit: false,
     };
   },
   computed: {},
@@ -358,6 +402,7 @@ export default {
     } else {
       this.homePage();
     }
+    this.getClear();
     this.homeAdvertPicture();
   },
   beforeRouteLeave(to, from, next) {
@@ -557,6 +602,19 @@ export default {
         }
       });
     },
+    // 去特价清仓页面
+    toClearance() {
+      this.$router.push({ name: "特价清仓" });
+    },
+    // 获取特价清仓数据
+    getClear() {
+      gethomeClearanceList({ isHome: 1 }).then((res) => {
+        if (res.code == 0) {
+          this.clear_list = res.Data.list;
+          this.isExit = res.IsConcat;
+        }
+      });
+    },
   },
   components: {
     searchHeader,
@@ -569,9 +627,98 @@ export default {
 .bscroll-wrapper {
   height: calc(100vh - 90px - 100px);
 }
+.w100 {
+  width: 100%;
+}
+
 .home {
   position: relative;
   overflow: hidden;
+  .good-Clearance {
+    .active_color {
+      color: #f95300 !important;
+    }
+    .active_bg {
+      background-color: #f95300 !important;
+    }
+    padding: 30px;
+    .flash-sale-1 {
+      height: 50px;
+      line-height: 50px;
+      .put-line {
+        width: 6px;
+        height: 40px;
+        background-color: #fa5300;
+        top: 5px;
+      }
+      .t1 {
+        font-size: 30px;
+        color: #333;
+        margin-left: 13px;
+        margin-right: 14px;
+      }
+      .desc {
+        font-size: 24px;
+        font-weight: 500;
+        color: rgba(0, 165, 111, 1);
+      }
+      .t2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-right: 10px;
+      }
+    }
+    .flash-sale-2 {
+      background-color: #fff;
+      border-radius: 10px;
+      margin-top: 20px;
+      .goods_items {
+        padding: 30px 20px;
+        border-bottom: 1px solid #eee;
+        .goods_img {
+          min-width: 200px;
+          width: 200px;
+          height: 200px;
+          margin-right: 16px;
+        }
+        .goods_discount {
+          margin-top: 18px;
+          padding: 5px 17px;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 1);
+          background: rgba(0, 165, 111, 1);
+          font-size: 20px;
+          border-radius: 13px;
+        }
+        .goods_price {
+          font-size: 40px;
+          color: #00a56f;
+          font-weight: 500;
+        }
+        .goods_dis_price {
+          font-size: 20px;
+          font-weight: 300;
+          text-decoration: line-through;
+          color: rgba(101, 101, 101, 1);
+          margin-left: 12px;
+        }
+        .goods_btn {
+          width: 200px;
+          margin-top: 20px;
+          padding: 14px 24px;
+          font-size: 30px;
+          font-weight: bold;
+          color: rgba(255, 255, 255, 1);
+          background: rgba(0, 165, 111, 1);
+          border-radius: 26px;
+        }
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
   .commodity-swipe {
     margin: 7px 0 40px;
     .custom-indicator {
