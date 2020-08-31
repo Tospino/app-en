@@ -1,160 +1,171 @@
 <template>
-<!-- 选择付款方式弹窗 -->
-    <div>
-        <van-action-sheet v-model="showAction" :title="title" class="action-sheet-yinhang" :close-on-click-overlay="false">
-            <div class="paymen-content">
-                <div class="paymen-content-top" v-for="i in list" :key="i.num" @click="paymen(i)">
-                    <span class="yh-icon czjz">
-                        <img src="@/assets/img/confirmOrder/zhongguoyinhang@2x.png">
-                    </span>
-                    <span class="c-999" ></span>
-                    <span :class="{'c-orange':i.a}">中国银行</span>
-                </div>
-                <div class="paymen-content-top" @click="toaddBankcar">
-                    <span></span>
-                    <!-- <span class="c-999">></span> -->
-                    <van-icon name="arrow" class="arrow c-999"/>
-                    <span>添加银行卡</span>
-                </div>
-                <div class="btn-ljzf" @click="showpaymen">
-                    立即付款
-                </div>
-            </div>
-        </van-action-sheet>
-    </div>
+  <!-- 选择付款方式弹窗 -->
+  <div>
+    <van-action-sheet
+      v-model="showAction"
+      :title="title"
+      class="action-sheet-yinhang"
+      :close-on-click-overlay="false"
+      @cancel="closeYinggang"
+    >
+      <div class="paymen-content">
+        <div
+          class="paymen-content-top"
+          v-for="(reason,index) in list"
+          :key="index"
+          @click="cliItem(index)"
+        >
+          <img v-lazy="reason.logourl" class="icon-img" />
+          <span>{{reason.name}}</span>
+          <van-checkbox
+            v-model="reason.checked"
+            icon-size="24px"
+            class="img-checkbox"
+            checked-color="#FA5300"
+          ></van-checkbox>
+        </div>
+      </div>
+      <div class="btn-ljzf" @click="pay">Pay GHS {{paymoeny}}</div>
+    </van-action-sheet>
+  </div>
 </template>
 
 <script>
 export default {
-    props: {
-        title:{
-            type:String,
-            default:'请选择付款方式'
-        },
+  props: {
+    title: {
+      type: String,
+      default: "Choose the method of payment",
     },
-    data() {
-        return {
-            list:[
-                {
-                    a:false,
-                    num:1
-                },
-                {
-                    a:false,
-                    num:2
-                },
-                {
-                    a:true,
-                    num:3
-                }
-            ],
-            showAction:false
-        };
+    orderId: {
+      type: Number,
+      default: 0,
     },
-    computed: {
-
+    showList: {
+      type: Array,
+      default: () => {
+        return [];
+      },
     },
-    created() {
-
+    //支付金额
+    paymoeny: {
+      type: [String, Number],
+      default: 0,
     },
-    mounted() {
-
+  },
+  data() {
+    return {
+      list: [],
+      showAction: false,
+      remark: "",
+      id: 0,
+    };
+  },
+  computed: {},
+  created() {},
+  mounted() {},
+  watch: {
+    orderId: {
+      handler: function (newVal) {
+        this.id = newVal;
+        this.reasonList.forEach((item) => {
+          item.istrue = true;
+        });
+        this.remark = "";
+      },
     },
-    watch: {
-
+    showList: {
+      handler: function (newVal) {
+        this.list = newVal.map((o) => Object.assign({}, o));
+        this.list[4].checked = true;
+      },
     },
-    methods: {
-        paymen(item){
-            this.list.forEach(element => {
-                element.a = false
-                if(item.num == element.num){
-                    element.a = true
-                }
-            });
-        },
-        //显示支付弹窗
-        showpaymen(){
-            this.$emit('showpassword')
-            // this.$emit('showsucess')
-        },
-        //添加银行卡
-        toaddBankcar(){
-            this.$router.push({name:'添加银行卡'})
+  },
+  methods: {
+    cliItem(index) {
+      this.list.forEach((ele, i) => {
+        ele.checked = index == i;
+      });
+    },
+    pay() {
+      let trueItem = {};
+      this.list.forEach((ele) => {
+        if (ele.checked) {
+          trueItem = ele;
         }
+      });
+      this.$emit("toParnet", trueItem);
     },
-    components: {
-
+    //关闭弹窗
+    closeYinggang() {
+      this.showAction = true;
+      this.$emit("cancelSheet");
     },
+  },
+  components: {},
 };
 </script>
 
 <style scoped lang="less">
-.action-sheet-yinhang{
-    border-radius: 0;
-    /deep/ .van-action-sheet__header{
-        height: 109px;
-        font-size: 40px;
-        font-weight:bold;
-        line-height: 109px;
-        .van-icon{
-            font-size: 34px;
-        }
+.action-sheet-yinhang {
+  border-radius: 0;
+  /deep/ .van-action-sheet__header {
+    height: 120px;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 109px;
+    .van-icon {
+      font-size: 34px;
     }
-    .paymen-content{
-        width: 100%;
-        height: 590px;
-        background-color: #fff;
-        box-sizing: border-box;
-        padding:0px 0px 0;
-        position: relative;
-        font-size:34px;
-        color: #333;
-        .paymen-content-top{
-            position: relative;
-            width: 100%;
-            height: 97px;
-            line-height: 97px;
-            border-top:1px solid #DCDCDC;
-            padding:0 30px;
-            box-sizing: border-box;
-            &:nth-last-child(2){
-                border-bottom:1px solid #DCDCDC;
-            }
-            .yh-icon{
-                display: inline-block;
-                width: 60px;
-                height: 60px;
-            }
-            span{
-                &:nth-child(2){
-                    float: right;
-                    font-size: 30px;
-                    .van-icon{
-                        color: #FA5300
-                    }
-                }
-                &:nth-child(3){
-                    padding-left:119px;
-                }
-            }
-            .arrow{
-                position: absolute;
-                right:30px;
-                top:50%;
-                transform: translateY(-50%)
-            }
-        }
+  }
+  .paymen-content {
+    width: 100%;
+    // height: 440px;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 0px 0px 0;
+    position: relative;
+    font-size: 34px;
+    color: #333;
+    margin-bottom: 100px;
+    overflow: auto;
+    .paymen-content-top {
+      position: relative;
+      width: 100%;
+      height: 110px;
+      line-height: 110px;
+      border-top: 1px solid #dcdcdc;
+      padding: 0 30px;
+      box-sizing: border-box;
+      &:nth-last-child(1) {
+        border-bottom: 1px solid #dcdcdc;
+      }
+      .img-checkbox {
+        float: right;
+        margin-top: 30px;
+      }
+      .icon-img {
+        width: 100px;
+        height: 90px;
+        vertical-align: middle;
+        // &:last-child{
+        //   width: 60px;
+        //   height: 90px;
+        //   vertical-align: middle;
+        // }
+      }
     }
-    .btn-ljzf{
-        width: 100%;
-        height:100px;
-        background:rgba(250,83,0,1);
-        line-height: 100px;
-        text-align: center;
-        color: #fff;
-        font-size:38px;
-        position: absolute;
-        bottom: 0;
-    }
+  }
+  .btn-ljzf {
+    width: 100%;
+    height: 100px;
+    background: rgba(250, 83, 0, 1);
+    line-height: 100px;
+    text-align: center;
+    color: #fff;
+    font-size: 38px;
+    position: relative;
+    bottom: 0;
+  }
 }
 </style>

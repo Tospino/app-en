@@ -1,0 +1,258 @@
+.flex{
+display: flex;
+-webkit-display: flex;
+-moz-display: flex;
+-ms-display: flex;
+-o-display: flex;
+align-items: center;
+}
+.flex_center{
+display: flex;
+justify-content: center;
+}
+.flex_center2{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.flex_left{
+display: flex;
+justify-content: flex-start;
+}
+.flex_space{
+display: flex;
+justify-content: space-between;
+}
+.flex_around{
+display: flex;
+justify-content: space-around;
+align-items: center;
+}
+.flex_warp{
+flex-wrap  :wrap;
+-webkit-flex-wrap: wrap;
+-moz-flex-wrap: wrap;
+-ms-flex-wrap: wrap;
+-o-flex-wrap: wrap;
+}
+.flex_start{
+display: flex;
+align-items: flex-start;
+}
+.flex_end{
+    display: flex;
+    justify-content :flex-end;
+}
+.flex_end1{
+    display: flex;
+    align-items: flex-end;
+}
+//垂直样式
+.flex_col{
+display: flex;
+flex-direction: column;
+}
+.flex_col_start{
+// display: flex
+// flex-direction: column
+align-items: flex-start;
+}
+.flex_col_end{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end
+}
+.flex_col_center{ //居中显示
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.flex_col_center2{ //居中心显示
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+.flex_col_right{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+
+.pl_25{ 
+padding-left: 25px !important
+}
+.ml_40{
+margin-left: 40px !important
+}
+.ml_35{
+margin-left: 35px !important
+}
+.ml_30{
+    margin-left: 30px !important
+}
+.ml_25{
+margin-left: 25px !important
+}
+.ml_20{
+margin-left: 20px !important
+}
+.ml_15{
+margin-left: 15px !important
+}
+.ml_12{
+    margin-left: 12px !important
+}
+.ml_10{
+margin-left: 10px !important
+}
+.ml_8{
+margin-left: 8px !important
+}
+.ml_5{
+margin-left: 5px !important
+}
+.mr_5{
+margin-right: 5px !important
+}
+.mr_8{
+margin-right: 8px !important
+}
+.mr_12{
+margin-right: 12px !important  
+}
+.mr_15{
+margin-right:  15px !important
+}
+.mr_20{
+margin-right:  20px !important
+}
+.mr_25{
+margin-right:  25px !important
+}
+.mr_35{
+margin-right:  35px !important
+}
+.mr_60{
+margin-right:  60px !important
+}
+.mt_50{
+margin-top: 50px !important
+}
+.mt_40{
+margin-top: 40px !important
+}
+.mt_60{
+margin-top: 50px !important
+}
+.mt_35{
+margin-top: 35px !important
+}
+.mt_30{
+margin-top: 30px !important
+}
+.mt_25{
+margin-top: 25px !important
+}
+.mt_20{
+margin-top: 20px !important
+}
+.mt_15{
+margin-top: 15px !important
+}
+.mt_12{
+margin-top: 12px !important
+}
+.mt_8{
+margin-top: 8px !important
+}
+.mt_5{
+margin-top: 5px !important
+}
+.mb_5{
+margin-bottom: 5px !important
+}
+.mb_10{
+margin-bottom: 10px !important
+}
+.mb_12{
+margin-bottom: 12px !important
+}
+.mb_15{
+margin-bottom: 15px !important
+}
+.mb_20{
+margin-bottom: 20px !important
+}
+.mb_25{
+margin-bottom: 25px !important
+}
+.mb_30{
+    margin-bottom: 30px !important
+}
+.mb_50{
+    margin-bottom: 50px !important
+}
+
+.line1{ 
+	// overflow : hidden;
+	// text-overflow: ellipsis;
+	// display: -webkit-box;
+	// -webkit-line-clamp: 1; 
+	// -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  &:after{
+    content:"";
+    font-weight:bold;
+    position:absolute;
+    bottom:0;
+    right:0;
+    padding:0 20px 1px 0px;///控制后面省略号的位置
+  }
+}
+.line2{ 
+	// text-overflow: ellipsis;
+	// display: -webkit-box;
+	// -webkit-line-clamp: 2;
+	// -webkit-box-orient: vertical;
+	// overflow:hidden;
+  // white-space:nowrap;
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  display:-webkit-box; 
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2; 
+  &:after{
+    content:"";
+    font-weight:bold;
+    position:absolute;
+    bottom:0;
+    right:0;
+    padding:0 20px 1px 0px;///控制后面省略号的位置
+  }
+}
+
+.clear-goods-items{
+    .van-progress {
+        border-radius: 20px;
+    }
+    .van-progress__portion{
+        min-width: 15.55px;
+    }
+}
+
+.pre_fc {
+color: #00a670 !important;
+}
+.pre_fb {
+background-color: #00a670 !important;
+}
+.on_fc {
+color: #f95300 !important;
+}
+.on_fb {
+background-color: #f95300 !important;
+}

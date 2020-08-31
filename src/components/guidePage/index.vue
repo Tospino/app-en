@@ -1,43 +1,48 @@
+<!--
+ * @Author: 曹建勇
+ * @Date: 2020-07-07 18:05:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-07-20 18:31:30
+ * @Description: 
+ * @FilePath: \app-en\src\components\guidePage\index.vue
+--> 
 <template>
-<!-- 引导页 -->
+  <!-- 引导页 -->
   <div class="guidePage">
-      <div class="logo"></div>
+    <div class="logo"></div>
   </div>
 </template>
 
 <script>
 export default {
-	name: 'HelloWorld',
-	data () {
-		return {
-		msg: 'Welcome to Your Vue.js App'
-		}
-	},
-	methods: {
-		
-	},
-	mounted(){
-		setTimeout(()=>{
-			this.$router.replace({name:'首页'})
-		},3000)
-	}
-}
+  name: "HelloWorld",
+  data() {
+    return {
+      msg: "Welcome to Your Vue.js App",
+    };
+  },
+  methods: {},
+  mounted() {
+    setTimeout(() => {
+      this.$router.replace({ name: "首页" });
+    }, 1000);
+  },
+};
 </script> 
 
 <style scoped lang="less">
-.guidePage{
+.guidePage {
   width: 100%;
   height: 100%;
   background-color: #fff;
   position: relative;
   text-align: center;
-  .logo{
+  .logo {
     width: 100vw;
-    height:100vh;
-    background-image:url('~@/assets/img/guidePage/yina.jpg');
+    height: 100vh;
+    background-image: url("~@/assets/img/guidePage/yina.jpg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
 }
-
 </style>

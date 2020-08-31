@@ -8,7 +8,7 @@
         <!-- <a class="clearfix" @click="toguojia"> -->
         <div class="fl">Country/District</div>
         <div class="fr">
-          <img :src="nationalFlag" alt class="nationFlagR" />
+          <img v-lazy="nationalFlag" alt class="nationFlagR" />
           <span class="nation">{{countryItem.country}}</span>
           <!-- <span>&gt;</span> -->
         </div>
@@ -37,74 +37,74 @@
 </template> 
 
 <script>
-import balanceHeader from './itemComponents/balanceHeader'
-import {getcountryWebUrlApi} from '@/api/login/index'
-import china from '@/assets/img/goodsDetails/01@2x.png'
-import gana from '@/assets/img/goodsDetails/02@2x.png'
-import {Toast} from 'vant'
+import balanceHeader from "./itemComponents/balanceHeader";
+import { getcountryWebUrlApi } from "@/api/login/index";
+import china from "@/assets/img/goodsDetails/01@2x.png";
+import gana from "@/assets/img/goodsDetails/02@2x.png";
+import { Toast } from "vant";
 export default {
-	data() {
-		return {
-      isSelection:true,
-      countryItem:{
-				country:'',
-				language:'',
-				currency:'',
-				webUrl:''
-			},
-			china:china,
-			gana:gana
-		};
+  data() {
+    return {
+      isSelection: true,
+      countryItem: {
+        country: "",
+        language: "",
+        currency: "",
+        webUrl: "",
+      },
+      china: china,
+      gana: gana,
+    };
   },
-  mounted(){
-		this.getcountryWebUrl()
+  mounted() {
+    this.getcountryWebUrl();
   },
-  computed:{
-		nationalFlag(){
-			let flag = null
-			if(this.$route.query.type == 1){
-				flag = this.gana
-			}else{
-				flag = this.china
-			}
-			return flag
-		}
-	},
-	methods: {
-		toyuyan(){
-			this.$router.push({name:'语言选择页'})
+  computed: {
+    nationalFlag() {
+      let flag = null;
+      if (this.$route.query.type == 1) {
+        flag = this.gana;
+      } else {
+        flag = this.china;
+      }
+      return flag;
+    },
+  },
+  methods: {
+    toyuyan() {
+      this.$router.push({ name: "语言选择页" });
     },
     //获取站点的国家语言信息
-    getcountryWebUrl(){
-			getcountryWebUrlApi().then(res => {
-				if(res.code == 0){
-					try{
-						if(this.$route.query.type == 1){
-							this.countryItem = res.Data[1]
-						}else{
-							this.countryItem = res.Data[0]
-						}
-					}
-					catch(err){
-						this.countryItem = res.Data[1]
-					}
-					
-				}
-			})
+    getcountryWebUrl() {
+      getcountryWebUrlApi().then((res) => {
+        if (res.code == 0) {
+          try {
+            if (this.$route.query.type == 1) {
+              this.countryItem = res.Data[1];
+            } else {
+              this.countryItem = res.Data[0];
+            }
+          } catch (err) {
+            this.countryItem = res.Data[1];
+          }
+        }
+      });
     },
     //完成
-		done(){
-			if(this.$route.query.type == 0){
-        window.location.href = this.countryItem.webUrl + '#/control/home/?token='+localStorage.token
-			}else{
-				Toast('已经是中文')
-			}
-			
-		}
-	},
-	components:{
-		balanceHeader
-	}
+    done() {
+      if (this.$route.query.type == 0) {
+        window.location.href =
+          this.countryItem.webUrl +
+          "#/control/home/?token=" +
+          this.$storage.get("token");
+      } else {
+        Toast("The current languagge is English");
+      }
+    },
+  },
+  components: {
+    balanceHeader,
+  },
 };
 </script> 
 
@@ -161,8 +161,8 @@ export default {
       .nationFlagR {
         display: inline-block;
         width: 80px;
-		height: 48px;
-		vertical-align: middle;
+        height: 48px;
+        vertical-align: middle;
       }
       .nation {
         font-weight: bold;
