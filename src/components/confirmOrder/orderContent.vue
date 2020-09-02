@@ -232,15 +232,23 @@
 
     <!-- 返现弹窗 -->
     <van-dialog v-model="fanxianStatus" class="fanxian-style" confirm-button-text="OK">
-      <p>Warm prompt:You can get the corresponding reward if the order amount meets the following requirements for online payment.</p>
+      <p style="font-weight: bold;font-size:12px; text-align: center;">Bonus for Online Payment</p>
+      <p style="font-size:12px" class="mt_20">Get your corresponding reward:</p>
       <br />
-      <p v-for="(fanxian,index) in fanxianList" :key="index">
-        {{index+1}}. {{fanxian.returnCashAmountWebsite}} cedis for
-        {{fanxian.orderAmountWebsiteEnd ? (fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
-        ('order over ' + fanxian.orderAmountWebsiteStart)}} cedis {{fanxian.orderAmountWebsiteEnd ? 'order': ''}}
-      </p>
+      <div
+        v-for="(fanxian,index) in fanxianList"
+        :key="index"
+        style="font-size:12px;font-weight: bold;"
+      >
+        {{index+1}}.Subtotal Amount Reached
+        {{fanxian.orderAmountWebsiteEnd ? ('₵'+fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
+        ('Over'+' '+'₵' +fanxian.orderAmountWebsiteStart)}} ,
+        <div>Get {{jn}} {{fanxian.returnCashAmountWebsite}} Bonus</div>
+      </div>
       <br />
-      <p>After the goods has been received,the bounty would be paid into your account automatically, and there is no reward if you refuse or return the goods</p>
+      <p style="font-size:12px">Please check the bonus in your Tospino Account after order delivery.</p>
+      <p class="mt_20" style="color: #fa5300;font-size:12px">Warm Tips:</p>
+      <p style="font-size:12px">There is no reward if any refuse or return for your order.</p>
     </van-dialog>
   </div>
 </template>

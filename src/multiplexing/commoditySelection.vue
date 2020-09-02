@@ -22,40 +22,63 @@
       </div>
       <div class="selection-conten" @click.stop>
         <div>
-          <div class="guige-title">{{oneTitle}}</div>
-          <div class="guige-list">
-            <span
-              class="guige-items"
-              v-for="(one,index) in onedata"
-              :key="index"
-              @click="checkOneItem(one,index)"
-              :class="{active: one.ischeck == true}"
-            >{{one.valueValEng}}</span>
-          </div>
-        </div>
-        <div>
-          <div class="guige-title">{{twoTitle}}</div>
-          <div class="guige-list">
-            <span
-              class="guige-items"
-              v-for="(two,index) in twodata"
-              :key="index"
-              @click="checkTwoItem(two,index)"
-              :class="{active: two.ischeck == true}"
-            >{{two.valueValEng}}</span>
-          </div>
-        </div>
-        <div class="quantity">
-          <div class="guige-title">Quantity</div>
-          <div class="stepper">
-            <div class="reduce-btn" @click="operation('jian')">一</div>
-            <div class="num">
-              <input type="number" class="number-input" @blur="blur(makeItem)" v-model="goodNumber" />
+          <div class="guige_Box">
+            <div class="guige-title">{{oneTitle}}</div>
+            <div class="guige-list">
+              <span
+                class="guige-items"
+                v-for="(one,index) in onedata"
+                :key="index"
+                @click="checkOneItem(one,index)"
+                :class="{active: one.ischeck == true}"
+              >{{one.valueValEng}}</span>
             </div>
-            <div class="add-btn" @click="operation('jia')">十</div>
+            <div>
+              <div class="guige-title">{{twoTitle}}</div>
+              <div class="guige-list">
+                <span
+                  class="guige-items"
+                  v-for="(two,index) in twodata"
+                  :key="index"
+                  @click="checkTwoItem(two,index)"
+                  :class="{active: two.ischeck == true}"
+                >{{two.valueValEng}}</span>
+              </div>
+            </div>
+            <div class="quantity">
+              <div class="guige-title">Quantity</div>
+              <div class="stepper">
+                <div class="reduce-btn" @click="operation('jian')">一</div>
+                <div class="num">
+                  <input
+                    type="number"
+                    class="number-input"
+                    @blur="blur(makeItem)"
+                    v-model="goodNumber"
+                  />
+                </div>
+                <div class="add-btn" @click="operation('jia')">十</div>
+              </div>
+            </div>
+            <div class="fl-right stock">In stock:{{stock}}</div>
+            <!-- 新增文字 -->
+            <div class="accra_txt flex_col mt_80">
+              <div class="accra_title">Shipping from Accra Warehouse</div>
+              <div class="accra_heard mt_20">Logistics: Tospino Express</div>
+              <div class="accra_heard mt_20">
+                <p>Estimated Delivery:</p>
+                <ul>
+                  <li>
+                    1.Accra Region:
+                    <span class="color_3">1-3 Workdays</span>
+                  </li>
+                  <li>2.Other Regions: 3-7 Workdays</li>
+                  <li>Contact us for any order help!</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="fl-right stock">In stock:{{stock}}</div>
         <div class="footer">
           <div
             class="success-btn"
@@ -671,6 +694,30 @@ export default {
       margin-top: 20px;
       color: #000;
       font-size: 30px;
+    }
+    .accra_txt {
+      box-sizing: border-box;
+      padding: 20px;
+      border: 1px solid #d2d2d2;
+      border-radius: 10px;
+      font-size: 14px;
+      .accra_title {
+        font-weight: bold;
+        color: #333333;
+        line-height: 27px;
+      }
+      .accra_heard {
+        font-size: 14px;
+        font-family: Arial;
+        // font-weight: 400;
+        color: #929292;
+        line-height: 34px;
+      }
+      .color_3 {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fa5300;
+      }
     }
   }
   .footer {
