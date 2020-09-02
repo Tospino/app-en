@@ -1177,16 +1177,20 @@ export default {
 }
 .fanxian-style {
   width: 600px;
-  padding: 30px 30px 0;
+  //   padding: 30px 30px 0;
   font-size: 28px;
   line-height: 40px;
+  /deep/.van-dialog__content {
+    padding: 30px 30px 0;
+  }
   /deep/ .van-dialog__footer {
     margin-top: 30px;
     .van-button.van-button--default.van-button--large.van-dialog__confirm {
       height: 80px;
+      background: #fa5300;
       .van-button__text {
         font-size: 40px;
-        color: #000;
+        color: #fff;
       }
     }
   }
