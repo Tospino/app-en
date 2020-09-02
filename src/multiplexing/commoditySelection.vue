@@ -619,6 +619,13 @@ export default {
     min-height: 900px;
     overflow: hidden;
     padding: 20px 40px 0;
+    .guige_Box {
+      height: 540px;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
     .guige-title {
       font-size: 22px;
       margin-bottom: 18px;
