@@ -379,6 +379,7 @@ export default {
     //商品详情
     productdetail(id) {
       productdetailApi({ skuid: id }).then((res) => {
+        console.log("res", res);
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
