@@ -61,8 +61,9 @@
               </div>
             </div>
             <div class="fl-right stock">In stock:{{stock}}</div>
+
             <!-- 新增文字 -->
-            <div class="accra_txt flex_col mt_80">
+            <div class="accra_txt flex_col mt_80" v-show="amountTip">
               <div class="accra_title">Shipping from Accra Warehouse</div>
               <div class="accra_heard mt_20">Logistics: Tospino Express</div>
               <div class="accra_heard mt_20">
@@ -128,6 +129,10 @@ export default {
     btnName: {
       type: String,
       default: "",
+    },
+    amountTip: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -254,6 +259,7 @@ export default {
       let makeupList = [];
       this.makeupdata = this.selectionObj.Makeupdata;
       this.onedata = this.selectionObj.Onedata;
+
       this.twodata = this.selectionObj.Twodata;
       this.makeupdata.forEach((item) => {
         if (this.makeupdata.length > 1) {

@@ -260,6 +260,7 @@
           :selectionData="selectionData"
           :btnStatus="btnStatus"
           :btnName="btnName"
+          :amountTip="amountTip"
         ></commodity-selection>
       </transition>
 
@@ -324,6 +325,7 @@ export default {
       selectionData: {},
       btnStatus: false,
       btnName: "",
+      amountTip: false, //根据后台expId为2则展示到货时间
       productParamList: [],
       productParamList2: [],
       shousuoStatus: false,
@@ -373,6 +375,13 @@ export default {
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
+          //   到货时间展示文字
+          if (this.detailmData.expId == 2) {
+            this.amountTip = true;
+          } else {
+            this.amountTip = false;
+          }
+          //  优惠券
           this.couponProModel(
             this.detailmData.supplyId,
             this.detailmData.businessId,

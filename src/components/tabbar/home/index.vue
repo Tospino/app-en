@@ -323,7 +323,7 @@ export default {
         advertImg: "",
       },
       newCouponShow: "", //判断是否为新用户是否展示
-      newCoupon: "",
+      newCoupon: {},
       sale: false, //新用户是否存在
     };
   },
@@ -371,27 +371,27 @@ export default {
     this.refreshOrder();
   },
   watch: {
-    // 监听首页新用户优惠券是否展示
-    newCouponShow: {
-      deep: true,
-      handler: function (val) {
-        if (val == 0) {
-          this.sale = true;
-        } else if (val == -300) {
-          this.sale = false;
-        }
-      },
-    },
-    // 如果路由有变化,会再次执行该方法
-    $route: {
-      handler(route) {
-        if (route.name === "首页") {
-          // location.reload();
-          this.newCoupons();
-        }
-      },
-      deep: true,
-    },
+    // // 监听首页新用户优惠券是否展示
+    // newCouponShow: {
+    //   deep: true,
+    //   handler: function (val) {
+    //     if (val == 0) {
+    //       this.sale = true;
+    //     } else if (val == -300) {
+    //       this.sale = false;
+    //     }
+    //   },
+    // },
+    // // 如果路由有变化,会再次执行该方法
+    // $route: {
+    //   handler(route) {
+    //     if (route.name === "首页") {
+    //       // location.reload();
+    //       this.newCoupons();
+    //     }
+    //   },
+    //   deep: true,
+    // },
   },
   methods: {
     // 首页新用户优惠券
@@ -399,8 +399,13 @@ export default {
       APPgetuserIsfullApi().then((res) => {
         this.newCouponShow = res.code;
         if (res.code == 0) {
-          this.newCoupon = res.Data;
+          let nweUser = res.Data;
+          if (nweUser != null) {
+            this.newCoupon = nweUser;
+            this.sale = true;
+          }
         } else {
+          this.sale = false;
           this.$toast.clear();
         }
       });

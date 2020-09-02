@@ -33,7 +33,19 @@
 export default {
   name: "userPopUp", //新用户弹窗
   components: {},
-  props: ["sale", "newCoupon"],
+  //   props: ["sale", "newCoupon"],
+  props: {
+    sale: {
+      type: Boolean,
+      default: false,
+    },
+    newCoupon: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       userStyle: "",
