@@ -303,6 +303,7 @@ import {
   productdetailApi,
   AppqureyuserCouponProApi,
   AppqureyuserCouponProModelApi,
+  getClearanceDetailApi,
 } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
@@ -350,7 +351,13 @@ export default {
     };
   },
   computed: {},
-  created() {},
+  created() {
+    this.getClearanceDetail(
+      this.$route.query.skuId,
+      this.$route.query.activityId,
+      this.$route.query.supplyId
+    );
+  },
   mounted() {
     setTimeout(() => {
       this.productdetail(this.$route.query.skuId);
@@ -383,6 +390,7 @@ export default {
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
+          //   console.log("this.detailmData",this.detailmData);
           this.couponProModel(
             this.detailmData.supplyId,
             this.detailmData.businessId,
@@ -415,6 +423,16 @@ export default {
             this.$router.go(-1);
           }, 1000);
         }
+      });
+    },
+    // 特价清仓
+    getClearanceDetail(skuId, activityId, supplyId) {
+      getClearanceDetailApi({
+        skuid: skuId,
+        activityId: activityId,
+        supplyId: supplyId,
+      }).then((res) => {
+        console.log(res, "supplyId");
       });
     },
     //猜你喜欢点击了商品

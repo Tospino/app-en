@@ -104,7 +104,7 @@
               :style="{backgroundColor:btnbuy}"
             >Buy Now</div>
           </div>
-          <div class="ios-place" v-if="jixing=='ios'"></div>
+          <!-- <div class="ios-place" v-if="jixing=='ios'"></div> -->
         </div>
         <div class="commoditySelection-place"></div>
       </div>
@@ -626,7 +626,7 @@ export default {
     overflow: hidden;
     padding: 20px 40px 0;
     .guige_Box {
-      height: 540px;
+      height: 700px;
       overflow: auto;
       &::-webkit-scrollbar {
         display: none;
@@ -735,10 +735,11 @@ export default {
   }
   .footer {
     position: absolute;
-    bottom: 0;
+    // bottom: 0;
     left: 0;
     width: 100%;
     padding: 0 40px;
+    margin-top: 50px;
     box-sizing: border-box;
     .success-btn {
       width: 100%;

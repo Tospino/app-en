@@ -98,7 +98,12 @@
             <div class="flex">
               <span class="put-line"></span>
               <span class="t1">Clearance Sale</span>
-              <span class="desc ml_20" v-show="!isExit">Starts at 14:20:30</span>
+              <span class="desc ml_20" v-show="!isExit">
+                <!-- 时间 -->
+                <count-down model="timer" :end-time="clear_one">
+                  <template v-slot="time">Starts at {{time.hour}}:{{time.minute}}:{{time.second}}</template>
+                </count-down>
+              </span>
             </div>
             <div class="flex" @click="toClearance">
               <span class="t2">More</span>
@@ -106,12 +111,13 @@
             </div>
           </div>
           <div class="flash-sale-2">
-            <div class="flex goods_items flex_start" v-for="item in clear_list" :key="item.skuId">
-              <img
-                class="goods_img"
-                v-lazy="$webUrl+item.skuImg"
-                @click="$router.push({name:'商品详情',query:{skuId:item.skuId,isClear:true}})"
-              />
+            <div
+              class="flex goods_items flex_start"
+              v-for="item in clear_list"
+              :key="item.skuId"
+              @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,isClear:true}})"
+            >
+              <img class="goods_img" v-lazy="$webUrl+item.skuImg" />
               <div class="flex_col w100">
                 <div class="good-name line2">{{item.skuName}}</div>
                 <div class="flex_end">
@@ -369,6 +375,7 @@ export default {
       sale: false, //新用户是否存在
       clear_list: [],
       isExit: false,
+      clear_one: "", //倒计时
     };
   },
   computed: {},
@@ -611,6 +618,8 @@ export default {
       gethomeClearanceList({ isHome: 1 }).then((res) => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
+          console.log(this.clear_list, "this.clear_list");
+          this.clear_one = this.clear_list[0].activityEndWebsite.slice(0, 10);
           this.isExit = res.IsConcat;
         }
       });

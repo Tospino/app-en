@@ -19,6 +19,8 @@ import 'vant/lib/index.css'
 import '@/assets/css/common.less'
 import '@/assets/css/animation.less'
 import './assets/font/font_501137_8uegssallpv/iconfont.css'
+
+import vueCountDown from '@liuwave/vue-count-down'
 import {
     isDisabled,
     formValidate,
@@ -46,7 +48,7 @@ gethttpimgurlApi().then(res => {
         Vue.prototype.$bigwebUrl = res.webUrl
     }
 })
-
+Vue.use(vueCountDown, { component: 'count-down' })
 Vue.use(VueScroller)
 Vue.use(Vant)
 
