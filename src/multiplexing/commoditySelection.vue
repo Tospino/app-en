@@ -744,7 +744,7 @@ export default {
     box-sizing: border-box;
     .success-btn {
       width: 100%;
-      float: left;
+      //   float: left;
       height: 78px;
       line-height: 78px;
       color: #fff;
@@ -752,6 +752,7 @@ export default {
       font-size: 42px;
       margin-bottom: 30px;
       border-radius: 39px;
+      position: relative;
       .btn-jrgwc,
       .btn-qd {
         width: 300px;
