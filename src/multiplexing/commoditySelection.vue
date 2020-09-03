@@ -130,6 +130,7 @@ export default {
       type: String,
       default: "",
     },
+    // 新增字段
     amountTip: {
       type: Boolean,
       default: false,
