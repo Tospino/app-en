@@ -276,6 +276,14 @@ export default new Router({
                         )
                 },
                 {
+                    path: 'accountSecurity/AuthorizationDetails',
+                    name: '授权详情',
+                    component: () =>
+                        import(
+                            `@/components/tabbar/account/thirdLogin/details.vue`
+                        )
+                },
+                {
                     path: 'aboutTospino',
                     name: '关于TOSPINO',
                     component: () =>

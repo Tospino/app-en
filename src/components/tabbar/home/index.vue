@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-25 16:03:42
+ * @LastEditTime: 2020-08-31 14:38:35
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -373,6 +373,10 @@ export default {
   },
   computed: {},
   created() {
+    FB.getLoginStatus(function (response) {
+      console.log("created -> response", response);
+      statusChangeCallback(response);
+    });
     this.newCoupons();
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;

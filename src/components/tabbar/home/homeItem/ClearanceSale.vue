@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-08-22 09:52:23
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-25 15:06:15
+ * @LastEditTime: 2020-08-31 10:04:28
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\home\homeItem\ClearanceSale.vue
 -->
@@ -19,7 +19,7 @@
           class="img1"
           @click="$router.push({name:'特价清仓搜索'})"
         />
-        <!-- <img src="@/assets/img/tabbar/home/clearsale/share.png" class="img2" /> -->
+        <img src="@/assets/img/tabbar/home/clearsale/share.png" @click="showShare" class="img2" />
       </div>
     </div>
     <div class="filter_items flex flex_around">
@@ -48,11 +48,13 @@
       </span>
     </div>
     <cleargoods :list="list" />
+    <share ref="share" />
   </section>
 </template>
 
 <script>
 import cleargoods from "./compoents/clear-goods-items.vue";
+import share from "@/multiplexing/share.vue";
 import { gethomeClearanceList } from "@/api/home/index.js";
 export default {
   name: "ClearanceSale",
@@ -109,8 +111,11 @@ export default {
       }
       this.getData();
     },
+    showShare() {
+      this.$refs["share"].shows();
+    },
   },
-  components: { cleargoods },
+  components: { cleargoods, share },
 };
 </script>
 

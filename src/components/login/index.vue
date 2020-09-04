@@ -49,22 +49,23 @@
       <span class="c2 fs-24" @click="jumpRouter('注册')">Create Account</span>
     </div>
     <div class="footer">
-      <div v-if="false">
+      <div>
         <div class="line left-80"></div>
-        <div class="other">其他方式登录</div>
+        <div class="other">Other ways to login</div>
         <div class="line right-80"></div>
-        <div class="icons">
-          <van-row type="flex" justify="space-between">
-            <van-col span="8" style="text-align:center">
+        <div class="icons flex flex_around">
+          <img @click="ThirdLogin('facebook')" src="@/assets/img/login/facebook@3x.png" />
+          <!-- <van-row type="flex" justify="space-between">
+            <van-col span="8" style="text-align:center" @click="ThirdLogin('facebook')">
+              <img src="@/assets/img/login/facebook@3x.png" />
+            </van-col>
+            <van-col span="8" style="text-align:center" @click="ThirdLogin('twitter')">
+              <img src="@/assets/img/login/twitter@3x.png" />
+            </van-col>
+            <van-col span="8" style="text-align:center" @click="ThirdLogin('weixin')">
               <img src="@/assets/img/login/weixin@3x.png" />
             </van-col>
-            <van-col span="8" style="text-align:center">
-              <img src="@/assets/img/login/weixin@3x.png" />
-            </van-col>
-            <van-col span="8" style="text-align:center">
-              <img src="@/assets/img/login/weixin@3x.png" />
-            </van-col>
-          </van-row>
+          </van-row>-->
         </div>
       </div>
       <div class="agreement">
@@ -91,15 +92,69 @@
         </div>
       </div>
     </zhezhao>
+
+    <van-action-sheet v-model="show" title="Bind mobile phone number" style="height:350px">
+      <section class="bind_pop">
+        <div class="flex flex_space items">
+          <div class="flex">
+            <span class="labels">Phone Number</span>
+            <input
+              type="text"
+              style="width:200px"
+              class="inputs"
+              v-model="bindForm.phone"
+              @blur="CheckPhone"
+              placeholder="Please enter phone number"
+            />
+          </div>
+          <select ref="phone_select">
+            <option value="+233">+233</option>
+            <option value="+86">+86</option>
+          </select>
+        </div>
+        <div class="flex items flex_space mt_20">
+          <div class="flex">
+            <span class="labels">Verification code</span>
+            <input
+              type="text"
+              style="width:200px"
+              class="inputs"
+              v-model="bindForm.code"
+              placeholder
+            />
+          </div>
+          <span class="getCode" @click="getMsgCode">{{msg}}</span>
+        </div>
+        <div class="flex items mt_20" v-if="!hasUser">
+          <span class="labels">password</span>
+          <input
+            type="text"
+            style="width:200px"
+            class="inputs"
+            v-model="bindForm.password"
+            placeholder="Please enter password"
+          />
+        </div>
+        <div class="bind_btns" @click="thirdSubmit">Bind phone</div>
+      </section>
+    </van-action-sheet>
   </div>
 </template>
 
 <script>
-import { loginApi } from "@/api/login/index";
+import {
+  loginApi,
+  doLogin,
+  checkphonethird,
+  userAddthird,
+  userregister,
+  msglistApi,
+  getuserinfo,
+} from "@/api/login/index";
 import { accReg, passReg } from "@/common/reg.js";
 import zhezhao from "@/multiplexing/zhezhao";
 import yinsi from "@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue";
-import { Toast } from "vant";
+import { Toast, Dialog } from "vant";
 import { mapActions } from "vuex";
 export default {
   props: {},
@@ -125,6 +180,17 @@ export default {
         },
       },
       zhengce: false,
+      show: false,
+      bindForm: {
+        phone: "",
+        code: "",
+        password: "",
+        areaCode: "+86",
+      },
+      showKeyboard: false,
+      facebook_id: "",
+      hasUser: true, // 是否是已注册用户
+      msg: "get code",
     };
   },
   computed: {
@@ -211,6 +277,138 @@ export default {
     jumpRouter(name) {
       this.$router.push({ name });
     },
+    // 第三方登录
+    ThirdLogin(val) {
+      let a = this;
+      if (val === "facebook") {
+        // 调用facebook登录
+        FB.login(
+          function (response) {
+            console.log("ThirdLogin -> response", response);
+            if (response.status === "connected") {
+              a.facebook_id = response.authResponse.userID;
+              FB.api("/me", function (response1) {
+                console.log(
+                  "Successful login for: " + JSON.stringify(response1)
+                );
+                doLogin({
+                  inputToken: response.authResponse.accessToken,
+                  name: response1.name,
+                }).then((res) => {
+                  if (res.code === 0) {
+                    localStorage.token = res.token;
+                    a.$router.push({ name: "首页" });
+                  } else if (res.code === -330) {
+                    a.show = true;
+                  } else if (res.code === -340) {
+                    a.show = true;
+                  }
+                  console.log("res", res);
+                });
+              });
+            } else {
+              Dialog.alert({
+                title: "Tips",
+                message: "User cancelled login or did not fully authorize.",
+              }).then(() => {
+                // on close
+              });
+              // The person is not logged into your webpage or we are unable to tell.
+            }
+          },
+          { scope: "public_profile,email" }
+        );
+        // 调用facebook退出登录
+        // FB.logout(function (response) {
+        //   // Person is now logged out
+        // });
+      }
+    },
+    // 检测手机号是否注册平台账号
+    CheckPhone() {
+      if (this.bindForm.phone.length === 11) {
+        checkphonethird({
+          userPhone: this.bindForm.phone,
+          thirduserId: this.facebook_id,
+          type: 1,
+        }).then((res) => {
+          switch (res.code) {
+            case -110:
+              this.hasUser = false;
+              Toast(
+                "The mobile phone number is not registered on this platform"
+              );
+              break;
+            case 0:
+              this.hasUser = true;
+              Toast(
+                "The mobile phone number has been registered on the platform. Whether to bind the mobile phone"
+              );
+              break;
+            case -26:
+              Toast(
+                "The mobile phone number has been frozen, please contact the customer service"
+              );
+              break;
+            case -27:
+              Toast(
+                "The phone number has been deleted. Please contact the customer service"
+              );
+              break;
+          }
+        });
+      }
+    },
+    // 第三方登录 绑定手机提交
+    thirdSubmit() {
+      const query = {
+        userPhone: this.bindForm.phone,
+        thirduserId: this.facebook_id,
+        smsCode: this.bindForm.code,
+        password: this.bindForm.password,
+        ishaveuser: this.hasUser ? 1 : 0,
+        type: 1,
+      };
+      if (this.hasUser) {
+        delete query.password;
+      }
+      userregister(query).then((res) => {
+        if (res.code === 0) {
+          Toast("Binding success");
+          setTimeout(() => {
+            localStorage.token = res.token;
+            this.$router.push({ name: "首页" });
+          }, 1500);
+          getuserinfo().then((req) => {
+            this.$storage.set("userinfoShop", req.user);
+            this.$storage.set("thirdapp", req.applist);
+          });
+        }
+      });
+    },
+    // 获取手机验证码
+    getMsgCode() {
+      if (this.bindForm.phone.length === 11 && typeof this.msg == "string") {
+        msglistApi({
+          msgphone: this.bindForm.phone,
+          areaCode: this.$refs["phone_select"].value,
+          types: 8,
+        }).then((res) => {
+          if (res.code == 0) {
+            Toast("Send Successfully");
+            this.msg = 60;
+            let timer = setInterval(() => {
+              this.msg--;
+              if (this.msg === 0) {
+                clearInterval(timer);
+              }
+            }, 1000);
+          }
+        });
+      } else {
+        Toast("please enter a valid phone number");
+      }
+    },
   },
   components: {
     zhezhao,
@@ -220,6 +418,60 @@ export default {
 </script>
 
 <style scoped lang="less">
+.van-action-sheet__header {
+  height: 80px;
+  line-height: 80px;
+  font-size: 30px;
+}
+.van-action-sheet__close {
+  font-size: 36px;
+  margin-right: 30px;
+}
+.bind_pop {
+  padding: 50px 30px;
+  .items {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+    .labels {
+      font-size: 18px;
+      color: #333;
+      width: 120px;
+    }
+    .inputs {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      color: #323233;
+      line-height: inherit;
+      text-align: left;
+      background-color: transparent;
+      border: 0;
+      resize: none;
+    }
+  }
+
+  .mt_20 {
+    margin-top: 40px;
+  }
+  .getCode {
+    color: #fa5300;
+  }
+  .bind_btns {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 120px;
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    color: #fff;
+    background-color: #fa5300;
+    border-radius: 32px;
+  }
+}
+
 .login {
   min-height: 100%;
   position: relative;
@@ -308,7 +560,12 @@ export default {
       overflow: hidden;
       padding: 0 100px;
       margin: 49px 0;
+      img {
+        width: 80px;
+        height: 80px;
+      }
     }
+
     /deep/ .van-row {
       img {
         width: 80px;
@@ -336,12 +593,12 @@ export default {
   }
   .left-80 {
     position: absolute;
-    left: 80px;
+    left: 40px;
     top: 10px;
   }
   .right-80 {
     position: absolute;
-    right: 80px;
+    right: 40px;
     top: 10px;
   }
   .tanchuang {

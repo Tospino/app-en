@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-22 14:01:45
+ * @LastEditTime: 2020-09-02 09:53:42
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -64,39 +64,53 @@
             </div>
           </div>
           <div class="good-content">
-            <div v-if="detailmData.quoteMethod == 1">
-              <div class="prices" v-if="!isClearSale">
-                <span class="mark c-orange">{{jn}}</span>
-                <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
-                <span
-                  class="p2 through"
-                  v-if="detailmData.salePriceFlag"
-                >{{jn}}{{detailmData.salePrice}}</span>
-              </div>
-              <div v-if="!isClearSale">
-                <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
-              </div>
-            </div>
-            <div class="miaoshu">
-              <span class="p4">{{detailmData.supplyTitle}}</span>
-              <!-- <span>
+            <div class="flex flex_space">
+              <div>
+                <div v-if="detailmData.quoteMethod == 1">
+                  <div class="prices" v-if="!isClearSale">
+                    <span class="mark c-orange">{{jn}}</span>
+                    <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
+                    <span
+                      class="p2 through"
+                      v-if="detailmData.salePriceFlag"
+                    >{{jn}}{{detailmData.salePrice}}</span>
+                  </div>
+                  <div v-if="!isClearSale">
+                    <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
+                  </div>
+                </div>
+                <div class="miaoshu">
+                  <span class="p4">{{detailmData.supplyTitle}}</span>
+                  <!-- <span>
                             <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
                             <span class="fenxiang-txt">Share</span>
-              </span>-->
-            </div>
-            <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
-              <div v-for="(spc,index) in spclist" :key="index" class="qujianjia-item">
-                <div class="price">
-                  <span class="huobi">{{jn}}</span>
-                  <span>{{spc.price}}</span>
+                  </span>-->
                 </div>
-                <div class="piece">
-                  <span v-show="index == 0">MOQ:</span>
-                  <span>{{spc.pcs}}PCS</span>
+                <div class="qujianjia" v-if="detailmData.quoteMethod == 2">
+                  <div v-for="(spc,index) in spclist" :key="index" class="qujianjia-item">
+                    <div class="price">
+                      <span class="huobi">{{jn}}</span>
+                      <span>{{spc.price}}</span>
+                    </div>
+                    <div class="piece">
+                      <span v-show="index == 0">MOQ:</span>
+                      <span>{{spc.pcs}}PCS</span>
+                    </div>
+                  </div>
                 </div>
+                <div>Sales:{{detailmData.skuSalesNum ? detailmData.skuSalesNum:0}}PCS</div>
+              </div>
+              <div class="flex_col share_warp">
+                <img
+                  src="@/assets/img/coupon/share.png"
+                  class="share_img"
+                  @click="showShare"
+                  alt
+                  srcset
+                />
+                <span>分享</span>
               </div>
             </div>
-            <div>Sales:{{detailmData.skuSalesNum ? detailmData.skuSalesNum:0}}PCS</div>
             <div class="supplement" v-if="false">
               <span class="t1">物流</span>
               <span class="t2">浙江省 金华市</span>
@@ -288,6 +302,7 @@
         @couponSucceed="couponSucceed"
       ></shop-coupon-pop>
     </section>
+    <share ref="share" :links="sharelinks" :infos="shareinfos" />
   </div>
 </template>
 
@@ -298,7 +313,7 @@ import commoditySelection from "@/multiplexing/commoditySelection";
 import shopCouponPop from "./itemComponents/shopCouponPop";
 import progressBar from "@/multiplexing/progress";
 import customerService from "@/components/tabbar/account/customerService.vue";
-
+import share from "@/multiplexing/share.vue";
 import {
   productdetailApi,
   AppqureyuserCouponProApi,
@@ -347,6 +362,8 @@ export default {
       moreShop: false, //优惠券领取
       showServer: false, // 是否显示客户弹框
       isClearSale: true, // 是否是特价清仓商品
+      sharelinks: "",
+      shareinfos: "",
     };
   },
   computed: {},
@@ -382,6 +399,9 @@ export default {
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
+          this.shareinfos = `${this.detailmData.supplyTitle}- ${this.detailmData.tsinCode}- ${this.detailmData.salePrice}`;
+          console.log("productdetail -> this.shareinfos", this.shareinfos);
+          this.sharelinks = `${document.location.href}`;
           this.couponProModel(
             this.detailmData.supplyId,
             this.detailmData.businessId,
@@ -531,6 +551,9 @@ export default {
     shopPop() {
       this.shop = false;
     },
+    showShare() {
+      this.$refs["share"].shows();
+    },
   },
   components: {
     detailsHeader,
@@ -540,6 +563,7 @@ export default {
     shopCouponPop,
     progressBar,
     customerService,
+    share,
   },
 };
 </script>
@@ -548,6 +572,19 @@ export default {
 .bscroll-wrapper {
   height: calc(100vh - 168px - 100px);
 }
+.share_warp {
+  font-size: 20px;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #999999;
+  line-height: 45px;
+  .share_img {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 5px;
+  }
+}
+
 .commodity-details {
   .commodity-swipe {
     width: 750px;
