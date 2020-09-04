@@ -623,14 +623,10 @@ export default {
     }
   }
   .selection-conten {
-    min-height: 900px;
-    overflow: hidden;
-    padding: 20px 40px 0;
+    padding: 20px 40px 150px;
     .guige_Box {
-      position: relative;
-      top: 40px;
-      bottom: 50px;
-      height: 520px;
+      padding-bottom: 200px;
+      height: 600px;
       overflow: auto;
       &::-webkit-scrollbar {
         display: none;

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-10 10:26:27
- * @LastEditTime: 2020-08-17 17:12:43
+ * @LastEditTime: 2020-09-04 16:21:07
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\router\index.js
@@ -273,6 +273,14 @@ export default new Router({
                     component: () =>
                         import(
                             `@/components/tabbar/account/accountSettings/companyInformation`
+                        )
+                },
+                {
+                    path: 'accountSecurity/AuthorizationDetails',
+                    name: '授权详情',
+                    component: () =>
+                        import(
+                            `@/components/tabbar/account/thirdLogin/details.vue`
                         )
                 },
                 {

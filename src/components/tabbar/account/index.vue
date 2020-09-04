@@ -254,6 +254,21 @@
           v-model="username"
           clearable
           right-icon="arrow"
+          placeholder="Bind Your Facebook Account"
+          left-icon="arrow"
+          disabled
+          @click="toBindThird"
+        >
+          <div slot="left-icon" size="small" type="primary" class="icon-left">
+            <img src="@/assets/img/coupon/facebook.png" style="width:20px;height:20px" />
+          </div>
+        </van-field>
+      </van-cell-group>
+      <van-cell-group class="border-0">
+        <van-field
+          v-model="username"
+          clearable
+          right-icon="arrow"
           placeholder="Change Country/District"
           left-icon="arrow"
           disabled
@@ -300,10 +315,11 @@ import xinyong from "@/assets/img/tabbar/my/account/xinyong@2x.png";
 import xinyuandan from "@/assets/img/tabbar/my/account/xinyuandan@2x.png";
 import yiwancheng from "@/assets/img/tabbar/my/account/yiwancheng@2x.png";
 import zuijinliulan from "@/assets/img/tabbar/my/account/zuijinliulan@2x.png";
-import { logoutApi } from "@/api/login/index";
+import { logoutApi, userAddthird, getuserinfo } from "@/api/login/index";
 import { selectuserfavoritesApi } from "@/api/favorites/index.js";
 import { walletInfoApi } from "@/api/accountBalance/index.js";
 import { selectuserbrowhistoryApi } from "@/api/favorites/index";
+import { Dialog } from "vant";
 import kefu from "@/multiplexing/kefu.vue";
 export default {
   props: {},
@@ -332,20 +348,35 @@ export default {
       },
       show2: false,
       showServer: false, // 是否显示客户弹框
+      thirdapp: [],
     };
   },
   computed: {},
-  created() {},
-  mounted() {
-    if (localStorage.userinfoShop) {
-      this.userinfoShop = JSON.parse(localStorage.userinfoShop);
+  created() {
+    if (this.$storage.get("userinfoShop")) {
+      this.userinfoShop = this.$storage.get("userinfoShop");
+    } else {
+      this.getUser();
     }
+    if (this.$storage.get("thirdapp")) {
+      this.thirdapp = this.$storage.get("thirdapp");
+    } else {
+      this.getUser();
+    }
+  },
+  mounted() {
     this.selectuserfavorites();
     this.walletInfo();
     this.selectuserbrowhistory(this.formData);
   },
   watch: {},
   methods: {
+    getUser() {
+      getuserinfo().then((res) => {
+        this.$storage.set("userinfoShop", res.user);
+        this.$storage.set("thirdapp", res.applist);
+      });
+    },
     jumpRouter(name) {
       this.$router.push({ name });
     },
@@ -361,11 +392,11 @@ export default {
       logoutApi().then((res) => {
         if (this.$storage.get("token")) {
           this.$storage.remove("token");
-          //   localStorage.removeItem("token");
+          this.$storage.remove("thirdapp");
           localStorage.removeItem("userinfoShop");
         }
         this.$router.push({ name: "登录" });
-        // location.reload();
+        location.reload();
       });
     },
     //收藏夹总数
@@ -403,6 +434,42 @@ export default {
      */
     service() {
       this.$router.push({ path: "/control/customerService" });
+    },
+    /**
+     * @description:去绑定第三方 facebook
+     * @author: 曹建勇
+     */
+    toBindThird() {
+      if (this.thirdapp.length !== 0 && this.thirdapp[0].thirdUserId) {
+        this.$router.push({ name: "授权详情" });
+      } else {
+        let a = this;
+        FB.login(
+          function (response) {
+            if (response.status === "connected") {
+              FB.api("/me", function (response1) {
+                userAddthird({ thirduserId: response1.id, type: 1 }).then(
+                  (res) => {
+                    a.getUser();
+                    Dialog.alert({
+                      title: "Tips",
+                      message: "Empower Facebook to succeed!",
+                    }).then(() => {
+                      a.$router.push({ name: "授权详情" });
+                    });
+                  }
+                );
+              });
+            } else {
+              Dialog.alert({
+                title: "Tips",
+                message: "Licensing Facebook failed! Please try again later",
+              });
+            }
+          },
+          { scope: "public_profile,email" }
+        );
+      }
     },
   },
   components: {

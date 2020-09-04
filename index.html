@@ -1,7 +1,7 @@
 <!--
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
- * @LastEditTime: 2020-07-31 14:59:08
+ * @LastEditTime: 2020-09-04 16:10:32
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\index.html
@@ -15,6 +15,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>shop</title>
+
     <style>
         .cjy-skeleton .van-skeleton {
             display: -webkit-box;
@@ -87,6 +88,27 @@
             margin-top: 20px;
         }
     </style>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '3322451687803078', // 正式
+                // appId: '3425494930806521', // 测试
+                cookie: true,
+                xfbml: true,
+                version: 'v8.0'
+            });
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
 </head>
 <link href="http://47.52.210.251:8091/tospino/test/common/image/tospinologo.png" rel="apple-touch-icon-precomposed">
 <link href="http://47.52.210.251:8091/tospino/test/common/image/tospinologo.png" rel="apple-touch-icon">
