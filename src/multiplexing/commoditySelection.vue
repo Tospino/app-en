@@ -99,7 +99,7 @@
               :style="{backgroundColor:btnbuy}"
             >Buy Now</div>
           </div>
-          <div class="ios-place" v-if="jixing=='ios'"></div>
+          <div class="ios-place" v-show="jixing=='ios'"></div>
         </div>
         <div class="commoditySelection-place"></div>
       </div>
@@ -130,6 +130,7 @@ export default {
       type: String,
       default: "",
     },
+    // 新增字段
     amountTip: {
       type: Boolean,
       default: false,
@@ -626,7 +627,7 @@ export default {
     overflow: hidden;
     padding: 20px 40px 0;
     .guige_Box {
-      height: 540px;
+      height: 750px;
       overflow: auto;
       &::-webkit-scrollbar {
         display: none;
@@ -739,6 +740,7 @@ export default {
     left: 0;
     width: 100%;
     padding: 0 40px;
+    // margin-top: 50px;
     box-sizing: border-box;
     .success-btn {
       width: 100%;
@@ -768,10 +770,10 @@ export default {
   .-place {
     height: 130px;
   }
-  .ios-place {
-    width: 100%;
-    float: left;
-    height: 180px;
-  }
+  //   .ios-place {
+  //     width: 100%;
+  //     float: left;
+  //     height: 180px;
+  //   }
 }
 </style>
