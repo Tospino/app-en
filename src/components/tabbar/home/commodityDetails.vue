@@ -43,12 +43,16 @@
               <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
             </van-swipe>
           </div>
+          <!-- 特价清仓销售价 -->
           <div class="clearSale_content flex" v-if="isClearSale">
             <div class="clearSale_left flex_col">
-              <span class="goods_discount flex_center2">54% off</span>
+              <span class="goods_discount flex_center2">
+                <!-- 54% off -->
+                {{arrClearSale.discountPrice}}% off
+              </span>
               <div class="flex mt_12">
-                <span class="goods_price">₵ 299.00</span>
-                <span class="goods_dis_price">₵ 399.00</span>
+                <span class="goods_price">{{jn}} {{arrClearSale.salePrice}}</span>
+                <span class="goods_dis_price">{{jn}} {{arrClearSale.salePrice}}</span>
               </div>
               <span class="goods_code">MOQ:30PCS</span>
             </div>
@@ -348,6 +352,7 @@ export default {
       moreShop: false, //优惠券领取
       showServer: false, // 是否显示客户弹框
       isClearSale: true, // 是否是特价清仓商品
+      arrClearSale: "", //特价清仓
     };
   },
   computed: {},
@@ -432,7 +437,8 @@ export default {
         activityId: activityId,
         supplyId: supplyId,
       }).then((res) => {
-        console.log(res, "supplyId");
+        this.arrClearSale = res.Data;
+        console.log(this.arrClearSale, "supplyId");
       });
     },
     //猜你喜欢点击了商品
