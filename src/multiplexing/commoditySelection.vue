@@ -627,7 +627,10 @@ export default {
     overflow: hidden;
     padding: 20px 40px 0;
     .guige_Box {
-      height: 750px;
+      position: relative;
+      top: 40px;
+      bottom: 50px;
+      height: 520px;
       overflow: auto;
       &::-webkit-scrollbar {
         display: none;
@@ -714,14 +717,14 @@ export default {
       padding: 20px;
       border: 1px solid #d2d2d2;
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 20px;
       .accra_title {
         font-weight: bold;
         color: #333333;
         line-height: 27px;
       }
       .accra_heard {
-        font-size: 14px;
+        font-size: 20px;
         font-family: Arial;
         // font-weight: 400;
         color: #929292;
@@ -735,7 +738,7 @@ export default {
     }
   }
   .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
