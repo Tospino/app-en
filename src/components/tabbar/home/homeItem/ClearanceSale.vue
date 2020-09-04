@@ -84,6 +84,7 @@ export default {
       gethomeClearanceList(this.query).then((res) => {
         if (res.code == 0) {
           this.list = res.Data.list;
+          //   console.log(this.list, "this.list");
           this.isExit = res.IsConcat;
         }
       });

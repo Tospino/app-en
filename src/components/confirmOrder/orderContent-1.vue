@@ -1,3 +1,4 @@
+
 /**
  * Undocumented
  * @author: zlj
@@ -229,23 +230,15 @@
 
     <!-- 返现弹窗 -->
     <van-dialog v-model="fanxianStatus" class="fanxian-style" confirm-button-text="OK">
-      <p style="font-weight: bold;font-size:12px; text-align: center;">Bonus for Online Payment</p>
-      <p style="font-size:12px" class="mt_20">Get your corresponding reward:</p>
+      <p>Warm prompt:You can get the corresponding reward if the order amount meets the following requirements for online payment.</p>
       <br />
-      <div
-        v-for="(fanxian,index) in fanxianList"
-        :key="index"
-        style="font-size:12px;font-weight: bold;"
-      >
-        {{index+1}}.Subtotal Amount Reached
-        {{fanxian.orderAmountWebsiteEnd ? ('₵'+fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
-        ('Over'+' '+'₵' +fanxian.orderAmountWebsiteStart)}} ,
-        <div>Get {{jn}} {{fanxian.returnCashAmountWebsite}} Bonus</div>
-      </div>
+      <p v-for="(fanxian,index) in fanxianList" :key="index">
+        {{index+1}}. {{fanxian.returnCashAmountWebsite}} cedis for
+        {{fanxian.orderAmountWebsiteEnd ? (fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
+        ('order over ' + fanxian.orderAmountWebsiteStart)}} cedis {{fanxian.orderAmountWebsiteEnd ? 'order': ''}}
+      </p>
       <br />
-      <p style="font-size:12px">Please check the bonus in your Tospino Account after order delivery.</p>
-      <p class="mt_20" style="color: #fa5300;font-size:12px">Warm Tips:</p>
-      <p style="font-size:12px">There is no reward if any refuse or return for your order.</p>
+      <p>After the goods has been received,the bounty would be paid into your account automatically, and there is no reward if you refuse or return the goods</p>
     </van-dialog>
   </div>
 </template>
@@ -544,7 +537,6 @@ export default {
             if (res.Data.rewardRegionList.length > 0) {
               this.fanxianStatus = true;
               this.fanxianList = res.Data.rewardRegionList;
-              console.log("this.fanxianList", this.fanxianList);
             }
           } else if (this.payTypeList.length != res.Data.payTypeList.length) {
             this.payTypeList = res.Data.payTypeList;
@@ -1175,20 +1167,16 @@ export default {
 }
 .fanxian-style {
   width: 600px;
-  //   padding: 30px 30px 0;
+  padding: 30px 30px 0;
   font-size: 28px;
   line-height: 40px;
-  /deep/.van-dialog__content {
-    padding: 30px 30px 0;
-  }
   /deep/ .van-dialog__footer {
     margin-top: 30px;
     .van-button.van-button--default.van-button--large.van-dialog__confirm {
       height: 80px;
-      background: #fa5300;
       .van-button__text {
         font-size: 40px;
-        color: #fff;
+        color: #000;
       }
     }
   }

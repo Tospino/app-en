@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-09-02 09:53:42
+ * @LastEditTime: 2020-09-04 15:55:59
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -43,12 +43,16 @@
               <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
             </van-swipe>
           </div>
+          <!-- 特价清仓销售价 -->
           <div class="clearSale_content flex" v-if="isClearSale">
             <div class="clearSale_left flex_col">
-              <span class="goods_discount flex_center2">54% off</span>
+              <span class="goods_discount flex_center2">
+                <!-- 54% off -->
+                {{arrClearSale.discountPrice}}% off
+              </span>
               <div class="flex mt_12">
-                <span class="goods_price">₵ 299.00</span>
-                <span class="goods_dis_price">₵ 399.00</span>
+                <span class="goods_price">{{jn}} {{arrClearSale.salePrice}}</span>
+                <span class="goods_dis_price">{{jn}} {{arrClearSale.salePrice}}</span>
               </div>
               <span class="goods_code">MOQ:30PCS</span>
             </div>
@@ -318,6 +322,7 @@ import {
   productdetailApi,
   AppqureyuserCouponProApi,
   AppqureyuserCouponProModelApi,
+  getClearanceDetailApi,
 } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
@@ -362,12 +367,17 @@ export default {
       moreShop: false, //优惠券领取
       showServer: false, // 是否显示客户弹框
       isClearSale: true, // 是否是特价清仓商品
-      sharelinks: "",
-      shareinfos: "",
+      arrClearSale: "", //特价清仓
     };
   },
   computed: {},
-  created() {},
+  created() {
+    this.getClearanceDetail(
+      this.$route.query.skuId,
+      this.$route.query.activityId,
+      this.$route.query.supplyId
+    );
+  },
   mounted() {
     setTimeout(() => {
       this.productdetail(this.$route.query.skuId);
@@ -396,12 +406,11 @@ export default {
     //商品详情
     productdetail(id) {
       productdetailApi({ skuid: id }).then((res) => {
+        console.log("res", res);
         if (res.code == 0) {
           Toast.loading({ loadingType: "spinner", message: "loading..." });
           this.detailmData = res.Data;
-          this.shareinfos = `${this.detailmData.supplyTitle}- ${this.detailmData.tsinCode}- ${this.detailmData.salePrice}`;
-          console.log("productdetail -> this.shareinfos", this.shareinfos);
-          this.sharelinks = `${document.location.href}`;
+          //   console.log("this.detailmData",this.detailmData);
           this.couponProModel(
             this.detailmData.supplyId,
             this.detailmData.businessId,
@@ -434,6 +443,17 @@ export default {
             this.$router.go(-1);
           }, 1000);
         }
+      });
+    },
+    // 特价清仓
+    getClearanceDetail(skuId, activityId, supplyId) {
+      getClearanceDetailApi({
+        skuid: skuId,
+        activityId: activityId,
+        supplyId: supplyId,
+      }).then((res) => {
+        this.arrClearSale = res.Data;
+        console.log(this.arrClearSale, "supplyId");
       });
     },
     //猜你喜欢点击了商品
