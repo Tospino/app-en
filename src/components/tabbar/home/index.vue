@@ -380,10 +380,10 @@ export default {
   },
   computed: {},
   created() {
-    FB.getLoginStatus(function (response) {
-      console.log("created -> response", response);
-      statusChangeCallback(response);
-    });
+    // FB.getLoginStatus(function (response) {
+    //   console.log("created -> response", response);
+    //   statusChangeCallback(response);
+    // });
     this.newCoupons();
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
@@ -427,36 +427,41 @@ export default {
     this.refreshOrder();
   },
   watch: {
-    // 监听首页新用户优惠券是否展示
-    newCouponShow: {
-      deep: true,
-      handler: function (val) {
-        if (val == 0) {
-          this.sale = true;
-        } else if (val == -300) {
-          this.sale = false;
-        }
-      },
-    },
-    // 如果路由有变化,会再次执行该方法
-    $route: {
-      handler(route) {
-        if (route.name === "首页") {
-          // location.reload();
-          this.newCoupons();
-        }
-      },
-      deep: true,
-    },
+    // // 监听首页新用户优惠券是否展示
+    // newCouponShow: {
+    //   deep: true,
+    //   handler: function (val) {
+    //     if (val == 0) {
+    //       this.sale = true;
+    //     } else if (val == -300) {
+    //       this.sale = false;
+    //     }
+    //   },
+    // },
+    // // 如果路由有变化,会再次执行该方法
+    // $route: {
+    //   handler(route) {
+    //     if (route.name === "首页") {
+    //       // location.reload();
+    //       this.newCoupons();
+    //     }
+    //   },
+    //   deep: true,
+    // },
   },
   methods: {
     // 首页新用户优惠券
     newCoupons() {
       APPgetuserIsfullApi().then((res) => {
-        this.newCouponShow = res.code;
+        // this.newCouponShow = res.code;
         if (res.code == 0) {
-          this.newCoupon = res.Data;
+          let userNews = res.Data;
+          if (userNews != null) {
+            this.newCoupon = res.Data;
+            this.sale = true;
+          }
         } else {
+          this.sale = false;
           this.$toast.clear();
         }
       });

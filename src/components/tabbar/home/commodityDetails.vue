@@ -306,7 +306,7 @@
         @couponSucceed="couponSucceed"
       ></shop-coupon-pop>
     </section>
-    <share ref="share" :links="sharelinks" :infos="shareinfos" />
+    <!-- <share ref="share" :links="sharelinks" :infos="shareinfos" /> -->
   </div>
 </template>
 
@@ -317,7 +317,7 @@ import commoditySelection from "@/multiplexing/commoditySelection";
 import shopCouponPop from "./itemComponents/shopCouponPop";
 import progressBar from "@/multiplexing/progress";
 import customerService from "@/components/tabbar/account/customerService.vue";
-import share from "@/multiplexing/share.vue";
+// import share from "@/multiplexing/share.vue";
 import {
   productdetailApi,
   AppqureyuserCouponProApi,
