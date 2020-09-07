@@ -49,13 +49,13 @@
       <span class="c2 fs-24" @click="jumpRouter('注册')">Create Account</span>
     </div>
     <div class="footer">
-      <div>
+      <!-- <div>
         <div class="line left-80"></div>
         <div class="other">Other ways to login</div>
         <div class="line right-80"></div>
         <div class="icons flex flex_around">
           <img @click="ThirdLogin('facebook')" src="@/assets/img/login/facebook@3x.png" />
-          <!-- <van-row type="flex" justify="space-between">
+          <van-row type="flex" justify="space-between">
             <van-col span="8" style="text-align:center" @click="ThirdLogin('facebook')">
               <img src="@/assets/img/login/facebook@3x.png" />
             </van-col>
@@ -65,9 +65,9 @@
             <van-col span="8" style="text-align:center" @click="ThirdLogin('weixin')">
               <img src="@/assets/img/login/weixin@3x.png" />
             </van-col>
-          </van-row>-->
+          </van-row>
         </div>
-      </div>
+      </div>-->
       <div class="agreement">
         <input type="checkbox" class="checkbox" v-model="checked" />
         <span class="c1 fs-24">

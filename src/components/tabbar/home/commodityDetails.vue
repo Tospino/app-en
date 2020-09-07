@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-21 16:00:41
+ * @LastEditTime: 2020-09-04 17:54:59
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -277,6 +277,7 @@
         @couponSucceed="couponSucceed"
       ></shop-coupon-pop>
     </section>
+    <!-- <share ref="share" :links="sharelinks" :infos="shareinfos" /> -->
   </div>
 </template>
 
@@ -287,7 +288,7 @@ import commoditySelection from "@/multiplexing/commoditySelection";
 import shopCouponPop from "./itemComponents/shopCouponPop";
 import progressBar from "@/multiplexing/progress";
 import customerService from "@/components/tabbar/account/customerService.vue";
-
+// import share from "@/multiplexing/share.vue";
 import {
   productdetailApi,
   AppqureyuserCouponProApi,

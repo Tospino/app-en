@@ -249,7 +249,7 @@
           </div>
         </van-field>
       </van-cell-group>
-      <van-cell-group class="border-0">
+      <!-- <van-cell-group class="border-0">
         <van-field
           v-model="username"
           clearable
@@ -263,7 +263,7 @@
             <img src="@/assets/img/coupon/facebook.png" style="width:20px;height:20px" />
           </div>
         </van-field>
-      </van-cell-group>
+      </van-cell-group>-->
       <van-cell-group class="border-0">
         <van-field
           v-model="username"
