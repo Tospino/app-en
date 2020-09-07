@@ -49,13 +49,13 @@
       <span class="c2 fs-24" @click="jumpRouter('注册')">Create Account</span>
     </div>
     <div class="footer">
-      <!-- <div>
+      <div>
         <div class="line left-80"></div>
         <div class="other">Other ways to login</div>
         <div class="line right-80"></div>
         <div class="icons flex flex_around">
           <img @click="ThirdLogin('facebook')" src="@/assets/img/login/facebook@3x.png" />
-          <van-row type="flex" justify="space-between">
+          <!-- <van-row type="flex" justify="space-between">
             <van-col span="8" style="text-align:center" @click="ThirdLogin('facebook')">
               <img src="@/assets/img/login/facebook@3x.png" />
             </van-col>
@@ -65,9 +65,9 @@
             <van-col span="8" style="text-align:center" @click="ThirdLogin('weixin')">
               <img src="@/assets/img/login/weixin@3x.png" />
             </van-col>
-          </van-row>
+          </van-row>-->
         </div>
-      </div>-->
+      </div>
       <div class="agreement">
         <input type="checkbox" class="checkbox" v-model="checked" />
         <span class="c1 fs-24">
@@ -108,8 +108,8 @@
             />
           </div>
           <select ref="phone_select">
-            <option value="+233">+233</option>
-            <option value="+86">+86</option>
+            <option value="233">233</option>
+            <!-- <option value="+86">+86</option> -->
           </select>
         </div>
         <div class="flex items flex_space mt_20">
@@ -185,7 +185,7 @@ export default {
         phone: "",
         code: "",
         password: "",
-        areaCode: "+86",
+        areaCode: "233",
       },
       showKeyboard: false,
       facebook_id: "",
@@ -280,48 +280,54 @@ export default {
     // 第三方登录
     ThirdLogin(val) {
       let a = this;
-      if (val === "facebook") {
-        // 调用facebook登录
-        FB.login(
-          function (response) {
-            console.log("ThirdLogin -> response", response);
-            if (response.status === "connected") {
-              a.facebook_id = response.authResponse.userID;
-              FB.api("/me", function (response1) {
-                console.log(
-                  "Successful login for: " + JSON.stringify(response1)
-                );
-                doLogin({
-                  inputToken: response.authResponse.accessToken,
-                  name: response1.name,
-                }).then((res) => {
-                  if (res.code === 0) {
-                    localStorage.token = res.token;
-                    a.$router.push({ name: "首页" });
-                  } else if (res.code === -330) {
-                    a.show = true;
-                  } else if (res.code === -340) {
-                    a.show = true;
-                  }
-                  console.log("res", res);
+      if (FB) {
+        if (val === "facebook") {
+          // 调用facebook登录
+          FB.login(
+            function (response) {
+              console.log("ThirdLogin -> response", response);
+              if (response.status === "connected") {
+                a.facebook_id = response.authResponse.userID;
+                FB.api("/me", function (response1) {
+                  console.log(
+                    "Successful login for: " + JSON.stringify(response1)
+                  );
+                  doLogin({
+                    inputToken: response.authResponse.accessToken,
+                    name: response1.name,
+                  }).then((res) => {
+                    if (res.code === 0) {
+                      localStorage.token = res.token;
+                      a.$router.push({ name: "首页" });
+                    } else if (res.code === -330) {
+                      a.show = true;
+                    } else if (res.code === -340) {
+                      a.show = true;
+                    }
+                    console.log("res", res);
+                  });
                 });
-              });
-            } else {
-              Dialog.alert({
-                title: "Tips",
-                message: "User cancelled login or did not fully authorize.",
-              }).then(() => {
-                // on close
-              });
-              // The person is not logged into your webpage or we are unable to tell.
-            }
-          },
-          { scope: "public_profile,email" }
+              } else {
+                Dialog.alert({
+                  title: "Tips",
+                  message: "User cancelled login or did not fully authorize.",
+                }).then(() => {
+                  // on close
+                });
+                // The person is not logged into your webpage or we are unable to tell.
+              }
+            },
+            { scope: "public_profile,email" }
+          );
+          // 调用facebook退出登录
+          // FB.logout(function (response) {
+          //   // Person is now logged out
+          // });
+        }
+      } else {
+        Toast(
+          "facebook The application is not loaded. Please try again later "
         );
-        // 调用facebook退出登录
-        // FB.logout(function (response) {
-        //   // Person is now logged out
-        // });
       }
     },
     // 检测手机号是否注册平台账号
