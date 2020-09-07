@@ -115,7 +115,7 @@
               class="flex goods_items flex_start"
               v-for="item in clear_list"
               :key="item.skuId"
-              @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,isClear:true}})"
+              @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,activityType:item.activityType}})"
             >
               <img class="goods_img" v-lazy="$webUrl+item.skuImg" />
               <div class="flex_col w100">

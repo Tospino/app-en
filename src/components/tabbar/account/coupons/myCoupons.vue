@@ -233,6 +233,7 @@ export default {
       loading: false,
       finished: false,
       isOne: true,
+      exp1: 0,
     };
   },
   computed: {},
@@ -267,12 +268,15 @@ export default {
     },
     // 全部可用优惠券
     async getListData(data, flag) {
-      window.scrollTo({ top: 10 });
       let couponList = await APPgetuserallCouponListApi(data);
+      console.log(flag, "flag");
+      //   console.log("this.shopCoupon", this.shopCoupon);
       if (flag) {
         this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
+        console.log("1", this.shopCoupon);
       } else {
         this.shopCoupon = couponList.Data.list;
+        console.log("0", this.shopCoupon);
       }
       // 列表数据懒加载
       if (this.shopCoupon.length >= couponList.Data.totalCount) {
@@ -285,8 +289,14 @@ export default {
     },
     // 已使用和已过期优惠券
     async getUseData(data, flag) {
-      window.scrollTo({ top: 10 });
+      console.log(data, flag);
+      //   this.finished = true;
       let couponList = await APPgetuserallcouponlistexpireApi(data);
+      if (this.shopCouponEx.length >= couponList.Data.totalCount) {
+        this.finished = true;
+        return false;
+      }
+      //   return;
       // 获取数据
       if (this.active == 1) {
         if (flag) {
@@ -304,9 +314,12 @@ export default {
         }
       } else if (this.active == 2) {
         if (flag) {
+          //   this.shopCouponEx = [...this.shopCouponEx, ...couponList.Data.list];
           this.shopCouponEx = this.shopCouponEx.concat(couponList.Data.list);
+          console.log("this.shopCouponEx", this.shopCouponEx);
         } else {
           this.shopCouponEx = couponList.Data.list;
+          console.log("444aa", this.shopCouponEx);
         }
         // 如果数组长度大于数据总长度
         if (this.shopCouponEx.length >= couponList.Data.totalCount) {
@@ -365,13 +378,13 @@ export default {
     },
     // 领取优惠券
     availableCoupon(couponsId) {
-      // 清空数据，重新加载
-      this.refreshCoupon();
       couponDrawApi(couponsId).then((res) => {
         if (res.code == 0) {
           Toast("Get the success");
           setTimeout(() => {
             if (this.active == 0) {
+              // 清空数据，重新加载
+              this.refreshCoupon();
               this.onLoad();
             }
           }, 1000);
@@ -385,18 +398,16 @@ export default {
       });
     },
     // 删除使用优惠券
-    usedDel(delId) {
-      // 清空数据，重新加载
-      this.refreshCoupon();
+    async usedDel(delId) {
       let delIds = {
         drawId: delId,
       };
       couponRemoveApi(delIds).then((res) => {
         if (res.code == 0) {
           Toast("Delete the success");
-          setTimeout(() => {
-            this.onLoad();
-          }, 1000);
+          // 清空数据，重新加载
+          this.refreshCoupon();
+          this.onLoad();
         } else {
           this.$toast.clear();
         }

@@ -375,7 +375,8 @@ export default {
     this.getClearanceDetail(
       this.$route.query.skuId,
       this.$route.query.activityId,
-      this.$route.query.supplyId
+      this.$route.query.supplyId,
+      this.$route.query.activityType
     );
   },
   mounted() {
@@ -446,15 +447,24 @@ export default {
       });
     },
     // 特价清仓
-    getClearanceDetail(skuId, activityId, supplyId) {
-      getClearanceDetailApi({
-        skuid: skuId,
-        activityId: activityId,
-        supplyId: supplyId,
-      }).then((res) => {
-        this.arrClearSale = res.Data;
-        console.log(this.arrClearSale, "supplyId");
-      });
+    getClearanceDetail(skuId, activityId, supplyId, activityType) {
+      console.log(skuId, "skuId-详情");
+      console.log(activityId, "activityId-详情");
+      console.log(supplyId, "supplyId-详情");
+      console.log(activityType, "activityType-详情");
+      if (activityType == 1) {
+        this.isClearSale = true;
+        // 商品是否属于特价商品
+        getClearanceDetailApi({
+          skuid: skuId,
+          activityId: activityId,
+          supplyId: supplyId,
+        }).then((res) => {
+          this.arrClearSale = res.Data;
+        });
+      } else {
+        this.isClearSale = false;
+      }
     },
     //猜你喜欢点击了商品
     clickPro(skuid) {
@@ -583,7 +593,7 @@ export default {
     shopCouponPop,
     progressBar,
     customerService,
-    share,
+    // share,
   },
 };
 </script>

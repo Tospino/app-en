@@ -46,7 +46,7 @@
             class="footprint-goods-content"
             v-for="(good,index) in dataList"
             :key="index"
-            @click="toProduDetail(good.skuId)"
+            @click="toProduDetail(good.skuId,good.activityId,good.activityType)"
           >
             <div>
               <div class="good-img">
@@ -272,6 +272,7 @@ export default {
             this.showData = true;
             Toast.clear();
           }, 1000);
+          console.log("this.dataList", this.dataList);
         } else {
           searchProductApi(data).then((res) => {
             if (res.code == 0) {
@@ -303,8 +304,15 @@ export default {
       });
     },
     //跳转到商品详情
-    toProduDetail(skuId) {
-      this.$router.push({ name: "商品详情", query: { skuId } });
+    toProduDetail(skuId, activityId, activityType) {
+      this.$router.push({
+        name: "商品详情",
+        query: {
+          skuId: skuId,
+          activityId: activityId,
+          activityType: activityType,
+        },
+      });
     },
     //猜你喜欢点击了商品
     clickPro(skuId) {

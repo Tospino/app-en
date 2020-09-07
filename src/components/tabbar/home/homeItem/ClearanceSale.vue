@@ -48,13 +48,13 @@
       </span>
     </div>
     <cleargoods :list="list" />
-    <share ref="share" />
+    <!-- <share ref="share" /> -->
   </section>
 </template>
 
 <script>
 import cleargoods from "./compoents/clear-goods-items.vue";
-import share from "@/multiplexing/share.vue";
+// import share from "@/multiplexing/share.vue";
 import { gethomeClearanceList } from "@/api/home/index.js";
 export default {
   name: "ClearanceSale",
@@ -116,7 +116,10 @@ export default {
       this.$refs["share"].shows();
     },
   },
-  components: { cleargoods, share },
+  components: {
+    cleargoods,
+    //   share
+  },
 };
 </script>
 

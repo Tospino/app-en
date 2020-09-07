@@ -7,12 +7,13 @@
  * @FilePath: \app-en\src\components\tabbar\home\homeItem\compoents\clear-goods-items.vue
 -->
 <template>
+  <!-- 更多清仓 -->
   <section class="clear-goods-items">
     <div
       class="goods_items flex flex_start"
       v-for="item in list"
       :key="item.skuId"
-      @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,isClear:true}})"
+      @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,activityType:item.activityType}})"
     >
       <div class="goods_warp">
         <div :class="{'img_model':item===1}"></div>
