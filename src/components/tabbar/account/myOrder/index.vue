@@ -290,6 +290,7 @@ export default {
     //弹出支付成功
     showsucess() {
       this.$refs.sucess.showAction = true;
+      this.$refs.actionSheetPassword.value = "";
       setTimeout(() => {
         this.$refs.sucess.showAction = false;
         this.$refs.actionSheetPaymen.closeyinhang();
