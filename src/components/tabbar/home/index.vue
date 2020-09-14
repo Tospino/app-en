@@ -99,7 +99,8 @@
               <span class="put-line"></span>
               <span class="t1">Clearance Sale</span>
               <span class="desc ml_20" v-show="!isExit">
-                <!-- 时间 -->
+                <!-- 特价时间 -->
+                <!-- clear_one -->
                 <count-down model="timer" :end-time="clear_one">
                   <template v-slot="time">Starts at {{time.hour}}:{{time.minute}}:{{time.second}}</template>
                 </count-down>
@@ -115,7 +116,7 @@
               class="flex goods_items flex_start"
               v-for="item in clear_list"
               :key="item.skuId"
-              @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,activityType:item.activityType}})"
+              @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,activityType:item.activityType,activityState:item.activityState}})"
             >
               <img class="goods_img" v-lazy="$webUrl+item.skuImg" />
               <div class="flex_col w100">
@@ -124,14 +125,14 @@
                   <span
                     class="goods_discount"
                     :class="{'on_fb':item.activityState===1}"
-                  >{{((1-(item.activityPrice/item.salePrice))*100).toFixed(2)}}% off</span>
+                  >{{((1-(item.activityPrice/item.salePrice))*100).toFixed(0)}}% off</span>
                 </div>
                 <div>
                   <span
                     class="goods_price"
                     :class="{'on_fc':item.activityState===1}"
                   >{{jn}}{{item.activityPrice}}</span>
-                  <span class="goods_dis_price">{{jn}}{{(item.salePrice).toFixed(2)}}</span>
+                  <span class="goods_dis_price">{{jn}}{{(item.salePrice).toFixed(0)}}</span>
                 </div>
                 <span class="goods_btn flex_center2" v-if="item.activityState===0">Not started</span>
                 <span class="goods_btn on_fb flex_center2" v-if="item.activityState===1">Buy now</span>
@@ -375,7 +376,7 @@ export default {
       sale: false, //新用户是否存在
       clear_list: [],
       isExit: false,
-      clear_one: "", //倒计时
+      clear_one: "", //特价 倒计时
     };
   },
   computed: {},
@@ -628,7 +629,8 @@ export default {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
           console.log(this.clear_list, "this.clear_list");
-          this.clear_one = this.clear_list[0].activityEndWebsite.slice(0, 10);
+          //   特价时间
+          this.clear_one = this.clear_list[0].activityBegin.slice(0, 10);
           this.isExit = res.IsConcat;
         }
       });

@@ -51,10 +51,21 @@
             <div>
               <div class="good-img">
                 <div class="shouwan" v-if="!good.canSalesNum">Out of Stock</div>
-                <img v-lazy="$webUrl+good.imgUrl" />
+                <!-- 特价折扣 -->
+                <div class="flex_col clear_special">
+                  <i class="clear_icon">54% Off</i>
+                  <img v-lazy="$webUrl+good.imgUrl" />
+                </div>
               </div>
               <div class="good-desc">
-                <div class="p1 clamp-2" v-html="good.supplyTitle"></div>
+				<!-- 特价标识 -->
+				<div class="flex">
+				    <div class="clear_energy">
+						Promotion Sale 
+					</div>
+					<div class="p1 clamp-2" v-html="good.supplyTitle">
+					</div>
+				</div>
                 <!-- <div class="sales-num">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</div> -->
                 <div class="country">
                   <div v-if="good.expId == 1">
@@ -425,6 +436,7 @@ export default {
           }
         }
       }
+
       .good-desc {
         padding-right: 30px;
         position: absolute;
@@ -433,6 +445,12 @@ export default {
         font-size: 26px;
         color: #333;
         width: 480px;
+		.clear_energy{
+			color: #fff;
+			padding: 6px 12px;
+			background: #FA5300;
+			border-radius: 15px;
+		}
         .p1 {
           line-height: 39px;
           height: 80px;
@@ -478,6 +496,15 @@ export default {
         justify-content: space-around;
         flex-direction: column;
         z-index: 10;
+      }
+      .clear_special {
+        .clear_icon {
+          position: absolute;
+          color: #fff;
+          padding: 6px 16px;
+          background: #fa5400;
+          border-radius: 0px 0px 10px 0px;
+        }
       }
     }
   }

@@ -44,7 +44,7 @@
             </van-swipe>
           </div>
           <!-- 特价清仓销售价 -->
-          <div class="clearSale_content flex" v-if="isClearSale">
+          <div class="clearSale_content flex" v-if="isClearSale==1">
             <div class="clearSale_left flex_col">
               <span class="goods_discount flex_center2">
                 <!-- 54% off -->
@@ -71,7 +71,7 @@
             <div class="flex flex_space">
               <div>
                 <div v-if="detailmData.quoteMethod == 1">
-                  <div class="prices" v-if="!isClearSale">
+                  <div class="prices">
                     <span class="mark c-orange">{{jn}}</span>
                     <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
                     <span
@@ -79,7 +79,7 @@
                       v-if="detailmData.salePriceFlag"
                     >{{jn}}{{detailmData.salePrice}}</span>
                   </div>
-                  <div v-if="!isClearSale">
+                  <div>
                     <span class="p3">MOQ:{{detailmData.numIntervalStart}}Pcs</span>
                   </div>
                 </div>
@@ -366,7 +366,7 @@ export default {
       ProModel: "", //最大优惠券
       moreShop: false, //优惠券领取
       showServer: false, // 是否显示客户弹框
-      isClearSale: true, // 是否是特价清仓商品
+      isClearSale: this.$route.query.activityState, // 是否是特价清仓商品
       arrClearSale: "", //特价清仓
     };
   },
@@ -453,7 +453,6 @@ export default {
       console.log(supplyId, "supplyId-详情");
       console.log(activityType, "activityType-详情");
       if (activityType == 1) {
-        this.isClearSale = true;
         // 商品是否属于特价商品
         getClearanceDetailApi({
           skuid: skuId,
@@ -461,9 +460,8 @@ export default {
           supplyId: supplyId,
         }).then((res) => {
           this.arrClearSale = res.Data;
+          console.log(this.arrClearSale, " this.arrClearSale");
         });
-      } else {
-        this.isClearSale = false;
       }
     },
     //猜你喜欢点击了商品

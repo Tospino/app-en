@@ -233,7 +233,7 @@ export default {
       formData: {
         page: 1,
         limit: 10,
-        businessId:0,
+        businessId: 0,
       },
       dataList: [],
       youxiaoList: [],
@@ -330,10 +330,15 @@ export default {
             // console.log(arrShopList[Object.keys(this.shopList)[Object.keys(this.shopList).length-1]],"5555747");
           } else {
             this.shopList = res.Data.list;
-             // 取最后一个对象数组
-            let arrShopList=this.shopList;
-            let arrLast=arrShopList[Object.keys(this.shopList)[Object.keys(this.shopList).length-1]]
-            this.formData.businessId=arrLast.businessId
+            // 取最后一个对象数组
+            let arrShopList = this.shopList;
+            let arrLast =
+              arrShopList[
+                Object.keys(this.shopList)[
+                  Object.keys(this.shopList).length - 1
+                ]
+              ];
+            this.formData.businessId = arrLast.businessId;
           }
           this.kanmengou = true;
           this.shopcarTotal = res.Data.totalCount;
