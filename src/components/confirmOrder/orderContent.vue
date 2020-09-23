@@ -94,7 +94,7 @@
         >{{order.orderFareWebsite==0 ?'': order.currencySignWebsite}}{{order.orderFareWebsite==0 ? 'Free Shipping':order.orderFareWebsite}}</span>
       </div>
       <div class="payment b-t-1">
-        <span>Transporation</span>
+        <span>Transportation</span>
         <div
           class="select"
           v-if="order.deliverType==1 || order.deliverType==2"
