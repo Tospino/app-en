@@ -8,7 +8,7 @@
       :searName="searName"
     ></search-head>
     <div v-if="lishiShow" class="record">
-      <div class="m-b-60" v-if="historyList.length>0">
+      <div class="m-b-60" v-if="historyList.length > 0">
         <div class="search-title">
           <span class="title-p1">Recent Searches</span>
           <van-icon name="delete" @click="deleteRecord" />
@@ -19,14 +19,19 @@
             v-for="history in historyList"
             :key="history.tableId"
             @click="toSearchGood(history.keyWord)"
-          >{{history.keyWord}}</span>
+            >{{ history.keyWord }}</span
+          >
         </div>
       </div>
 
-      <div v-if="findList.length>0">
+      <div v-if="findList.length > 0">
         <div class="search-title">
-          <span class="title-p1">Search Results</span>
-          <van-icon name="eye-o" v-if="iconShow" @click="iconShow = !iconShow" />
+          <span class="title-p1">Hot Search</span>
+          <van-icon
+            name="eye-o"
+            v-if="iconShow"
+            @click="iconShow = !iconShow"
+          />
           <van-icon name="closed-eye" v-else @click="iconShow = !iconShow" />
         </div>
         <div class="search-labels" v-show="iconShow">
@@ -35,7 +40,8 @@
             v-for="find in findList"
             :key="find.productId"
             @click="toSearchGood(find.productName)"
-          >{{find.productName}}</span>
+            >{{ find.productName }}</span
+          >
         </div>
       </div>
     </div>
@@ -46,7 +52,7 @@
           :key="product.productId"
           @click="toGoodsOne(product.productName)"
         >
-          <span class="search-good-name">{{product.productName}}</span>
+          <span class="search-good-name">{{ product.productName }}</span>
           <span class="icon">
             <img src="@/assets/img/search/enter@3x.png" alt />
           </span>
