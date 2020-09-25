@@ -31,6 +31,7 @@
           <div class="guige_Box">
             <div class="guige-title">{{oneTitle}}</div>
             <div class="guige-list">
+              <!-- {{onedata}} -->
               <span
                 class="guige-items"
                 v-for="(one,index) in onedata"
@@ -159,6 +160,7 @@ export default {
         },
       ],
       tips: "",
+      clear_shop: "", //清仓活动默认勾选
     };
   },
   computed: {
@@ -259,8 +261,12 @@ export default {
       let arr = [];
       let makeupList = [];
       this.makeupdata = this.selectionObj.Makeupdata;
+      console.log("this.selectionObj", this.selectionObj);
+      console.log(this.makeupdata, "this.makeupdata7777");
       this.onedata = this.selectionObj.Onedata;
+      console.log(this.onedata, "this.onedata7888");
       this.twodata = this.selectionObj.Twodata;
+      console.log(this.twodata, "this.twodata");
       this.makeupdata.forEach((item) => {
         if (this.makeupdata.length > 1) {
           if (item.skuPrice > 0) {
@@ -278,6 +284,12 @@ export default {
         if (item.canSalesNum > 0) {
           makeupList.push(item.skuValues);
         }
+        // 清仓默认勾选
+        console.log("444", item);
+        if (item.skuId == this.$route.query.skuId) {
+          // 第一层
+          this.clear_shop = item.valueId;
+        }
       });
       this.oneTitle = this.selectionObj.Onedata[0].attrTitleEng
         ? this.selectionObj.Onedata[0].attrTitleEng
@@ -292,6 +304,7 @@ export default {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
           if (checkItem == item.valueId) {
+            console.log("ad");
             item.ischeck = true;
           }
         });
@@ -299,9 +312,11 @@ export default {
       this.onedata.forEach((item) => {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
+          //   if (item.valueId == this.clear_shop) {
           if (checkItem == item.valueId) {
             item.ischeck = true;
           }
+          //   }
         });
       });
     },

@@ -13,7 +13,7 @@
       class="goods_items flex flex_start"
       v-for="item in list"
       :key="item.skuId"
-      @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,activityType:item.activityType}})"
+      @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,activityType:item.activityType,activityState:item.activityState}})"
     >
       <div class="goods_warp">
         <div :class="{'img_model':item===1}"></div>

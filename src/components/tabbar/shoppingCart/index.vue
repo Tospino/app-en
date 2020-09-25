@@ -45,6 +45,13 @@
                 <van-icon name="arrow" />
               </p>
             </div>
+            <!-- 活动标签 -->
+            <div v-if="dataitem.activityType">
+              <span
+                class="clear_on"
+                :class="{'on_fc':dataitem.activityState==0,'pre_fc':dataitem.activityState==1}"
+              >Promotion sale starts</span>
+            </div>
           </div>
           <div class="good-box" v-for="(dataitem,index) in data.list" :key="index+'a'">
             <!-- 新增-第二版 -->
@@ -74,12 +81,20 @@
                     checked-color="#F83600"
                     @click="changeCheckbox(dataitem,'',data)"
                   ></van-checkbox>
-                  <div class="good-img" @click="toDetail(dataitem.skuId)">
+                  <div class="good-img" @click="toDetail(dataitem)">
                     <img v-lazy="$webUrl+dataitem.imgUrl" />
                   </div>
                 </div>
                 <div class="good-item-r">
-                  <span class="good-describe" @click="toDetail(dataitem.skuId)">{{dataitem.skuName}}</span>
+                  <span class="good-describe" @click="toDetail(dataitem)">
+                    <!-- 活动标识 -->
+                    <span
+                      v-if="dataitem.activityType"
+                      class="clear_act"
+                      :class="{'clearone':dataitem.activityState==0,'cleartwo':dataitem.activityState==1}"
+                    >54% off</span>
+                    {{dataitem.skuName}}
+                  </span>
                   <div class="good-seclet">
                     <select name disabled>
                       <option value="0">{{dataitem.skuValuesTitleEng}}</option>
@@ -286,8 +301,27 @@ export default {
       // 语法糖
       ["setstopcarlist"] // 相当于this.$store.dispatch('setstopcarlist'),提交这个方法
     ),
-    toDetail(skuId) {
-      this.$router.push({ name: "商品详情", query: { skuId } });
+    toDetail(overall) {
+      console.log(overall.activityId, "购物车");
+      if (overall.activityId != null) {
+        this.$router.push({
+          name: "商品详情",
+          query: {
+            skuId: overall.skuId,
+            activityId: overall.activityId,
+            supplyId: overall.supplyId,
+            activityType: overall.activityType,
+            activityState: overall.activityState,
+          },
+        });
+      } else {
+        this.$router.push({
+          name: "商品详情",
+          query: {
+            skuId: overall.skuId,
+          },
+        });
+      }
     },
     mange() {
       this.showMange = !this.showMange;
@@ -332,6 +366,7 @@ export default {
             this.shopList = res.Data.list;
             // 取最后一个对象数组
             let arrShopList = this.shopList;
+            console.log(arrShopList, "5557");
             let arrLast =
               arrShopList[
                 Object.keys(this.shopList)[
@@ -358,6 +393,7 @@ export default {
           this.wuxiaoList = wuxiaoList;
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessIdtwo");
+          console.log(this.dataList, " this.dataList");
           // this.dataList.forEach((item) => {
           //   item.list.forEach((listitem) => {
           //     listitem.checkStatus = false;
@@ -447,7 +483,13 @@ export default {
         return;
       }
       this.setstopcarlist(this.selectionList.map((o) => Object.assign({}, o)));
-      this.$router.push({ name: "确认订单详情", query: { type: "shopcar" } });
+      this.$router.push({
+        name: "确认订单详情",
+        query: {
+          type: "shopcar",
+          activityType: this.dataList.list.activityType,
+        },
+      });
     },
     //总计计算
     zongji() {
@@ -641,6 +683,16 @@ export default {
     background-color: #fff;
     margin-bottom: 20px; //这个是原始样式
     overflow: hidden;
+    .clear_on {
+      box-sizing: border-box;
+      padding: 0 20px;
+    }
+    .on_fc {
+      color: #00a670 !important;
+    }
+    .pre_fc {
+      color: #fa5400 !important;
+    }
     .shopping-cart-l {
       padding-left: 30px;
     }
@@ -736,10 +788,22 @@ export default {
       .good-item-r {
         .good-describe {
           width: 410px;
+          line-height: 50px;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
           overflow: hidden;
+          .clear_act {
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 14px;
+          }
+          .clearone {
+            background: #00a670;
+          }
+          .cleartwo {
+            background: #fa5400;
+          }
         }
         .good-seclet {
           padding-top: 20px;

@@ -11,7 +11,11 @@
     </div>
     <div class="exhibition-con clearfix">
       <div v-for="(good,index) in dataList" :key="index">
-        <div v-if="good.canSalesNum > 0" class="exhibition-left" @click="toProduDetail(good.skuId)">
+        <div
+          v-if="good.canSalesNum > 0"
+          class="exhibition-left"
+          @click="toProduDetail(good.skuId,good)"
+        >
           <img v-lazy="$webUrl+good.imgUrl" />
           <div class="produced">
             <div v-if="good.expId == 1">
@@ -28,10 +32,16 @@
             </div>
           </div>
           <div class="produced-title">
+            <span
+              v-if="good.activityType"
+              class="produced_icon"
+              :class="{'produced_clearone':good.activityState===0,'produced_cleartwo':good.activityState==1}"
+            >Promotion Sale</span>
             <span>{{good.supplyTitle}}</span>
           </div>
           <div class="score">
-            <van-rate v-model="good.starNumber" readonly color="#FA5300" />
+            <!-- 评论星 -->
+            <!-- <van-rate v-model="good.starNumber" readonly color="#FA5300" /> -->
             <span>{{good.manNumber}}</span>
           </div>
           <div class="price">
@@ -85,9 +95,18 @@ export default {
       this.$router.push({ name });
     },
     //跳转到商品详情
-    toProduDetail(skuId) {
-      this.$emit("clickPro", skuId);
-      // this.$router.push({name:'商品详情',query:{skuId}})
+    toProduDetail(skuId, actAll) {
+      this.$emit("clickPro", skuId, actAll);
+      //   this.$router.push({
+      //     name: "商品详情",
+      //     query: {
+      //       skuId: skuId,
+      //       activityId: actAll.activityId,
+      //       supplyId: actAll.supplyId,
+      //       activityType: actAll.activityType,
+      //       activityState: actAll.activityState,
+      //     },
+      //   });
     },
     getData() {
       this.footerObj = Object.assign({}, this.footerObj, this.footerData);
@@ -174,12 +193,24 @@ export default {
     }
     .produced-title {
       padding-left: 10px;
-      height: 35px;
+      height: 72px;
+      line-height: 40px;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
       font-size: 18px;
+      .produced_icon {
+        padding: 6px 12px;
+        color: #fff;
+        border-radius: 15px;
+      }
+      .produced_clearone {
+        background: #00a670 !important;
+      }
+      .produced_cleartwo {
+        background: #fa5400 !important;
+      }
     }
     .score {
       margin: 10px 0 20px;
@@ -190,6 +221,7 @@ export default {
     }
     .price {
       position: relative;
+      bottom: 0;
       .price1 {
         font-size: 28px;
         color: #fa5300;

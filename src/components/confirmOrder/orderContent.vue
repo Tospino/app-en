@@ -51,7 +51,10 @@
               >{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
             </div>
             <div class="good-detail-title">
-              <span class="name">{{product.skuName}}</span>
+              <span class="name">
+                <span v-if="product.activityType==1" class="good-detail-actType">Clearance</span>
+                {{product.skuName}}
+              </span>
               <div class="guige">{{product.skuValuesTitleEng}}</div>
               <div class="p1">{{product.currencySignWebsite}}{{product.priceWebsite}}</div>
               <div
@@ -531,6 +534,7 @@ export default {
       // // 缓存订单数据在vuex
       // this.$store.state.orderDetails = data;
       getconfirmorderApi(data).then((res) => {
+        console.log(res, "aaawsf");
         if (res.code == 0) {
           this.orderData = res.Data;
           // 缓存优惠券列表在vuex
@@ -539,6 +543,8 @@ export default {
           if (this.payTypeList.length == 0) {
             //第一次请求
             this.payTypeList = res.Data.payTypeList;
+            // // 我写到这里
+            // console.log(this.payTypeList, "this.payTypeList");
             this.payTypeListLength = this.payTypeList.length;
             this.zffs = "";
             if (res.Data.rewardRegionList.length > 0) {
@@ -556,6 +562,7 @@ export default {
     },
     //确认订单提交订单接口
     batchmakeorder(orderObj) {
+      console.log(orderObj, "adw");
       let obj = {
         addressId: this.defaultAdderss.addressId,
         payType: this.zffs,
@@ -566,6 +573,7 @@ export default {
         couponList: this.couponList,
       };
       batchmakeorderApi(obj).then((res) => {
+        console.log(res, "s");
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -626,6 +634,7 @@ export default {
     //订单发起支付
     orderlaunchpay(data) {
       orderlaunchpayApi(data).then((res) => {
+        console.log("res");
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
@@ -837,6 +846,13 @@ export default {
           color: #333;
           font-size: 22px;
           line-height: 26px;
+          line-height: 50px;
+          .good-detail-actType {
+            padding: 6px 12px;
+            color: #fff;
+            background: #fa5400;
+            border-radius: 14px;
+          }
         }
         .guige {
           color: #666;

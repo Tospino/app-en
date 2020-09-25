@@ -58,7 +58,7 @@ import footerExhibition from "@/multiplexing/footerExhibition";
 import goodList from "./itemComponents/goodList";
 import {
   selectuserfavoritesApi,
-  deleteuserfavoritesApi
+  deleteuserfavoritesApi,
 } from "@/api/favorites/index";
 import { guessyoulikeApi } from "@/api/search/index";
 import { Toast } from "vant";
@@ -71,12 +71,12 @@ export default {
       option1: [
         { text: "Sort by", value: 0 },
         { text: "Latest Date", value: 2 },
-        { text: "Farthest Date", value: 1 }
+        { text: "Farthest Date", value: 1 },
       ],
       option2: [
         { text: "", value: "" },
         { text: "", value: "" },
-        { text: "", value: "" }
+        { text: "", value: "" },
       ],
       checked: true,
       showFooter: false,
@@ -86,20 +86,20 @@ export default {
         page: 1,
         limit: 10,
         seraname: "",
-        sort: 2
+        sort: 2,
       },
       footerData: {},
       footerFromData: {
         page: 1,
         limit: 6,
-        seraname: ""
+        seraname: "",
       },
       shoucangTotal: 0,
       pullUp: true,
       kanmengou: true,
       dataList: [],
       twoDataList: [],
-      allChecked: false
+      allChecked: false,
     };
   },
   computed: {},
@@ -117,10 +117,10 @@ export default {
   },
   watch: {
     showFooter: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.editBjName = newVal ? "OK" : "Edit";
-      }
-    }
+      },
+    },
   },
   methods: {
     //获取滚动条距离底部距离
@@ -158,7 +158,7 @@ export default {
     },
     //收藏夹列表
     selectuserfavorites(data, flag) {
-      selectuserfavoritesApi(data).then(res => {
+      selectuserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           if (flag) {
             this.dataList = this.dataList.concat(res.Data.list);
@@ -170,17 +170,17 @@ export default {
           if (this.dataList.length >= this.shoucangTotal) {
             this.pullUp = false;
           }
-          this.dataList.forEach(item => {
+          this.dataList.forEach((item) => {
             item.checked = false;
           });
 
-          this.twoDataList = this.dataList.map(o => Object.assign({}, o));
+          this.twoDataList = this.dataList.map((o) => Object.assign({}, o));
         }
       });
     },
     //删除收藏夹
     deleteuserfavorites(data) {
-      deleteuserfavoritesApi(data).then(res => {
+      deleteuserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           Toast("Success");
           this.selectuserfavorites(this.formData);
@@ -189,10 +189,10 @@ export default {
     },
     //找相似商品
     guessyoulike(data) {
-      guessyoulikeApi(data).then(res => {
+      guessyoulikeApi(data).then((res) => {
         if (res.code == 0) {
           this.footerData = res.Data;
-          this.footerData.list.forEach(item => {
+          this.footerData.list.forEach((item) => {
             if (item.discountPrice == null) {
               item.discountPrice = item.salePrice;
             }
@@ -214,13 +214,13 @@ export default {
     delet() {
       let arr = [];
       if (this.viewOne) {
-        this.$refs.goodList.dataList.forEach(item => {
+        this.$refs.goodList.dataList.forEach((item) => {
           if (item.checked) {
             arr.push(item.dataId);
           }
         });
       } else {
-        this.twoDataList.forEach(item => {
+        this.twoDataList.forEach((item) => {
           if (item.checked) {
             arr.push(item.dataId);
           }
@@ -231,24 +231,24 @@ export default {
     //全选
     allCheck() {
       if (this.viewOne) {
-        let arr = this.dataList.map(o => Object.assign({}, o));
-        arr.forEach(item => {
+        let arr = this.dataList.map((o) => Object.assign({}, o));
+        arr.forEach((item) => {
           item.checked = this.allChecked;
         });
         this.dataList = arr;
       } else {
-        let arr = this.twoDataList.map(o => Object.assign({}, o));
-        arr.forEach(item => {
+        let arr = this.twoDataList.map((o) => Object.assign({}, o));
+        arr.forEach((item) => {
           item.checked = this.allChecked;
         });
         this.twoDataList = arr;
       }
-    }
+    },
   },
   components: {
     footerExhibition,
-    goodList
-  }
+    goodList,
+  },
 };
 </script>
 

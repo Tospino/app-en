@@ -44,38 +44,37 @@
             </van-swipe>
           </div>
           <!-- 特价清仓销售价 -->
-          <div class="clearSale_content flex" v-if="isClearSaleId!=null">
+          <div class="clearSale_content flex" v-if="this.$route.query.activityId!=null">
             <div
               class="clearSale_left flex_col"
-              :class="{'on_fw':isClearSale===0,'on_fc':isClearSale==1,'on_tc':isClearSale==2}"
+              :class="{'on_fw':isClearSale==0,'on_fc':isClearSale==1,'on_tc':isClearSale==2}"
             >
               <span
                 class="goods_discount flex_center2"
-                :class="{'fz_cw':isClearSale===0,'fz_co':isClearSale==1,'fz_ct':isClearSale==2}"
+                :class="{'fz_cw':isClearSale==0,'fz_co':isClearSale==1,'fz_ct':isClearSale==2}"
               >
                 <!-- 54% off -->
-                {{((detailmData.discountPrice/detailmData.salePrice)*100).toFixed(0)}}% off
+                {{detailmData.discountPrice}}% off
               </span>
-              <div class="flex mt_30">
+              <div class="flex mt_12">
                 <span class="goods_price">{{jn}} {{detailmData.salePrice}}</span>
                 <span class="goods_dis_price">{{jn}} {{detailmData.salePrice}}</span>
               </div>
-              <!-- <span class="goods_code">MOQ:30PCS</span> -->
+              <span class="goods_code">MOQ:30PCS</span>
             </div>
             <div
               class="clearSale_right flex_col_center2"
-              :class="{'on_rw':isClearSale===0,'on_rc':isClearSale==1,'on_rt':isClearSale==2}"
+              :class="{'on_rw':isClearSale==0,'on_rc':isClearSale==1,'on_rt':isClearSale==2}"
             >
               <h2 class="active_title">Clearance Sale</h2>
               <div class="active_time flex" v-show="true">
-                <!-- 特价时间 -->
-                <count-down model="timer" :end-time="arrClearSale" v-if="isClearSale===0">
-                  <template v-slot="time">
-                    starts at
-                    <!-- {{time.hour}}:{{time.minute}}:{{time.second}} -->
-                    {{parseInt(time.restCount/ 3600)>10?parseInt(time.restCount/ 3600):"0"+parseInt(time.restCount/ 3600)}}:{{parseInt(time.restCount% 3600 / 60)>10?parseInt(time.restCount% 3600 / 60):"0"+parseInt(time.restCount% 3600 / 60)}}:{{parseInt(time.restCount% 60)>10?parseInt(time.restCount% 60):"0"+parseInt(time.restCount% 60)}}
-                  </template>
-                </count-down>
+                <span v-if="isClearSale==0">
+                  starts at
+                  <!-- 特价时间 -->
+                  <count-down model="timer" :end-time="detailmData.activityBegin">
+                    <template v-slot="time">{{time.hour}}:{{time.minute}}:{{time.second}}</template>
+                  </count-down>
+                </span>
                 <span v-else>While supplies last</span>
               </div>
               <!-- 特价进行中 -->
@@ -382,9 +381,8 @@ export default {
       ProModel: "", //最大优惠券
       moreShop: false, //优惠券领取
       showServer: false, // 是否显示客户弹框
-      isClearSaleId: "", // 是否是特价清仓商品
       isClearSale: "", // 活动状态 0 未开始（预热） 1 已开始（进行中） 2 售罄
-      arrClearSale: " ", //特价清仓"2020-9-28 14:00:00"
+      arrClearSale: "", //特价清仓
     };
   },
   computed: {},
@@ -425,16 +423,17 @@ export default {
         //清仓活动类型
         getClearanceDetailApi({
           skuid: id,
-          activityId: this.$route.query.activityId,
-          supplyId: this.$route.query.supplyId,
-          activityType: this.$route.query.activityType,
-          activityState: this.$route.query.activityState,
+          activityId:
+            this.arrClearSale.activityId || this.$route.query.activityId,
+          supplyId: this.arrClearSale.supplyId || this.$route.query.supplyId,
+          activityType:
+            this.arrClearSale.activityType || this.$route.query.activityType,
+          activityState:
+            this.arrClearSale.activityState || this.$route.query.activityState,
         }).then((res) => {
           if (res.code == 0) {
-            this.isClearSaleId = this.$route.query.activityId;
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
-            this.arrClearSale = this.detailmData.productSkuList[0].tpproductskuattrvalue[0].activityBegin;
             console.log("this.detailmData", this.detailmData);
             this.couponProModel(
               this.detailmData.supplyId,
@@ -490,7 +489,7 @@ export default {
             this.footerData.list = res.GuessyouLike;
             this.showfooter = true; //数据回调回来,显示猜你喜欢
             this.Isfavorites = res.Data.isfavorites; //收藏状态
-            this.isClearSaleId = this.footerData.list.activityId;
+
             this.spclist = res.spclist;
             this.productParamList = res.Data.productParamList.slice(0, 5);
             this.productParamList2 = res.Data.productParamList;
@@ -510,31 +509,9 @@ export default {
         });
       }
     },
-    // // 特价清仓
-    // getClearanceDetail(
-    //   skuId,
-    //   activityId,
-    //   supplyId,
-    //   activityType,
-    //   activityState
-    // ) {
-    //   this.isClearSaleId = this.$route.query.activityId; //是否是活动商品
-    //   this.isClearSale = this.$route.query.activityState; //活动状态
-    //   if (activityType == 1) {
-    //     //清仓活动类型
-    //     getClearanceDetailApi({
-    //       skuid: skuId,
-    //       activityId: activityId,
-    //       activityState: activityState,
-    //       activityType: activityType,
-    //       supplyId: supplyId,
-    //     }).then((res) => {
-    //       this.arrClearSale = res.Data;
-    //     });
-    //   }
-    // },
     //猜你喜欢点击了商品
     clickPro(skuid, actAll) {
+      this.arrClearSale = actAll;
       this.productdetail(skuid, actAll.activityType);
       this.$refs.wrapper.scrollTo(0, 0, 500);
       this.active = 0;
@@ -1172,7 +1149,7 @@ export default {
   }
 
   .on_tc {
-    background-image: linear-gradient(#dfdfdf, #b4b4b4) !important; // 活动结束
+    background-image: linear-gradient(#d8d8d8, #b4b4b4) !important; // 活动结束
   }
   .clearSale_left {
     padding: 0 30px;
@@ -1188,7 +1165,7 @@ export default {
       color: #a7a7a7 !important; // 活动结束
     }
     .fz_cw {
-      color: #a9a9a9 !important; // 活动未开始
+      color: #00a56f !important; // 活动未开始
     }
 
     .goods_discount {
@@ -1231,7 +1208,7 @@ export default {
     width: 40%;
     height: 140px;
     color: rgba(255, 254, 254, 1);
-    padding-left: 15px;
+    padding-left: 20px;
     align-items: flex-start;
     // background-color: #00a670; // 活动未开始
     // background-color: #ff9502; // 活动中
@@ -1243,13 +1220,13 @@ export default {
     .active_time {
       margin-top: 22px;
       > span:first-child {
-        font-size: 22px;
+        font-size: 26px;
         font-weight: 500;
       }
       > span:last-child {
         font-size: 30px;
         font-weight: bold;
-        // margin-left: 11px;
+        margin-left: 11px;
       }
     }
     .active_desc {

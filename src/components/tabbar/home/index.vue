@@ -82,7 +82,7 @@
           <div class="flash-sale-2">
             <div class="pictures">
               <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
-                <img v-lazy="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)" />
+                <img v-lazy="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId,finework)" />
                 <div class="good-name clamp-2">{{finework.supplyTitle}}</div>
                 <span
                   class="good-price1"
@@ -93,16 +93,17 @@
           </div>
         </div>
         <!-- 特价清仓 -->
-        <div class="good-Clearance box">
+        <div class="good-Clearance box" v-if="clear_list.length!=0">
           <div class="flash-sale-1 flex flex_space">
             <div class="flex">
               <span class="put-line"></span>
               <span class="t1">Clearance Sale</span>
               <span class="desc ml_20" v-show="!isExit">
                 <!-- 特价时间 -->
-                <!-- clear_one -->
                 <count-down model="timer" :end-time="clear_one">
-                  <template v-slot="time">Starts at {{time.hour}}:{{time.minute}}:{{time.second}}</template>
+                  <template
+                    v-slot="time"
+                  >Starts at {{parseInt(time.restCount/ 3600)>10?parseInt(time.restCount/ 3600):"0"+parseInt(time.restCount/ 3600)}}:{{parseInt(time.restCount% 3600 / 60)>10?parseInt(time.restCount% 3600 / 60):"0"+parseInt(time.restCount% 3600 / 60)}}:{{parseInt(time.restCount% 60)>10?parseInt(time.restCount% 60):"0"+parseInt(time.restCount% 60)}}</template>
                 </count-down>
               </span>
             </div>
@@ -188,7 +189,7 @@
                 v-for="(fineSale1,index) in fineSaleList1"
                 :key="index"
               >
-                <img v-lazy="$webUrl+fineSale1.imgUrl" @click="toDetail(fineSale1.skuId)" />
+                <img v-lazy="$webUrl+fineSale1.imgUrl" @click="toDetail(fineSale1.skuId,fineSale1)" />
                 <div class="good-name">{{fineSale1.supplyTitle}}</div>
                 <span
                   class="good-price"
@@ -204,7 +205,7 @@
           <div class="flash-sale-2">
             <div class="pictures">
               <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
-                <img v-lazy="$webUrl+fineSale2.imgUrl" @click="toDetail(fineSale2.skuId)" />
+                <img v-lazy="$webUrl+fineSale2.imgUrl" @click="toDetail(fineSale2.skuId,fineSale2)" />
                 <span class="good-name clamp-2">{{fineSale2.supplyTitle}}</span>
                 <br />
                 <span
@@ -258,7 +259,7 @@
                 v-for="(searchgoodDao,index) in searchgoodDaolist"
                 :key="index"
               >
-                <div class="exhibition-img" @click="toDetail(searchgoodDao.skuId)">
+                <div class="exhibition-img" @click="toDetail(searchgoodDao.skuId,searchgoodDao)">
                   <div class="shouwan" v-if="!searchgoodDao.canSalesNum">Out of Stock</div>
                   <img v-lazy="$webUrl + searchgoodDao.imgUrl" />
                 </div>
@@ -277,9 +278,19 @@
                     <span>{{searchgoodDao.locationNameEng ? searchgoodDao.locationNameEng : ''}}</span>
                   </span>
                 </div>
-                <div class="clamp-2 miaoshu">{{searchgoodDao.supplyTitle}}</div>
+                <div class="clamp-2 miaoshu">
+                  <!-- 活动清仓标识列表 -->
+                  <!-- <span>{{((1-(searchgoodDao.activityPrice/searchgoodDao.salePrice))*100).toFixed(0)}}%</span> -->
+                  <span
+                    v-if="searchgoodDao.activityId"
+                    class="clamp_clear"
+                    :class="{'clear_sale':searchgoodDao.activityType==0,'clear_saon':searchgoodDao.activityType==1}"
+                  >Promotion Sale</span>
+                  {{searchgoodDao.supplyTitle}}
+                </div>
                 <div class="score">
-                  <van-rate v-model="searchgoodDao.starNumber" readonly color="#FA5300" />
+                  <!-- 评分星 -->
+                  <!-- <van-rate v-model="searchgoodDao.starNumber" readonly color="#FA5300" /> -->
                   <!-- <span>477</span> -->
                 </div>
                 <div class="price">
@@ -427,29 +438,7 @@ export default {
   mounted() {
     this.refreshOrder();
   },
-  watch: {
-    // // 监听首页新用户优惠券是否展示
-    // newCouponShow: {
-    //   deep: true,
-    //   handler: function (val) {
-    //     if (val == 0) {
-    //       this.sale = true;
-    //     } else if (val == -300) {
-    //       this.sale = false;
-    //     }
-    //   },
-    // },
-    // // 如果路由有变化,会再次执行该方法
-    // $route: {
-    //   handler(route) {
-    //     if (route.name === "首页") {
-    //       // location.reload();
-    //       this.newCoupons();
-    //     }
-    //   },
-    //   deep: true,
-    // },
-  },
+  watch: {},
   methods: {
     // 首页新用户优惠券
     newCoupons() {
@@ -577,8 +566,18 @@ export default {
       this.pullup = true;
     },
     //跳转商品详情
-    toDetail(skuid) {
-      this.$router.push({ name: "商品详情", query: { skuId: skuid } });
+    toDetail(skuid, overall) {
+      // 活动清仓根据activityId,supplyId,activityType,activityState
+      this.$router.push({
+        name: "商品详情",
+        query: {
+          skuId: skuid,
+          activityId: overall.activityId,
+          supplyId: overall.supplyId,
+          activityType: overall.activityType,
+          activityState: overall.activityState,
+        },
+      });
     },
     //去到搜索里面
     toSearOne(id, type) {
@@ -628,9 +627,8 @@ export default {
       gethomeClearanceList({ isHome: 1 }).then((res) => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
-          console.log(this.clear_list, "this.clear_list");
           //   特价时间
-          this.clear_one = this.clear_list[0].activityBegin.slice(0, 10);
+          this.clear_one = this.clear_list[0].activityBegin;
           this.isExit = res.IsConcat;
         }
       });
@@ -1216,9 +1214,21 @@ export default {
           }
         }
         .miaoshu {
-          line-height: 27px;
+          //   line-height: 32px;
           font-size: 18px;
-          height: 54px;
+          height: 60px;
+
+          .clamp_clear {
+            padding: 4px 10px;
+            color: #fff;
+            border-radius: 15px;
+          }
+          .clear_sale {
+            background: #00a670 !important;
+          }
+          .clear_saon {
+            background: #fa5400 !important;
+          }
         }
         img {
           width: 340px;
