@@ -10,7 +10,7 @@ export function addshopcartApi(params) {
 //购物车列表
 export function shopcartlistApi(params) {
     return park({
-        url: `/apporder/shopcartlistApi`,
+        url: `/apporder/getshopcartlist`,
         method: 'POST',
         data: params
     })
