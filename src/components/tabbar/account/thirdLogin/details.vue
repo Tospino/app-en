@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-09-01 17:29:26
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-09-04 16:22:09
+ * @LastEditTime: 2020-09-03 16:36:40
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\thirdLogin\details.vue
 -->
@@ -17,7 +17,9 @@
       <div class="auth_status">Authorized</div>
     </div>
     <div class="flex_col items">
-      <span v-if="thirdapp.length!==0">authorization at：{{thirdapp[0].addTime}}</span>
+      <span v-if="thirdapp.length !== 0"
+        >authorization at：{{ thirdapp[0].addTime }}</span
+      >
       <span class="mt_10">expiration at：long-term effective</span>
     </div>
     <div class="flex_col items">

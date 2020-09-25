@@ -1,3 +1,4 @@
+
 /**
  * Undocumented
  * @author: zlj
@@ -51,10 +52,7 @@
               >{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
             </div>
             <div class="good-detail-title">
-              <span class="name">
-                <span v-if="product.activityType==1" class="good-detail-actType">Clearance</span>
-                {{product.skuName}}
-              </span>
+              <span class="name">{{product.skuName}}</span>
               <div class="guige">{{product.skuValuesTitleEng}}</div>
               <div class="p1">{{product.currencySignWebsite}}{{product.priceWebsite}}</div>
               <div
@@ -94,7 +92,7 @@
         >{{order.orderFareWebsite==0 ?'': order.currencySignWebsite}}{{order.orderFareWebsite==0 ? 'Free Shipping':order.orderFareWebsite}}</span>
       </div>
       <div class="payment b-t-1">
-        <span>Transportation</span>
+        <span>Transporation</span>
         <div
           class="select"
           v-if="order.deliverType==1 || order.deliverType==2"
@@ -232,23 +230,15 @@
 
     <!-- 返现弹窗 -->
     <van-dialog v-model="fanxianStatus" class="fanxian-style" confirm-button-text="OK">
-      <p style="font-weight: bold;font-size:12px; text-align: center;">Bonus for Online Payment</p>
-      <p style="font-size:12px" class="mt_20">Get your corresponding reward:</p>
+      <p>Warm prompt:You can get the corresponding reward if the order amount meets the following requirements for online payment.</p>
       <br />
-      <div
-        v-for="(fanxian,index) in fanxianList"
-        :key="index"
-        style="font-size:12px;font-weight: bold;"
-      >
-        {{index+1}}.Subtotal Amount Reached
-        {{fanxian.orderAmountWebsiteEnd ? ('₵'+fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
-        ('Over'+' '+'₵' +fanxian.orderAmountWebsiteStart)}} ,
-        <div>Get {{jn}} {{fanxian.returnCashAmountWebsite}} Bonus</div>
-      </div>
+      <p v-for="(fanxian,index) in fanxianList" :key="index">
+        {{index+1}}. {{fanxian.returnCashAmountWebsite}} cedis for
+        {{fanxian.orderAmountWebsiteEnd ? (fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
+        ('order over ' + fanxian.orderAmountWebsiteStart)}} cedis {{fanxian.orderAmountWebsiteEnd ? 'order': ''}}
+      </p>
       <br />
-      <p style="font-size:12px">Please check the bonus in your Tospino Account after order delivery.</p>
-      <p class="mt_20" style="color: #fa5300;font-size:12px">Warm Tips:</p>
-      <p style="font-size:12px">There is no reward if any refuse or return for your order.</p>
+      <p>After the goods has been received,the bounty would be paid into your account automatically, and there is no reward if you refuse or return the goods</p>
     </van-dialog>
   </div>
 </template>
@@ -534,7 +524,6 @@ export default {
       // // 缓存订单数据在vuex
       // this.$store.state.orderDetails = data;
       getconfirmorderApi(data).then((res) => {
-        console.log(res, "aaawsf");
         if (res.code == 0) {
           this.orderData = res.Data;
           // 缓存优惠券列表在vuex
@@ -543,14 +532,11 @@ export default {
           if (this.payTypeList.length == 0) {
             //第一次请求
             this.payTypeList = res.Data.payTypeList;
-            // // 我写到这里
-            // console.log(this.payTypeList, "this.payTypeList");
             this.payTypeListLength = this.payTypeList.length;
             this.zffs = "";
             if (res.Data.rewardRegionList.length > 0) {
               this.fanxianStatus = true;
               this.fanxianList = res.Data.rewardRegionList;
-              console.log("this.fanxianList", this.fanxianList);
             }
           } else if (this.payTypeList.length != res.Data.payTypeList.length) {
             this.payTypeList = res.Data.payTypeList;
@@ -562,7 +548,6 @@ export default {
     },
     //确认订单提交订单接口
     batchmakeorder(orderObj) {
-      console.log(orderObj, "adw");
       let obj = {
         addressId: this.defaultAdderss.addressId,
         payType: this.zffs,
@@ -573,7 +558,6 @@ export default {
         couponList: this.couponList,
       };
       batchmakeorderApi(obj).then((res) => {
-        console.log(res, "s");
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -634,7 +618,6 @@ export default {
     //订单发起支付
     orderlaunchpay(data) {
       orderlaunchpayApi(data).then((res) => {
-        console.log("res");
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
@@ -846,13 +829,6 @@ export default {
           color: #333;
           font-size: 22px;
           line-height: 26px;
-          line-height: 50px;
-          .good-detail-actType {
-            padding: 6px 12px;
-            color: #fff;
-            background: #fa5400;
-            border-radius: 14px;
-          }
         }
         .guige {
           color: #666;
@@ -1191,20 +1167,16 @@ export default {
 }
 .fanxian-style {
   width: 600px;
-  //   padding: 30px 30px 0;
+  padding: 30px 30px 0;
   font-size: 28px;
   line-height: 40px;
-  /deep/.van-dialog__content {
-    padding: 30px 30px 0;
-  }
   /deep/ .van-dialog__footer {
     margin-top: 30px;
     .van-button.van-button--default.van-button--large.van-dialog__confirm {
       height: 80px;
-      background: #fa5300;
       .van-button__text {
         font-size: 40px;
-        color: #fff;
+        color: #000;
       }
     }
   }

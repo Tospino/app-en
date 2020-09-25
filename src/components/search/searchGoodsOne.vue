@@ -46,16 +46,32 @@
             class="footprint-goods-content"
             v-for="(good,index) in dataList"
             :key="index"
-            @click="toProduDetail(good.skuId)"
+            @click="toProduDetail(good)"
           >
             <div>
               <div class="good-img">
                 <div class="shouwan" v-if="!good.canSalesNum">Out of Stock</div>
-                <img v-lazy="$webUrl+good.imgUrl" />
+                <!-- 特价折扣 -->
+                <div class="flex_col clear_special">
+                  <i
+                    v-if="good.activityType==1"
+                    class="clear_icon"
+                    :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
+                  >{{((good.discountPrice/good.salePrice)*100).toFixed(0)}}% Off</i>
+                  <img v-lazy="$webUrl+good.imgUrl" />
+                </div>
               </div>
               <div class="good-desc">
                 <div class="p1 clamp-2" v-html="good.supplyTitle"></div>
                 <!-- <div class="sales-num">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</div> -->
+                <!-- 特价标识 -->
+                <div class="clear_energy mt_20 mb_10">
+                  <span
+                    v-if="good.activityType==1"
+                    class="clear_energy_identify mt_20 mb_10"
+                    :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
+                  >Promotion Sale</span>
+                </div>
                 <div class="country">
                   <div v-if="good.expId == 1">
                     <!-- <img v-lazy="$webUrl+'/common/image/zhiyou.png'"/> -->
@@ -70,7 +86,8 @@
                       <br />
                     </div>
                   </div>
-                  <van-rate v-model="good.starNumber" readonly class="rate" />
+                  <!-- 评论等级 -->
+                  <!-- <van-rate v-model="good.starNumber" readonly class="rate" /> -->
                   <span class="rate-num">{{good.manNumber}}</span>
                 </div>
                 <div class="good-price">
@@ -272,6 +289,7 @@ export default {
             this.showData = true;
             Toast.clear();
           }, 1000);
+          console.log("this.dataList", this.dataList);
         } else {
           searchProductApi(data).then((res) => {
             if (res.code == 0) {
@@ -303,12 +321,31 @@ export default {
       });
     },
     //跳转到商品详情
-    toProduDetail(skuId) {
-      this.$router.push({ name: "商品详情", query: { skuId } });
+    toProduDetail(overall) {
+      this.$router.push({
+        name: "商品详情",
+        query: {
+          skuId: overall.skuId,
+          activityId: overall.activityId,
+          supplyId: overall.supplyId,
+          activityType: overall.activityType,
+          activityState: overall.activityState,
+        },
+      });
     },
     //猜你喜欢点击了商品
-    clickPro(skuId) {
-      this.$router.push({ name: "商品详情", query: { skuId } });
+    clickPro(skuId, actAll) {
+      //   this.$router.push({ name: "商品详情", query: { skuId } });
+      this.$router.push({
+        name: "商品详情",
+        query: {
+          skuId: skuId,
+          activityId: actAll.activityId,
+          supplyId: actAll.supplyId,
+          activityType: actAll.activityType,
+          activityState: actAll.activityState,
+        },
+      });
     },
     //下拉刷新
     _pulldown() {
@@ -417,6 +454,7 @@ export default {
           }
         }
       }
+
       .good-desc {
         padding-right: 30px;
         position: absolute;
@@ -425,6 +463,14 @@ export default {
         font-size: 26px;
         color: #333;
         width: 480px;
+        .clear_energy {
+          .clear_energy_identify {
+            color: #fff;
+            padding: 6px 12px;
+            background: #fa5300;
+            border-radius: 15px;
+          }
+        }
         .p1 {
           line-height: 39px;
           height: 80px;
@@ -471,6 +517,14 @@ export default {
         flex-direction: column;
         z-index: 10;
       }
+      .clear_special {
+        .clear_icon {
+          position: absolute;
+          color: #fff;
+          padding: 6px 16px;
+          border-radius: 0px 0px 10px 0px;
+        }
+      }
     }
   }
   .country {
@@ -494,6 +548,12 @@ export default {
       font-size: 20px;
       color: #999;
     }
+  }
+  .clear_one {
+    background: #00a670 !important;
+  }
+  .clear_two {
+    background: #fa5400 !important;
   }
 }
 </style>

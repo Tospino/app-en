@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-22 08:56:30
+ * @LastEditTime: 2020-09-01 10:07:48
  * @Description: 
  * @FilePath: \app-en\config\index.js
  */
@@ -32,13 +32,13 @@ module.exports = {
         },
 
         // Various Dev Server settings
-        host: 'localhost', // can be overwritten by process.env.HOST
+        host: '127.0.0.1', // can be overwritten by process.env.HOST
         port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,
         notifyOnErrors: true,
         poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
+        disableHostCheck: true,
 
         /**
          * Source Maps

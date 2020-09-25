@@ -19,7 +19,11 @@
       </div>
     </div>
     <div class="pass-word">
-      <img src="@/assets/img/login/password@3x.png" alt="图标" class="name-icon" />
+      <img
+        src="@/assets/img/login/password@3x.png"
+        alt="图标"
+        class="name-icon"
+      />
       <div class="input-con">
         <input
           :type="inputType"
@@ -36,14 +40,18 @@
       </div>
     </div>
     <div class="forgetPassword clearfix">
-      <span class="c1 fl-right fs-24" @click="jumpRouter('忘记密码')">Forgot Password？</span>
+      <span class="c1 fl-right fs-24" @click="jumpRouter('忘记密码')"
+        >Forgot Password？</span
+      >
     </div>
     <div class="upload">
       <div
         class="load-btn"
         @click="logIn"
-        :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}"
-      >Log In</div>
+        :style="{ backgroundColor: disabledSubmit ? '#FA5300' : '#999' }"
+      >
+        Log In
+      </div>
     </div>
     <div class="remarks-option">
       <span class="c2 fs-24" @click="jumpRouter('注册')">Create Account</span>
@@ -54,7 +62,10 @@
         <div class="other">Other ways to login</div>
         <div class="line right-80"></div>
         <div class="icons flex flex_around">
-          <img @click="ThirdLogin('facebook')" src="@/assets/img/login/facebook@3x.png" />
+          <img
+            @click="ThirdLogin('facebook')"
+            src="@/assets/img/login/facebook@3x.png"
+          />
           <!-- <van-row type="flex" justify="space-between">
             <van-col span="8" style="text-align:center" @click="ThirdLogin('facebook')">
               <img src="@/assets/img/login/facebook@3x.png" />
@@ -74,7 +85,7 @@
           <span>You agree to the</span>
           <span>TOSPINO Law Agreement</span>
           <span>and the</span>
-          <span @click="zhengce=true" class="c2">Privacy Policy</span>
+          <span @click="zhengce = true" class="c2">Privacy Policy</span>
         </span>
       </div>
     </div>
@@ -84,7 +95,7 @@
         <div class="tanchuang-header">
           <span>Privacy Policy</span>
           <div class="fl-right">
-            <van-icon name="cross" @click="zhengce=false" />
+            <van-icon name="cross" @click="zhengce = false" />
           </div>
         </div>
         <div class="tanchuang-content">
@@ -93,14 +104,18 @@
       </div>
     </zhezhao>
 
-    <van-action-sheet v-model="show" title="Bind mobile phone number" style="height:350px">
+    <van-action-sheet
+      v-model="show"
+      title="Bind mobile phone number"
+      style="height: 350px"
+    >
       <section class="bind_pop">
         <div class="flex flex_space items">
           <div class="flex">
             <span class="labels">Phone Number</span>
             <input
               type="text"
-              style="width:200px"
+              style="width: 200px"
               class="inputs"
               v-model="bindForm.phone"
               @blur="CheckPhone"
@@ -108,8 +123,8 @@
             />
           </div>
           <select ref="phone_select">
-            <option value="233">233</option>
-            <!-- <option value="+86">+86</option> -->
+            <option value="+233">+233</option>
+            <option value="+86">+86</option>
           </select>
         </div>
         <div class="flex items flex_space mt_20">
@@ -117,19 +132,19 @@
             <span class="labels">Verification code</span>
             <input
               type="text"
-              style="width:200px"
+              style="width: 200px"
               class="inputs"
               v-model="bindForm.code"
               placeholder
             />
           </div>
-          <span class="getCode" @click="getMsgCode">{{msg}}</span>
+          <span class="getCode" @click="getMsgCode">{{ msg }}</span>
         </div>
         <div class="flex items mt_20" v-if="!hasUser">
           <span class="labels">password</span>
           <input
             type="text"
-            style="width:200px"
+            style="width: 200px"
             class="inputs"
             v-model="bindForm.password"
             placeholder="Please enter password"
@@ -185,7 +200,7 @@ export default {
         phone: "",
         code: "",
         password: "",
-        areaCode: "233",
+        areaCode: "+86",
       },
       showKeyboard: false,
       facebook_id: "",
@@ -280,54 +295,48 @@ export default {
     // 第三方登录
     ThirdLogin(val) {
       let a = this;
-      if (FB) {
-        if (val === "facebook") {
-          // 调用facebook登录
-          FB.login(
-            function (response) {
-              console.log("ThirdLogin -> response", response);
-              if (response.status === "connected") {
-                a.facebook_id = response.authResponse.userID;
-                FB.api("/me", function (response1) {
-                  console.log(
-                    "Successful login for: " + JSON.stringify(response1)
-                  );
-                  doLogin({
-                    inputToken: response.authResponse.accessToken,
-                    name: response1.name,
-                  }).then((res) => {
-                    if (res.code === 0) {
-                      localStorage.token = res.token;
-                      a.$router.push({ name: "首页" });
-                    } else if (res.code === -330) {
-                      a.show = true;
-                    } else if (res.code === -340) {
-                      a.show = true;
-                    }
-                    console.log("res", res);
-                  });
+      if (val === "facebook") {
+        // 调用facebook登录
+        FB.login(
+          function (response) {
+            console.log("ThirdLogin -> response", response);
+            if (response.status === "connected") {
+              a.facebook_id = response.authResponse.userID;
+              FB.api("/me", function (response1) {
+                console.log(
+                  "Successful login for: " + JSON.stringify(response1)
+                );
+                doLogin({
+                  inputToken: response.authResponse.accessToken,
+                  name: response1.name,
+                }).then((res) => {
+                  if (res.code === 0) {
+                    localStorage.token = res.token;
+                    a.$router.push({ name: "首页" });
+                  } else if (res.code === -330) {
+                    a.show = true;
+                  } else if (res.code === -340) {
+                    a.show = true;
+                  }
+                  console.log("res", res);
                 });
-              } else {
-                Dialog.alert({
-                  title: "Tips",
-                  message: "User cancelled login or did not fully authorize.",
-                }).then(() => {
-                  // on close
-                });
-                // The person is not logged into your webpage or we are unable to tell.
-              }
-            },
-            { scope: "public_profile,email" }
-          );
-          // 调用facebook退出登录
-          // FB.logout(function (response) {
-          //   // Person is now logged out
-          // });
-        }
-      } else {
-        Toast(
-          "facebook The application is not loaded. Please try again later "
+              });
+            } else {
+              Dialog.alert({
+                title: "Tips",
+                message: "User cancelled login or did not fully authorize.",
+              }).then(() => {
+                // on close
+              });
+              // The person is not logged into your webpage or we are unable to tell.
+            }
+          },
+          { scope: "public_profile,email" }
         );
+        // 调用facebook退出登录
+        // FB.logout(function (response) {
+        //   // Person is now logged out
+        // });
       }
     },
     // 检测手机号是否注册平台账号

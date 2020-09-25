@@ -11,42 +11,83 @@
   <!-- 购物车 -->
   <div class="shopping-cart" ref="content">
     <div class="shopping-cart-header">
-      <span class="header-t1">Cart({{shoplength}})</span>
-      <span class="header-t2" @click="mange" v-if="conditions">{{showMange?'Management':'OK'}}</span>
+      <span class="header-t1">Cart({{ shoplength }})</span>
+      <span class="header-t2" @click="mange" v-if="conditions">{{
+        showMange ? "Management" : "OK"
+      }}</span>
     </div>
     <div class="place"></div>
-    <div class="shopping-cart-container" v-if="conditions" ref="shoppingContainer">
+    <div
+      class="shopping-cart-container"
+      v-if="conditions"
+      ref="shoppingContainer"
+    >
       <!-- 有商品的页面 -->
-      <div v-if="dataList.length>0">
-        <div class="shopping-cart-content" v-for="(data,index) in dataList" :key="index">
+      <div v-if="dataList.length > 0">
+        <div
+          class="shopping-cart-content"
+          v-for="(data, index) in dataList"
+          :key="index"
+        >
           <div class="serial-number shopping-cart-l">
             <van-checkbox
               v-model="data.checkStatus"
               icon-size="24px"
               checked-color="#F83600"
-              @click="changeCheckbox(data,'all')"
+              @click="changeCheckbox(data, 'all')"
             ></van-checkbox>
           </div>
-          <div v-for="(dataitem,index) in data.list" :key="index">
-            <div class="goods-header" v-if="dataitem.couponId==null?false:true">
+          <div v-for="(dataitem, index) in data.list" :key="index">
+            <div
+              class="goods-header"
+              v-if="dataitem.couponId == null ? false : true"
+            >
               <div class="goods-left">
-                <div
-                  class="goods-coupons"
-                >{{dataitem.couponType==1?"Tospino's Price-off":dataitem.couponType==3?"Shop's Price-off":''}}</div>
-                <span
-                  class="goods-coupons-money"
-                >{{jn}}{{dataitem.reduceAmount}} off for {{jn}}{{dataitem.upToAmount}} buying</span>
+                <div class="goods-coupons">
+                  {{
+                    dataitem.couponType == 1
+                      ? "Tospino's Price-off"
+                      : dataitem.couponType == 3
+                      ? "Shop's Price-off"
+                      : ""
+                  }}
+                </div>
+                <span class="goods-coupons-money"
+                  >{{ jn }}{{ dataitem.reduceAmount }} off for {{ jn
+                  }}{{ dataitem.upToAmount }} buying</span
+                >
               </div>
               <p
                 class="goods-add"
-                @click="addOn(dataitem.businessId,dataitem.expId,dataitem.couponType)"
+                @click="
+                  addOn(
+                    dataitem.businessId,
+                    dataitem.expId,
+                    dataitem.couponType
+                  )
+                "
               >
                 Add-on ltem
                 <van-icon name="arrow" />
               </p>
             </div>
+            <!-- 活动标签 -->
+            <div v-if="dataitem.activityType">
+              <span
+                class="clear_on"
+                :class="{
+                  on_fc: dataitem.activityState == 0,
+                  pre_fc: dataitem.activityState == 1,
+                }"
+                >Promotion sale starts</span
+              >
+            </div>
           </div>
-          <div class="good-box" v-for="(dataitem,index) in data.list" :key="index+'a'">
+          <div
+            class="good-box"
+            v-for="(dataitem, index) in data.list"
+            :key="index + 'a'"
+          >
             <!-- 新增-第二版 -->
             <div class="goods-content">
               <!-- <div class="goods-header" v-if="dataitem.couponId==null?false:true">
@@ -72,31 +113,49 @@
                     v-model="dataitem.checkStatus"
                     icon-size="24px"
                     checked-color="#F83600"
-                    @click="changeCheckbox(dataitem,'',data)"
+                    @click="changeCheckbox(dataitem, '', data)"
                   ></van-checkbox>
-                  <div class="good-img" @click="toDetail(dataitem.skuId)">
-                    <img v-lazy="$webUrl+dataitem.imgUrl" />
+                  <div class="good-img" @click="toDetail(dataitem)">
+                    <img v-lazy="$webUrl + dataitem.imgUrl" />
                   </div>
                 </div>
                 <div class="good-item-r">
-                  <span class="good-describe" @click="toDetail(dataitem.skuId)">{{dataitem.skuName}}</span>
+                  <span class="good-describe" @click="toDetail(dataitem)">
+                    <!-- 活动标识 -->
+                    <span
+                      v-if="dataitem.activityType"
+                      class="clear_act"
+                      :class="{
+                        clearone: dataitem.activityState == 0,
+                        cleartwo: dataitem.activityState == 1,
+                      }"
+                      >54% off</span
+                    >
+                    {{ dataitem.skuName }}
+                  </span>
                   <div class="good-seclet">
                     <select name disabled>
-                      <option value="0">{{dataitem.skuValuesTitleEng}}</option>
+                      <option value="0">
+                        {{ dataitem.skuValuesTitleEng }}
+                      </option>
                     </select>
                   </div>
                   <div class="good-logistics" v-if="dataitem.expId == 1">
-                    <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
-                    <span>Ships from {{dataitem.areaNameEng}}</span>
+                    <img v-lazy="$webUrl + '/common/image/zhiyou.png'" />
+                    <span>Ships from {{ dataitem.areaNameEng }}</span>
                   </div>
                   <div class="good-price">
-                    <span
-                      class="price-p1"
-                    >{{jn}}{{dataitem.discountPrice ? dataitem.discountPrice : dataitem.salePrice}}</span>
-                    <span
-                      class="price-p2"
-                      v-if="dataitem.discountPrice"
-                    >{{jn}}{{dataitem.salePrice}}</span>
+                    <span class="price-p1"
+                      >{{ jn
+                      }}{{
+                        dataitem.discountPrice
+                          ? dataitem.discountPrice
+                          : dataitem.salePrice
+                      }}</span
+                    >
+                    <span class="price-p2" v-if="dataitem.discountPrice"
+                      >{{ jn }}{{ dataitem.salePrice }}</span
+                    >
                     <div class="good-price-r">
                       <van-stepper
                         class="price-quantity"
@@ -105,7 +164,9 @@
                         :max="dataitem.canSalesNum"
                         @change="changeStepper(dataitem)"
                       />
-                      <p class="price-batch">MOQ{{dataitem.numIntervalStart}}Pcs</p>
+                      <p class="price-batch">
+                        MOQ{{ dataitem.numIntervalStart }}Pcs
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -116,27 +177,37 @@
       </div>
 
       <!-- 失效商品 -->
-      <div class="shopping-cart-content" v-if="wuxiaoList.length>0">
+      <div class="shopping-cart-content" v-if="wuxiaoList.length > 0">
         <div class="good-box">
           <div class="serial-number">
-            <span class="invalid-num">Invalid Products:{{wuxiaoList.length}}</span>
+            <span class="invalid-num"
+              >Invalid Products:{{ wuxiaoList.length }}</span
+            >
             <span class="empty" @click="emptyPro">Clear</span>
           </div>
-          <div class="goods-content good-item" v-for="(wuxiao,index) in wuxiaoList" :key="index">
+          <div
+            class="goods-content good-item"
+            v-for="(wuxiao, index) in wuxiaoList"
+            :key="index"
+          >
             <div class="good-item-l">
               <span class="invalid">Invalid</span>
               <div class="good-img">
-                <img v-lazy="$webUrl+wuxiao.imgUrl" />
+                <img v-lazy="$webUrl + wuxiao.imgUrl" />
               </div>
             </div>
             <div class="good-item-r">
-              <span class="good-describe">{{wuxiao.skuName}}</span>
+              <span class="good-describe">{{ wuxiao.skuName }}</span>
               <div class="good-seclet">
-                <span class="specifications">{{wuxiao.skuValuesTitleEng}}</span>
+                <span class="specifications">{{
+                  wuxiao.skuValuesTitleEng
+                }}</span>
               </div>
               <div class="good-price">
                 <span class="price-batch-left">Sold Out</span>
-                <p class="price-batch-right" @click="toXiangsi(wuxiao)">Similar Items</p>
+                <p class="price-batch-right" @click="toXiangsi(wuxiao)">
+                  Similar Items
+                </p>
               </div>
             </div>
           </div>
@@ -148,7 +219,9 @@
       <div class="no-shopping-img">
         <img src="@/assets/img/tabbar/shoppingCart/icon@2x.png" />
         <div class="no-shopping-p1">Your cart is empty</div>
-        <div class="no-shopping-p2" @click="jumpRouter('首页')">Go to the Mall</div>
+        <div class="no-shopping-p2" @click="jumpRouter('首页')">
+          Go to the Mall
+        </div>
       </div>
     </div>
     <div>
@@ -159,7 +232,7 @@
         @clickPro="toDetail"
       ></footer-exhibition>
     </div>
-    <div style="height:60px" v-if="conditions">
+    <div style="height: 60px" v-if="conditions">
       <div class="settlement">
         <span class="settlement-text" v-if="showMange">
           <van-checkbox
@@ -172,12 +245,13 @@
           <span class="c-999">Select All</span>
           <div class="fl-right">
             <span class="p2">Total:</span>
-            <span class="p3">{{jn}}{{totlaMoney}}</span>
+            <span class="p3">{{ jn }}{{ totlaMoney }}</span>
             <span
               class="btn"
               @click="settlementBtn"
-              :style="{background : (totlaNum>0 ? '#FA5300':'#999')}"
-            >Checkout({{totlaNum}})</span>
+              :style="{ background: totlaNum > 0 ? '#FA5300' : '#999' }"
+              >Checkout({{ totlaNum }})</span
+            >
           </div>
         </span>
         <span class="settlement-text" v-else>
@@ -198,7 +272,9 @@
     <van-overlay :show="show">
       <!-- 遮罩层确认购买弹框 -->
       <div class="overlay-wrapper" @click.stop>
-        <div class="overlay-wrapper-p1">Delete the {{totlaNum}} products?</div>
+        <div class="overlay-wrapper-p1">
+          Delete the {{ totlaNum }} products?
+        </div>
         <div class="overlay-wrapper-btns">
           <span @click="show = false">No</span>
           <span @click="delgood">Yes</span>
@@ -286,8 +362,27 @@ export default {
       // 语法糖
       ["setstopcarlist"] // 相当于this.$store.dispatch('setstopcarlist'),提交这个方法
     ),
-    toDetail(skuId) {
-      this.$router.push({ name: "商品详情", query: { skuId } });
+    toDetail(overall) {
+      console.log(overall.activityId, "购物车");
+      if (overall.activityId != null) {
+        this.$router.push({
+          name: "商品详情",
+          query: {
+            skuId: overall.skuId,
+            activityId: overall.activityId,
+            supplyId: overall.supplyId,
+            activityType: overall.activityType,
+            activityState: overall.activityState,
+          },
+        });
+      } else {
+        this.$router.push({
+          name: "商品详情",
+          query: {
+            skuId: overall.skuId,
+          },
+        });
+      }
     },
     mange() {
       this.showMange = !this.showMange;
@@ -359,6 +454,7 @@ export default {
           this.wuxiaoList = wuxiaoList;
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessIdtwo");
+          console.log(this.dataList, " this.dataList");
           // this.dataList.forEach((item) => {
           //   item.list.forEach((listitem) => {
           //     listitem.checkStatus = false;
@@ -448,7 +544,13 @@ export default {
         return;
       }
       this.setstopcarlist(this.selectionList.map((o) => Object.assign({}, o)));
-      this.$router.push({ name: "确认订单详情", query: { type: "shopcar" } });
+      this.$router.push({
+        name: "确认订单详情",
+        query: {
+          type: "shopcar",
+          activityType: this.dataList.list.activityType,
+        },
+      });
     },
     //总计计算
     zongji() {
@@ -642,6 +744,16 @@ export default {
     background-color: #fff;
     margin-bottom: 20px; //这个是原始样式
     overflow: hidden;
+    .clear_on {
+      box-sizing: border-box;
+      padding: 0 20px;
+    }
+    .on_fc {
+      color: #00a670 !important;
+    }
+    .pre_fc {
+      color: #fa5400 !important;
+    }
     .shopping-cart-l {
       padding-left: 30px;
     }
@@ -737,10 +849,22 @@ export default {
       .good-item-r {
         .good-describe {
           width: 410px;
+          line-height: 50px;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
           overflow: hidden;
+          .clear_act {
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 14px;
+          }
+          .clearone {
+            background: #00a670;
+          }
+          .cleartwo {
+            background: #fa5400;
+          }
         }
         .good-seclet {
           padding-top: 20px;

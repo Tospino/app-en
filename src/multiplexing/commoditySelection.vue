@@ -13,36 +13,38 @@
           />
         </div>
         <div class="p1">
-          <span>{{attrTitleEng}}</span>
-          <span>TSIN:{{tsinCode}}</span>
-          <span class="c-orange">{{jn}}{{sectionPrice}}</span>
-          <span style="color:red">{{tips}}</span>
+          <span>{{ attrTitleEng }}</span>
+          <span>TSIN:{{ tsinCode }}</span>
+          <span class="c-orange">{{ jn }}{{ sectionPrice }}</span>
+          <span style="color: red">{{ tips }}</span>
         </div>
         <van-icon name="cross" class="cross" @click="closeModal" />
       </div>
       <div class="selection-conten" @click.stop>
         <div>
           <div class="guige_Box">
-            <div class="guige-title">{{oneTitle}}</div>
+            <div class="guige-title">{{ oneTitle }}</div>
             <div class="guige-list">
               <span
                 class="guige-items"
-                v-for="(one,index) in onedata"
+                v-for="(one, index) in onedata"
                 :key="index"
-                @click="checkOneItem(one,index)"
-                :class="{active: one.ischeck == true}"
-              >{{one.valueValEng}}</span>
+                @click="checkOneItem(one, index)"
+                :class="{ active: one.ischeck == true }"
+                >{{ one.valueValEng }}</span
+              >
             </div>
             <div>
-              <div class="guige-title">{{twoTitle}}</div>
+              <div class="guige-title">{{ twoTitle }}</div>
               <div class="guige-list">
                 <span
                   class="guige-items"
-                  v-for="(two,index) in twodata"
+                  v-for="(two, index) in twodata"
                   :key="index"
-                  @click="checkTwoItem(two,index)"
-                  :class="{active: two.ischeck == true}"
-                >{{two.valueValEng}}</span>
+                  @click="checkTwoItem(two, index)"
+                  :class="{ active: two.ischeck == true }"
+                  >{{ two.valueValEng }}</span
+                >
               </div>
             </div>
             <div class="quantity">
@@ -60,7 +62,7 @@
                 <div class="add-btn" @click="operation('jia')">十</div>
               </div>
             </div>
-            <div class="fl-right stock">In stock:{{stock}}</div>
+            <div class="fl-right stock">In stock:{{ stock }}</div>
 
             <!-- 新增文字 -->
             <div class="accra_txt flex_col mt_80" v-show="amountTip">
@@ -85,21 +87,27 @@
             class="success-btn"
             v-if="btnStatus"
             @click="buyProduct"
-            :style="{backgroundColor:btnbgc}"
-          >{{btnName}}</div>
+            :style="{ backgroundColor: btnbgc }"
+          >
+            {{ btnName }}
+          </div>
           <div class="success-btn" v-else>
             <div
               class="btn-jrgwc fl-left"
               @click="buyshoppingCar"
-              :style="{backgroundColor:btncolor.bgc,color:btncolor.color}"
-            >Add to Cart</div>
+              :style="{ backgroundColor: btncolor.bgc, color: btncolor.color }"
+            >
+              Add to Cart
+            </div>
             <div
               class="btn-qd fl-right"
               @click="buyProduct"
-              :style="{backgroundColor:btnbuy}"
-            >Buy Now</div>
+              :style="{ backgroundColor: btnbuy }"
+            >
+              Buy Now
+            </div>
           </div>
-          <div class="ios-place" v-show="jixing=='ios'"></div>
+          <div class="ios-place" v-show="jixing == 'ios'"></div>
         </div>
         <div class="commoditySelection-place"></div>
       </div>
@@ -159,6 +167,7 @@ export default {
         },
       ],
       tips: "",
+      clear_shop: "", //清仓活动默认勾选
     };
   },
   computed: {
@@ -260,8 +269,8 @@ export default {
       let makeupList = [];
       this.makeupdata = this.selectionObj.Makeupdata;
       this.onedata = this.selectionObj.Onedata;
-
       this.twodata = this.selectionObj.Twodata;
+      console.log(this.twodata, "this.twodata");
       this.makeupdata.forEach((item) => {
         if (this.makeupdata.length > 1) {
           if (item.skuPrice > 0) {
@@ -279,6 +288,12 @@ export default {
         if (item.canSalesNum > 0) {
           makeupList.push(item.skuValues);
         }
+        // 清仓默认勾选
+        console.log("444", item);
+        if (item.skuId == this.$route.query.skuId) {
+          // 第一层
+          this.clear_shop = item.valueId;
+        }
       });
       this.oneTitle = this.selectionObj.Onedata[0].attrTitleEng
         ? this.selectionObj.Onedata[0].attrTitleEng
@@ -293,6 +308,7 @@ export default {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
           if (checkItem == item.valueId) {
+            console.log("ad");
             item.ischeck = true;
           }
         });
@@ -300,9 +316,11 @@ export default {
       this.onedata.forEach((item) => {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
+          //   if (item.valueId == this.clear_shop) {
           if (checkItem == item.valueId) {
             item.ischeck = true;
           }
+          //   }
         });
       });
     },
@@ -767,13 +785,13 @@ export default {
       }
     }
   }
-  .-place {
+  .commoditySelection-place {
     height: 130px;
   }
-  //   .ios-place {
-  //     width: 100%;
-  //     float: left;
-  //     height: 180px;
-  //   }
+  .ios-place {
+    width: 100%;
+    float: left;
+    height: 180px;
+  }
 }
 </style>

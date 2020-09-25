@@ -517,6 +517,18 @@ export default new Router({
                     name: '限时抢购',
                     component: () =>
                         import(`@/components/tabbar/home/homeItem/flashSale.vue`)
+                },
+                {
+                    path: 'ClearanceSale',
+                    name: '特价清仓',
+                    component: () =>
+                        import(`@/components/tabbar/home/homeItem/ClearanceSale.vue`)
+                },
+                {
+                    path: 'ClearanceSaleSearch',
+                    name: '特价清仓搜索',
+                    component: () =>
+                        import(`@/components/tabbar/home/homeItem/ClearanceSaleSearch.vue`)
                 }
             ]
         },

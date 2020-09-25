@@ -1,8 +1,8 @@
 /*
  * @Author: 曹建勇
  * @Date: 2020-07-09 10:00:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-28 19:42:20
+ * @LastEditors: 曹建勇
+ * @LastEditTime: 2020-08-21 18:18:03
  * @Description:
  * @FilePath: \app-en\src\main.js
  */
@@ -14,11 +14,14 @@ import router from './router'
 import Vant from 'vant'
 import 'lib-flexible/flexible'
 import '@/assets/css/reset.css'
+import '@/assets/css/cjy.less'
 import 'vant/lib/index.css'
 import '@/assets/css/common.less'
 import '@/assets/css/animation.less'
 import '@/assets/css/cjy.less'
 import './assets/font/font_501137_8uegssallpv/iconfont.css'
+
+import vueCountDown from '@liuwave/vue-count-down'
 import {
     isDisabled,
     formValidate,
@@ -46,7 +49,7 @@ gethttpimgurlApi().then(res => {
         Vue.prototype.$bigwebUrl = res.webUrl
     }
 })
-
+Vue.use(vueCountDown, { component: 'count-down' })
 Vue.use(VueScroller)
 Vue.use(Vant)
 

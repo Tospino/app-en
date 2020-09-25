@@ -4,13 +4,20 @@
     <div class="exhibition-con clearfix">
       <div
         class="exhibition-left"
-        @click="toProduDetail(good.skuId)"
+        @click="toProduDetail(good.skuId,good)"
         v-for="(good,index) in dataList"
         :key="index"
       >
         <div class="exhibition-img">
           <div class="shouwan" v-if="!good.canSalesNum">Out of Stock</div>
-          <img v-lazy="$webUrl+good.imgUrl" />
+          <div class="flex_col clear_special">
+            <i
+              v-if="good.activityType==1"
+              class="clear_icon"
+              :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
+            >{{((good.discountPrice/good.salePrice)*100).toFixed(0)}}% Off</i>
+            <img v-lazy="$webUrl+good.imgUrl" />
+          </div>
         </div>
 
         <div class="produced">
@@ -31,7 +38,16 @@
           <span v-html="good.supplyTitle"></span>
         </div>
         <div class="score">
-          <van-rate v-model="good.starNumber" readonly color="#FA5300" />
+          <!-- 评论等级 -->
+          <!-- <van-rate v-model="good.starNumber" readonly color="#FA5300" /> -->
+          <!-- 特价标识 -->
+          <div class="clear_energy mt_20 mb_10">
+            <span
+              v-if="good.activityType==1"
+              class="clear_energy_identify mt_20 mb_10"
+              :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
+            >Promotion Sale</span>
+          </div>
           <span>{{good.manNumber}}</span>
         </div>
         <div class="price">
@@ -39,7 +55,7 @@
             class="price1"
           >{{jn}}{{good.discountPrice == null ? good.salePrice:good.discountPrice}}</span>
           <span class="price2" v-if="good.discountPrice != null">{{jn}}{{good.salePrice}}</span>
-          <span class="fl-right" style="color:red">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</span>
+          <span class="fl_ri" style="color:red">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</span>
           <!-- <span class="poin">...</span> -->
         </div>
       </div>
@@ -54,14 +70,14 @@ export default {
       type: Array,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       value: 1,
       footerObj: {},
-      dataList: []
+      dataList: [],
     };
   },
   computed: {},
@@ -71,25 +87,25 @@ export default {
   },
   watch: {
     twoDataList: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.getData();
-      }
-    }
+      },
+    },
   },
   methods: {
     jumpRouter(name) {
       this.$router.push({ name });
     },
     //跳转到商品详情
-    toProduDetail(skuId) {
-      this.$emit("clickPro", skuId);
+    toProduDetail(skuId, shopall) {
+      this.$emit("clickPro", skuId, shopall);
       // this.$router.push({name:'商品详情',query:{skuId}})
     },
     getData() {
-      this.dataList = this.twoDataList.map(o => Object.assign({}, o));
-    }
+      this.dataList = this.twoDataList.map((o) => Object.assign({}, o));
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 
@@ -186,9 +202,18 @@ export default {
       .van-rate {
         margin-right: 8px;
       }
+      .clear_energy {
+        .clear_energy_identify {
+          color: #fff;
+          padding: 6px 12px;
+          border-radius: 15px;
+        }
+      }
     }
     .price {
-      position: relative;
+      position: absolute;
+      bottom: 0;
+      margin-bottom: 20px;
       .price1 {
         font-size: 28px;
         color: #fa5300;
@@ -204,6 +229,10 @@ export default {
         font-size: 60px;
         top: -35px;
         right: 0;
+      }
+      .fl_ri {
+        position: relative;
+        left: 140px;
       }
     }
     .exhibition-img {
@@ -225,6 +254,14 @@ export default {
         flex-direction: column;
         z-index: 10;
       }
+      .clear_special {
+        .clear_icon {
+          position: absolute;
+          color: #fff;
+          padding: 6px 16px;
+          border-radius: 0px 0px 10px 0px;
+        }
+      }
     }
   }
 }
@@ -238,5 +275,11 @@ export default {
 }
 .clearfix {
   zoom: 1;
+}
+.clear_one {
+  background: #00a670 !important;
+}
+.clear_two {
+  background: #fa5400 !important;
 }
 </style>

@@ -1,8 +1,8 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-15 19:29:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-31 14:38:35
+ * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
 --> 
@@ -22,7 +22,7 @@
       :scrollX="true"
     >
       <div>
-        <div class="commodity-swipe" v-if="topBananerList.length>0">
+        <div class="commodity-swipe" v-if="topBananerList.length > 0">
           <van-swipe
             @change="onChange"
             :stop-propagation="false"
@@ -30,15 +30,17 @@
             :initial-swipe="swipeIndex"
           >
             <van-swipe-item
-              v-for="(banner,index) in topBananerList"
+              v-for="(banner, index) in topBananerList"
               :key="index"
               @click="swipeClick(banner)"
             >
               <div class="w1">
-                <img v-lazy="$webUrl+banner.advertImg" />
+                <img v-lazy="$webUrl + banner.advertImg" />
               </div>
             </van-swipe-item>
-            <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{leng}}</div>
+            <div class="custom-indicator" slot="indicator">
+              {{ current + 1 }}/{{ leng }}
+            </div>
           </van-swipe>
         </div>
         <!-- 限时抢购先隐藏 -->
@@ -81,13 +83,114 @@
           </div>
           <div class="flash-sale-2">
             <div class="pictures">
-              <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
-                <img v-lazy="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)" />
-                <div class="good-name clamp-2">{{finework.supplyTitle}}</div>
-                <span
-                  class="good-price1"
-                >{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span>
+              <div
+                class="p1"
+                v-for="finework in homeObj.producteFineWorkpro"
+                :key="finework.skuId"
+              >
+                <img
+                  v-lazy="$webUrl + finework.imgUrl"
+                  @click="toDetail(finework.skuId, finework)"
+                />
+                <div class="good-name clamp-2">{{ finework.supplyTitle }}</div>
+                <span class="good-price1"
+                  >{{ jn
+                  }}{{
+                    finework.discountPrice == null
+                      ? finework.salePrice
+                      : finework.discountPrice
+                  }}</span
+                >
                 <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 特价清仓 -->
+        <div class="good-Clearance box" v-if="clear_list.length != 0">
+          <div class="flash-sale-1 flex flex_space">
+            <div class="flex">
+              <span class="put-line"></span>
+              <span class="t1">Clearance Sale</span>
+              <span class="desc ml_20" v-show="!isExit">
+                <!-- 特价时间 -->
+                <count-down model="timer" :end-time="clear_one">
+                  <template v-slot="time"
+                    >Starts at
+                    {{
+                      parseInt(time.restCount / 3600) > 10
+                        ? parseInt(time.restCount / 3600)
+                        : "0" + parseInt(time.restCount / 3600)
+                    }}:{{
+                      parseInt((time.restCount % 3600) / 60) > 10
+                        ? parseInt((time.restCount % 3600) / 60)
+                        : "0" + parseInt((time.restCount % 3600) / 60)
+                    }}:{{
+                      parseInt(time.restCount % 60) > 10
+                        ? parseInt(time.restCount % 60)
+                        : "0" + parseInt(time.restCount % 60)
+                    }}</template
+                  >
+                </count-down>
+              </span>
+            </div>
+            <div class="flex" @click="toClearance">
+              <span class="t2">More</span>
+              <van-icon name="arrow" />
+            </div>
+          </div>
+          <div class="flash-sale-2">
+            <div
+              class="flex goods_items flex_start"
+              v-for="item in clear_list"
+              :key="item.skuId"
+              @click="
+                $router.push({
+                  name: '商品详情',
+                  query: {
+                    skuId: item.skuId,
+                    activityId: item.activityId,
+                    supplyId: item.supplyId,
+                    activityType: item.activityType,
+                    activityState: item.activityState,
+                  },
+                })
+              "
+            >
+              <img class="goods_img" v-lazy="$webUrl + item.skuImg" />
+              <div class="flex_col w100">
+                <div class="good-name line2">{{ item.skuName }}</div>
+                <div class="flex_end">
+                  <span
+                    class="goods_discount"
+                    :class="{ on_fb: item.activityState === 1 }"
+                    >{{
+                      ((1 - item.activityPrice / item.salePrice) * 100).toFixed(
+                        0
+                      )
+                    }}% off</span
+                  >
+                </div>
+                <div>
+                  <span
+                    class="goods_price"
+                    :class="{ on_fc: item.activityState === 1 }"
+                    >{{ jn }}{{ item.activityPrice }}</span
+                  >
+                  <span class="goods_dis_price"
+                    >{{ jn }}{{ item.salePrice.toFixed(0) }}</span
+                  >
+                </div>
+                <span
+                  class="goods_btn flex_center2"
+                  v-if="item.activityState === 0"
+                  >Not started</span
+                >
+                <span
+                  class="goods_btn on_fb flex_center2"
+                  v-if="item.activityState === 1"
+                  >Buy now</span
+                >
               </div>
             </div>
           </div>
@@ -101,27 +204,27 @@
           <div class="good-world-brand">
             <div class="brand-p-1">
               <img
-                v-lazy="$webUrl+brandLogo1.brandLogo"
+                v-lazy="$webUrl + brandLogo1.brandLogo"
                 class="brand-p-1-left"
-                @click="toSearOne(brandLogo1.brandId,'brandId')"
+                @click="toSearOne(brandLogo1.brandId, 'brandId')"
               />
               <img
-                v-lazy="$webUrl+brandLogo2.brandLogo"
+                v-lazy="$webUrl + brandLogo2.brandLogo"
                 class="brand-p-1-right-top"
-                @click="toSearOne(brandLogo2.brandId,'brandId')"
+                @click="toSearOne(brandLogo2.brandId, 'brandId')"
               />
               <img
-                v-lazy="$webUrl+brandLogo3.brandLogo"
+                v-lazy="$webUrl + brandLogo3.brandLogo"
                 class="brand-p-1-right-bottom"
-                @click="toSearOne(brandLogo3.brandId,'brandId')"
+                @click="toSearOne(brandLogo3.brandId, 'brandId')"
               />
             </div>
             <div class="brand-p-2">
               <img
-                v-lazy="$webUrl+globalPro.brandLogo"
-                v-for="(globalPro,index) in globalProList"
+                v-lazy="$webUrl + globalPro.brandLogo"
+                v-for="(globalPro, index) in globalProList"
                 :key="index"
-                @click="toSearOne(globalPro.brandId,'brandId')"
+                @click="toSearOne(globalPro.brandId, 'brandId')"
               />
             </div>
           </div>
@@ -136,39 +239,61 @@
             <div class="pictures">
               <div
                 class="good-world-best-p1"
-                :class="'cximg'+(index+1)"
-                v-for="(fineSale1,index) in fineSaleList1"
+                :class="'cximg' + (index + 1)"
+                v-for="(fineSale1, index) in fineSaleList1"
                 :key="index"
               >
-                <img v-lazy="$webUrl+fineSale1.imgUrl" @click="toDetail(fineSale1.skuId)" />
-                <div class="good-name">{{fineSale1.supplyTitle}}</div>
-                <span
-                  class="good-price"
-                >{{jn}}{{fineSale1.discountPrice ? fineSale1.discountPrice : fineSale1.salePrice}}</span>
+                <img
+                  v-lazy="$webUrl + fineSale1.imgUrl"
+                  @click="toDetail(fineSale1.skuId, fineSale1)"
+                />
+                <div class="good-name">{{ fineSale1.supplyTitle }}</div>
+                <span class="good-price"
+                  >{{ jn
+                  }}{{
+                    fineSale1.discountPrice
+                      ? fineSale1.discountPrice
+                      : fineSale1.salePrice
+                  }}</span
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner1)">
-          <img v-lazy="$webUrl+banner1.advertImg" />
+          <img v-lazy="$webUrl + banner1.advertImg" />
         </div>
         <div class="exhibition">
           <div class="flash-sale-2">
             <div class="pictures">
-              <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
-                <img v-lazy="$webUrl+fineSale2.imgUrl" @click="toDetail(fineSale2.skuId)" />
-                <span class="good-name clamp-2">{{fineSale2.supplyTitle}}</span>
+              <div
+                class="p1"
+                v-for="fineSale2 in fineSaleList2"
+                :key="fineSale2.skuId"
+              >
+                <img
+                  v-lazy="$webUrl + fineSale2.imgUrl"
+                  @click="toDetail(fineSale2.skuId, fineSale2)"
+                />
+                <span class="good-name clamp-2">{{
+                  fineSale2.supplyTitle
+                }}</span>
                 <br />
-                <span
-                  class="good-price1"
-                >{{jn}}{{fineSale2.discountPrice ? fineSale2.discountPrice : fineSale2.salePrice}}</span>
+                <span class="good-price1"
+                  >{{ jn
+                  }}{{
+                    fineSale2.discountPrice
+                      ? fineSale2.discountPrice
+                      : fineSale2.salePrice
+                  }}</span
+                >
                 <br />
               </div>
             </div>
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner2)">
-          <img v-lazy="$webUrl+banner2.advertImg" />
+          <img v-lazy="$webUrl + banner2.advertImg" />
         </div>
         <div class="good-popular box">
           <div class="flash-sale-1">
@@ -181,25 +306,25 @@
               class="good-popular-top-1"
               v-for="category in homeObj.producteFinecategory"
               :key="category.categoryId"
-              @click="toSearOne(category.categoryId,'categoryId')"
+              @click="toSearOne(category.categoryId, 'categoryId')"
             >
-              <img v-lazy="$webUrl+category.categoryImg" />
+              <img v-lazy="$webUrl + category.categoryImg" />
             </div>
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner3)">
-          <img v-lazy="$webUrl+banner3.advertImg" />
+          <img v-lazy="$webUrl + banner3.advertImg" />
         </div>
         <div class="good-sort">
           <van-tabs
             v-model="active"
             title-active-color="#FA5300"
             title-inactive-color="#000"
-            @change="changeTab(bottomTabs,$event)"
+            @change="changeTab(bottomTabs, $event)"
           >
-            <van-tab v-for="(tab,index) in bottomTabs" :key="index">
+            <van-tab v-for="(tab, index) in bottomTabs" :key="index">
               <div slot="title">
-                <span class="primary">{{tab.classNameEng}}</span>
+                <span class="primary">{{ tab.classNameEng }}</span>
               </div>
             </van-tab>
           </van-tabs>
@@ -207,46 +332,76 @@
             <div class="exhibition-con">
               <div
                 class="exhibition-left"
-                v-for="(searchgoodDao,index) in searchgoodDaolist"
+                v-for="(searchgoodDao, index) in searchgoodDaolist"
                 :key="index"
               >
-                <div class="exhibition-img" @click="toDetail(searchgoodDao.skuId)">
-                  <div class="shouwan" v-if="!searchgoodDao.canSalesNum">Out of Stock</div>
+                <div
+                  class="exhibition-img"
+                  @click="toDetail(searchgoodDao.skuId, searchgoodDao)"
+                >
+                  <div class="shouwan" v-if="!searchgoodDao.canSalesNum">
+                    Out of Stock
+                  </div>
                   <img v-lazy="$webUrl + searchgoodDao.imgUrl" />
                 </div>
                 <div class="produced">
                   <span class="icon" v-if="searchgoodDao.expId == 1">
-                    <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
+                    <img v-lazy="$webUrl + '/common/image/zhiyou.png'" />
                   </span>
                   <span class="icon" v-else>
                     <img v-lazy="$webUrl + searchgoodDao.locationUrl" />
                   </span>
                   <span class="produced-font" v-if="searchgoodDao.expId == 1">
                     <span>Ships from</span>
-                    <span>{{searchgoodDao.areaNameEng ? searchgoodDao.areaNameEng : ''}}</span>
+                    <span>{{
+                      searchgoodDao.areaNameEng ? searchgoodDao.areaNameEng : ""
+                    }}</span>
                   </span>
                   <span class="produced-font" v-else>
-                    <span>{{searchgoodDao.locationNameEng ? searchgoodDao.locationNameEng : ''}}</span>
+                    <span>{{
+                      searchgoodDao.locationNameEng
+                        ? searchgoodDao.locationNameEng
+                        : ""
+                    }}</span>
                   </span>
                 </div>
-                <div class="clamp-2 miaoshu">{{searchgoodDao.supplyTitle}}</div>
+                <div class="clamp-2 miaoshu">
+                  <!-- 活动清仓标识列表 -->
+                  <!-- <span>{{((1-(searchgoodDao.activityPrice/searchgoodDao.salePrice))*100).toFixed(0)}}%</span> -->
+                  <span
+                    v-if="searchgoodDao.activityId"
+                    class="clamp_clear"
+                    :class="{
+                      clear_sale: searchgoodDao.activityType == 0,
+                      clear_saon: searchgoodDao.activityType == 1,
+                    }"
+                    >Promotion Sale</span
+                  >
+                  {{ searchgoodDao.supplyTitle }}
+                </div>
                 <div class="score">
-                  <van-rate v-model="searchgoodDao.starNumber" readonly color="#FA5300" />
+                  <!-- 评分星 -->
+                  <!-- <van-rate v-model="searchgoodDao.starNumber" readonly color="#FA5300" /> -->
                   <!-- <span>477</span> -->
                 </div>
                 <div class="price">
-                  <span
-                    class="price1"
-                  >{{jn}}{{searchgoodDao.discountPrice ?searchgoodDao.discountPrice : searchgoodDao.salePrice}}</span>
-                  <span
-                    class="price2"
-                    v-if="searchgoodDao.discountPrice"
-                  >{{jn}}{{searchgoodDao.salePrice}}</span>
+                  <span class="price1"
+                    >{{ jn
+                    }}{{
+                      searchgoodDao.discountPrice
+                        ? searchgoodDao.discountPrice
+                        : searchgoodDao.salePrice
+                    }}</span
+                  >
+                  <span class="price2" v-if="searchgoodDao.discountPrice"
+                    >{{ jn }}{{ searchgoodDao.salePrice }}</span
+                  >
                   <!-- <span class="poin">...</span> -->
-                  <span
-                    class="fl-right"
-                    style="color:red;"
-                  >Sales:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}PCS</span>
+                  <span class="fl-right" style="color: red"
+                    >Sales:{{
+                      searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0
+                    }}PCS</span
+                  >
                 </div>
                 <!-- <div>Sales:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}PCS</div> -->
               </div>
@@ -257,7 +412,12 @@
     </scroll>
 
     <!-- 新用户弹框 -->
-    <user-popup :sale="sale" :newCoupon="newCoupon" @userPopUp="userPopUp" @evBus="evBus"></user-popup>
+    <user-popup
+      :sale="sale"
+      :newCoupon="newCoupon"
+      @userPopUp="userPopUp"
+      @evBus="evBus"
+    ></user-popup>
   </div>
 </template>
 
@@ -269,6 +429,7 @@ import {
   HomePagebottomApi,
   homeAdvertPictureApi,
   APPgetuserIsfullApi,
+  gethomeClearanceList,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -325,10 +486,17 @@ export default {
       newCouponShow: "", //判断是否为新用户是否展示
       newCoupon: {},
       sale: false, //新用户是否存在
+      clear_list: [],
+      isExit: false,
+      clear_one: "", //特价 倒计时
     };
   },
   computed: {},
   created() {
+    // FB.getLoginStatus(function (response) {
+    //   console.log("created -> response", response);
+    //   statusChangeCallback(response);
+    // });
     this.newCoupons();
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
@@ -358,6 +526,7 @@ export default {
     } else {
       this.homePage();
     }
+    this.getClear();
     this.homeAdvertPicture();
   },
   beforeRouteLeave(to, from, next) {
@@ -370,38 +539,16 @@ export default {
   mounted() {
     this.refreshOrder();
   },
-  watch: {
-    // // 监听首页新用户优惠券是否展示
-    // newCouponShow: {
-    //   deep: true,
-    //   handler: function (val) {
-    //     if (val == 0) {
-    //       this.sale = true;
-    //     } else if (val == -300) {
-    //       this.sale = false;
-    //     }
-    //   },
-    // },
-    // // 如果路由有变化,会再次执行该方法
-    // $route: {
-    //   handler(route) {
-    //     if (route.name === "首页") {
-    //       // location.reload();
-    //       this.newCoupons();
-    //     }
-    //   },
-    //   deep: true,
-    // },
-  },
+  watch: {},
   methods: {
     // 首页新用户优惠券
     newCoupons() {
       APPgetuserIsfullApi().then((res) => {
-        this.newCouponShow = res.code;
+        // this.newCouponShow = res.code;
         if (res.code == 0) {
-          let nweUser = res.Data;
-          if (nweUser != null) {
-            this.newCoupon = nweUser;
+          let userNews = res.Data;
+          if (userNews != null) {
+            this.newCoupon = res.Data;
             this.sale = true;
           }
         } else {
@@ -520,8 +667,18 @@ export default {
       this.pullup = true;
     },
     //跳转商品详情
-    toDetail(skuid) {
-      this.$router.push({ name: "商品详情", query: { skuId: skuid } });
+    toDetail(skuid, overall) {
+      // 活动清仓根据activityId,supplyId,activityType,activityState
+      this.$router.push({
+        name: "商品详情",
+        query: {
+          skuId: skuid,
+          activityId: overall.activityId,
+          supplyId: overall.supplyId,
+          activityType: overall.activityType,
+          activityState: overall.activityState,
+        },
+      });
     },
     //去到搜索里面
     toSearOne(id, type) {
@@ -562,6 +719,21 @@ export default {
         }
       });
     },
+    // 去特价清仓页面
+    toClearance() {
+      this.$router.push({ name: "特价清仓" });
+    },
+    // 获取特价清仓数据
+    getClear() {
+      gethomeClearanceList({ isHome: 1 }).then((res) => {
+        if (res.code == 0) {
+          this.clear_list = res.Data.list;
+          //   特价时间
+          this.clear_one = this.clear_list[0].activityBegin;
+          this.isExit = res.IsConcat;
+        }
+      });
+    },
   },
   components: {
     searchHeader,
@@ -574,9 +746,98 @@ export default {
 .bscroll-wrapper {
   height: calc(100vh - 90px - 100px);
 }
+.w100 {
+  width: 100%;
+}
+
 .home {
   position: relative;
   overflow: hidden;
+  .good-Clearance {
+    .active_color {
+      color: #f95300 !important;
+    }
+    .active_bg {
+      background-color: #f95300 !important;
+    }
+    padding: 30px;
+    .flash-sale-1 {
+      height: 50px;
+      line-height: 50px;
+      .put-line {
+        width: 6px;
+        height: 40px;
+        background-color: #fa5300;
+        top: 5px;
+      }
+      .t1 {
+        font-size: 30px;
+        color: #333;
+        margin-left: 13px;
+        margin-right: 14px;
+      }
+      .desc {
+        font-size: 24px;
+        font-weight: 500;
+        color: rgba(0, 165, 111, 1);
+      }
+      .t2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-right: 10px;
+      }
+    }
+    .flash-sale-2 {
+      background-color: #fff;
+      border-radius: 10px;
+      margin-top: 20px;
+      .goods_items {
+        padding: 30px 20px;
+        border-bottom: 1px solid #eee;
+        .goods_img {
+          min-width: 200px;
+          width: 200px;
+          height: 200px;
+          margin-right: 16px;
+        }
+        .goods_discount {
+          margin-top: 18px;
+          padding: 5px 17px;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 1);
+          background: rgba(0, 165, 111, 1);
+          font-size: 20px;
+          border-radius: 13px;
+        }
+        .goods_price {
+          font-size: 40px;
+          color: #00a56f;
+          font-weight: 500;
+        }
+        .goods_dis_price {
+          font-size: 20px;
+          font-weight: 300;
+          text-decoration: line-through;
+          color: rgba(101, 101, 101, 1);
+          margin-left: 12px;
+        }
+        .goods_btn {
+          width: 200px;
+          margin-top: 20px;
+          padding: 14px 24px;
+          font-size: 30px;
+          font-weight: bold;
+          color: rgba(255, 255, 255, 1);
+          background: rgba(0, 165, 111, 1);
+          border-radius: 26px;
+        }
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
   .commodity-swipe {
     margin: 7px 0 40px;
     .custom-indicator {
@@ -1054,9 +1315,21 @@ export default {
           }
         }
         .miaoshu {
-          line-height: 27px;
+          //   line-height: 32px;
           font-size: 18px;
-          height: 54px;
+          height: 60px;
+
+          .clamp_clear {
+            padding: 4px 10px;
+            color: #fff;
+            border-radius: 15px;
+          }
+          .clear_sale {
+            background: #00a670 !important;
+          }
+          .clear_saon {
+            background: #fa5400 !important;
+          }
         }
         img {
           width: 340px;
