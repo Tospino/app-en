@@ -28,7 +28,7 @@
         <span
           class="discount"
           :class="{'discount_gary':item.activityState===2,'pre_fb':item.activityState===0}"
-        >{{((1-(item.activityPrice/item.salePrice))*100).toFixed(2)}}% off</span>
+        >{{(((item.activityPrice/item.salePrice))*100).toFixed(0)}}% off</span>
       </div>
       <div class="ml_20 w100">
         <span class="goods_name line2">{{item.skuName}}</span>
