@@ -9,57 +9,98 @@
 <template>
   <!-- 更多清仓 -->
   <section class="clear-goods-items">
-    <div
-      class="goods_items flex flex_start"
-      v-for="item in list"
-      :key="item.skuId"
-      @click="$router.push({name:'商品详情',query:{skuId:item.skuId,activityId:item.activityId,supplyId:item.supplyId,activityType:item.activityType,activityState:item.activityState}})"
-    >
-      <div class="goods_warp">
-        <div :class="{'img_model':item===1}"></div>
-        <img class="goods_img" v-lazy="$webUrl+item.skuImg" alt srcset />
-        <img
-          src="@/assets/img/tabbar/home/clearsale/saleout.png"
-          class="goods_sale"
-          v-show="item.activityState===2"
-          alt
-          srcset
-        />
-        <span
-          class="discount"
-          :class="{'discount_gary':item.activityState===2,'pre_fb':item.activityState===0}"
-        >{{(((item.activityPrice/item.salePrice))*100).toFixed(0)}}% off</span>
-      </div>
-      <div class="ml_20 w100">
-        <span class="goods_name line2">{{item.skuName}}</span>
-        <div class="price_warp" v-show="item!==1">
+    <div v-if="list.length != 0">
+      <div
+        class="goods_items flex flex_start"
+        v-for="(item, index) in list"
+        :key="index"
+        @click="
+          $router.push({
+            name: '商品详情',
+            query: {
+              skuId: item.skuId,
+              activityId: item.activityId,
+              activityType: item.activityType,
+            },
+          })
+        "
+      >
+        <div class="goods_warp">
+          <div :class="{ img_model: item === 1 }"></div>
+          <img class="goods_img" v-lazy="$webUrl + item.skuImg" alt srcset />
+          <img
+            src="@/assets/img/tabbar/home/clearsale/saleout.png"
+            class="goods_sale"
+            v-show="item.activityState === 2"
+            alt
+            srcset
+          />
           <span
-            class="goods_price"
-            :class="{'on_fc':item.activityState===1,'pre_fc':item.activityState===0}"
-          >₵{{item.activityPrice}}</span>
-          <span class="goods_dis_price">₵{{item.salePrice}}</span>
+            class="discount"
+            :class="{
+              discount_gary: item.activityState === 2,
+              pre_fb: item.activityState === 0,
+            }"
+            >{{ parseInt((1 - item.activityPrice / item.salePrice) * 100) }}%
+            off</span
+          >
         </div>
-        <div class="flex flex_space process_warp">
-          <div class="w200 process">
-            <van-progress
-              :percentage="item.activityState!==2?item.activitySaleNum/item.activityNum || 0: 0"
-              :color="item.activityState===1?'#f95300':'#00a670'"
-              pivot-color="transparent"
-              track-color="#CBCBCB"
-              text-color="#fff"
-              stroke-width="20"
-            />
+        <div class="ml_20 w100">
+          <span class="goods_name line2">{{ item.skuName }}</span>
+          <div class="price_warp" v-show="item !== 1">
+            <span
+              class="goods_price"
+              :class="{
+                on_fc: item.activityState === 1,
+                pre_fc: item.activityState === 0,
+              }"
+              >₵{{ item.activityPrice }}</span
+            >
+            <span class="goods_dis_price">₵{{ item.salePrice }}</span>
           </div>
+          <div class="flex flex_space process_warp">
+            <div class="w200 process">
+              <van-progress
+                :percentage="
+                  item.activityState !== 2
+                    ? parseInt(
+                        (item.activitySaleNum / item.activityNum) * 100
+                      ) || 0
+                    : 0
+                "
+                :color="item.activityState === 1 ? '#f95300' : '#00a670'"
+                pivot-color="transparent"
+                track-color="#CBCBCB"
+                text-color="#fff"
+                stroke-width="20"
+                :pivot-text="'sold'"
+              />
+            </div>
 
-          <span class="goods_btn flex_center2" v-if="item.activityState===1">Buy Now</span>
-          <span class="goods_btn flex_center2 pre_fb" v-if="item.activityState===0">Not started</span>
+            <span class="goods_btn flex_center2" v-if="item.activityState === 1"
+              >Buy Now</span
+            >
+            <span
+              class="goods_btn flex_center2 pre_fb"
+              v-if="item.activityState === 0"
+              >Not started</span
+            >
+          </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <no-sear-good
+        :imgSrc="nosear1"
+        describe="Sorry, no products"
+      ></no-sear-good>
     </div>
   </section>
 </template>
 
 <script>
+import noSearGood from "@/multiplexing/noSearGood";
+import nosear1 from "@/assets/img/search/nosear1.png";
 export default {
   props: {
     list: {
@@ -69,14 +110,16 @@ export default {
   },
   name: "",
   data() {
-    return {};
+    return {
+      nosear1: nosear1,
+    };
   },
   computed: {},
   created() {},
   mounted() {},
   watch: {},
   methods: {},
-  components: {},
+  components: { noSearGood },
 };
 </script>
 
@@ -92,6 +135,13 @@ export default {
 }
 .clear-goods-items {
   background-color: #fff;
+  /deep/ .van-progress__portion {
+    min-width: 0;
+  }
+  /deep/ .van-progress__pivot {
+    font-size: 28px;
+    min-width: 0;
+  }
   .goods_items {
     padding: 44px 30px 36px;
     border-bottom: 1px solid #eee;

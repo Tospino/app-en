@@ -44,8 +44,8 @@
           <div class="commodity-swipe">
             <van-swipe @change="onChange" v-if="showData">
               <van-swipe-item
-                v-for="banner in detailmData.productImgList"
-                :key="banner.imgId"
+                v-for="(banner, index) in detailmData.productImgList"
+                :key="index"
               >
                 <div class="w1">
                   <img v-lazy="$bigwebUrl + banner.imgUrl" />
@@ -61,30 +61,49 @@
             <div
               class="clearSale_left flex_col"
               :class="{
-                on_fw: isClearSale === 0,
-                on_fc: isClearSale == 1,
-                on_tc: isClearSale == 2,
+                on_fw: detailmData.activityState === 0,
+                on_fc: detailmData.activityState == 1,
+                on_tc: detailmData.activityState == 2,
               }"
             >
-              <span
-                class="goods_discount flex_center2"
-                :class="{
-                  fz_cw: isClearSale === 0,
-                  fz_co: isClearSale == 1,
-                  fz_ct: isClearSale == 2,
-                }"
-              >
-                <!-- 54% off -->
-                {{
-                  (
-                    (detailmData.discountPrice / detailmData.salePrice) *
-                    100
-                  ).toFixed(0)
-                }}% off
-              </span>
+              <div class="flex">
+                <span
+                  class="goods_discount flex_center2"
+                  :class="{
+                    fz_cw: detailmData.activityState === 0,
+                    fz_co: detailmData.activityState == 1,
+                    fz_ct: detailmData.activityState == 2,
+                  }"
+                >
+                  <!-- 54% off -->
+                  {{
+                    parseInt(
+                      1 -
+                        (detailmData.discountPrice / detailmData.salePrice) *
+                          100
+                    )
+                  }}% off
+                </span>
+                <i
+                  v-if="
+                    detailmData.activityState == 1 ||
+                    detailmData.activityState == 2
+                  "
+                  style="
+                    color: #fff;
+                    font-weight: blod;
+                    margin-top: 10px;
+                    font-size: 18px;
+                  "
+                >
+                  Sold:{{
+                    detailmData.skuSalesNum ? detailmData.skuSalesNum : 0
+                  }}PCS
+                </i>
+              </div>
               <div class="flex mt_30">
                 <span class="goods_price"
-                  >{{ jn }} {{ detailmData.salePrice }}</span
+                  >{{ jn }} {{ detailmData.discountPrice }}</span
                 >
                 <span class="goods_dis_price"
                   >{{ jn }} {{ detailmData.salePrice }}</span
@@ -95,9 +114,9 @@
             <div
               class="clearSale_right flex_col_center2"
               :class="{
-                on_rw: isClearSale === 0,
-                on_rc: isClearSale == 1,
-                on_rt: isClearSale == 2,
+                on_rw: detailmData.activityState === 0,
+                on_rc: detailmData.activityState == 1,
+                on_rt: detailmData.activityState == 2,
               }"
             >
               <h2 class="active_title">Clearance Sale</h2>
@@ -106,21 +125,21 @@
                 <count-down
                   model="timer"
                   :end-time="arrClearSale"
-                  v-if="isClearSale === 0"
+                  v-if="detailmData.activityState === 0"
                 >
                   <template v-slot="time">
                     starts at
                     <!-- {{time.hour}}:{{time.minute}}:{{time.second}} -->
                     {{
-                      parseInt(time.restCount / 3600) > 10
+                      parseInt(time.restCount / 3600) > 9
                         ? parseInt(time.restCount / 3600)
                         : "0" + parseInt(time.restCount / 3600)
                     }}:{{
-                      parseInt((time.restCount % 3600) / 60) > 10
+                      parseInt((time.restCount % 3600) / 60) > 9
                         ? parseInt((time.restCount % 3600) / 60)
                         : "0" + parseInt((time.restCount % 3600) / 60)
                     }}:{{
-                      parseInt(time.restCount % 60) > 10
+                      parseInt(time.restCount % 60) > 9
                         ? parseInt(time.restCount % 60)
                         : "0" + parseInt(time.restCount % 60)
                     }}
@@ -137,17 +156,19 @@
             <div class="flex flex_space">
               <div>
                 <div v-if="detailmData.quoteMethod == 1">
-                  <div class="prices">
+                  <div class="prices" v-if="isClearSaleId == null">
                     <span class="mark c-orange">{{ jn }}</span>
-                    <span class="p1 c-orange">{{
-                      detailmData.discountPrice
-                    }}</span>
-                    <span class="p2 through" v-if="detailmData.salePriceFlag"
-                      >{{ jn }}{{ detailmData.salePrice }}</span
-                    >
+                    <span class="p1 c-orange">
+                      {{ detailmData.discountPrice }}
+                    </span>
+                    <div v-if="isClearSaleId == null">
+                      <span class="p2 through" v-if="detailmData.salePriceFlag"
+                        >{{ jn }}{{ detailmData.salePrice }}</span
+                      >
+                    </div>
                   </div>
                   <div>
-                    <span class="p3"
+                    <span class="p3" v-if="isClearSaleId == null"
                       >MOQ:{{ detailmData.numIntervalStart }}Pcs</span
                     >
                   </div>
@@ -175,7 +196,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div v-if="isClearSaleId == null">
                   Sales:{{
                     detailmData.skuSalesNum ? detailmData.skuSalesNum : 0
                   }}PCS
@@ -360,14 +381,15 @@
                           ProModel.Data.businessId
                         )
                       "
-                      >{{
+                    >
+                      {{
                         ProModel.Data.drawStatus == null
                           ? "Get it now"
                           : ProModel.Data.drawStatus == 1
                           ? "Get more"
                           : "Delete"
-                      }}</van-button
-                    >
+                      }}
+                    </van-button>
                   </div>
                 </div>
               </div>
@@ -425,17 +447,26 @@
           <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
           <div class="icon-collection-p">Service</div>
         </div>
-        <van-button
-          type="default"
-          class="add-shopping-cat"
-          @click="changeComStatus(true, true, 'Confirm')"
-          >Add to Cart</van-button
-        >
-        <van-button
-          type="primary"
-          class="spend"
-          @click="changeComStatus(true, true, 'Buy Now')"
-          >Buy Now</van-button
+        <div v-if="detailmData.activityState != 2">
+          <van-button
+            type="default"
+            class="add-shopping-cat"
+            @click="changeComStatus(true, true, 'Confirm')"
+            >Add to Cart</van-button
+          >
+          <van-button
+            v-if="detailmData.activityState != 0"
+            type="primary"
+            class="spend spen_on"
+            @click="changeComStatus(true, true, 'Buy Now')"
+            >Buy Now</van-button
+          >
+          <van-button v-else type="primary" disabled class="spend spen_tw"
+            >Not started</van-button
+          >
+        </div>
+        <van-button v-else type="primary" disabled class="clear_sold"
+          >Sold out</van-button
         >
       </van-tabbar>
 
@@ -491,6 +522,7 @@ import {
 import { couponDrawApi } from "@/api/confirmOrder/index";
 import kefu from "@/multiplexing/kefu.vue";
 import { Toast } from "vant";
+import moment from "moment";
 export default {
   props: {},
   data() {
@@ -529,22 +561,31 @@ export default {
       supplyDetail: null, //商品详情图片
       scrollFlag: true,
       isClearSaleId: "", // 是否是特价清仓商品
-      isClearSale: "", // 活动状态 0 未开始（预热） 1 已开始（进行中） 2 售罄
       arrClearSale: " ", //特价清仓"2020-9-28 14:00:00"
+      actId: "",
+      actType: "",
     };
   },
   computed: {},
   created() {
-    this.isClearSale = this.$route.query.activityState; //活动状态
+    this.actId = this.$route.query.activityId;
+    // this.slyId = this.$route.query.supplyId;
+    this.actType = this.$route.query.activityType;
+    // this.actState = this.$route.query.activityState;
   },
   mounted() {
     setTimeout(() => {
-      this.productdetail(
-        this.$route.query.skuId,
-        this.$route.query.activityType
-      );
+      this.productdetail(this.$route.query.skuId, this.actType);
     }, 10);
     this.adduserbrowhistory(this.$route.query.skuId);
+    let time_atc = setInterval(() => {
+      //   清仓时间戳
+      let clear_time = moment(this.arrClearSale).valueOf();
+      let new_time = new Date().getTime();
+      if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+        this.productdetail(this.$route.query.skuId, this.actType);
+      }
+    }, 1000);
   },
   beforeRouteLeave(to, from, next) {
     // 设置下一个路由的 meta
@@ -571,10 +612,10 @@ export default {
         //清仓活动类型
         getClearanceDetailApi({
           skuid: id,
-          activityId: this.$route.query.activityId,
-          supplyId: this.$route.query.supplyId,
-          activityType: this.$route.query.activityType,
-          activityState: this.$route.query.activityState,
+          activityId: this.actId,
+          //   supplyId: this.slyId,
+          activityType: this.actType,
+          //   activityState: this.actState,
         }).then((res) => {
           if (res.code == 0) {
             this.isClearSaleId = this.$route.query.activityId;
@@ -587,7 +628,6 @@ export default {
               this.amountTip = false;
             }
             this.arrClearSale = this.detailmData.productSkuList[0].tpproductskuattrvalue[0].activityBegin;
-            console.log("this.detailmData", this.detailmData);
             this.couponProModel(
               this.detailmData.supplyId,
               this.detailmData.businessId,
@@ -669,32 +709,9 @@ export default {
         });
       }
     },
-    // // 特价清仓
-    // getClearanceDetail(
-    //   skuId,
-    //   activityId,
-    //   supplyId,
-    //   activityType,
-    //   activityState
-    // ) {
-    //   this.isClearSaleId = this.$route.query.activityId; //是否是活动商品
-    //   this.isClearSale = this.$route.query.activityState; //活动状态
-    //   if (activityType == 1) {
-    //     //清仓活动类型
-    //     getClearanceDetailApi({
-    //       skuid: skuId,
-    //       activityId: activityId,
-    //       activityState: activityState,
-    //       activityType: activityType,
-    //       supplyId: supplyId,
-    //     }).then((res) => {
-    //       this.arrClearSale = res.Data;
-    //     });
-    //   }
-    // },
     //猜你喜欢点击了商品
     clickPro(skuid, actAll) {
-      this.productdetail(skuid, actAll.activityType);
+      this.productdetail(skuid, this.actType);
       this.$refs.wrapper.scrollTo(0, 0, 500);
       this.active = 0;
     },
@@ -1290,10 +1307,22 @@ export default {
       font-size: 30px;
       border-radius: 39px;
     }
+    .clear_sold {
+      width: 463px;
+      height: 78px;
+      color: #fff;
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      font-size: 30px;
+      background: #b3b3b3 !important;
+      border-radius: 39px;
+      border: 0;
+    }
+
     .spend {
       width: 230px;
       height: 84px;
-      background-color: #fab600;
       position: absolute;
       right: 14px;
       top: 8px;
@@ -1301,6 +1330,9 @@ export default {
       font-size: 30px;
       border: 0;
       border-radius: 39px;
+    }
+    .spen_on {
+      background-color: #fab600 !important;
     }
   }
   .w1 {
@@ -1366,16 +1398,16 @@ export default {
     // background-image: linear-gradient(#25d79d, #02a973); // 活动未开始
     // background-image: linear-gradient(#fd7b30, #fd260f); // 活动中
     // background-image: linear-gradient(#d8d8d8, #b4b4b4); // 活动结束
+
+    .fz_cw {
+      color: #00a670 !important; // 活动未开始
+    }
     .fz_co {
       color: #fa5400 !important; // 活动中
     }
     .fz_ct {
       color: #a7a7a7 !important; // 活动结束
     }
-    .fz_cw {
-      color: #a9a9a9 !important; // 活动未开始
-    }
-
     .goods_discount {
       margin-top: 15px;
       width: 100px;

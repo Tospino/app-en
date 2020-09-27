@@ -92,20 +92,32 @@
             {{ btnName }}
           </div>
           <div class="success-btn" v-else>
-            <div
-              class="btn-jrgwc fl-left"
-              @click="buyshoppingCar"
-              :style="{ backgroundColor: btncolor.bgc, color: btncolor.color }"
-            >
-              Add to Cart
+            <div v-if="clear_state != 2">
+              <div
+                class="btn-jrgwc fl-left"
+                @click="buyshoppingCar"
+                :style="{
+                  backgroundColor: btncolor.bgc,
+                  color: btncolor.color,
+                }"
+              >
+                Add to Cart
+              </div>
+              <div
+                v-if="clear_state != 0"
+                class="btn-qd fl-right"
+                @click="buyProduct"
+                :style="{ backgroundColor: btnbuy }"
+              >
+                Buy Now
+              </div>
+              <van-button v-else type="primary" class="btn-qd spen_tw"
+                >Not started</van-button
+              >
             </div>
-            <div
-              class="btn-qd fl-right"
-              @click="buyProduct"
-              :style="{ backgroundColor: btnbuy }"
+            <van-button v-else type="primary" disabled class="clear_sold"
+              >Sold out</van-button
             >
-              Buy Now
-            </div>
           </div>
           <div class="ios-place" v-show="jixing == 'ios'"></div>
         </div>
@@ -168,6 +180,7 @@ export default {
       ],
       tips: "",
       clear_shop: "", //清仓活动默认勾选
+      clear_state: "", //清仓状态
     };
   },
   computed: {
@@ -265,6 +278,8 @@ export default {
         this.selectionObj,
         this.selectionData
       );
+      this.clear_state = this.selectionObj.Data.activityState;
+      console.log(this.selectionObj, "this.selectionObj");
       let arr = [];
       let makeupList = [];
       this.makeupdata = this.selectionObj.Makeupdata;
@@ -779,6 +794,18 @@ export default {
         line-height: 78px;
         color: #fa5300;
         border-radius: 39px;
+      }
+      .clear_sold {
+        width: 100%;
+        height: 78px;
+        text-align: center;
+        line-height: 78px;
+        color: #fff;
+        font-size: 42px;
+        margin-bottom: 30px;
+        background: #b3b3b3 !important;
+        border-radius: 39px;
+        border: 0;
       }
       .btn-qd {
         color: #fff;

@@ -11,63 +11,106 @@
     <balance-header title="Confirm the Order"></balance-header>
     <div class="shouhuoxq m-b-20">
       <div class="shouhuoxq-top">
-        <span>Recipient:{{defaultAdderss.name}}</span>
-        <span>{{defaultAdderss.phoneCode}}{{defaultAdderss.phoneNumber}}</span>
+        <span>Recipient:{{ defaultAdderss.name }}</span>
+        <span
+          >{{ defaultAdderss.phoneCode }}{{ defaultAdderss.phoneNumber }}</span
+        >
       </div>
       <div class="shouhuoxq-bottom">
-        <span>Shipping Address:{{defaultAdderss.addreCitys}} {{defaultAdderss.userAddress}}</span>
+        <span
+          >Shipping Address:{{ defaultAdderss.addreCitys }}
+          {{ defaultAdderss.userAddress }}</span
+        >
       </div>
-      <van-icon name="arrow" class="arrow" @click="jumpRouter('确认订单收货地址')" />
+      <van-icon
+        name="arrow"
+        class="arrow"
+        @click="jumpRouter('确认订单收货地址')"
+      />
     </div>
     <div class="payment m-b-20">
       <span>Pay (by)</span>
       <div
         class="fl-right"
-        v-for="(pay,index) in payTypeList"
+        v-for="(pay, index) in payTypeList"
         :key="index"
         @click="changePaymen(pay)"
       >
-        <van-checkbox
-          v-model="pay.checked"
-          checked-color="#FA5300"
-        >{{orderStatus(pay.payType,'payStatus')}}</van-checkbox>
+        <van-checkbox v-model="pay.checked" checked-color="#FA5300">{{
+          orderStatus(pay.payType, "payStatus")
+        }}</van-checkbox>
       </div>
     </div>
-    <div class="good-detail" v-for="(order,index) in orderData.orderList" :key="index">
+    <div
+      class="good-detail"
+      v-for="(order, index) in orderData.orderList"
+      :key="index"
+    >
       <div class="good-detail-header">
-        <span>{{order.sortOrder}}</span>
+        <span>{{ order.sortOrder }}</span>
       </div>
-      <div class="good-detail-content" v-for="(product,index) in order.detailList" :key="index">
+      <div
+        class="good-detail-content"
+        v-for="(product, index) in order.detailList"
+        :key="index"
+      >
         <div>
           <van-swipe-cell :right-width="70">
             <template slot="right">
-              <van-button square type="danger" text="Delete" @click="delItem(product,index)" />
+              <van-button
+                square
+                type="danger"
+                text="Delete"
+                @click="delItem(product, index)"
+              />
             </template>
             <div class="good-detail-img">
-              <img v-lazy="$webUrl+product.skuImg" />
+              <img v-lazy="$webUrl + product.skuImg" />
               <div
                 class="img-nochange"
-                v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0"
-              >{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
+                v-if="
+                  product.stockEnough == 0 ||
+                  product.canSell == 0 ||
+                  product.freightCode != 0
+                "
+              >
+                {{
+                  product.stockEnough == 0
+                    ? "Out of Stock"
+                    : product.canSell == 0
+                    ? "Unsaleable"
+                    : product.freightCode == 1
+                    ? "Out of delivery area!"
+                    : "Overweight!"
+                }}
+              </div>
             </div>
             <div class="good-detail-title">
               <span class="name">
-                <span v-if="product.activityType==1" class="good-detail-actType">Clearance</span>
-                {{product.skuName}}
+                <span
+                  v-if="product.activityType == 1"
+                  class="good-detail-actType"
+                  >Clearance</span
+                >
+                {{ product.skuName }}
               </span>
-              <div class="guige">{{product.skuValuesTitleEng}}</div>
-              <div class="p1">{{product.currencySignWebsite}}{{product.priceWebsite}}</div>
-              <div
-                class="p2 through"
-                v-if="product.originPriceWebsite"
-              >{{product.currencySignWebsite}}{{product.originPriceWebsite}}</div>
+              <div class="guige">{{ product.skuValuesTitleEng }}</div>
+              <div class="p1">
+                {{ product.currencySignWebsite }}{{ product.priceWebsite }}
+              </div>
+              <div class="p2 through" v-if="product.originPriceWebsite">
+                {{ product.currencySignWebsite
+                }}{{ product.originPriceWebsite }}
+              </div>
             </div>
             <div class="price">
-              <div class="p3">{{product.currencySignWebsite}}{{product.totalPriceWebsite}}</div>
-              <div
-                class="p4 through"
-                v-if="product.totalOriginPriceWebsite"
-              >{{product.currencySignWebsite}}{{product.totalOriginPriceWebsite}}</div>
+              <div class="p3">
+                {{ product.currencySignWebsite }}{{ product.totalPriceWebsite }}
+              </div>
+              <div class="p4 through" v-if="product.totalOriginPriceWebsite">
+                {{ product.currencySignWebsite
+                }}{{ product.totalOriginPriceWebsite }}
+              </div>
               <div class="selection-right-stepper">
                 <div class="add-btn" @click="addCount(product)">+</div>
                 <div class="center-input">
@@ -84,37 +127,57 @@
           </van-swipe-cell>
         </div>
 
-        <div class="nochange" v-if="product.stockEnough==0 || product.canSell == 0"></div>
+        <div
+          class="nochange"
+          v-if="product.stockEnough == 0 || product.canSell == 0"
+        ></div>
       </div>
 
       <div class="yunfei b-t-1">
         <span class="p1">Freight</span>
-        <span
-          class="p2"
-        >{{order.orderFareWebsite==0 ?'': order.currencySignWebsite}}{{order.orderFareWebsite==0 ? 'Free Shipping':order.orderFareWebsite}}</span>
+        <span class="p2"
+          >{{ order.orderFareWebsite == 0 ? "" : order.currencySignWebsite
+          }}{{
+            order.orderFareWebsite == 0
+              ? "Free Shipping"
+              : order.orderFareWebsite
+          }}</span
+        >
       </div>
       <div class="payment b-t-1">
         <span>Transportation</span>
         <div
           class="select"
-          v-if="order.deliverType==1 || order.deliverType==2"
-        >{{order.deliverType==1? 'Fulfillment by Tospino':'Take Delivery'}}</div>
+          v-if="order.deliverType == 1 || order.deliverType == 2"
+        >
+          {{
+            order.deliverType == 1 ? "Fulfillment by Tospino" : "Take Delivery"
+          }}
+        </div>
         <div class="select" v-else>
           <div class="gj-img">
-            <img v-lazy="$webUrl+'/common/image/zhiyou.png'" v-if="orderData.hasFBM == 1" />
-            <img v-lazy="$webUrl+order.areaImg" v-else />
+            <img
+              v-lazy="$webUrl + '/common/image/zhiyou.png'"
+              v-if="orderData.hasFBM == 1"
+            />
+            <img v-lazy="$webUrl + order.areaImg" v-else />
           </div>
           <span v-if="orderData.hasFBM == 1">Ships from</span>
-          <span>{{order.areaNameEng}}</span>
+          <span>{{ order.areaNameEng }}</span>
         </div>
       </div>
       <div class="heji b-t-1">
         <span class="p1">Total</span>
-        <span class="p2 c-orange">{{order.currencySignWebsite}}{{order.orderAmountWebsite}}</span>
+        <span class="p2 c-orange"
+          >{{ order.currencySignWebsite }}{{ order.orderAmountWebsite }}</span
+        >
       </div>
 
       <div class="payment b-t-1" v-if="order.transitTimeRangeStringEng">
-        <span class="fbm-time">Get it within {{order.transitTimeRangeStringEng}} after payment.</span>
+        <span class="fbm-time"
+          >Get it within {{ order.transitTimeRangeStringEng }} after
+          payment.</span
+        >
       </div>
 
       <div class="beizhu">
@@ -136,7 +199,7 @@
       <div class="youhuiquan-header">
         <span class="youhuiquan-title">Coupons</span>
         <span class="youhuiquan-txt" @click="saleMore">
-          -{{jn}}{{ this.orderData.allOrderCouponAmountWebsite}}
+          -{{ jn }}{{ this.orderData.allOrderCouponAmountWebsite }}
           <van-icon name="arrow" />
         </span>
       </div>
@@ -190,28 +253,43 @@
     <div class="total">
       <div class="total-top">
         <span class="p1">Subtotal</span>
-        <span class="p2">{{orderData.currencySignWebsite}}{{orderData.allOrderProductAmountWebsite}}</span>
+        <span class="p2"
+          >{{ orderData.currencySignWebsite
+          }}{{ orderData.allOrderProductAmountWebsite }}</span
+        >
       </div>
       <div class="total-bottom">
         <span class="p1">Total Freight</span>
-        <span class="p2 c-orange">{{orderData.currencySignWebsite}}{{orderData.allOrderFareWebsite}}</span>
+        <span class="p2 c-orange"
+          >{{ orderData.currencySignWebsite
+          }}{{ orderData.allOrderFareWebsite }}</span
+        >
       </div>
     </div>
     <div class="niming">
-      <van-checkbox v-model="checked" checked-color="#FA5300">Anonymous Buyer</van-checkbox>
+      <van-checkbox v-model="checked" checked-color="#FA5300"
+        >Anonymous Buyer</van-checkbox
+      >
     </div>
     <div class="settlement">
       <span class="settlement-p1">Sum:</span>
-      <span
-        class="settlement-p2 c-orange"
-      >{{orderData.currencySignWebsite}}{{orderData.allOrderAmountWebsite}}</span>
+      <span class="settlement-p2 c-orange"
+        >{{ orderData.currencySignWebsite
+        }}{{ orderData.allOrderAmountWebsite }}</span
+      >
       <div class="settlement-btn" @click="submit">Submit</div>
     </div>
     <div class="settlement-place"></div>
     <!-- 支付成功弹窗 -->
-    <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
+    <action-sheet-sucess
+      ref="sucess"
+      @showsucess="showsucess"
+    ></action-sheet-sucess>
     <!-- 密码弹窗 -->
-    <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
+    <action-sheet-password
+      ref="actionSheetPassword"
+      @getPassWord="getPassWord"
+    ></action-sheet-password>
     <!-- 付款方式弹窗 -->
     <action-sheet-paymen
       ref="actionSheetPaymen"
@@ -231,24 +309,43 @@
     ></order-coupon-pop>
 
     <!-- 返现弹窗 -->
-    <van-dialog v-model="fanxianStatus" class="fanxian-style" confirm-button-text="OK">
-      <p style="font-weight: bold;font-size:12px; text-align: center;">Bonus for Online Payment</p>
-      <p style="font-size:12px" class="mt_20">Get your corresponding reward:</p>
+    <van-dialog
+      v-model="fanxianStatus"
+      class="fanxian-style"
+      confirm-button-text="OK"
+    >
+      <p style="font-weight: bold; font-size: 12px; text-align: center">
+        Bonus for Online Payment
+      </p>
+      <p style="font-size: 12px" class="mt_20">
+        Get your corresponding reward:
+      </p>
       <br />
       <div
-        v-for="(fanxian,index) in fanxianList"
+        v-for="(fanxian, index) in fanxianList"
         :key="index"
-        style="font-size:12px;font-weight: bold;"
+        style="font-size: 12px; font-weight: bold"
       >
-        {{index+1}}.Subtotal Amount Reached
-        {{fanxian.orderAmountWebsiteEnd ? ('₵'+fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
-        ('Over'+' '+'₵' +fanxian.orderAmountWebsiteStart)}} ,
-        <div>Get {{jn}} {{fanxian.returnCashAmountWebsite}} Bonus</div>
+        {{ index + 1 }}.Subtotal Amount Reached
+        {{
+          fanxian.orderAmountWebsiteEnd
+            ? "₵" +
+              fanxian.orderAmountWebsiteStart +
+              "-" +
+              fanxian.orderAmountWebsiteEnd
+            : "Over" + " " + "₵" + fanxian.orderAmountWebsiteStart
+        }}
+        ,
+        <div>Get {{ jn }} {{ fanxian.returnCashAmountWebsite }} Bonus</div>
       </div>
       <br />
-      <p style="font-size:12px">Please check the bonus in your Tospino Account after order delivery.</p>
-      <p class="mt_20" style="color: #fa5300;font-size:12px">Warm Tips:</p>
-      <p style="font-size:12px">There is no reward if any refuse or return for your order.</p>
+      <p style="font-size: 12px">
+        Please check the bonus in your Tospino Account after order delivery.
+      </p>
+      <p class="mt_20" style="color: #fa5300; font-size: 12px">Warm Tips:</p>
+      <p style="font-size: 12px">
+        There is no reward if any refuse or return for your order.
+      </p>
     </van-dialog>
   </div>
 </template>
@@ -534,7 +631,6 @@ export default {
       // // 缓存订单数据在vuex
       // this.$store.state.orderDetails = data;
       getconfirmorderApi(data).then((res) => {
-        console.log(res, "aaawsf");
         if (res.code == 0) {
           this.orderData = res.Data;
           // 缓存优惠券列表在vuex
@@ -550,7 +646,6 @@ export default {
             if (res.Data.rewardRegionList.length > 0) {
               this.fanxianStatus = true;
               this.fanxianList = res.Data.rewardRegionList;
-              console.log("this.fanxianList", this.fanxianList);
             }
           } else if (this.payTypeList.length != res.Data.payTypeList.length) {
             this.payTypeList = res.Data.payTypeList;
@@ -562,7 +657,6 @@ export default {
     },
     //确认订单提交订单接口
     batchmakeorder(orderObj) {
-      console.log(orderObj, "adw");
       let obj = {
         addressId: this.defaultAdderss.addressId,
         payType: this.zffs,
@@ -573,7 +667,6 @@ export default {
         couponList: this.couponList,
       };
       batchmakeorderApi(obj).then((res) => {
-        console.log(res, "s");
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)

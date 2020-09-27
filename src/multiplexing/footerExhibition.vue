@@ -35,8 +35,8 @@
             <span
               v-if="good.activityType"
               class="produced_icon"
-              :class="{'produced_clearone':good.activityState===0,'produced_cleartwo':good.activityState==1}"
-            >Promotion Sale</span>
+              :class="{'produced_clearone':good.activityState===0&&good.activityTagApp!=null&&good.activityTagApp!='','produced_cleartwo':good.activityState==1&&good.activityTagApp!=null&&good.activityTagApp!='','produced_th':good.activityState==2&&good.activityTagApp!=null&&good.activityTagApp!=''}"
+            >{{good.activityTagApp}}</span>
             <span>{{good.supplyTitle}}</span>
           </div>
           <div class="score">
@@ -97,16 +97,16 @@ export default {
     //跳转到商品详情
     toProduDetail(skuId, actAll) {
       this.$emit("clickPro", skuId, actAll);
-      //   this.$router.push({
-      //     name: "商品详情",
-      //     query: {
-      //       skuId: skuId,
-      //       activityId: actAll.activityId,
-      //       supplyId: actAll.supplyId,
-      //       activityType: actAll.activityType,
-      //       activityState: actAll.activityState,
-      //     },
-      //   });
+      this.$router.push({
+        name: "商品详情",
+        query: {
+          skuId: skuId,
+          activityId: actAll.activityId,
+          //   supplyId: actAll.supplyId,
+          activityType: actAll.activityType,
+          //   activityState: actAll.activityState,
+        },
+      });
     },
     getData() {
       this.footerObj = Object.assign({}, this.footerObj, this.footerData);
@@ -201,15 +201,20 @@ export default {
       overflow: hidden;
       font-size: 18px;
       .produced_icon {
-        padding: 6px 12px;
         color: #fff;
         border-radius: 15px;
       }
       .produced_clearone {
+        padding: 6px 12px;
         background: #00a670 !important;
       }
       .produced_cleartwo {
+        padding: 6px 12px;
         background: #fa5400 !important;
+      }
+      .produced_th {
+        padding: 6px 12px;
+        background: #a9a9a9 !important;
       }
     }
     .score {

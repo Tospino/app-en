@@ -8,7 +8,7 @@
 -->
 <template>
   <section class="ClearanceSaleSearch">
-    <div class="nav_bar flex" :class="{'on_fb':isExit,'pre_fb':!isExit}">
+    <div class="nav_bar flex" :class="{'on_fb':clear_sea==1,'pre_fb':clear_sea==0}">
       <div class="logo" @click="routeGo">
         <van-icon name="arrow-left" size="25px" color="#fff" />
       </div>
@@ -35,11 +35,11 @@ export default {
       query: {
         sreachName: "",
         page: 1,
-        limit: 10,
+        limit: 100,
         sort: 0, //  全部 0	排序 1 销量升序 2 销量降序 3 活动价格升序 4 活动价格降序
         isHome: 0,
       },
-      isExit: false, // 是否存在活动中商品
+      clear_sea: this.$route.query.clearSale, // 是否存在活动中商品
     };
   },
   computed: {},
@@ -54,7 +54,7 @@ export default {
       gethomeClearanceList(this.query).then((res) => {
         if (res.code == 0) {
           this.list = res.Data.list;
-          this.isExit = res.IsConcat;
+          //   this.isExit = res.IsConcat;
         }
       });
     },
@@ -81,7 +81,7 @@ export default {
   .nav_bar {
     width: 100%;
     height: 88px;
-    background-color: #f95300;
+    // background-color: #f95300;
     color: #fff;
     font-size: 36px;
     position: fixed;

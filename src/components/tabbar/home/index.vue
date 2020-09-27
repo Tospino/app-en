@@ -92,15 +92,36 @@
                   v-lazy="$webUrl + finework.imgUrl"
                   @click="toDetail(finework.skuId, finework)"
                 />
-                <div class="good-name clamp-2">{{ finework.supplyTitle }}</div>
-                <span class="good-price1"
-                  >{{ jn
+                <div class="good-name clamp-2">
+                  <span
+                    v-if="finework.activityType == 1"
+                    class="clamp_clear"
+                    :class="{
+                      clear_sale:
+                        finework.activityState === 0 &&
+                        finework.activityTagApp != null &&
+                        finework.activityTagApp != '',
+                      clear_saon:
+                        finework.activityState == 1 &&
+                        finework.activityTagApp != null &&
+                        finework.activityTagApp != '',
+                      clear_th:
+                        finework.activityState == 2 &&
+                        finework.activityTagApp != null &&
+                        finework.activityTagApp != '',
+                    }"
+                    >{{ finework.activityTagApp }}</span
+                  >
+                  {{ finework.supplyTitle }}
+                </div>
+                <span class="good-price1">
+                  {{ jn
                   }}{{
                     finework.discountPrice == null
                       ? finework.salePrice
                       : finework.discountPrice
-                  }}</span
-                >
+                  }}
+                </span>
                 <br />
               </div>
             </div>
@@ -115,22 +136,22 @@
               <span class="desc ml_20" v-show="!isExit">
                 <!-- 特价时间 -->
                 <count-down model="timer" :end-time="clear_one">
-                  <template v-slot="time"
-                    >Starts at
+                  <template v-slot="time">
+                    Starts at
                     {{
-                      parseInt(time.restCount / 3600) > 10
+                      parseInt(time.restCount / 3600) > 9
                         ? parseInt(time.restCount / 3600)
                         : "0" + parseInt(time.restCount / 3600)
                     }}:{{
-                      parseInt((time.restCount % 3600) / 60) > 10
+                      parseInt((time.restCount % 3600) / 60) > 9
                         ? parseInt((time.restCount % 3600) / 60)
                         : "0" + parseInt((time.restCount % 3600) / 60)
                     }}:{{
-                      parseInt(time.restCount % 60) > 10
+                      parseInt(time.restCount % 60) > 9
                         ? parseInt(time.restCount % 60)
                         : "0" + parseInt(time.restCount % 60)
-                    }}</template
-                  >
+                    }}
+                  </template>
                 </count-down>
               </span>
             </div>
@@ -142,39 +163,43 @@
           <div class="flash-sale-2">
             <div
               class="flex goods_items flex_start"
-              v-for="item in clear_list"
-              :key="item.skuId"
+              v-for="(item, indx) in clear_list"
+              :key="indx"
               @click="
                 $router.push({
                   name: '商品详情',
                   query: {
                     skuId: item.skuId,
                     activityId: item.activityId,
-                    supplyId: item.supplyId,
                     activityType: item.activityType,
-                    activityState: item.activityState,
                   },
                 })
               "
             >
               <img class="goods_img" v-lazy="$webUrl + item.skuImg" />
+              <img
+                src="@/assets/img/tabbar/home/clearsale/saleout.png"
+                class="goods_sale"
+                v-show="item.activityState === 2"
+                alt
+                srcset
+              />
               <div class="flex_col w100">
                 <div class="good-name line2">{{ item.skuName }}</div>
                 <div class="flex_end">
                   <span
                     class="goods_discount"
-                    :class="{ on_fb: item.activityState === 1 }"
-                    >{{
-                      ((1 - item.activityPrice / item.salePrice) * 100).toFixed(
-                        0
-                      )
-                    }}% off</span
+                    :class="{ pre_fb: item.activityState === 0 }"
                   >
+                    {{
+                      parseInt((1 - item.activityPrice / item.salePrice) * 100)
+                    }}% off
+                  </span>
                 </div>
                 <div>
                   <span
                     class="goods_price"
-                    :class="{ on_fc: item.activityState === 1 }"
+                    :class="{ pre_fc: item.activityState === 0 }"
                     >{{ jn }}{{ item.activityPrice }}</span
                   >
                   <span class="goods_dis_price"
@@ -248,14 +273,14 @@
                   @click="toDetail(fineSale1.skuId, fineSale1)"
                 />
                 <div class="good-name">{{ fineSale1.supplyTitle }}</div>
-                <span class="good-price"
-                  >{{ jn
+                <span class="good-price">
+                  {{ jn
                   }}{{
                     fineSale1.discountPrice
                       ? fineSale1.discountPrice
                       : fineSale1.salePrice
-                  }}</span
-                >
+                  }}
+                </span>
               </div>
             </div>
           </div>
@@ -275,18 +300,18 @@
                   v-lazy="$webUrl + fineSale2.imgUrl"
                   @click="toDetail(fineSale2.skuId, fineSale2)"
                 />
-                <span class="good-name clamp-2">{{
-                  fineSale2.supplyTitle
-                }}</span>
+                <span class="good-name clamp-2">
+                  {{ fineSale2.supplyTitle }}
+                </span>
                 <br />
-                <span class="good-price1"
-                  >{{ jn
+                <span class="good-price1">
+                  {{ jn
                   }}{{
                     fineSale2.discountPrice
                       ? fineSale2.discountPrice
                       : fineSale2.salePrice
-                  }}</span
-                >
+                  }}
+                </span>
                 <br />
               </div>
             </div>
@@ -343,6 +368,13 @@
                     Out of Stock
                   </div>
                   <img v-lazy="$webUrl + searchgoodDao.imgUrl" />
+                  <img
+                    src="@/assets/img/tabbar/home/clearsale/saleout.png"
+                    class="goods_sale"
+                    v-show="searchgoodDao.activityState === 2"
+                    alt
+                    srcset
+                  />
                 </div>
                 <div class="produced">
                   <span class="icon" v-if="searchgoodDao.expId == 1">
@@ -353,29 +385,45 @@
                   </span>
                   <span class="produced-font" v-if="searchgoodDao.expId == 1">
                     <span>Ships from</span>
-                    <span>{{
-                      searchgoodDao.areaNameEng ? searchgoodDao.areaNameEng : ""
-                    }}</span>
+                    <span>
+                      {{
+                        searchgoodDao.areaNameEng
+                          ? searchgoodDao.areaNameEng
+                          : ""
+                      }}
+                    </span>
                   </span>
                   <span class="produced-font" v-else>
-                    <span>{{
-                      searchgoodDao.locationNameEng
-                        ? searchgoodDao.locationNameEng
-                        : ""
-                    }}</span>
+                    <span>
+                      {{
+                        searchgoodDao.locationNameEng
+                          ? searchgoodDao.locationNameEng
+                          : ""
+                      }}
+                    </span>
                   </span>
                 </div>
                 <div class="clamp-2 miaoshu">
                   <!-- 活动清仓标识列表 -->
                   <!-- <span>{{((1-(searchgoodDao.activityPrice/searchgoodDao.salePrice))*100).toFixed(0)}}%</span> -->
                   <span
-                    v-if="searchgoodDao.activityId"
+                    v-if="searchgoodDao.activityType == 1"
                     class="clamp_clear"
                     :class="{
-                      clear_sale: searchgoodDao.activityType == 0,
-                      clear_saon: searchgoodDao.activityType == 1,
+                      clear_sale:
+                        searchgoodDao.activityState === 0 &&
+                        searchgoodDao.activityTagApp != null &&
+                        searchgoodDao.activityTagApp != '',
+                      clear_saon:
+                        searchgoodDao.activityState == 1 &&
+                        searchgoodDao.activityTagApp != null &&
+                        searchgoodDao.activityTagApp != '',
+                      clear_th:
+                        searchgoodDao.activityState == 2 &&
+                        searchgoodDao.activityTagApp != null &&
+                        searchgoodDao.activityTagApp != '',
                     }"
-                    >Promotion Sale</span
+                    >{{ searchgoodDao.activityTagApp }}</span
                   >
                   {{ searchgoodDao.supplyTitle }}
                 </div>
@@ -385,23 +433,23 @@
                   <!-- <span>477</span> -->
                 </div>
                 <div class="price">
-                  <span class="price1"
-                    >{{ jn
+                  <span class="price1">
+                    {{ jn
                     }}{{
                       searchgoodDao.discountPrice
                         ? searchgoodDao.discountPrice
                         : searchgoodDao.salePrice
-                    }}</span
-                  >
+                    }}
+                  </span>
                   <span class="price2" v-if="searchgoodDao.discountPrice"
                     >{{ jn }}{{ searchgoodDao.salePrice }}</span
                   >
                   <!-- <span class="poin">...</span> -->
-                  <span class="fl-right" style="color: red"
-                    >Sales:{{
+                  <span class="fl-right" style="color: red">
+                    Sales:{{
                       searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0
-                    }}PCS</span
-                  >
+                    }}PCS
+                  </span>
                 </div>
                 <!-- <div>Sales:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}PCS</div> -->
               </div>
@@ -434,6 +482,7 @@ import {
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
 import { Toast } from "vant";
+import moment from "moment";
 export default {
   props: {},
   data() {
@@ -489,6 +538,7 @@ export default {
       clear_list: [],
       isExit: false,
       clear_one: "", //特价 倒计时
+      down_time: "", //特价 倒计时刷新
     };
   },
   computed: {},
@@ -537,6 +587,17 @@ export default {
     next();
   },
   mounted() {
+    let time_atc = setInterval(() => {
+      //   清仓时间戳
+      let clear_time = moment(this.clear_one).valueOf();
+      let new_time = new Date().getTime();
+      //   //   倒计时
+      //   this.down_time = parseInt(clear_time / 1000 - new_time / 1000);
+      if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+        this.getClear();
+        this.homePagebottom(this.formData);
+      }
+    }, 1000);
     this.refreshOrder();
   },
   watch: {},
@@ -657,6 +718,7 @@ export default {
       setTimeout(() => {
         this.homePage();
         this.refreshOrder();
+        this.getClear();
       }, 500);
     },
     //刷新页面
@@ -674,9 +736,7 @@ export default {
         query: {
           skuId: skuid,
           activityId: overall.activityId,
-          supplyId: overall.supplyId,
           activityType: overall.activityType,
-          activityState: overall.activityState,
         },
       });
     },
@@ -749,7 +809,22 @@ export default {
 .w100 {
   width: 100%;
 }
-
+.clamp_clear {
+  color: #fff;
+  border-radius: 15px;
+}
+.clear_sale {
+  padding: 4px 10px;
+  background: #00a670 !important;
+}
+.clear_saon {
+  padding: 4px 10px;
+  background: #fa5400 !important;
+}
+.clear_th {
+  padding: 4px 10px;
+  background: #a9a9a9 !important;
+}
 .home {
   position: relative;
   overflow: hidden;
@@ -795,6 +870,14 @@ export default {
       .goods_items {
         padding: 30px 20px;
         border-bottom: 1px solid #eee;
+        .goods_sale {
+          position: absolute;
+          margin-top: 20px;
+          //   top: 37px;
+          //   left: 10px;
+          width: 200px;
+          height: 160px;
+        }
         .goods_img {
           min-width: 200px;
           width: 200px;
@@ -806,13 +889,13 @@ export default {
           padding: 5px 17px;
           font-weight: 500;
           color: rgba(255, 255, 255, 1);
-          background: rgba(0, 165, 111, 1);
+          background: #f95300;
           font-size: 20px;
           border-radius: 13px;
         }
         .goods_price {
           font-size: 40px;
-          color: #00a56f;
+          color: #f95300;
           font-weight: 500;
         }
         .goods_dis_price {
@@ -912,7 +995,7 @@ export default {
       margin-top: 17px;
       overflow: scroll;
       .pictures {
-        height: 210px;
+        height: 240px;
         width: 1000px;
         .p1 {
           width: 200px;
@@ -922,6 +1005,7 @@ export default {
           text-align: center;
           .good-name {
             font-size: 20px;
+
             color: #333333;
           }
           .good-price1 {
@@ -1010,7 +1094,7 @@ export default {
             font-size: 20px;
             color: #333333;
             margin-top: 9px;
-            height: 40px;
+            height: 58px;
           }
           .good-price1 {
             display: inline-block;
@@ -1296,6 +1380,15 @@ export default {
         position: relative;
         .exhibition-img {
           position: relative;
+          .goods_sale {
+            position: absolute;
+            margin-top: 50px;
+            // top: 37px;
+            left: 20px;
+            width: 300px;
+            height: 220px;
+            z-index: 11;
+          }
           .shouwan {
             position: absolute;
             left: 0;
@@ -1318,18 +1411,6 @@ export default {
           //   line-height: 32px;
           font-size: 18px;
           height: 60px;
-
-          .clamp_clear {
-            padding: 4px 10px;
-            color: #fff;
-            border-radius: 15px;
-          }
-          .clear_sale {
-            background: #00a670 !important;
-          }
-          .clear_saon {
-            background: #fa5400 !important;
-          }
         }
         img {
           width: 340px;

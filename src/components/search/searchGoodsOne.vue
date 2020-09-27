@@ -13,7 +13,7 @@
           v-model="value1"
           :options="option1"
           class="scj"
-          @change="saleSort('zh',value1)"
+          @change="saleSort('zh', value1)"
         ></van-dropdown-item>
         <van-dropdown-item
           v-model="value2"
@@ -25,11 +25,11 @@
           v-model="value3"
           :options="option3"
           class="scj"
-          @change="saleSort('jg',value3)"
+          @change="saleSort('jg', value3)"
         />
         <van-icon :name="iconName" class="apps-o" @click="viewModel" />
       </van-dropdown-menu>
-      <div style="height:34px;"></div>
+      <div style="height: 34px"></div>
       <!-- 模式一 -->
       <scroll
         class="bscroll-wrapper"
@@ -44,7 +44,7 @@
         <div v-show="goodsShow1" class="footprint-goods">
           <div
             class="footprint-goods-content"
-            v-for="(good,index) in dataList"
+            v-for="(good, index) in dataList"
             :key="index"
             @click="toProduDetail(good)"
           >
@@ -54,11 +54,17 @@
                 <!-- 特价折扣 -->
                 <div class="flex_col clear_special">
                   <i
-                    v-if="good.activityType==1"
+                    v-if="good.activityType == 1"
                     class="clear_icon"
-                    :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
-                  >{{((good.discountPrice/good.salePrice)*100).toFixed(0)}}% Off</i>
-                  <img v-lazy="$webUrl+good.imgUrl" />
+                    :class="{
+                      clear_one: good.activityState === 0,
+                      clear_two: good.activityState == 1,
+                    }"
+                    >{{
+                      parseInt(1 - (good.discountPrice / good.salePrice) * 100)
+                    }}% Off</i
+                  >
+                  <img v-lazy="$webUrl + good.imgUrl" />
                 </div>
               </div>
               <div class="good-desc">
@@ -67,35 +73,62 @@
                 <!-- 特价标识 -->
                 <div class="clear_energy mt_20 mb_10">
                   <span
-                    v-if="good.activityType==1"
+                    v-if="good.activityType == 1"
                     class="clear_energy_identify mt_20 mb_10"
-                    :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
-                  >Promotion Sale</span>
+                    :class="{
+                      clear_one:
+                        good.activityState === 0 &&
+                        good.activityTagApp != null &&
+                        good.activityTagApp != '',
+                      clear_two:
+                        good.activityState == 1 &&
+                        good.activityTagApp != null &&
+                        good.activityTagApp != '',
+                      clear_th:
+                        good.activityState == 2 &&
+                        good.activityTagApp != null &&
+                        good.activityTagApp != '',
+                    }"
+                    >{{
+                      good.activityTagApp != null && good.activityTagApp != ""
+                        ? good.activityTagApp
+                        : ""
+                    }}</span
+                  >
                 </div>
                 <div class="country">
                   <div v-if="good.expId == 1">
                     <!-- <img v-lazy="$webUrl+'/common/image/zhiyou.png'"/> -->
                     <div class="guojia">
-                      <span>Ships from {{good.areaNameEng}}</span>
+                      <span>Ships from {{ good.areaNameEng }}</span>
                     </div>
                   </div>
                   <div v-else>
                     <!-- <img v-lazy="$webUrl+good.locationUrl"> -->
                     <div class="guojia" v-if="good.locationNameEng">
-                      <span>{{good.locationNameEng}}</span>
+                      <span>{{ good.locationNameEng }}</span>
                       <br />
                     </div>
                   </div>
                   <!-- 评论等级 -->
                   <!-- <van-rate v-model="good.starNumber" readonly class="rate" /> -->
-                  <span class="rate-num">{{good.manNumber}}</span>
+                  <span class="rate-num">{{ good.manNumber }}</span>
                 </div>
                 <div class="good-price">
-                  <span
-                    class="p1"
-                  >{{jn}}{{good.discountPrice == null ? good.salePrice:good.discountPrice}}</span>
-                  <span class="p3" v-if="good.discountPrice != null">{{jn}}{{good.salePrice}}</span>
-                  <span class="fl-right">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</span>
+                  <span class="p1"
+                    >{{ jn
+                    }}{{
+                      good.discountPrice == null
+                        ? good.salePrice
+                        : good.discountPrice
+                    }}</span
+                  >
+                  <span class="p3" v-if="good.discountPrice != null"
+                    >{{ jn }}{{ good.salePrice }}</span
+                  >
+                  <span class="fl-right"
+                    >Sales:{{ good.skuSalesNum ? good.skuSalesNum : 0 }}</span
+                  >
                   <!-- 省略号,暂时先隐藏 -->
                   <!-- <span class="p2">
                                         <van-icon name="ellipsis" />
@@ -107,12 +140,18 @@
         </div>
         <!-- 模式二 -->
         <div v-show="!goodsShow1">
-          <search-goods-tow :twoDataList="dataList" @clickPro="clickPro"></search-goods-tow>
+          <search-goods-tow
+            :twoDataList="dataList"
+            @clickPro="clickPro"
+          ></search-goods-tow>
         </div>
       </scroll>
     </div>
     <div v-else>
-      <no-sear-good :imgSrc="nosear1" describe="Sorry, no products"></no-sear-good>
+      <no-sear-good
+        :imgSrc="nosear1"
+        describe="Sorry, no products"
+      ></no-sear-good>
     </div>
   </div>
 </template>
@@ -289,7 +328,6 @@ export default {
             this.showData = true;
             Toast.clear();
           }, 1000);
-          console.log("this.dataList", this.dataList);
         } else {
           searchProductApi(data).then((res) => {
             if (res.code == 0) {
@@ -327,9 +365,9 @@ export default {
         query: {
           skuId: overall.skuId,
           activityId: overall.activityId,
-          supplyId: overall.supplyId,
+          //   supplyId: overall.supplyId,
           activityType: overall.activityType,
-          activityState: overall.activityState,
+          //   activityState: overall.activityState,
         },
       });
     },
@@ -341,9 +379,9 @@ export default {
         query: {
           skuId: skuId,
           activityId: actAll.activityId,
-          supplyId: actAll.supplyId,
+          //   supplyId: actAll.supplyId,
           activityType: actAll.activityType,
-          activityState: actAll.activityState,
+          //   activityState: actAll.activityState,
         },
       });
     },
@@ -466,7 +504,6 @@ export default {
         .clear_energy {
           .clear_energy_identify {
             color: #fff;
-            padding: 6px 12px;
             background: #fa5300;
             border-radius: 15px;
           }
@@ -521,7 +558,6 @@ export default {
         .clear_icon {
           position: absolute;
           color: #fff;
-          padding: 6px 16px;
           border-radius: 0px 0px 10px 0px;
         }
       }
@@ -551,9 +587,15 @@ export default {
   }
   .clear_one {
     background: #00a670 !important;
+    padding: 6px 12px;
   }
   .clear_two {
     background: #fa5400 !important;
+    padding: 6px 12px;
+  }
+  .clear_th {
+    background: #a9a9a9 !important;
+    padding: 6px 12px;
   }
 }
 </style>

@@ -4,34 +4,39 @@
     <div class="exhibition-con clearfix">
       <div
         class="exhibition-left"
-        @click="toProduDetail(good.skuId,good)"
-        v-for="(good,index) in dataList"
+        @click="toProduDetail(good.skuId, good)"
+        v-for="(good, index) in dataList"
         :key="index"
       >
         <div class="exhibition-img">
           <div class="shouwan" v-if="!good.canSalesNum">Out of Stock</div>
           <div class="flex_col clear_special">
             <i
-              v-if="good.activityType==1"
+              v-if="good.activityType == 1"
               class="clear_icon"
-              :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
-            >{{((good.discountPrice/good.salePrice)*100).toFixed(0)}}% Off</i>
-            <img v-lazy="$webUrl+good.imgUrl" />
+              :class="{
+                clear_one: good.activityState === 0,
+                clear_two: good.activityState == 1,
+              }"
+              >{{ parseInt(1 - (good.discountPrice / good.salePrice) * 100) }}%
+              Off</i
+            >
+            <img v-lazy="$webUrl + good.imgUrl" />
           </div>
         </div>
 
         <div class="produced">
           <div v-if="good.expId == 1">
             <span class="icon">
-              <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
+              <img v-lazy="$webUrl + '/common/image/zhiyou.png'" />
             </span>
-            <span class="produced-font">Ships from {{good.areaNameEng}}</span>
+            <span class="produced-font">Ships from {{ good.areaNameEng }}</span>
           </div>
           <div v-else>
             <span class="icon">
-              <img v-lazy="$webUrl+good.locationUrl" />
+              <img v-lazy="$webUrl + good.locationUrl" />
             </span>
-            <span class="produced-font">{{good.locationNameEng}}</span>
+            <span class="produced-font">{{ good.locationNameEng }}</span>
           </div>
         </div>
         <div class="produced-title">
@@ -43,19 +48,44 @@
           <!-- 特价标识 -->
           <div class="clear_energy mt_20 mb_10">
             <span
-              v-if="good.activityType==1"
+              v-if="good.activityType == 1"
               class="clear_energy_identify mt_20 mb_10"
-              :class="{'clear_one':good.activityState===0,'clear_two':good.activityState==1}"
-            >Promotion Sale</span>
+              :class="{
+                clear_one:
+                  good.activityState === 0 &&
+                  good.activityTagApp != null &&
+                  good.activityTagApp != '',
+                clear_two:
+                  good.activityState == 1 &&
+                  good.activityTagApp != null &&
+                  good.activityTagApp != '',
+                clear_th:
+                  good.activityState == 2 &&
+                  good.activityTagApp != null &&
+                  good.activityTagApp != '',
+              }"
+              >{{
+                good.activityTagApp != null && good.activityTagApp != ""
+                  ? good.activityTagApp
+                  : ""
+              }}</span
+            >
           </div>
-          <span>{{good.manNumber}}</span>
+          <span>{{ good.manNumber }}</span>
         </div>
         <div class="price">
-          <span
-            class="price1"
-          >{{jn}}{{good.discountPrice == null ? good.salePrice:good.discountPrice}}</span>
-          <span class="price2" v-if="good.discountPrice != null">{{jn}}{{good.salePrice}}</span>
-          <span class="fl_ri" style="color:red">Sales:{{good.skuSalesNum ? good.skuSalesNum : 0}}</span>
+          <span class="price1"
+            >{{ jn
+            }}{{
+              good.discountPrice == null ? good.salePrice : good.discountPrice
+            }}</span
+          >
+          <span class="price2" v-if="good.discountPrice != null"
+            >{{ jn }}{{ good.salePrice }}</span
+          >
+          <span class="fl_ri" style="color: red"
+            >Sales:{{ good.skuSalesNum ? good.skuSalesNum : 0 }}</span
+          >
           <!-- <span class="poin">...</span> -->
         </div>
       </div>
@@ -205,7 +235,7 @@ export default {
       .clear_energy {
         .clear_energy_identify {
           color: #fff;
-          padding: 6px 12px;
+          //   padding: 6px 12px;
           border-radius: 15px;
         }
       }
@@ -281,5 +311,8 @@ export default {
 }
 .clear_two {
   background: #fa5400 !important;
+}
+.clear_th {
+  background: #a9a9a9 !important;
 }
 </style>

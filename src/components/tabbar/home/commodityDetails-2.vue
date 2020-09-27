@@ -387,7 +387,7 @@ export default {
   },
   computed: {},
   created() {
-    this.isClearSale = this.$route.query.activityState; //活动状态
+    // this.isClearSale = this.$route.query.activityState; //活动状态
   },
   mounted() {
     setTimeout(() => {
@@ -425,11 +425,11 @@ export default {
           skuid: id,
           activityId:
             this.arrClearSale.activityId || this.$route.query.activityId,
-          supplyId: this.arrClearSale.supplyId || this.$route.query.supplyId,
+          //   supplyId: this.arrClearSale.supplyId || this.$route.query.supplyId,
           activityType:
             this.arrClearSale.activityType || this.$route.query.activityType,
-          activityState:
-            this.arrClearSale.activityState || this.$route.query.activityState,
+          //   activityState:
+          //     this.arrClearSale.activityState || this.$route.query.activityState,
         }).then((res) => {
           if (res.code == 0) {
             Toast.loading({ loadingType: "spinner", message: "loading..." });
