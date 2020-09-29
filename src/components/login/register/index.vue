@@ -239,7 +239,7 @@
       v-model="show"
       :actions="memberList"
       @select="onSelect"
-      cancel-text="取消"
+      cancel-text="Cancel"
       class="my-sheet"
     />
 
