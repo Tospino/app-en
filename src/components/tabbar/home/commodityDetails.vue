@@ -450,7 +450,7 @@
             >Add to Cart</van-button
           >
           <van-button
-            v-if="clearSaleGoodState != 0"
+            v-if="clearSaleGoodState !== 0"
             type="primary"
             class="spend spen_on"
             @click="changeComStatus(true, true, 'Buy Now')"
@@ -473,6 +473,7 @@
           :btnStatus="btnStatus"
           :btnName="btnName"
           :amountTip="amountTip"
+          :clearOne="clearOne"
           ref="commodityselection"
         ></commodity-selection>
       </transition>
@@ -564,6 +565,7 @@ export default {
       actType: "",
       shareinfos: location.href, //分享链接
       sharelinks: location.href, //分享链接
+      clearOne: "", //清仓
     };
   },
   computed: {},
@@ -623,7 +625,13 @@ export default {
             this.isClearSaleGood = res.Makeupdata;
             this.isClearSaleGood.forEach((ele) => {
               this.clearSaleGoodType = ele.activityType;
-              this.clearSaleGoodState = ele.activityState;
+
+              if (ele.activityType == 1) {
+                this.clearSaleGoodState = ele.activityState;
+                if (ele.skuid == this.$route.query.skuId) {
+                  this.clearOne = ele.activityState;
+                }
+              }
             });
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
@@ -924,7 +932,7 @@ export default {
     shopCouponPop,
     progressBar,
     customerService,
-    // share,
+    share,
   },
 };
 </script>

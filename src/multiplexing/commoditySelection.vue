@@ -112,7 +112,7 @@
                 Buy Now
               </div>
               <van-button
-                v-else-if="clear_stateBox == 0"
+                v-else-if="clear_stateBox === 0"
                 type="primary"
                 class="btn-qd spen_tw"
                 >Not started</van-button
@@ -143,6 +143,10 @@ import { Toast } from "vant";
 import { mapActions } from "vuex";
 export default {
   props: {
+    clearOne: {
+      type: Boolean,
+      default: false,
+    },
     selectionData: {
       type: Object,
       default: () => {
@@ -186,9 +190,8 @@ export default {
         },
       ],
       tips: "",
-      clear_checkList: [], //清仓活动默认勾选
       clear_shop: [], //清仓活动默认勾选
-      clear_stateBox: "",
+      clear_stateBox: this.clearOne,
       clear_state: "", //清仓状态
       clear_type: "", //清仓状态
     };
@@ -224,7 +227,6 @@ export default {
       }
       return obj;
     },
-    clear_stateBox() {},
   },
   mounted() {
     function checkSystem() {
@@ -250,6 +252,7 @@ export default {
     checkList: {
       handler: function (newVal, oldVal) {
         let newClear = newVal + "";
+        console.log(newClear, "newVal1111111");
         if (newClear == this.clear_shop) {
           // 是否清仓
           if (this.clear_type == 1) {
@@ -257,6 +260,7 @@ export default {
             console.log(this.clear_state, "青春时尚");
           }
         }
+
         if (this.twodata.length > 0) {
           if (this.checkList.length == 2) {
             this.setMakeItem();
@@ -274,6 +278,7 @@ export default {
             this.goodNumber = 0;
           }
         }
+        console.log(this.clear_stateBox == 0, "clear_stateBox");
       },
     },
     titleImg: {
@@ -297,7 +302,6 @@ export default {
         this.selectionObj,
         this.selectionData
       );
-
       let arr = [];
       let makeupList = [];
       this.makeupdata = this.selectionObj.Makeupdata;
