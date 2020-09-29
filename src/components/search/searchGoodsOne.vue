@@ -289,7 +289,7 @@ export default {
             this.showData = true;
             Toast.clear();
           }, 1000);
-          console.log("this.dataList", this.dataList);
+          // console.log("this.dataList", this.dataList);
         } else {
           searchProductApi(data).then((res) => {
             if (res.code == 0) {

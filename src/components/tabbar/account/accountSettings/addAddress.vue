@@ -298,6 +298,16 @@ export default {
         return;
       }
       this.axiosAddress();
+      //易观数据采集----编辑地址保存
+      AnalysysAgent.track('edit_address',{
+        phone_number: this.form.sjhm,
+        country: this.form.lev1,
+        province: this.form.lev2,
+        city: this.form.lev3,
+        region: this.form.lev4
+      },rel => {
+        console.log('rel',rel);
+      })
     },
     //判断是否编辑状态
     isEdit() {

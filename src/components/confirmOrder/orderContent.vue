@@ -1,73 +1,111 @@
-/**
- * Undocumented
- * @author: zlj
- * @email: 
- * @Description:  添加优惠券和修改字段
- * @date: 2020/09/01 17:15
- */
+/** * Undocumented * @author: zlj * @email: * @Description: 添加优惠券和修改字段
+* @date: 2020/09/01 17:15 */
 <template>
   <!-- 确认订单填写信息 -->
   <div class="order-content">
     <balance-header title="Confirm the Order"></balance-header>
     <div class="shouhuoxq m-b-20">
       <div class="shouhuoxq-top">
-        <span>Recipient:{{defaultAdderss.name}}</span>
-        <span>{{defaultAdderss.phoneCode}}{{defaultAdderss.phoneNumber}}</span>
+        <span>Recipient:{{ defaultAdderss.name }}</span>
+        <span
+          >{{ defaultAdderss.phoneCode }}{{ defaultAdderss.phoneNumber }}</span
+        >
       </div>
       <div class="shouhuoxq-bottom">
-        <span>Shipping Address:{{defaultAdderss.addreCitys}} {{defaultAdderss.userAddress}}</span>
+        <span
+          >Shipping Address:{{ defaultAdderss.addreCitys }}
+          {{ defaultAdderss.userAddress }}</span
+        >
       </div>
-      <van-icon name="arrow" class="arrow" @click="jumpRouter('确认订单收货地址')" />
+      <van-icon
+        name="arrow"
+        class="arrow"
+        @click="jumpRouter('确认订单收货地址')"
+      />
     </div>
     <div class="payment m-b-20">
       <span>Pay (by)</span>
       <div
         class="fl-right"
-        v-for="(pay,index) in payTypeList"
+        v-for="(pay, index) in payTypeList"
         :key="index"
         @click="changePaymen(pay)"
       >
-        <van-checkbox
-          v-model="pay.checked"
-          checked-color="#FA5300"
-        >{{orderStatus(pay.payType,'payStatus')}}</van-checkbox>
+        <van-checkbox v-model="pay.checked" checked-color="#FA5300">{{
+          orderStatus(pay.payType, "payStatus")
+        }}</van-checkbox>
       </div>
     </div>
-    <div class="good-detail" v-for="(order,index) in orderData.orderList" :key="index">
+    <div
+      class="good-detail"
+      v-for="(order, index) in orderData.orderList"
+      :key="index"
+    >
       <div class="good-detail-header">
-        <span>{{order.sortOrder}}</span>
+        <span>{{ order.sortOrder }}</span>
       </div>
-      <div class="good-detail-content" v-for="(product,index) in order.detailList" :key="index">
+      <div
+        class="good-detail-content"
+        v-for="(product, index) in order.detailList"
+        :key="index"
+      >
         <div>
           <van-swipe-cell :right-width="70">
             <template slot="right">
-              <van-button square type="danger" text="Delete" @click="delItem(product,index)" />
+              <van-button
+                square
+                type="danger"
+                text="Delete"
+                @click="delItem(product, index)"
+              />
             </template>
             <div class="good-detail-img">
-              <img v-lazy="$webUrl+product.skuImg" />
+              <img v-lazy="$webUrl + product.skuImg" />
               <div
                 class="img-nochange"
-                v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0"
-              >{{product.stockEnough==0 ? 'Out of Stock': product.canSell == 0 ? "Unsaleable": product.freightCode == 1 ? 'Out of delivery area!':'Overweight!' }}</div>
+                v-if="
+                  product.stockEnough == 0 ||
+                    product.canSell == 0 ||
+                    product.freightCode != 0
+                "
+              >
+                {{
+                  product.stockEnough == 0
+                    ? "Out of Stock"
+                    : product.canSell == 0
+                    ? "Unsaleable"
+                    : product.freightCode == 1
+                    ? "Out of delivery area!"
+                    : "Overweight!"
+                }}
+              </div>
             </div>
             <div class="good-detail-title">
               <span class="name">
-                <span v-if="product.activityType==1" class="good-detail-actType">Clearance</span>
-                {{product.skuName}}
+                <span
+                  v-if="product.activityType == 1"
+                  class="good-detail-actType"
+                  >Clearance</span
+                >
+                {{ product.skuName }}
               </span>
-              <div class="guige">{{product.skuValuesTitleEng}}</div>
-              <div class="p1">{{product.currencySignWebsite}}{{product.priceWebsite}}</div>
-              <div
-                class="p2 through"
-                v-if="product.originPriceWebsite"
-              >{{product.currencySignWebsite}}{{product.originPriceWebsite}}</div>
+              <div class="guige">{{ product.skuValuesTitleEng }}</div>
+              <div class="p1">
+                {{ product.currencySignWebsite }}{{ product.priceWebsite }}
+              </div>
+              <div class="p2 through" v-if="product.originPriceWebsite">
+                {{ product.currencySignWebsite
+                }}{{ product.originPriceWebsite }}
+              </div>
             </div>
             <div class="price">
-              <div class="p3">{{product.currencySignWebsite}}{{product.totalPriceWebsite}}</div>
-              <div
-                class="p4 through"
-                v-if="product.totalOriginPriceWebsite"
-              >{{product.currencySignWebsite}}{{product.totalOriginPriceWebsite}}</div>
+              <div class="p3">
+                {{ product.currencySignWebsite }}{{ product.totalPriceWebsite }}
+              </div>
+              <div class="p4 through" v-if="product.totalOriginPriceWebsite">
+                {{ product.currencySignWebsite
+                }}{{ product.totalOriginPriceWebsite }}
+              </div>
               <div class="selection-right-stepper">
                 <div class="add-btn" @click="addCount(product)">+</div>
                 <div class="center-input">
@@ -84,37 +122,57 @@
           </van-swipe-cell>
         </div>
 
-        <div class="nochange" v-if="product.stockEnough==0 || product.canSell == 0"></div>
+        <div
+          class="nochange"
+          v-if="product.stockEnough == 0 || product.canSell == 0"
+        ></div>
       </div>
 
       <div class="yunfei b-t-1">
         <span class="p1">Freight</span>
-        <span
-          class="p2"
-        >{{order.orderFareWebsite==0 ?'': order.currencySignWebsite}}{{order.orderFareWebsite==0 ? 'Free Shipping':order.orderFareWebsite}}</span>
+        <span class="p2"
+          >{{ order.orderFareWebsite == 0 ? "" : order.currencySignWebsite
+          }}{{
+            order.orderFareWebsite == 0
+              ? "Free Shipping"
+              : order.orderFareWebsite
+          }}</span
+        >
       </div>
       <div class="payment b-t-1">
         <span>Transportation</span>
         <div
           class="select"
-          v-if="order.deliverType==1 || order.deliverType==2"
-        >{{order.deliverType==1? 'Fulfillment by Tospino':'Take Delivery'}}</div>
+          v-if="order.deliverType == 1 || order.deliverType == 2"
+        >
+          {{
+            order.deliverType == 1 ? "Fulfillment by Tospino" : "Take Delivery"
+          }}
+        </div>
         <div class="select" v-else>
           <div class="gj-img">
-            <img v-lazy="$webUrl+'/common/image/zhiyou.png'" v-if="orderData.hasFBM == 1" />
-            <img v-lazy="$webUrl+order.areaImg" v-else />
+            <img
+              v-lazy="$webUrl + '/common/image/zhiyou.png'"
+              v-if="orderData.hasFBM == 1"
+            />
+            <img v-lazy="$webUrl + order.areaImg" v-else />
           </div>
           <span v-if="orderData.hasFBM == 1">Ships from</span>
-          <span>{{order.areaNameEng}}</span>
+          <span>{{ order.areaNameEng }}</span>
         </div>
       </div>
       <div class="heji b-t-1">
         <span class="p1">Total</span>
-        <span class="p2 c-orange">{{order.currencySignWebsite}}{{order.orderAmountWebsite}}</span>
+        <span class="p2 c-orange"
+          >{{ order.currencySignWebsite }}{{ order.orderAmountWebsite }}</span
+        >
       </div>
 
       <div class="payment b-t-1" v-if="order.transitTimeRangeStringEng">
-        <span class="fbm-time">Get it within {{order.transitTimeRangeStringEng}} after payment.</span>
+        <span class="fbm-time"
+          >Get it within {{ order.transitTimeRangeStringEng }} after
+          payment.</span
+        >
       </div>
 
       <div class="beizhu">
@@ -136,7 +194,7 @@
       <div class="youhuiquan-header">
         <span class="youhuiquan-title">Coupons</span>
         <span class="youhuiquan-txt" @click="saleMore">
-          -{{jn}}{{ this.orderData.allOrderCouponAmountWebsite}}
+          -{{ jn }}{{ this.orderData.allOrderCouponAmountWebsite }}
           <van-icon name="arrow" />
         </span>
       </div>
@@ -190,28 +248,43 @@
     <div class="total">
       <div class="total-top">
         <span class="p1">Subtotal</span>
-        <span class="p2">{{orderData.currencySignWebsite}}{{orderData.allOrderProductAmountWebsite}}</span>
+        <span class="p2"
+          >{{ orderData.currencySignWebsite
+          }}{{ orderData.allOrderProductAmountWebsite }}</span
+        >
       </div>
       <div class="total-bottom">
         <span class="p1">Total Freight</span>
-        <span class="p2 c-orange">{{orderData.currencySignWebsite}}{{orderData.allOrderFareWebsite}}</span>
+        <span class="p2 c-orange"
+          >{{ orderData.currencySignWebsite
+          }}{{ orderData.allOrderFareWebsite }}</span
+        >
       </div>
     </div>
     <div class="niming">
-      <van-checkbox v-model="checked" checked-color="#FA5300">Anonymous Buyer</van-checkbox>
+      <van-checkbox v-model="checked" checked-color="#FA5300"
+        >Anonymous Buyer</van-checkbox
+      >
     </div>
     <div class="settlement">
       <span class="settlement-p1">Sum:</span>
-      <span
-        class="settlement-p2 c-orange"
-      >{{orderData.currencySignWebsite}}{{orderData.allOrderAmountWebsite}}</span>
+      <span class="settlement-p2 c-orange"
+        >{{ orderData.currencySignWebsite
+        }}{{ orderData.allOrderAmountWebsite }}</span
+      >
       <div class="settlement-btn" @click="submit">Submit</div>
     </div>
     <div class="settlement-place"></div>
     <!-- 支付成功弹窗 -->
-    <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
+    <action-sheet-sucess
+      ref="sucess"
+      @showsucess="showsucess"
+    ></action-sheet-sucess>
     <!-- 密码弹窗 -->
-    <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
+    <action-sheet-password
+      ref="actionSheetPassword"
+      @getPassWord="getPassWord"
+    ></action-sheet-password>
     <!-- 付款方式弹窗 -->
     <action-sheet-paymen
       ref="actionSheetPaymen"
@@ -231,24 +304,41 @@
     ></order-coupon-pop>
 
     <!-- 返现弹窗 -->
-    <van-dialog v-model="fanxianStatus" class="fanxian-style" confirm-button-text="OK">
-      <p style="font-weight: bold;font-size:12px; text-align: center;">Bonus for Online Payment</p>
+    <van-dialog
+      v-model="fanxianStatus"
+      class="fanxian-style"
+      confirm-button-text="OK"
+    >
+      <p style="font-weight: bold;font-size:12px; text-align: center;">
+        Bonus for Online Payment
+      </p>
       <p style="font-size:12px" class="mt_20">Get your corresponding reward:</p>
       <br />
       <div
-        v-for="(fanxian,index) in fanxianList"
+        v-for="(fanxian, index) in fanxianList"
         :key="index"
         style="font-size:12px;font-weight: bold;"
       >
-        {{index+1}}.Subtotal Amount Reached
-        {{fanxian.orderAmountWebsiteEnd ? ('₵'+fanxian.orderAmountWebsiteStart+'-'+fanxian.orderAmountWebsiteEnd) :
-        ('Over'+' '+'₵' +fanxian.orderAmountWebsiteStart)}} ,
-        <div>Get {{jn}} {{fanxian.returnCashAmountWebsite}} Bonus</div>
+        {{ index + 1 }}.Subtotal Amount Reached
+        {{
+          fanxian.orderAmountWebsiteEnd
+            ? "₵" +
+              fanxian.orderAmountWebsiteStart +
+              "-" +
+              fanxian.orderAmountWebsiteEnd
+            : "Over" + " " + "₵" + fanxian.orderAmountWebsiteStart
+        }}
+        ,
+        <div>Get {{ jn }} {{ fanxian.returnCashAmountWebsite }} Bonus</div>
       </div>
       <br />
-      <p style="font-size:12px">Please check the bonus in your Tospino Account after order delivery.</p>
+      <p style="font-size:12px">
+        Please check the bonus in your Tospino Account after order delivery.
+      </p>
       <p class="mt_20" style="color: #fa5300;font-size:12px">Warm Tips:</p>
-      <p style="font-size:12px">There is no reward if any refuse or return for your order.</p>
+      <p style="font-size:12px">
+        There is no reward if any refuse or return for your order.
+      </p>
     </van-dialog>
   </div>
 </template>
@@ -264,7 +354,7 @@ import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
   batchmakeorderApi,
-  onlineorderrewardmsgApi,
+  onlineorderrewardmsgApi
 } from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
@@ -278,22 +368,22 @@ export default {
       option1: [
         { text: "全部商品", value: 0 },
         { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 },
+        { text: "活动商品", value: 2 }
       ],
       option2: [
         { text: "默认排序", value: "a" },
         { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" },
+        { text: "销量排序", value: "c" }
       ],
       payStatus: [
         {
           type: 1,
-          name: "Cash on delivery",
+          name: "Cash on delivery"
         },
         {
           type: 2,
-          name: "Online payment",
-        },
+          name: "Online payment"
+        }
       ],
       showPayment: false,
       checked: false,
@@ -317,13 +407,14 @@ export default {
       order: false, //更多优惠券
       couponList: [], //优惠券领取
       fanxianStatus: false, //返现弹窗
-      fanxianList: [], //返现列表
+      fanxianList: [] //返现列表
     };
   },
+
   computed: {
     ...mapState({
-      selectionShopCar: (state) => state.selectionShopCar,
-    }),
+      selectionShopCar: state => state.selectionShopCar
+    })
   },
   mounted() {
     //如果在收件地址里面选了地址就从vuex里面找,如果是刚进来的就请求默认地址
@@ -336,10 +427,10 @@ export default {
     //通过购物车进来
     if (this.$route.query.type == "shopcar") {
       let arr = this.$store.state.selectionShopCar;
-      arr.forEach((shopCar) => {
+      arr.forEach(shopCar => {
         let shopCarObj = {
           shopcrtId: shopCar.shopcrtId,
-          skuId: shopCar.skuId,
+          skuId: shopCar.skuId
         };
         this.shopcrtList.push(shopCarObj);
       });
@@ -360,14 +451,14 @@ export default {
         Notify({
           message: "Choose the method of payment.",
           color: "#fff",
-          type: "danger",
+          type: "danger"
         });
         return;
       }
       let flag = true;
       let flag2 = true;
-      this.orderData.orderList.forEach((ele) => {
-        ele.detailList.forEach((ele2) => {
+      this.orderData.orderList.forEach(ele => {
+        ele.detailList.forEach(ele2 => {
           if (ele2.canSell == 0 || ele2.stockEnough == 0) {
             flag = false;
           }
@@ -395,7 +486,7 @@ export default {
     //编译状态
     orderStatus(type, list) {
       let name = "";
-      this[list].forEach((statu) => {
+      this[list].forEach(statu => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -423,7 +514,7 @@ export default {
     },
     //获取用户默认收货地址信息
     querydefaultObject() {
-      querydefaultObjectApi().then((res) => {
+      querydefaultObjectApi().then(res => {
         if (res.code == 0) {
           if (res.Data == null) {
             this.jumpRouter("确认订单收货地址");
@@ -454,14 +545,14 @@ export default {
       // let coupons = [];
       let data = {
         addressId: this.defaultAdderss.addressId,
-        detailList: arr,
+        detailList: arr
       };
       // 商品明细列表
-      this.orderData.orderList.forEach((ele) => {
-        ele.detailList.forEach((item) => {
+      this.orderData.orderList.forEach(ele => {
+        ele.detailList.forEach(item => {
           let obj = {
             skuId: item.skuId,
-            detailNum: Number(item.detailNum),
+            detailNum: Number(item.detailNum)
           };
           arr.push(obj);
         });
@@ -488,7 +579,7 @@ export default {
         return;
       }
       this.orderData.orderList.forEach((ele, eleIndex) => {
-        ele.detailList.forEach((item) => {
+        ele.detailList.forEach(item => {
           if (item.skuId == good.skuId) {
             ele.detailList.splice(goodindex, 1);
             this.shopcrtList.forEach((shopcrt, shopcrtIndex) => {
@@ -514,14 +605,14 @@ export default {
       let coupon = {
         addressId: this.defaultAdderss.addressId,
         detailList: arr,
-        couponDrawList: drawId,
+        couponDrawList: drawId
       };
       // 商品明细列表
-      this.orderData.orderList.forEach((ele) => {
-        ele.detailList.forEach((item) => {
+      this.orderData.orderList.forEach(ele => {
+        ele.detailList.forEach(item => {
           let obj = {
             skuId: item.skuId,
-            detailNum: Number(item.detailNum),
+            detailNum: Number(item.detailNum)
           };
           arr.push(obj);
         });
@@ -533,8 +624,8 @@ export default {
     getconfirmorder(data) {
       // // 缓存订单数据在vuex
       // this.$store.state.orderDetails = data;
-      getconfirmorderApi(data).then((res) => {
-        console.log(res, "aaawsf");
+      getconfirmorderApi(data).then(res => {
+        // console.log(res, "aaawsf");
         if (res.code == 0) {
           this.orderData = res.Data;
           // 缓存优惠券列表在vuex
@@ -550,7 +641,7 @@ export default {
             if (res.Data.rewardRegionList.length > 0) {
               this.fanxianStatus = true;
               this.fanxianList = res.Data.rewardRegionList;
-              console.log("this.fanxianList", this.fanxianList);
+              // console.log("this.fanxianList", this.fanxianList);
             }
           } else if (this.payTypeList.length != res.Data.payTypeList.length) {
             this.payTypeList = res.Data.payTypeList;
@@ -562,7 +653,7 @@ export default {
     },
     //确认订单提交订单接口
     batchmakeorder(orderObj) {
-      console.log(orderObj, "adw");
+      // console.log(orderObj, "adw");
       let obj = {
         addressId: this.defaultAdderss.addressId,
         payType: this.zffs,
@@ -570,10 +661,10 @@ export default {
         orderSource: 1,
         orderList: orderObj.orderList,
         shopcrtList: this.shopcrtList,
-        couponList: this.couponList,
+        couponList: this.couponList
       };
-      batchmakeorderApi(obj).then((res) => {
-        console.log(res, "s");
+      batchmakeorderApi(obj).then(res => {
+        // console.log(res, "s");
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -583,7 +674,7 @@ export default {
           } else {
             //弹出支付弹框
             this.showpaymen();
-            res.Data.forEach((item) => {
+            res.Data.forEach(item => {
               orderIdArr.push({ orderId: Number(item.orderId) });
             });
             this.orderIdList = orderIdArr;
@@ -619,6 +710,64 @@ export default {
           Toast("FBM products do not support pay by cash.");
           this.refresh();
         }
+
+
+        //易观数据采集----支付订单
+        let reason = "";
+        if (res.code == 1) {
+          reason = "Parameter “requestModel” cannot be empty.";
+        } else if (res.code == 2) {
+          reason = "Parameter”orderList” cannot not be empty.";
+        } else if (res.code == 3) {
+          reason = "Parameter Method of Payment cannot not be empty.";
+        } else if (res.code == 4) {
+          reason = "Parameter Shipping Address ID cannot not be empty.";
+        } else if (res.code == 5) {
+          reason = "Parameter Anonymous Buyer cannot not be empty.";
+        } else if (res.code == 6) {
+          reason = "Parameter Order List cannot not be empty.";
+        } else if (res.code == 7) {
+          reason = "Parameter”detailList” cannot not be empty.";
+        } else if (res.code == 21) {
+          reason = "The product is invalid. Please reconfirm the order.";
+        } else if (res.code == 22) {
+          reason = "The MOQ is insufficient. Please reconfirm the order.";
+        } else if (res.code == 23) {
+          reason = "The stock is insufficient. Please reconfirm the order.";
+        } else if (res.code == 24) {
+          reason = "The product price is changed. Please reconfirm the order.";
+        } else if (res.code == 25) {
+          reason = "FBM products do not support pay by cash.";
+        }
+        AnalysysAgent.track(
+          "pay_order",
+          {
+            receiver_province: this.defaultAdderss.province,
+            shipping_method: "Fulfillment by Tospino",
+            receiver_city: this.defaultAdderss.city,
+            total_discount: this.orderData.allOrderCouponAmountWebsite,
+            is_anonymous: (this.checked == false ? false : true),
+            order_amount: (
+              parseFloat(this.orderData.allOrderProductAmountWebsite) +
+              parseFloat(this.orderData.allOrderFareWebsite)
+            ).toString(),
+            order_actual_amount: this.orderData.allOrderAmountWebsite,
+            receiver_area: this.defaultAdderss.district,
+            shipping_cost: parseFloat(this.orderData.allOrderFareWebsite),
+            order_id: res.Data[0].orderSn,
+            is_successful: res.code == 0 ? true : false,
+            failure_reason: reason,
+            receiver_name: this.defaultAdderss.name,
+            receiver_address: this.defaultAdderss.addreCitys,
+            is_use_discount:
+              this.orderData.allOrderCouponAmountWebsite == 0 ? false : true,
+            pay_channel: this.zffs == 1 ? 'Cash on delivery':'Online payment',
+            receive_phonenum: this.defaultAdderss.phoneNumber
+          },
+          rel => {
+            console.log("rel", rel);
+          }
+        );
       });
     },
     //刷新页面
@@ -626,15 +775,15 @@ export default {
       let obj = {
         addressId: this.defaultAdderss.addressId,
         detailList: this.selectionShopCar,
-        autoSelectCoupon: 1,
+        autoSelectCoupon: 1
       };
       this.getconfirmorder(obj);
     },
 
     //订单发起支付
     orderlaunchpay(data) {
-      orderlaunchpayApi(data).then((res) => {
-        console.log("res");
+      orderlaunchpayApi(data).then(res => {
+        // console.log("res");
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
@@ -680,7 +829,7 @@ export default {
       let obj = {
         payTypeDetail: this.payTypeDetail,
         payPwd: value,
-        orderList: this.orderIdList,
+        orderList: this.orderIdList
       };
 
       this.orderlaunchpay(obj);
@@ -690,7 +839,7 @@ export default {
     },
     //选择支付方式
     changePaymen(dataItem) {
-      this.payTypeList.forEach((item) => {
+      this.payTypeList.forEach(item => {
         item.checked = false;
       });
       dataItem.checked = true;
@@ -707,8 +856,8 @@ export default {
     //返现短信
     duanxin() {
       let data = this.orderIdList;
-      onlineorderrewardmsgApi({ orderList: data }).then((res) => {});
-    },
+      onlineorderrewardmsgApi({ orderList: data }).then(res => {});
+    }
   },
   components: {
     actionSheetPaymen,
@@ -716,8 +865,8 @@ export default {
     actionSheetPassword,
     balanceHeader,
     progressBar,
-    orderCouponPop,
-  },
+    orderCouponPop
+  }
 };
 </script>
 

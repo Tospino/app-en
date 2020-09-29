@@ -177,6 +177,20 @@ export default {
           );
         }
       });
+
+      //易观数据采集----退款
+      AnalysysAgent.track('refund',{
+        product_name: this.detailObj.detailList[0].skuName,
+        product_detail: this.detailObj.detailList[0].skuValuesTitleEng,
+        order_id: this.formData.orderId.toString(),
+        commodity_amount: this.detailObj.orderAmountWebsite,
+        refund_reason: this.formData.reason,
+        refund_amount: this.detailObj.orderAmountWebsite,
+        product_id: this.detailObj.detailList[0].skuId.toString(),
+        quantity: this.detailObj.detailList[0].shouldRefundNum
+      },rel => {
+        console.log('rel');
+      })    
     },
     //提交订单
     submit() {

@@ -23,7 +23,7 @@
                 v-for="product in rightGoods.productCategory"
                 :key="product.categoryId"
               >
-                <div class="sanji" @click="toSearOne(product.categoryId)">
+                <div class="sanji" @click="toSearOne(product.categoryId)" prop="product.classNameEng"> 
                   <img v-lazy="$webUrl+product.categoryImg" />
                   <div class="parent">
                     <span class="name">{{product.classNameEng}}</span>
@@ -117,6 +117,7 @@ export default {
         }
       });
     },
+
     //更改侧边导航
     changeSidebar(index) {
       this.leftImgSrc = this.leftList[index].categoryImg;
