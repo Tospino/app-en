@@ -270,7 +270,6 @@ export default {
       this.makeupdata = this.selectionObj.Makeupdata;
       this.onedata = this.selectionObj.Onedata;
       this.twodata = this.selectionObj.Twodata;
-      // console.log(this.twodata, "this.twodata");
       this.makeupdata.forEach((item) => {
         if (this.makeupdata.length > 1) {
           if (item.skuPrice > 0) {
@@ -289,7 +288,6 @@ export default {
           makeupList.push(item.skuValues);
         }
         // 清仓默认勾选
-        // console.log("444", item);
         if (item.skuId == this.$route.query.skuId) {
           // 第一层
           this.clear_shop = item.valueId;
@@ -308,7 +306,6 @@ export default {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
           if (checkItem == item.valueId) {
-            // console.log("ad");
             item.ischeck = true;
           }
         });
@@ -402,18 +399,20 @@ export default {
       });
 
       //易观数据采集---添加购物车
-      AnalysysAgent.track('add_cart',{
-        product_price: this.sectionPrice,
-        coupon_name: this.$parent.ProModel.Data.couponName,
-        coupon_value: this.$parent.ProModel.Data.reduceAmount,
-        product_sold: this.$parent.detailmData.skuSalesNum,
-        product_id: this.makeItem.skuId.toString(),
-        cart_quantity: this.goodNumber,
-        product_name: this.attrTitleEng,
-        total: this.sectionPrice*this.goodNumber
-      },rel => {
-        console.log('rel',rel);
-      })
+      AnalysysAgent.track(
+        "add_cart",
+        {
+          product_price: this.sectionPrice,
+          coupon_name: this.$parent.ProModel.Data.couponName,
+          coupon_value: this.$parent.ProModel.Data.reduceAmount,
+          product_sold: this.$parent.detailmData.skuSalesNum,
+          product_id: this.makeItem.skuId.toString(),
+          cart_quantity: this.goodNumber,
+          product_name: this.attrTitleEng,
+          total: this.sectionPrice * this.goodNumber,
+        },
+        (rel) => {}
+      );
     },
     //确定按钮购买商品
     buyProduct() {

@@ -1,11 +1,15 @@
 <template>
   <div class="add-address">
     <div v-show="choiceShow">
-      <settings-header :title="title" title2="Save" @rightBtn="rightBtn"></settings-header>
+      <settings-header
+        :title="title"
+        title2="Save"
+        @rightBtn="rightBtn"
+      ></settings-header>
       <div class="cell">
         <input
           type="search"
-          :class="{'c-333':isBace}"
+          :class="{ 'c-333': isBace }"
           class="input-xt"
           placeholder="Receiver"
           v-model="form.shr"
@@ -15,7 +19,7 @@
       <div class="cell">
         <input
           type="search"
-          :class="{'c-333':isBace}"
+          :class="{ 'c-333': isBace }"
           class="input-xt"
           placeholder="Phone Number"
           v-model="form.sjhm"
@@ -25,10 +29,10 @@
         <span class="hm c-999">+233</span>
         <van-icon name="arrow" class="arrow c-999" />
       </div>
-      <div class="cell" @click="toChoiceList(1,0)">
+      <div class="cell" @click="toChoiceList(1, 0)">
         <input
           type="text"
-          :class="{'c-333':isBace}"
+          :class="{ 'c-333': isBace }"
           class="input-xt"
           placeholder="Choose A Country"
           v-model="form.lev1"
@@ -36,10 +40,10 @@
         />
         <van-icon name="arrow" class="arrow c-999" />
       </div>
-      <div class="cell" @click="toChoiceList(2,choiceForm.lev1.id)">
+      <div class="cell" @click="toChoiceList(2, choiceForm.lev1.id)">
         <input
           type="text"
-          :class="{'c-333':isBace}"
+          :class="{ 'c-333': isBace }"
           class="input-xt"
           placeholder="State/Province/Region"
           v-model="form.lev2"
@@ -47,10 +51,10 @@
         />
         <van-icon name="arrow" class="arrow c-999" />
       </div>
-      <div class="cell" @click="toChoiceList(3,choiceForm.lev2.id)">
+      <div class="cell" @click="toChoiceList(3, choiceForm.lev2.id)">
         <input
           type="text"
-          :class="{'c-333':isBace}"
+          :class="{ 'c-333': isBace }"
           class="input-xt"
           placeholder="City/County/Town"
           v-model="form.lev3"
@@ -58,10 +62,10 @@
         />
         <van-icon name="arrow" class="arrow c-999" />
       </div>
-      <div class="cell" @click="toChoiceList(4,choiceForm.lev3.id)">
+      <div class="cell" @click="toChoiceList(4, choiceForm.lev3.id)">
         <input
           type="text"
-          :class="{'c-333':isBace}"
+          :class="{ 'c-333': isBace }"
           class="input-xt"
           placeholder="County/District/Street"
           v-model="form.lev4"
@@ -70,13 +74,17 @@
         <van-icon name="arrow" class="arrow c-999" />
       </div>
       <div class="top-textarea">
-        <textarea placeholder="Enter a full address" v-model="form.message"></textarea>
+        <textarea
+          placeholder="Enter a full address"
+          v-model="form.message"
+        ></textarea>
       </div>
       <van-button
-        style="height: 40px;margin-bottom: 15px;;font-size:16px"
+        style="height: 40px; margin-bottom: 15px; font-size: 16px"
         @click="getLoaction"
         block
-      >Retrieves the location address</van-button>
+        >Retrieves the location address</van-button
+      >
       <div class="cell">
         <span class="c-333">Set it as default address</span>
         <van-switch
@@ -299,15 +307,17 @@ export default {
       }
       this.axiosAddress();
       //易观数据采集----编辑地址保存
-      AnalysysAgent.track('edit_address',{
-        phone_number: this.form.sjhm,
-        country: this.form.lev1,
-        province: this.form.lev2,
-        city: this.form.lev3,
-        region: this.form.lev4
-      },rel => {
-        console.log('rel',rel);
-      })
+      AnalysysAgent.track(
+        "edit_address",
+        {
+          phone_number: this.form.sjhm,
+          country: this.form.lev1,
+          province: this.form.lev2,
+          city: this.form.lev3,
+          region: this.form.lev4,
+        },
+        (rel) => {}
+      );
     },
     //判断是否编辑状态
     isEdit() {

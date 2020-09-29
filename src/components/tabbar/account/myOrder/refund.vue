@@ -7,58 +7,82 @@
         <div class="good-detail-header">
           <span>Product Info</span>
         </div>
-        <div class="good-detail-content" v-for="(data,index) in dataList" :key="index">
+        <div
+          class="good-detail-content"
+          v-for="(data, index) in dataList"
+          :key="index"
+        >
           <div class="good-detail-img">
-            <img v-lazy="$webUrl+data.skuImg" />
+            <img v-lazy="$webUrl + data.skuImg" />
           </div>
           <div class="good-detail-title">
-            <span class="name">{{data.skuName}}</span>
-            <div class="guige">{{data.skuValuesTitleEng}}</div>
+            <span class="name">{{ data.skuName }}</span>
+            <div class="guige">{{ data.skuValuesTitleEng }}</div>
           </div>
           <div class="price">
-            <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
-            <div class="p4 fl-right">x{{data.shouldRefundNum}}</div>
+            <div class="p3">
+              {{ data.currencySignWebsite }}{{ data.priceWebsite }}
+            </div>
+            <div class="p4 fl-right">x{{ data.shouldRefundNum }}</div>
           </div>
           <div class="tkje">
             <span class="t1">Freight:</span>
-            <span class="fl-right t2">{{data.currencySignWebsite}}{{detailObj.orderFareWebsite}}</span>
+            <span class="fl-right t2"
+              >{{ data.currencySignWebsite
+              }}{{ detailObj.orderFareWebsite }}</span
+            >
           </div>
           <div class="tkje">
             <span class="t1">Refund:</span>
-            <span class="fl-right t2">{{data.currencySignWebsite}}{{data.totalPriceWebsite}}</span>
+            <span class="fl-right t2"
+              >{{ data.currencySignWebsite }}{{ data.totalPriceWebsite }}</span
+            >
           </div>
         </div>
       </div>
       <div class="cell" @click="showReason">
         <span>Reason for refunding</span>
-        <span class="text" :class="{'c-999': formData.reason == 'Choose one'}">{{formData.reason}}</span>
+        <span
+          class="text"
+          :class="{ 'c-999': formData.reason == 'Choose one' }"
+          >{{ formData.reason }}</span
+        >
         <van-icon name="arrow" class="arrow c-999" />
       </div>
       <div class="cell">
         <span>Refund</span>
         <span class="text-tk c-orange f-30">
-          {{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}
-          <span
-            class="c-999 f-22"
-          >(Freight Included)</span>
+          {{ detailObj.currencySignWebsite }}{{ detailObj.orderAmountWebsite }}
+          <span class="c-999 f-22">(Freight Included)</span>
         </span>
         <div>The refund is your actual payment.</div>
       </div>
     </div>
     <div class="cell">
       <span>Refund Description</span>
-      <input type="text" class="input-xt" placeholder="optional" v-model="formData.remark" />
+      <input
+        type="text"
+        class="input-xt"
+        placeholder="optional"
+        v-model="formData.remark"
+      />
     </div>
     <div class="up-load">
       <div class="title">Upload Evidence</div>
       <div class="uploader">
-        <upload-all @getfilePathList="getfilePathList" :maxCount="6"></upload-all>
+        <upload-all
+          @getfilePathList="getfilePathList"
+          :maxCount="6"
+        ></upload-all>
       </div>
     </div>
     <p class="f-22 c-999">Note: Tospino will deduct 1% of the total amount!</p>
     <div class="btn-submit" @click="submit">Submit</div>
     <!-- 退款原因 -->
-    <refundReason ref="refundReason" @getReasonText="getReasonText"></refundReason>
+    <refundReason
+      ref="refundReason"
+      @getReasonText="getReasonText"
+    ></refundReason>
   </div>
 </template>
 
@@ -179,18 +203,20 @@ export default {
       });
 
       //易观数据采集----退款
-      AnalysysAgent.track('refund',{
-        product_name: this.detailObj.detailList[0].skuName,
-        product_detail: this.detailObj.detailList[0].skuValuesTitleEng,
-        order_id: this.formData.orderId.toString(),
-        commodity_amount: this.detailObj.orderAmountWebsite,
-        refund_reason: this.formData.reason,
-        refund_amount: this.detailObj.orderAmountWebsite,
-        product_id: this.detailObj.detailList[0].skuId.toString(),
-        quantity: this.detailObj.detailList[0].shouldRefundNum
-      },rel => {
-        console.log('rel');
-      })    
+      AnalysysAgent.track(
+        "refund",
+        {
+          product_name: this.detailObj.detailList[0].skuName,
+          product_detail: this.detailObj.detailList[0].skuValuesTitleEng,
+          order_id: this.formData.orderId.toString(),
+          commodity_amount: this.detailObj.orderAmountWebsite,
+          refund_reason: this.formData.reason,
+          refund_amount: this.detailObj.orderAmountWebsite,
+          product_id: this.detailObj.detailList[0].skuId.toString(),
+          quantity: this.detailObj.detailList[0].shouldRefundNum,
+        },
+        (rel) => {}
+      );
     },
     //提交订单
     submit() {

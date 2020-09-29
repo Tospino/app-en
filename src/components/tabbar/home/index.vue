@@ -152,8 +152,8 @@
                     activityId: item.activityId,
                     supplyId: item.supplyId,
                     activityType: item.activityType,
-                    activityState: item.activityState
-                  }
+                    activityState: item.activityState,
+                  },
                 })
               "
             >
@@ -373,7 +373,7 @@
                     class="clamp_clear"
                     :class="{
                       clear_sale: searchgoodDao.activityType == 0,
-                      clear_saon: searchgoodDao.activityType == 1
+                      clear_saon: searchgoodDao.activityType == 1,
                     }"
                     >Promotion Sale</span
                   >
@@ -429,7 +429,7 @@ import {
   HomePagebottomApi,
   homeAdvertPictureApi,
   APPgetuserIsfullApi,
-  gethomeClearanceList
+  gethomeClearanceList,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -446,15 +446,15 @@ export default {
       fineSaleList2: [],
       brandLogo1: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo2: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       brandLogo3: {
         brandLogo: "",
-        brandId: 0
+        brandId: 0,
       },
       formData: {
         brandId: 0,
@@ -462,7 +462,7 @@ export default {
         limit: 10,
         page: 1,
         seraname: "",
-        sort: 0
+        sort: 0,
       },
       bottomTabs: [],
       searchgoodDaolist: [],
@@ -475,28 +475,24 @@ export default {
       codeUrl: "",
       topBananerList: [],
       banner1: {
-        advertImg: ""
+        advertImg: "",
       },
       banner2: {
-        advertImg: ""
+        advertImg: "",
       },
       banner3: {
-        advertImg: ""
+        advertImg: "",
       },
       newCouponShow: "", //判断是否为新用户是否展示
       newCoupon: {},
       sale: false, //新用户是否存在
       clear_list: [],
       isExit: false,
-      clear_one: "" //特价 倒计时
+      clear_one: "", //特价 倒计时
     };
   },
   computed: {},
   created() {
-    // FB.getLoginStatus(function (response) {
-    //   console.log("created -> response", response);
-    //   statusChangeCallback(response);
-    // });
     this.newCoupons();
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
@@ -543,7 +539,7 @@ export default {
   methods: {
     // 首页新用户优惠券
     newCoupons() {
-      APPgetuserIsfullApi().then(res => {
+      APPgetuserIsfullApi().then((res) => {
         // this.newCouponShow = res.code;
         if (res.code == 0) {
           let userNews = res.Data;
@@ -563,7 +559,7 @@ export default {
     },
     // 领取优惠按钮
     evBus(id) {
-      couponDrawApi(id).then(res => {
+      couponDrawApi(id).then((res) => {
         Toast("Get the success");
       });
     },
@@ -572,7 +568,7 @@ export default {
     },
     //首页数据
     homePage(data) {
-      homePageApi(data).then(res => {
+      homePageApi(data).then((res) => {
         if (res.code == 0) {
           this.homeObj = res.Data;
           this.globalProList = this.homeObj["producteFineBrand"].slice(3);
@@ -604,7 +600,7 @@ export default {
     },
     //底部数据分类
     homePagebottom(data, flag) {
-      HomePagebottomApi(data).then(res => {
+      HomePagebottomApi(data).then((res) => {
         if (res.code == 0) {
           this.bottomTabs = res.top;
 
@@ -676,8 +672,8 @@ export default {
           activityId: overall.activityId,
           supplyId: overall.supplyId,
           activityType: overall.activityType,
-          activityState: overall.activityState
-        }
+          activityState: overall.activityState,
+        },
       });
     },
     //去到搜索里面
@@ -690,7 +686,7 @@ export default {
     },
     //首页广告
     homeAdvertPicture() {
-      homeAdvertPictureApi().then(res => {
+      homeAdvertPictureApi().then((res) => {
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
@@ -718,16 +714,14 @@ export default {
         {
           $page_url: urlHtm,
           $page_title: titHtm,
-          target_url: el.linkUrlEng
+          target_url: el.linkUrlEng,
         },
-        rel => {
-          console.log("rel", rel);
-        }
+        (rel) => {}
       );
     },
     //获取用户信息
     getuserinfo() {
-      getuserinfoApi().then(res => {
+      getuserinfoApi().then((res) => {
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }
@@ -739,7 +733,7 @@ export default {
     },
     // 获取特价清仓数据
     getClear() {
-      gethomeClearanceList({ isHome: 1 }).then(res => {
+      gethomeClearanceList({ isHome: 1 }).then((res) => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
           //   特价时间
@@ -747,12 +741,12 @@ export default {
           this.isExit = res.IsConcat;
         }
       });
-    }
+    },
   },
   components: {
     searchHeader,
-    userPopup
-  }
+    userPopup,
+  },
 };
 </script>
 

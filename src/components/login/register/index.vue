@@ -136,7 +136,7 @@
           />
         </van-cell-group>
         <van-button
-          style="height: 40px;margin-bottom: 15px;;font-size:16px"
+          style="height: 40px; margin-bottom: 15px; font-size: 16px"
           @click="getLoaction"
           block
           >Retrieves the location address</van-button
@@ -335,72 +335,72 @@ export default {
         legalPersonImg: "", //法人人像照
         legalPersonBack: "", //法人证件反面照
         legalPersonFront: "", //法人证件正面照
-        recommendCode: "" // 推荐码
+        recommendCode: "", // 推荐码
       },
       rules: {
         nickName: {
           required: true,
-          messages: "Enter account"
+          messages: "Enter account",
         },
         phone: {
           required: true,
-          messages: "Enter phone number"
+          messages: "Enter phone number",
         },
         smsCode: {
           required: true,
-          messages: "Enter verification code"
+          messages: "Enter verification code",
         },
         userPwd: {
           required: true,
-          messages: "Enter login password"
+          messages: "Enter login password",
         },
         userPwd2: {
           required: true,
-          messages: "Confirm the password"
-        }
+          messages: "Confirm the password",
+        },
       },
       form: {
         lev1: null,
         lev2: null,
         lev3: null,
-        lev4: null
+        lev4: null,
       },
       choiceForm: {
         lev1: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev2: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev3: {
           id: "",
           name: "",
-          areaCode: ""
+          areaCode: "",
         },
         lev4: {
           id: "",
           name: "",
-          areaCode: ""
-        }
+          areaCode: "",
+        },
       },
       memberList: [], //主营业务列表
       yzmData: {
         msgphone: "",
         types: "1",
-        areaCode: "233"
+        areaCode: "233",
       },
       zhengce: false,
-      userStatus: false
+      userStatus: false,
     };
   },
   computed: {
     disabledSubmit() {
       return !this.$fn.isDisabled(this.formData, this.rules) && this.xieyi;
-    }
+    },
   },
   async created() {
     this.getLoaction();
@@ -410,21 +410,21 @@ export default {
   },
   watch: {
     eyeStatus: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.eyeStatus
           ? (this.eyeName = "eye-o")
           : (this.eyeName = "closed-eye");
         this.fieldType = this.eyeStatus ? "text" : "password";
-      }
+      },
     },
     eyeStatus1: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.eyeStatus1
           ? (this.eyeName1 = "eye-o")
           : (this.eyeName1 = "closed-eye");
         this.fieldType1 = this.eyeStatus1 ? "text" : "password";
-      }
-    }
+      },
+    },
   },
   methods: {
     // 获取定位地址
@@ -441,20 +441,20 @@ export default {
         url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
         method: "POST",
         headers: {
-          "Content-Type": "application/json;charset=utf-8"
-        }
-      }).then(res => {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+      }).then((res) => {
         let data = res.data;
         latlng = `${data.location.lat},${data.location.lng}`;
       });
       let data = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=EN`,
-        method: "GET"
+        method: "GET",
       });
       // 获取中文数据，添加到数据库
       let dataEN = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=CN`,
-        method: "GET"
+        method: "GET",
       });
       let total_data = [...dataEN.data.results, ...data.data.results];
       if (Array.isArray(total_data) && total_data.length !== 0) {
@@ -566,9 +566,7 @@ export default {
       this.yzmData.areaCode = this.$refs.mobilecode.value;
       this.msglist(this.yzmData);
       //易观数据采集---点击获取验证码
-      AnalysysAgent.track("get_code", { service_type: "注册" }, rel => {
-        console.log("rel", rel);
-      });
+      AnalysysAgent.track("get_code", { service_type: "注册" }, (rel) => {});
     },
     getfilePath(path, imgName) {
       if (imgName == "公司正面照") {
@@ -591,7 +589,7 @@ export default {
       this.choiceShow = false;
       let obj = {
         area_level: level,
-        parent_id: parent
+        parent_id: parent,
       };
       this.$refs.choiceList.formData.area_level = obj.area_level;
       this.$refs.choiceList.formData.parent_id = obj.parent_id;
@@ -621,13 +619,13 @@ export default {
     },
     //主营业务列表
     membertypelit() {
-      membertypelitApi().then(res => {
+      membertypelitApi().then((res) => {
         if (res.code == 0) {
           let arr = res.tpMemberTypeList;
-          arr.forEach(e => {
+          arr.forEach((e) => {
             let obj = {
               name: e.typeTitle,
-              id: e.typeId
+              id: e.typeId,
             };
             this.memberList.push(obj);
           });
@@ -644,7 +642,7 @@ export default {
     },
     //注册
     userregister() {
-      userregisterApi(this.formData).then(res => {
+      userregisterApi(this.formData).then((res) => {
         if (res.code == 0) {
           localStorage.phone = res.user.phone;
           this.show2 = true;
@@ -698,17 +696,15 @@ export default {
             main_business: this.formData.mainBusinessName,
             register_method: "手机号",
             code: this.formData.recommendCode,
-            is_successful: res.code == 0 ? true : false
+            is_successful: res.code == 0 ? true : false,
           },
-          rel => {
-            console.log("rel", rel);
-          }
+          (rel) => {}
         );
       });
     },
     //验证码
     msglist(data) {
-      msglistApi(data).then(res => {
+      msglistApi(data).then((res) => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -756,7 +752,7 @@ export default {
         let obj = {
           id: data.Data.areaId,
           name: data.Data.areaNameEng,
-          areaCode: data.Data.areaCode
+          areaCode: data.Data.areaCode,
         };
         this.$set(this.choiceForm, `lev${level}`, obj);
       } else {
@@ -770,22 +766,22 @@ export default {
           areaName: name_cn, // 名称
           areaNameEng: name, // 名称英语
           parentId: level == 1 ? 0 : this.choiceForm[`lev${lev}`].id, // 父级ID
-          area_status: 1
+          area_status: 1,
         });
       }
     },
     // 当检索不到数据时，添加地址id
     async addAreaID(params) {
       if (params.parentId === 0 || params.parentId) {
-        await addbasearea(params).then(res => {
+        await addbasearea(params).then((res) => {
           this.$set(this.choiceForm, `lev${params.areaLevel}`, {
             id: res.Data.areaId,
             name: res.Data.areaNameEng,
-            areaCode: res.Data.areaCode
+            areaCode: res.Data.areaCode,
           });
         });
       }
-    }
+    },
   },
   components: {
     navar,
@@ -793,8 +789,8 @@ export default {
     choiceList,
     zhezhao,
     yinsi,
-    userAgreement
-  }
+    userAgreement,
+  },
 };
 </script>
 

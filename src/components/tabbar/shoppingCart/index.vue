@@ -363,7 +363,6 @@ export default {
       ["setstopcarlist"] // 相当于this.$store.dispatch('setstopcarlist'),提交这个方法
     ),
     toDetail(overall) {
-      console.log(overall.activityId, "购物车");
       if (overall.activityId != null) {
         this.$router.push({
           name: "商品详情",
@@ -417,13 +416,11 @@ export default {
     //购物车列表
     shopcartlist(data, flag) {
       shopcartlistApi(data).then((res) => {
-        console.log(res, "购物车列表");
         let youxiaoList = [],
           wuxiaoList = [];
         if (res.code == 0) {
           if (flag) {
             this.shopList = this.shopList.concat(res.Data.list);
-            // console.log(arrShopList[Object.keys(this.shopList)[Object.keys(this.shopList).length-1]],"5555747");
           } else {
             this.shopList = res.Data.list;
             // 取最后一个对象数组
@@ -454,12 +451,6 @@ export default {
           this.wuxiaoList = wuxiaoList;
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessIdtwo");
-          console.log(this.dataList, " this.dataList");
-          // this.dataList.forEach((item) => {
-          //   item.list.forEach((listitem) => {
-          //     listitem.checkStatus = false;
-          //   });
-          // });
         } else {
           this.kanmengou = false;
         }

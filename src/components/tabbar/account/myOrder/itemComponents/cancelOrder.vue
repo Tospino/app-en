@@ -7,9 +7,7 @@
           <span>Cancel Order</span>
           <van-icon name="cross" class="cross" @click="closeCancel" />
         </div>
-        <div class="yuanyin">
-          Reason for cancelling
-        </div>
+        <div class="yuanyin">Reason for cancelling</div>
         <div
           class="yuanyin-list"
           v-for="(reason, index) in reasonList"
@@ -27,12 +25,8 @@
           </div>
         </div>
         <div class="btns">
-          <div class="btn-zbqx" @click="closeCancel">
-            Cancel
-          </div>
-          <div class="btn-qdqx" @click="submitOrder">
-            Confirm
-          </div>
+          <div class="btn-zbqx" @click="closeCancel">Cancel</div>
+          <div class="btn-qdqx" @click="submitOrder">Confirm</div>
         </div>
       </div>
     </div>
@@ -46,32 +40,32 @@ export default {
   props: {
     orderId: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
       reasonList: [
         {
           name: "I don't want it now.",
-          istrue: true
+          istrue: true,
         },
         {
           name: "I have to re-order for wrong info.",
-          istrue: true
+          istrue: true,
         },
         {
           name: "Out of stock.",
-          istrue: true
+          istrue: true,
         },
         {
           name: "Others.",
-          istrue: true
-        }
+          istrue: true,
+        },
       ],
       anima: false,
       id: 0,
-      remark: ""
+      remark: "",
     };
   },
   computed: {},
@@ -79,14 +73,14 @@ export default {
   mounted() {},
   watch: {
     orderId: {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.id = newVal;
-        this.reasonList.forEach(item => {
+        this.reasonList.forEach((item) => {
           item.istrue = true;
         });
         this.remark = "";
-      }
-    }
+      },
+    },
   },
   methods: {
     //关闭弹窗
@@ -95,14 +89,14 @@ export default {
       this.anima = false;
     },
     checkyuan(item) {
-      this.reasonList.forEach(ele => {
+      this.reasonList.forEach((ele) => {
         ele.istrue = true;
       });
       item.istrue = false;
       this.remark = item.name;
     },
     revokeorder(data) {
-      revokeorderApi(data).then(res => {
+      revokeorderApi(data).then((res) => {
         if (res.code == 0) {
           this.closeCancel();
           this.$emit("refreshOrder");
@@ -133,37 +127,41 @@ export default {
     submitOrder() {
       let data = {
         orderId: this.id,
-        remark: this.remark
+        remark: this.remark,
       };
       Toast("Choose reasons for canceling order");
       if (!this.remark) return;
       this.revokeorder(data);
       //易观数据采集----取消订单
-      
+
       let pay_method = "";
       if (this.$parent.$parent.detailObj.payType == 1) {
         pay_method = "Cash";
       } else if (this.$parent.$parent.detailObj.payType == 2) {
         pay_method = "Online";
       }
-      AnalysysAgent.track("cancel_order", {
-        order_id: this.$parent.$parent.detailObj.orderSn,
-        order_actual_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
-        shipping_cost: this.$parent.$parent.detailObj.orderFareWebsite,
-        pay_channel: pay_method,
-        cancel_reason: this.remark,
-        shipping_method: "Fulfillment by Tospino",
-        num_products: this.$parent.$parent.detailObj.goodCount,
-        if_use_discount:
-          this.$parent.$parent.detailObj.orderCouponAmountWebsite == 0 ? false : true,
-        order_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
-        total_discount: this.$parent.$parent.detailObj.orderCouponAmountWebsite.toString()
-      },rel => {
-          console.log('rel',rel);
-      });
-    }
+      AnalysysAgent.track(
+        "cancel_order",
+        {
+          order_id: this.$parent.$parent.detailObj.orderSn,
+          order_actual_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
+          shipping_cost: this.$parent.$parent.detailObj.orderFareWebsite,
+          pay_channel: pay_method,
+          cancel_reason: this.remark,
+          shipping_method: "Fulfillment by Tospino",
+          num_products: this.$parent.$parent.detailObj.goodCount,
+          if_use_discount:
+            this.$parent.$parent.detailObj.orderCouponAmountWebsite == 0
+              ? false
+              : true,
+          order_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
+          total_discount: this.$parent.$parent.detailObj.orderCouponAmountWebsite.toString(),
+        },
+        (rel) => {}
+      );
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

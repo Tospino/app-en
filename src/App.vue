@@ -26,27 +26,25 @@ export default {
       "core_page_load",
       {
         $url: urlHtm,
-        $title: titHtm
+        $title: titHtm,
       },
-      rel => {
-        console.log("rel", rel);
-      }
+      (rel) => {}
     );
   },
   watch: {
-    $route: function(to, from) {
+    $route: function (to, from) {
       window.pageYOffset = 0;
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-    }
+    },
   },
   mounted() {
     setTimeout(() => {
       try {
         var first = null;
         var webview = plus.webview.currentWebview();
-        plus.key.addEventListener("backbutton", function() {
-          webview.canBack(function(e) {
+        plus.key.addEventListener("backbutton", function () {
+          webview.canBack(function (e) {
             if (e.canBack) {
               webview.back(); //这里不建议修改自己跳转的路径
             } else {
@@ -56,9 +54,9 @@ export default {
                 // console.log('再按一次退出应用');//用自定义toast提示最好
                 // toast('双击返回键退出应用'); //调用自己写的吐丝提示 函数
                 plus.nativeUI.toast("Logout the APP if you press again", {
-                  duration: "short"
+                  duration: "short",
                 }); //通过H5+ API 调用Android 上的toast 提示框
-                setTimeout(function() {
+                setTimeout(function () {
                   first = null;
                 }, 1000);
               } else {
@@ -74,7 +72,7 @@ export default {
         console.log(err.message);
       }
     }, 1000);
-  }
+  },
 };
 </script>
 

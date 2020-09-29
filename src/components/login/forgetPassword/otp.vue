@@ -59,13 +59,13 @@ export default {
       yzmData: {
         msgphone: "",
         types: "2",
-        areaCode: "233"
+        areaCode: "233",
       },
       jiaoyan: {
         msg_phone: "",
         msg_types: "2",
-        msg_num: ""
-      }
+        msg_num: "",
+      },
     };
   },
   mounted() {
@@ -75,7 +75,7 @@ export default {
   computed: {
     disabledSubmit() {
       return this.verCode.length == 6;
-    }
+    },
   },
   methods: {
     toRevise() {
@@ -87,9 +87,11 @@ export default {
     getCode() {
       this.msglist(this.yzmData);
       //易观数据采集---点击获取验证码
-      AnalysysAgent.track("get_code", { service_type: "忘记密码" }, rel => {
-        console.log("rel", rel);
-      });
+      AnalysysAgent.track(
+        "get_code",
+        { service_type: "忘记密码" },
+        (rel) => {}
+      );
     },
     //验证码
     msglist(date) {
@@ -100,7 +102,7 @@ export default {
       } else {
         data.msgphone = data.msgphone;
       }
-      msglistApi(data).then(res => {
+      msglistApi(data).then((res) => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -152,11 +154,11 @@ export default {
       } else {
         data.msg_phone = data.msg_phone;
       }
-      getverificationcodeApi(data).then(res => {
+      getverificationcodeApi(data).then((res) => {
         if (res.code == 0) {
           this.$router.push({
             name: "修改密码",
-            query: { phone: data.msg_phone, verCode: this.verCode }
+            query: { phone: data.msg_phone, verCode: this.verCode },
           });
         } else if (res.code == -110) {
           Toast("Verification code is incorrect！");
@@ -165,11 +167,11 @@ export default {
     },
     inputFun1(e) {
       this.verCode = e.target.value.replace(/[^\d]/g, "");
-    }
+    },
   },
   components: {
-    navar
-  }
+    navar,
+  },
 };
 </script>
 

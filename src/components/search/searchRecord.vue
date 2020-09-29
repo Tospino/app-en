@@ -78,7 +78,7 @@ import searchHead from "@/multiplexing/searchHead.vue";
 import {
   searchGoodApi,
   searchFindApi,
-  delHistoryApi
+  delHistoryApi,
 } from "@/api/search/index";
 export default {
   props: {},
@@ -92,7 +92,7 @@ export default {
       searName: "",
       searGoodList: [], //搜索商品列表
       historyList: [], //历史记录列表
-      findList: [] //搜索发现列表
+      findList: [], //搜索发现列表
     };
   },
   computed: {},
@@ -117,18 +117,18 @@ export default {
   },
   watch: {
     goodName: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.lishiShow = newVal ? false : true;
-      }
+      },
     },
     searName: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.lishiShow = newVal ? false : true;
         this.goodName = newVal;
         if (newVal == undefined) return;
         this.searchGood(newVal);
-      }
-    }
+      },
+    },
   },
   methods: {
     deleteRecord() {
@@ -140,11 +140,9 @@ export default {
       AnalysysAgent.track(
         "search_item_click",
         {
-          key_word: seraname
+          key_word: seraname,
         },
-        rel => {
-          console.log("rel", rel);
-        }
+        (rel) => {}
       );
     },
     //输入框获得焦点时触发
@@ -166,7 +164,7 @@ export default {
     },
     //搜索商品
     searchGood(value = "") {
-      searchGoodApi({ keyname: value }).then(res => {
+      searchGoodApi({ keyname: value }).then((res) => {
         if (res.code == 0) {
           this.searGoodList = res.datalist;
         }
@@ -182,14 +180,14 @@ export default {
     onSearch() {
       this.$router.push({
         name: "搜索商品1",
-        query: { seraname: this.goodName }
+        query: { seraname: this.goodName },
       });
       this.$store.state.serchName = this.goodName;
       if (!this.goodName || !this.$storage("?userinfoShop")) return;
       //储存历史数据
       let obj = {
         keyWord: this.goodName,
-        userId: this.$storage("userinfoShop").userId
+        userId: this.$storage("userinfoShop").userId,
       };
       if (this.$storage("?historyList")) {
         let arr = this.$storage("historyList");
@@ -202,7 +200,7 @@ export default {
       //属性值进行去重
       function unique(arr1, key) {
         const res = new Map();
-        return arr1.filter(a => !res.has(a[key]) && res.set(a[key], 1));
+        return arr1.filter((a) => !res.has(a[key]) && res.set(a[key], 1));
       }
     },
 
@@ -211,7 +209,7 @@ export default {
     },
     //搜索发现
     searchFind() {
-      searchFindApi().then(res => {
+      searchFindApi().then((res) => {
         if (res.code == 0) {
           this.findList = res.Data;
         }
@@ -219,18 +217,18 @@ export default {
     },
     //删除所有历史记录
     delHistory() {
-      delHistoryApi().then(res => {
+      delHistoryApi().then((res) => {
         if (res.code == 0) {
           this.redordshow = false;
           this.$storage.remove("historyList");
           this.searchHistory();
         }
       });
-    }
+    },
   },
   components: {
-    searchHead
-  }
+    searchHead,
+  },
 };
 </script>
 

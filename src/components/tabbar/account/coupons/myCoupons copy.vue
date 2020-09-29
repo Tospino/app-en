@@ -10,13 +10,17 @@
           title-active-color="#FA5300"
           @click="userDrawCoupon(active)"
         >
-          <van-tab :title="tab.name" v-for="(tab,index) in typeList" :key="index"></van-tab>
+          <van-tab
+            :title="tab.name"
+            v-for="(tab, index) in typeList"
+            :key="index"
+          ></van-tab>
         </van-tabs>
       </div>
     </div>
     <!-- 优惠券列表 -->
-    {{formData.page}}
-    <div class="selection-conten" v-if="active==0">
+    {{ formData.page }}
+    <div class="selection-conten" v-if="active == 0">
       <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
       <van-list
         class="activity"
@@ -26,29 +30,57 @@
         :offset="130"
         loading-text=" "
       >
-        <van-cell class="youhuiquan-main" v-for="(shops,index) in shopCoupon" :key="index">
-          <div v-if="shops.drawStatus==0||shops.drawStatus==null">
+        <van-cell
+          class="youhuiquan-main"
+          v-for="(shops, index) in shopCoupon"
+          :key="index"
+        >
+          <div v-if="shops.drawStatus == 0 || shops.drawStatus == null">
             <img :src="srcUse" />
           </div>
-          <div v-else-if="shops.drawStatus==3">
+          <div v-else-if="shops.drawStatus == 3">
             <img :src="srcMore" />
           </div>
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
               <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
               <p class="youhuiquan-left-money">
-                <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                {{ shops.reduceAmount}}
+                <span class="youhuiquan-left-biao">GH{{ jn }}</span>
+                {{ shops.reduceAmount }}
                 <i>OFF</i>
               </p>
-              <p
-                class="youhuiquan-left-m"
-              >Type:{{shops.couponType==1?"Tospino’s Price-off":shops.couponType==2?"Newer Exclusives":shops.couponType==3?"Shop’s Price-off":shops.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p
-                class="youhuiquan-left-m"
-              >Valid:{{shops.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shops.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
-              <div v-if="shops.couponType==2?false:true">
-                <progress-bar :progressBar="shops.claimRate*100"></progress-bar>
+              <p class="youhuiquan-left-m">
+                Type:{{
+                  shops.couponType == 1
+                    ? "Tospino’s Price-off"
+                    : shops.couponType == 2
+                    ? "Newer Exclusives"
+                    : shops.couponType == 3
+                    ? "Shop’s Price-off"
+                    : shops.couponType == 4
+                    ? "Item Price-off"
+                    : "Item Price-off"
+                }}
+              </p>
+              <p class="youhuiquan-left-m">
+                Valid:{{
+                  shops.useBeginWebsite
+                    .slice(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("/")
+                }}~{{
+                  shops.useEndWebsite
+                    .slice(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("/")
+                }}
+              </p>
+              <div v-if="shops.couponType == 2 ? false : true">
+                <progress-bar
+                  :progressBar="shops.claimRate * 100"
+                ></progress-bar>
               </div>
             </div>
 
@@ -58,14 +90,42 @@
                 <!-- <span class="youhuiquan-right-title right-title-a">{{shops.couponName}}</span> -->
               </div>
               <div class="youhuiquan-right-main">
-                <div>Mini Spend GH{{jn}} {{shops.upToAmount!=null?shops.upToAmount:shops.reduceAmount}}</div>
+                <div>
+                  Mini Spend GH{{ jn }}
+                  {{
+                    shops.upToAmount != null
+                      ? shops.upToAmount
+                      : shops.reduceAmount
+                  }}
+                </div>
                 <van-button
                   id="btn"
                   round
                   type="info"
-                  @click="ProBar(shops.couponId,shops.couponDetailId,shops.drawStatus,shops.couponType,shops.businessId,shops.expIds,shops.skuId,shops.sellFlag,shops.isToUse)"
+                  @click="
+                    ProBar(
+                      shops.couponId,
+                      shops.couponDetailId,
+                      shops.drawStatus,
+                      shops.couponType,
+                      shops.businessId,
+                      shops.expIds,
+                      shops.skuId,
+                      shops.sellFlag,
+                      shops.isToUse
+                    )
+                  "
                   class="youhuiquan-right-btn right-btn-a"
-                >{{shops.drawStatus==null?"Get it now":shops.drawStatus==0?"Use it now":shops.drawStatus==3?"Get more":"删除"}}</van-button>
+                  >{{
+                    shops.drawStatus == null
+                      ? "Get it now"
+                      : shops.drawStatus == 0
+                      ? "Use it now"
+                      : shops.drawStatus == 3
+                      ? "Get more"
+                      : "删除"
+                  }}</van-button
+                >
               </div>
             </div>
           </div>
@@ -75,7 +135,7 @@
       <!-- <div @click="returnPage">返回</div> -->
     </div>
 
-    <div class="selection-conten" v-else-if="active==1">
+    <div class="selection-conten" v-else-if="active == 1">
       <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
       <van-list
         class="activity"
@@ -84,21 +144,47 @@
         @load="onLoad"
         loading-text=" "
       >
-        <van-cell class="youhuiquan-main" v-for="(shopone,index) in shopCouponUsed" :key="index">
+        <van-cell
+          class="youhuiquan-main"
+          v-for="(shopone, index) in shopCouponUsed"
+          :key="index"
+        >
           <img :src="srcDel" />
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
               <p class="youhuiquan-left-money">
-                <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                {{shopone.reduceAmount}}
+                <span class="youhuiquan-left-biao">GH{{ jn }}</span>
+                {{ shopone.reduceAmount }}
                 <i>OFF</i>
               </p>
-              <p
-                class="youhuiquan-left-m"
-              >Type:{{shopone.couponType==1?"Tospino’s Price-off":shopone.couponType==2?"Newer Exclusives":shopone.couponType==3?"Shop’s Price-off":shopone.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p
-                class="youhuiquan-left-m"
-              >Valid:{{shopone.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopone.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+              <p class="youhuiquan-left-m">
+                Type:{{
+                  shopone.couponType == 1
+                    ? "Tospino’s Price-off"
+                    : shopone.couponType == 2
+                    ? "Newer Exclusives"
+                    : shopone.couponType == 3
+                    ? "Shop’s Price-off"
+                    : shopone.couponType == 4
+                    ? "Item Price-off"
+                    : "Item Price-off"
+                }}
+              </p>
+              <p class="youhuiquan-left-m">
+                Valid:{{
+                  shopone.useBeginWebsite
+                    .slice(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("/")
+                }}~{{
+                  shopone.useEndWebsite
+                    .slice(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("/")
+                }}
+              </p>
             </div>
 
             <div class="youhuiquan-right">
@@ -106,13 +192,21 @@
                 <!-- <span class="youhuiquan-right-title right-title-b">{{shopone.couponName}}</span> -->
               </div>
               <div class="youhuiquan-right-main">
-                <div>Mini Spend GH{{jn}} {{shopone.upToAmount!=null?shopone.upToAmount:shopone.reduceAmount}}</div>
+                <div>
+                  Mini Spend GH{{ jn }}
+                  {{
+                    shopone.upToAmount != null
+                      ? shopone.upToAmount
+                      : shopone.reduceAmount
+                  }}
+                </div>
                 <van-button
                   round
                   type="info"
                   @click="usedDel(shopone.drawId)"
                   class="youhuiquan-right-btn right-btn-b"
-                >Delete</van-button>
+                  >Delete</van-button
+                >
                 <!-- {{shopone.drawStatus==null?"Get it now":shopone.drawStatus==0?"Use it now":shopone.drawStatus==1?"Get more":shopone.drawStatus==2?"Delete":"Delete"}} -->
               </div>
             </div>
@@ -122,7 +216,7 @@
       <!-- </van-pull-refresh> -->
     </div>
     <!-- 已过期 -->
-    <div class="selection-conten" v-else-if="active==2">
+    <div class="selection-conten" v-else-if="active == 2">
       <!-- <van-pull-refresh v-model="loading" @refresh="onRefresh"> -->
       <van-list
         class="activity"
@@ -131,21 +225,47 @@
         @load="onLoad"
         loading-text=" "
       >
-        <van-cell class="youhuiquan-main" v-for="(shopDel,index) in shopCouponEx" :key="index">
+        <van-cell
+          class="youhuiquan-main"
+          v-for="(shopDel, index) in shopCouponEx"
+          :key="index"
+        >
           <img :src="srcEx" />
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
               <p class="youhuiquan-left-money">
-                <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                {{ shopDel.reduceAmount}}
+                <span class="youhuiquan-left-biao">GH{{ jn }}</span>
+                {{ shopDel.reduceAmount }}
                 <i>OFF</i>
               </p>
-              <p
-                class="youhuiquan-left-m"
-              >Type:{{shopDel.couponType==1?"Tospino’s Price-off":shopDel.couponType==2?"Newer Exclusives":shopDel.couponType==3?"Shop’s Price-off":shopDel.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p
-                class="youhuiquan-left-m"
-              >Valid:{{shopDel.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{shopDel.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+              <p class="youhuiquan-left-m">
+                Type:{{
+                  shopDel.couponType == 1
+                    ? "Tospino’s Price-off"
+                    : shopDel.couponType == 2
+                    ? "Newer Exclusives"
+                    : shopDel.couponType == 3
+                    ? "Shop’s Price-off"
+                    : shopDel.couponType == 4
+                    ? "Item Price-off"
+                    : "Item Price-off"
+                }}
+              </p>
+              <p class="youhuiquan-left-m">
+                Valid:{{
+                  shopDel.useBeginWebsite
+                    .slice(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("/")
+                }}~{{
+                  shopDel.useEndWebsite
+                    .slice(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("/")
+                }}
+              </p>
             </div>
 
             <div class="youhuiquan-right">
@@ -157,13 +277,21 @@
                 >{{shopDel.couponName}}</span>-->
               </div>
               <div class="youhuiquan-right-main">
-                <div>Mini Spend GH{{jn}} {{shopDel.upToAmount!=null?shopDel.upToAmount:shopDel.reduceAmount}}</div>
+                <div>
+                  Mini Spend GH{{ jn }}
+                  {{
+                    shopDel.upToAmount != null
+                      ? shopDel.upToAmount
+                      : shopDel.reduceAmount
+                  }}
+                </div>
                 <van-button
                   round
                   type="info"
                   @click="usedDel(shopDel.drawId)"
                   class="youhuiquan-right-btn right-btn-b"
-                >Delete</van-button>
+                  >Delete</van-button
+                >
               </div>
             </div>
           </div>
@@ -174,7 +302,15 @@
 
     <!-- 判断是否有优惠券 -->
     <div
-      v-if="active==0?shopCoupon.length==0: active==1?shopCouponUsed.length==0: active==2?shopCouponEx.length==0:shopCouponEx.length==0"
+      v-if="
+        active == 0
+          ? shopCoupon.length == 0
+          : active == 1
+          ? shopCouponUsed.length == 0
+          : active == 2
+          ? shopCouponEx.length == 0
+          : shopCouponEx.length == 0
+      "
     >
       <no-coupon :imgSrc="imgSrc1" describe="There is no coupons"></no-coupon>
     </div>
@@ -269,14 +405,10 @@ export default {
     // 全部可用优惠券
     async getListData(data, flag) {
       let couponList = await APPgetuserallCouponListApi(data);
-      console.log(flag, "flag");
-      //   console.log("this.shopCoupon", this.shopCoupon);
       if (flag) {
         this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
-        console.log("1", this.shopCoupon);
       } else {
         this.shopCoupon = couponList.Data.list;
-        console.log("0", this.shopCoupon);
       }
       // 列表数据懒加载
       if (this.shopCoupon.length >= couponList.Data.totalCount) {
@@ -289,14 +421,11 @@ export default {
     },
     // 已使用和已过期优惠券
     async getUseData(data, flag) {
-      console.log(data, flag);
-      //   this.finished = true;
       let couponList = await APPgetuserallcouponlistexpireApi(data);
       if (this.shopCouponEx.length >= couponList.Data.totalCount) {
         this.finished = true;
         return false;
       }
-      //   return;
       // 获取数据
       if (this.active == 1) {
         if (flag) {
@@ -316,10 +445,8 @@ export default {
         if (flag) {
           //   this.shopCouponEx = [...this.shopCouponEx, ...couponList.Data.list];
           this.shopCouponEx = this.shopCouponEx.concat(couponList.Data.list);
-          console.log("this.shopCouponEx", this.shopCouponEx);
         } else {
           this.shopCouponEx = couponList.Data.list;
-          console.log("444aa", this.shopCouponEx);
         }
         // 如果数组长度大于数据总长度
         if (this.shopCouponEx.length >= couponList.Data.totalCount) {

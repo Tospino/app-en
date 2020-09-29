@@ -63,7 +63,7 @@
               :class="{
                 on_fw: isClearSale === 0,
                 on_fc: isClearSale == 1,
-                on_tc: isClearSale == 2
+                on_tc: isClearSale == 2,
               }"
             >
               <span
@@ -71,7 +71,7 @@
                 :class="{
                   fz_cw: isClearSale === 0,
                   fz_co: isClearSale == 1,
-                  fz_ct: isClearSale == 2
+                  fz_ct: isClearSale == 2,
                 }"
               >
                 <!-- 54% off -->
@@ -97,7 +97,7 @@
               :class="{
                 on_rw: isClearSale === 0,
                 on_rc: isClearSale == 1,
-                on_rt: isClearSale == 2
+                on_rt: isClearSale == 2,
               }"
             >
               <h2 class="active_title">Clearance Sale</h2>
@@ -234,7 +234,7 @@
             @click="
               $router.push({
                 name: '商品详情评价',
-                query: { skuid: detailmData.skuId }
+                query: { skuid: detailmData.skuId },
               })
             "
             ref="goodComment"
@@ -482,11 +482,11 @@ import {
   AppqureyuserCouponProModelApi,
   getsupplyDetailApi,
   getGuessyouLikeApi,
-  getClearanceDetailApi
+  getClearanceDetailApi,
 } from "@/api/home/commodityDetails";
 import {
   adduserbrowhistoryApi,
-  adduserfavoritesApi
+  adduserfavoritesApi,
 } from "@/api/favorites/index.js";
 // 领取优惠券
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -506,7 +506,7 @@ export default {
       detailmData: {},
       leng: 0,
       footerData: {
-        list: []
+        list: [],
       },
       showfooter: false,
       Isfavorites: 0,
@@ -531,7 +531,7 @@ export default {
       scrollFlag: true,
       isClearSaleId: "", // 是否是特价清仓商品
       isClearSale: "", // 活动状态 0 未开始（预热） 1 已开始（进行中） 2 售罄
-      arrClearSale: " " //特价清仓"2020-9-28 14:00:00"
+      arrClearSale: " ", //特价清仓"2020-9-28 14:00:00"
     };
   },
   computed: {},
@@ -575,8 +575,8 @@ export default {
           activityId: this.$route.query.activityId,
           supplyId: this.$route.query.supplyId,
           activityType: this.$route.query.activityType,
-          activityState: this.$route.query.activityState
-        }).then(res => {
+          activityState: this.$route.query.activityState,
+        }).then((res) => {
           if (res.code == 0) {
             this.isClearSaleId = this.$route.query.activityId;
             Toast.loading({ loadingType: "spinner", message: "loading..." });
@@ -588,7 +588,6 @@ export default {
               this.amountTip = false;
             }
             this.arrClearSale = this.detailmData.productSkuList[0].tpproductskuattrvalue[0].activityBegin;
-            // console.log("this.detailmData", this.detailmData);
             this.couponProModel(
               this.detailmData.supplyId,
               this.detailmData.businessId,
@@ -624,7 +623,7 @@ export default {
         });
       } else {
         //  无清仓类型
-        productdetailApi({ skuid: id }).then(res => {
+        productdetailApi({ skuid: id }).then((res) => {
           if (res.code == 0) {
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
@@ -710,7 +709,7 @@ export default {
     },
     //增加用户浏览记录数据
     adduserbrowhistory(id) {
-      adduserbrowhistoryApi({ skuid: id }).then(res => {});
+      adduserbrowhistoryApi({ skuid: id }).then((res) => {});
     },
     //点击tab标签
     changeTab(index) {
@@ -737,22 +736,24 @@ export default {
       //易观数据采集----加入收藏
       let urlHtm = window.location.href;
       let titHtm = document.title;
-      AnalysysAgent.track('collect',{
+      AnalysysAgent.track(
+        "collect",
+        {
           product_id: this.detailmData.supplyId.toString(),
-          product_price : this.detailmData.salePrice,
+          product_price: this.detailmData.salePrice,
           product_name: this.detailmData.supplyTitle,
           product_sold: this.detailmData.skuSalesNum,
           coupon_value: this.ProModel.Data.reduceAmount,
           discount: this.detailmData.discountPrice,
           $page_url: urlHtm,
-          $paeg_title: titHtm
-      },rel => {
-        console.log('rel',rel);
-      })
+          $paeg_title: titHtm,
+        },
+        (rel) => {}
+      );
     },
     //加入收藏夹
     adduserfavorites(data) {
-      adduserfavoritesApi(data).then(res => {
+      adduserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           this.Isfavorites = 1;
         }
@@ -768,7 +769,7 @@ export default {
       this.ProModel = await AppqureyuserCouponProModelApi({
         supplyId: supplyId,
         businessId: businessId,
-        expId: expId
+        expId: expId,
       });
       if (this.ProModel.code == 0) {
         this.moreShop = true;
@@ -787,18 +788,16 @@ export default {
           coupon_value: this.ProModel.Data.reduceAmount,
           discount: this.detailmData.discountPrice,
           delivery_place: "海外",
-          product_instock: this.$refs.commodityselection.stock
+          product_instock: this.$refs.commodityselection.stock,
         },
-        rel => {
-          console.log("rel", rel);
-        }
+        (rel) => {}
       );
     },
     // 最高金额优惠券领取
     async couponsClick(couponId, DetailId, supplyId, businessId, expId) {
       let couponDraw = await couponDrawApi({
         couponId: couponId,
-        couponDetailId: DetailId
+        couponDetailId: DetailId,
       });
       this.couponProModel(supplyId, businessId, expId);
       if (couponDraw.code == 0) {
@@ -812,25 +811,27 @@ export default {
         this.$toast.clear();
       }
       //易观数据采集----点击领取优惠券
-      let couponType1 = '';
-      if(this.ProModel.Data.couponType == 1){
-        couponType1 = '平台满减券';
-      }else if(this.ProModel.Data.couponType == 2){
-        couponType1 = '新人专享券';
-      }else if(this.ProModel.Data.couponType == 3){
-        couponType1 = '店铺满减券';
-      }else if(this.ProModel.Data.couponType == 4){
-        couponType1 = '商品立减券';
+      let couponType1 = "";
+      if (this.ProModel.Data.couponType == 1) {
+        couponType1 = "平台满减券";
+      } else if (this.ProModel.Data.couponType == 2) {
+        couponType1 = "新人专享券";
+      } else if (this.ProModel.Data.couponType == 3) {
+        couponType1 = "店铺满减券";
+      } else if (this.ProModel.Data.couponType == 4) {
+        couponType1 = "商品立减券";
       }
-      AnalysysAgent.track('get_coupon',{
-         coupon_name: this.ProModel.Data.couponName,
-         coupon_value: this.ProModel.Data.reduceAmount,
-         coupon_type: couponType1,
-         coupon_start: this.ProModel.Data.drawBegin,
-         coupon_end: this.ProModel.Data.drawEnd
-      },rel => {
-        console.log('rel',rel);
-      })
+      AnalysysAgent.track(
+        "get_coupon",
+        {
+          coupon_name: this.ProModel.Data.couponName,
+          coupon_value: this.ProModel.Data.reduceAmount,
+          coupon_type: couponType1,
+          coupon_start: this.ProModel.Data.drawBegin,
+          coupon_end: this.ProModel.Data.drawEnd,
+        },
+        (rel) => {}
+      );
     },
     // 更多优惠券
     saleMore() {
@@ -838,9 +839,9 @@ export default {
       let moreCoupon = {
         supplyId: this.detailmData.supplyId,
         businessId: this.detailmData.businessId,
-        expId: this.detailmData.expId
+        expId: this.detailmData.expId,
       };
-      AppqureyuserCouponProApi(moreCoupon).then(res => {
+      AppqureyuserCouponProApi(moreCoupon).then((res) => {
         this.couponShop = res.Data;
       });
     },
@@ -871,7 +872,7 @@ export default {
     },
     //猜你喜欢
     getGuessyouLike(id) {
-      getGuessyouLikeApi({ categoryId: id }).then(res => {
+      getGuessyouLikeApi({ categoryId: id }).then((res) => {
         if (res.code == 0) {
           this.footerData.list = res.GuessyouLike;
           this.showfooter = true; //数据回调回来,显示猜你喜欢
@@ -880,7 +881,7 @@ export default {
     },
     //详情介绍图片
     getsupplyDetail(id) {
-      getsupplyDetailApi({ supplyId: id }).then(res => {
+      getsupplyDetailApi({ supplyId: id }).then((res) => {
         if (res.code == 0) {
           this.supplyDetail = res.supplyDetail;
         }
@@ -889,7 +890,7 @@ export default {
     },
     showShare() {
       this.$refs["share"].shows();
-    }
+    },
   },
   components: {
     detailsHeader,
@@ -898,9 +899,9 @@ export default {
     kefu,
     shopCouponPop,
     progressBar,
-    customerService
+    customerService,
     // share,
-  }
+  },
 };
 </script>
 

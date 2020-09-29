@@ -43,7 +43,9 @@
           <span class="mt_8">Copy Link</span>
         </div>
       </div>
-      <van-button plain block class="btns" @click="closeShows">Cancel</van-button>
+      <van-button plain block class="btns" @click="closeShows"
+        >Cancel</van-button
+      >
     </van-popup>
   </section>
 </template>
@@ -84,14 +86,11 @@ export default {
         window.open(url, "_blank", "Web");
       };
       let ometa = document.getElementsByTagName("meta"); // console.log("meta", document.getElementsByTagName("meta"));
-      console.log("shares -> ometa", ometa);
       ometa[14].content = this.list.supplyTitle;
       ometa[12].content = this.$webUrl + this.list.locationUrl;
       ometa[8].content = "shop" + this.list.salePrice;
       var URL = encodeURIComponent(document.location.href);
-      console.log("shares -> href", URL);
       var title = encodeURIComponent(document.title);
-      console.log("shares -> title", title);
       // var templates = {
       //     qzone: 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={{URL}}&title={{TITLE}}&desc={{DESCRIPTION}}&summary={{SUMMARY}}&site={{SOURCE}}&pics={{IMAGE}}',
       //     qq: 'http://connect.qq.com/widget/shareqq/index.html?url={{URL}}&title={{TITLE}}&source={{SOURCE}}&desc={{DESCRIPTION}}&pics={{IMAGE}}&summary="{{SUMMARY}}"',

@@ -8,7 +8,7 @@
 -->
 <template>
   <section class="ClearanceSale">
-    <div class="nav_bar flex" :class="{'on_fb':isExit,'pre_fb':!isExit}">
+    <div class="nav_bar flex" :class="{ on_fb: isExit, pre_fb: !isExit }">
       <div class="logo" @click="routeGo">
         <van-icon name="arrow-left" size="25px" color="#fff" />
       </div>
@@ -17,34 +17,55 @@
         <img
           src="@/assets/img/tabbar/home/clearsale/search.png"
           class="img1"
-          @click="$router.push({name:'特价清仓搜索'})"
+          @click="$router.push({ name: '特价清仓搜索' })"
         />
-        <img src="@/assets/img/tabbar/home/clearsale/share.png" @click="showShare" class="img2" />
+        <img
+          src="@/assets/img/tabbar/home/clearsale/share.png"
+          @click="showShare"
+          class="img2"
+        />
       </div>
     </div>
     <div class="filter_items flex flex_around">
       <span
-        :class="{'on_fc':query.sort===0 && isExit,'pre_fc':query.sort===0 && !isExit}"
+        :class="{
+          on_fc: query.sort === 0 && isExit,
+          pre_fc: query.sort === 0 && !isExit,
+        }"
         @click="ChangeStatus(0)"
-      >Overall</span>
+        >Overall</span
+      >
       <span
-        :class="{'on_fc':(query.sort===1 || query.sort===2) && isExit,'pre_fc':(query.sort===1 || query.sort===2) && !isExit}"
+        :class="{
+          on_fc: (query.sort === 1 || query.sort === 2) && isExit,
+          pre_fc: (query.sort === 1 || query.sort === 2) && !isExit,
+        }"
         @click="ChangeStatus(1)"
-      >Sales</span>
+        >Sales</span
+      >
       <span
         class="flex"
-        :class="{'on_fc':(query.sort===3 || query.sort===4) && isExit,'pre_fc':(query.sort===3 || query.sort===4) && !isExit}"
+        :class="{
+          on_fc: (query.sort === 3 || query.sort === 4) && isExit,
+          pre_fc: (query.sort === 3 || query.sort === 4) && !isExit,
+        }"
         @click="ChangeStatus(3)"
       >
         Price
         <van-icon
-          v-show="query.sort===4"
+          v-show="query.sort === 4"
           name="arrow-down"
           size="15px"
           class="ml_5"
           color="#333333"
         />
-        <van-icon v-show="query.sort===3" name="arrow-up" size="15px" class="ml_5" color="#333333" />
+        <van-icon
+          v-show="query.sort === 3"
+          name="arrow-up"
+          size="15px"
+          class="ml_5"
+          color="#333333"
+        />
       </span>
     </div>
     <cleargoods :list="list" />
@@ -84,7 +105,6 @@ export default {
       gethomeClearanceList(this.query).then((res) => {
         if (res.code == 0) {
           this.list = res.Data.list;
-          //   console.log(this.list, "this.list");
           this.isExit = res.IsConcat;
         }
       });
