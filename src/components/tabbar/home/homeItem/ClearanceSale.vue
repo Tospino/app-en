@@ -82,6 +82,7 @@
 import cleargoods from "./compoents/clear-goods-items.vue";
 // import share from "@/multiplexing/share.vue";
 import { gethomeClearanceList } from "@/api/home/index.js";
+import moment from "moment";
 export default {
   name: "ClearanceSale",
   data() {
@@ -100,7 +101,16 @@ export default {
   created() {
     this.getData();
   },
-  mounted() {},
+  mounted() {
+    let time_atc = setInterval(() => {
+      //   清仓时间戳
+      let clear_time = moment(this.list[0].activityBegin).valueOf();
+      let new_time = new Date().getTime();
+      if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+        this.getData();
+      }
+    }, 1000);
+  },
   watch: {},
   methods: {
     routeGo() {
@@ -110,7 +120,7 @@ export default {
       gethomeClearanceList(this.query).then((res) => {
         if (res.code == 0) {
           this.list = res.Data.list;
-          this.isExit = res.IsConcat;
+          this.isExit = this.list[0].activityState;
         }
       });
     },

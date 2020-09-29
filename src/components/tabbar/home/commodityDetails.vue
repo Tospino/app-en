@@ -57,38 +57,33 @@
             </van-swipe>
           </div>
           <!-- 特价清仓销售价 -->
-          <div class="clearSale_content flex" v-if="isClearSaleId != null">
+          <div class="clearSale_content flex" v-if="clearSaleGoodType == 1">
             <div
               class="clearSale_left flex_col"
               :class="{
-                on_fw: detailmData.activityState === 0,
-                on_fc: detailmData.activityState == 1,
-                on_tc: detailmData.activityState == 2,
+                on_fw: clearSaleGoodState === 0,
+                on_fc: clearSaleGoodState == 1,
+                on_tc: clearSaleGoodState == 2,
               }"
             >
               <div class="flex">
                 <span
                   class="goods_discount flex_center2"
                   :class="{
-                    fz_cw: detailmData.activityState === 0,
-                    fz_co: detailmData.activityState == 1,
-                    fz_ct: detailmData.activityState == 2,
+                    fz_cw: clearSaleGoodState === 0,
+                    fz_co: clearSaleGoodState == 1,
+                    fz_ct: clearSaleGoodState == 2,
                   }"
                 >
-                  <!-- 54% off -->
                   {{
                     parseInt(
-                      1 -
-                        (detailmData.discountPrice / detailmData.salePrice) *
-                          100
+                      (1 - detailmData.discountPrice / detailmData.salePrice) *
+                        100
                     )
                   }}% off
                 </span>
                 <i
-                  v-if="
-                    detailmData.activityState == 1 ||
-                    detailmData.activityState == 2
-                  "
+                  v-if="clearSaleGoodState == 1 || clearSaleGoodState == 2"
                   style="
                     color: #fff;
                     font-weight: blod;
@@ -114,9 +109,9 @@
             <div
               class="clearSale_right flex_col_center2"
               :class="{
-                on_rw: detailmData.activityState === 0,
-                on_rc: detailmData.activityState == 1,
-                on_rt: detailmData.activityState == 2,
+                on_rw: clearSaleGoodState === 0,
+                on_rc: clearSaleGoodState == 1,
+                on_rt: clearSaleGoodState == 2,
               }"
             >
               <h2 class="active_title">Clearance Sale</h2>
@@ -125,7 +120,7 @@
                 <count-down
                   model="timer"
                   :end-time="arrClearSale"
-                  v-if="detailmData.activityState === 0"
+                  v-if="clearSaleGoodState === 0"
                 >
                   <template v-slot="time">
                     starts at
@@ -156,19 +151,19 @@
             <div class="flex flex_space">
               <div>
                 <div v-if="detailmData.quoteMethod == 1">
-                  <div class="prices" v-if="isClearSaleId == null">
+                  <div class="prices" v-if="clearSaleGoodType !== 1">
                     <span class="mark c-orange">{{ jn }}</span>
                     <span class="p1 c-orange">
                       {{ detailmData.discountPrice }}
                     </span>
-                    <div v-if="isClearSaleId == null">
+                    <div v-if="clearSaleGoodType !== 1">
                       <span class="p2 through" v-if="detailmData.salePriceFlag"
                         >{{ jn }}{{ detailmData.salePrice }}</span
                       >
                     </div>
                   </div>
                   <div>
-                    <span class="p3" v-if="isClearSaleId == null"
+                    <span class="p3" v-if="clearSaleGoodType !== 1"
                       >MOQ:{{ detailmData.numIntervalStart }}Pcs</span
                     >
                   </div>
@@ -196,7 +191,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="isClearSaleId == null">
+                <div v-if="clearSaleGoodType !== 1">
                   Sales:{{
                     detailmData.skuSalesNum ? detailmData.skuSalesNum : 0
                   }}PCS
@@ -447,7 +442,7 @@
           <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
           <div class="icon-collection-p">Service</div>
         </div>
-        <div v-if="detailmData.activityState != 2">
+        <div v-if="clearSaleGoodState != 2">
           <van-button
             type="default"
             class="add-shopping-cat"
@@ -455,7 +450,7 @@
             >Add to Cart</van-button
           >
           <van-button
-            v-if="detailmData.activityState != 0"
+            v-if="clearSaleGoodState != 0"
             type="primary"
             class="spend spen_on"
             @click="changeComStatus(true, true, 'Buy Now')"
@@ -560,7 +555,9 @@ export default {
       showServer: false, // 是否显示客户弹框
       supplyDetail: null, //商品详情图片
       scrollFlag: true,
-      isClearSaleId: "", // 是否是特价清仓商品
+      isClearSaleGood: "", // 是否是特价清仓商品
+      clearSaleGoodType: "", //特价商品类型
+      clearSaleGoodState: "", //是否是清仓0 1 2的状态
       arrClearSale: " ", //特价清仓"2020-9-28 14:00:00"
       actId: "",
       actType: "",
@@ -618,9 +615,15 @@ export default {
           //   activityState: this.actState,
         }).then((res) => {
           if (res.code == 0) {
-            this.isClearSaleId = this.$route.query.activityId;
+            // 清仓活动
+            this.isClearSaleGood = res.Makeupdata;
+            this.isClearSaleGood.forEach((ele) => {
+              this.clearSaleGoodType = ele.activityType;
+              this.clearSaleGoodState = ele.activityState;
+            });
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
+
             //   到货时间展示文字
             if (this.detailmData.expId == 2) {
               this.amountTip = true;
@@ -628,6 +631,7 @@ export default {
               this.amountTip = false;
             }
             this.arrClearSale = this.detailmData.productSkuList[0].tpproductskuattrvalue[0].activityBegin;
+            // console.log("this.arrClearSale", this.arrClearSale);
             this.couponProModel(
               this.detailmData.supplyId,
               this.detailmData.businessId,

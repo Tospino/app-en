@@ -73,7 +73,15 @@
                 track-color="#CBCBCB"
                 text-color="#fff"
                 stroke-width="20"
-                :pivot-text="'sold'"
+                :pivot-text="
+                  item.activityState !== 2
+                    ? parseInt(
+                        (item.activitySaleNum / item.activityNum) * 100
+                      ) +
+                        '%' +
+                        'sold' || 0 + '%' + 'sold'
+                    : 'sold out'
+                "
               />
             </div>
 
@@ -217,6 +225,9 @@ export default {
         width: 200px;
         margin-bottom: 6px;
         border-radius: 15px;
+        /deep/ .van-progress__pivot {
+          width: 120px;
+        }
       }
       .goods_btn {
         width: 180px;

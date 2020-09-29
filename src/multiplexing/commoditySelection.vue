@@ -179,8 +179,9 @@ export default {
         },
       ],
       tips: "",
-      clear_shop: "", //清仓活动默认勾选
+      clear_shop: [], //清仓活动默认勾选
       clear_state: "", //清仓状态
+      clear_type: "", //清仓状态
     };
   },
   computed: {
@@ -238,6 +239,8 @@ export default {
     },
     checkList: {
       handler: function (newVal, oldVal) {
+        console.log(this.clear_shop, "5555监听那个状态");
+        // if()
         if (this.twodata.length > 0) {
           if (this.checkList.length == 2) {
             this.setMakeItem();
@@ -262,6 +265,11 @@ export default {
         this.fileList[0].url = this.$webUrl + newVal;
       },
     },
+    clear_state: {
+      handler: function (newVal, oldVal) {
+        console.log(newVal, "监听那个状态");
+      },
+    },
   },
   methods: {
     ...mapActions(
@@ -278,15 +286,28 @@ export default {
         this.selectionObj,
         this.selectionData
       );
-      this.clear_state = this.selectionObj.Data.activityState;
-      console.log(this.selectionObj, "this.selectionObj");
+
+      //   this.clear_state = this.selectionObj.Data.activityState;
       let arr = [];
       let makeupList = [];
       this.makeupdata = this.selectionObj.Makeupdata;
       this.onedata = this.selectionObj.Onedata;
       this.twodata = this.selectionObj.Twodata;
-      console.log(this.twodata, "this.twodata");
       this.makeupdata.forEach((item) => {
+        this.clear_shop = [item.skuValues];
+        console.log(this.clear_shop, "是否去");
+        // 是否清仓
+        if (item.activityType == 1) {
+          // 清仓活动状态
+          //   if (item.activityState == 0) {
+          //     // clear_state;
+          //     console.log(item.activityState, "000");
+          //   } else if (item.activityState == 1) {
+          //     console.log(item.activityState, "1111");
+          //   } else {
+          //     console.log(item.activityState, "22222");
+          //   }
+        }
         if (this.makeupdata.length > 1) {
           if (item.skuPrice > 0) {
             arr.push(item.skuPrice);
@@ -300,14 +321,12 @@ export default {
         } else {
           this.sectionPrice = item.skuPrice;
         }
-        if (item.canSalesNum > 0) {
-          makeupList.push(item.skuValues);
-        }
-        // 清仓默认勾选
-        console.log("444", item);
-        if (item.skuId == this.$route.query.skuId) {
-          // 第一层
-          this.clear_shop = item.valueId;
+        if (item.canSalesNum >= 0) {
+          //默认选中
+          if (item.skuId == this.$route.query.skuId) {
+            makeupList.push(item.skuValues);
+            // this.clear_state = item.skuValues;
+          }
         }
       });
       this.oneTitle = this.selectionObj.Onedata[0].attrTitleEng
@@ -319,11 +338,11 @@ export default {
 
       var makeOne = makeupList[0].split(",");
       this.checkList = makeOne.map(Number);
+      this.clear_shop = this.checkList.sort();
       this.twodata.forEach((item) => {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
           if (checkItem == item.valueId) {
-            console.log("ad");
             item.ischeck = true;
           }
         });
@@ -331,11 +350,9 @@ export default {
       this.onedata.forEach((item) => {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
-          //   if (item.valueId == this.clear_shop) {
           if (checkItem == item.valueId) {
             item.ischeck = true;
           }
-          //   }
         });
       });
     },
@@ -375,6 +392,7 @@ export default {
     //input失焦事件
     blur(item) {
       if (this.goodNumber < item.numIntervalStart && this.goodNumber != 0) {
+        //   起订量
         this.goodNumber = item.numIntervalStart;
       } else if (this.goodNumber > item.canSalesNum) {
         this.goodNumber = item.canSalesNum;

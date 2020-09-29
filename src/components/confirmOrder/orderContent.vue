@@ -90,7 +90,12 @@
                 <span
                   v-if="product.activityType == 1"
                   class="good-detail-actType"
-                  >Clearance</span
+                  :class="{
+                    spen_on:
+                      product.activityTagApp != null &&
+                      product.activityTagApp != '',
+                  }"
+                  >{{ product.activityTagApp }}</span
                 >
                 {{ product.skuName }}
               </span>
@@ -941,10 +946,13 @@ export default {
           line-height: 26px;
           line-height: 50px;
           .good-detail-actType {
-            padding: 6px 12px;
             color: #fff;
-            background: #fa5400;
+
             border-radius: 14px;
+          }
+          .spen_on {
+            padding: 6px 12px;
+            background: #fa5400;
           }
         }
         .guige {

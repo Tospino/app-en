@@ -133,7 +133,7 @@
             <div class="flex">
               <span class="put-line"></span>
               <span class="t1">Clearance Sale</span>
-              <span class="desc ml_20" v-show="!isExit">
+              <span class="desc ml_20" v-show="isExit == 0">
                 <!-- 特价时间 -->
                 <count-down model="timer" :end-time="clear_one">
                   <template v-slot="time">
@@ -790,7 +790,8 @@ export default {
           this.clear_list = res.Data.list;
           //   特价时间
           this.clear_one = this.clear_list[0].activityBegin;
-          this.isExit = res.IsConcat;
+          //   this.isExit = res.IsConcat;
+          this.isExit = this.clear_list[0].activityState;
         }
       });
     },

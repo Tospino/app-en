@@ -36,6 +36,13 @@
               checked-color="#F83600"
               @click="changeCheckbox(data, 'all')"
             ></van-checkbox>
+            <!-- <van-checkbox
+              v-show="data.list[0].activityState === 0"
+              v-model="data.checkStatus"
+              icon-size="24px"
+              checked-color="#F83600"
+              disabled
+            ></van-checkbox> -->
           </div>
           <div v-for="(dataitem, index) in data.list" :key="index">
             <div
@@ -104,6 +111,13 @@
                     checked-color="#F83600"
                     @click="changeCheckbox(dataitem, '', data)"
                   ></van-checkbox>
+                  <!-- <van-checkbox
+                    v-show="dataitem.activityState == 0"
+                    v-model="dataitem.checkStatus"
+                    icon-size="24px"
+                    checked-color="#F83600"
+                    disabled
+                  ></van-checkbox> -->
                   <div @click="toDetail(dataitem)">
                     <img
                       class="good-img"
@@ -336,6 +350,7 @@ export default {
       pullUp: true,
       kanmengou: true,
       shopcarTotal: 0,
+      clear_type: "", //清仓类型
     };
   },
   computed: {
@@ -527,6 +542,7 @@ export default {
           list.checkStatus = false;
         }
       }
+      //   this.clear_type = item.activityType;
       this.zongji();
       this.$forceUpdate();
     },
@@ -534,8 +550,10 @@ export default {
     cliAllcheck(status) {
       this.dataList.forEach((ele) => {
         ele.checkStatus = status;
+        // this.clear_type = ele.activityType;
         ele.list.forEach((item) => {
           item.checkStatus = status;
+          //   this.clear_type = ele.activityType;
         });
       });
       this.zongji();
@@ -670,25 +688,28 @@ export default {
     },
     //根据商品skuid与商品数量获取优惠价
     getproductskunumpricelist(data) {
-      getproductskunumpricelistApi(data).then((res) => {
-        if (res.code == 0) {
-          this.totlaMoney = res.totalprice;
-          this.totlaNum = res.totalnum;
-          this.dataList.forEach((ele) => {
-            ele.list.forEach((item) => {
-              res.Data.forEach((dataItem) => {
-                if (item.skuId == dataItem.skuId) {
-                  if (item.discountPrice) {
-                    item.discountPrice = dataItem.price;
-                  } else {
-                    item.salePrice = dataItem.price;
-                  }
-                }
-              });
-            });
-          });
-        }
-      });
+      console.log(data);
+      //   if (this.clear_type != 1) {
+      //   getproductskunumpricelistApi(data).then((res) => {
+      //     if (res.code == 0) {
+      //       this.totlaMoney = res.totalprice;
+      //       this.totlaNum = res.totalnum;
+      //       this.dataList.forEach((ele) => {
+      //         ele.list.forEach((item) => {
+      //           res.Data.forEach((dataItem) => {
+      //             if (item.skuId == dataItem.skuId) {
+      //               if (item.discountPrice) {
+      //                 item.discountPrice = dataItem.price;
+      //               } else {
+      //                 item.salePrice = dataItem.price;
+      //               }
+      //             }
+      //           });
+      //         });
+      //       });
+      //     }
+      //   });
+      //   }
     },
     //添加购物车
     addshopcart(data) {
