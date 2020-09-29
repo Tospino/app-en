@@ -74,13 +74,13 @@
       </span>
     </div>
     <cleargoods :list="list" />
-    <!-- <share ref="share" /> -->
+    <share ref="share" :links="sharelinks" :infos="shareinfos" />
   </section>
 </template>
 
 <script>
 import cleargoods from "./compoents/clear-goods-items.vue";
-// import share from "@/multiplexing/share.vue";
+import share from "@/multiplexing/share.vue";
 import { gethomeClearanceList } from "@/api/home/index.js";
 import moment from "moment";
 export default {
@@ -95,6 +95,8 @@ export default {
         isHome: 0,
       },
       isExit: false, // 是否存在活动中商品
+      shareinfos: location.href, //分享链接
+      sharelinks: location.href, //分享链接
     };
   },
   computed: {},
@@ -153,7 +155,7 @@ export default {
   },
   components: {
     cleargoods,
-    // share,
+    share,
   },
 };
 </script>

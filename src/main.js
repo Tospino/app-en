@@ -23,45 +23,49 @@ import './assets/font/font_501137_8uegssallpv/iconfont.css'
 
 import vueCountDown from '@liuwave/vue-count-down'
 import {
-    isDisabled,
-    formValidate,
-    strTrim,
-    objTrim,
-    priceReg,
-    objDeepCopy,
-    deepnull,
-    MyLocalStorage
+  isDisabled,
+  formValidate,
+  strTrim,
+  objTrim,
+  priceReg,
+  objDeepCopy,
+  deepnull,
+  MyLocalStorage
 } from '@/common/utils.js'
 import store from './store'
 import * as mycomponents from '@/common/mycomponents.js'
 import VueScroller from 'vue-scroller'
 import clipboard from 'clipboard'
 
-import { gethttpimgurlApi } from '@/api/login/index'
+import {
+  gethttpimgurlApi
+} from '@/api/login/index'
 
 
 Vue.prototype.$webUrl = ''
 Vue.prototype.jn = ''
 gethttpimgurlApi().then(res => {
-    if (res.code == 0) {
-        Vue.prototype.jn = res.currency
-        Vue.prototype.$webUrl = res.webUrl + 'thumb/'
-        Vue.prototype.$bigwebUrl = res.webUrl
-    }
+  if (res.code == 0) {
+    Vue.prototype.jn = res.currency
+    Vue.prototype.$webUrl = res.webUrl + 'thumb/'
+    Vue.prototype.$bigwebUrl = res.webUrl
+  }
 })
-Vue.use(vueCountDown, { component: 'count-down' })
+Vue.use(vueCountDown, {
+  component: 'count-down'
+})
 Vue.use(VueScroller)
 Vue.use(Vant)
 
 Vue.prototype.$fn = {
-    copy: objDeepCopy,
-    isDisabled,
-    formValidate,
-    strTrim,
-    objTrim,
-    priceReg,
-    deepnull,
-    MyLocalStorage
+  copy: objDeepCopy,
+  isDisabled,
+  formValidate,
+  strTrim,
+  objTrim,
+  priceReg,
+  deepnull,
+  MyLocalStorage
 }
 
 Vue.prototype.clipboard = clipboard
@@ -70,7 +74,7 @@ Vue.config.productionTip = false
 
 //注册全局组件
 Object.keys(mycomponents).forEach(key => {
-    Vue.component(key, mycomponents[key])
+  Vue.component(key, mycomponents[key])
 })
 
 // router.afterEach((to,from,next) => {
@@ -81,19 +85,19 @@ Object.keys(mycomponents).forEach(key => {
 // 易观数据分析
 import AnalysysAgent from 'ans-javascript-sdk/SDK/AnalysysAgent_JS_SDK.es6.min.js'
 AnalysysAgent.init({
-    appkey: 'b9a147c9ff75c354',//APPKEY
-    uploadURL: 'http://124.156.105.108:8089',//上传数据的地址
-    SDKFileDirectory: 'http://124.156.105.108:8089',//可视化与热图模块SDK存放目录。
-    debugMode: 0
+  appkey: 'b9a147c9ff75c354', //APPKEY
+  uploadURL: 'http://124.156.105.108:8089', //上传数据的地址
+  SDKFileDirectory: 'http://124.156.105.108:8089', //可视化与热图模块SDK存放目录。
+  debugMode: 0
 })
 
 // 引入图片懒加载
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
-    preLoad: 1.3,
-    error: '../static/goods_default.jpg', // 加载失败或者无资源时显示的图片
-    loading: '../static/goods_default.jpg', // loading图片，未加载时显示的
-    attempt: 1
+  preLoad: 1.3,
+  error: '../static/goods_default.jpg', // 加载失败或者无资源时显示的图片
+  loading: '../static/goods_default.jpg', // loading图片，未加载时显示的
+  attempt: 1
 })
 // 引入缓存插件
 import storage from 'storejs';
@@ -101,10 +105,12 @@ Vue.prototype.$storage = storage
 
 /* eslint-disable no-new */
 const main = new Vue({
-    el: '#app',
-    router,
-    store,
-    components: { App },
-    template: '<App/>'
+  el: '#app',
+  router,
+  store,
+  components: {
+    App
+  },
+  template: '<App/>'
 })
 export default main

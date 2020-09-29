@@ -92,7 +92,7 @@
             {{ btnName }}
           </div>
           <div class="success-btn" v-else>
-            <div v-if="clear_state != 2">
+            <div v-if="clear_stateBox != 2">
               <div
                 class="btn-jrgwc fl-left"
                 @click="buyshoppingCar"
@@ -104,18 +104,25 @@
                 Add to Cart
               </div>
               <div
-                v-if="clear_state != 0"
+                v-if="clear_stateBox != 0"
                 class="btn-qd fl-right"
                 @click="buyProduct"
                 :style="{ backgroundColor: btnbuy }"
               >
                 Buy Now
               </div>
-              <van-button v-else type="primary" class="btn-qd spen_tw"
+              <van-button
+                v-else-if="clear_stateBox == 0"
+                type="primary"
+                class="btn-qd spen_tw"
                 >Not started</van-button
               >
             </div>
-            <van-button v-else type="primary" disabled class="clear_sold"
+            <van-button
+              v-else-if="clear_stateBox == 2"
+              type="primary"
+              disabled
+              class="clear_sold"
               >Sold out</van-button
             >
           </div>
@@ -181,6 +188,7 @@ export default {
       tips: "",
       clear_checkList: [], //清仓活动默认勾选
       clear_shop: [], //清仓活动默认勾选
+      clear_stateBox: "",
       clear_state: "", //清仓状态
       clear_type: "", //清仓状态
     };
@@ -216,6 +224,7 @@ export default {
       }
       return obj;
     },
+    clear_stateBox() {},
   },
   mounted() {
     function checkSystem() {
@@ -240,8 +249,14 @@ export default {
     },
     checkList: {
       handler: function (newVal, oldVal) {
-        console.log(this.clear_checkList, "5555监听那个状态");
-        // if()
+        let newClear = newVal + "";
+        if (newClear == this.clear_shop) {
+          // 是否清仓
+          if (this.clear_type == 1) {
+            this.clear_stateBox = this.clear_state;
+            console.log(this.clear_state, "青春时尚");
+          }
+        }
         if (this.twodata.length > 0) {
           if (this.checkList.length == 2) {
             this.setMakeItem();
@@ -266,11 +281,6 @@ export default {
         this.fileList[0].url = this.$webUrl + newVal;
       },
     },
-    clear_state: {
-      handler: function (newVal, oldVal) {
-        console.log(newVal, "监听那个状态");
-      },
-    },
   },
   methods: {
     ...mapActions(
@@ -288,27 +298,17 @@ export default {
         this.selectionData
       );
 
-      //   this.clear_state = this.selectionObj.Data.activityState;
       let arr = [];
       let makeupList = [];
       this.makeupdata = this.selectionObj.Makeupdata;
       this.onedata = this.selectionObj.Onedata;
       this.twodata = this.selectionObj.Twodata;
       this.makeupdata.forEach((item) => {
-        this.clear_shop = [item.skuValues];
-        console.log(this.clear_shop, "是否去");
-        // 是否清仓
-        if (item.activityType == 1) {
-          // 清仓活动状态
-          //   if (item.activityState == 0) {
-          //     // clear_state;
-          //     console.log(item.activityState, "000");
-          //   } else if (item.activityState == 1) {
-          //     console.log(item.activityState, "1111");
-          //   } else {
-          //     console.log(item.activityState, "22222");
-          //   }
-        }
+        this.clear_shop = item.skuValues;
+        this.clear_shop = this.clear_shop.split(",");
+        this.clear_shop = this.clear_shop.map(Number) + "";
+        this.clear_type = item.activityType;
+        this.clear_state = item.activityState;
         if (this.makeupdata.length > 1) {
           if (item.skuPrice > 0) {
             arr.push(item.skuPrice);
@@ -326,7 +326,6 @@ export default {
           //默认选中
           if (item.skuId == this.$route.query.skuId) {
             makeupList.push(item.skuValues);
-            // this.clear_state = item.skuValues;
           }
         }
       });
@@ -340,7 +339,7 @@ export default {
       var makeOne = makeupList[0].split(",");
       this.checkList = makeOne.map(Number);
       //   清仓活动
-      this.clear_checkList = this.checkList.sort();
+      this.checkList = this.checkList.sort();
       this.twodata.forEach((item) => {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {

@@ -490,7 +490,7 @@
         @couponSucceed="couponSucceed"
       ></shop-coupon-pop>
     </section>
-    <!-- <share ref="share" :links="sharelinks" :infos="shareinfos" /> -->
+    <share ref="share" :links="sharelinks" :infos="shareinfos" />
   </div>
 </template>
 
@@ -501,7 +501,7 @@ import commoditySelection from "@/multiplexing/commoditySelection";
 import shopCouponPop from "./itemComponents/shopCouponPop";
 import progressBar from "@/multiplexing/progress";
 import customerService from "@/components/tabbar/account/customerService.vue";
-// import share from "@/multiplexing/share.vue";
+import share from "@/multiplexing/share.vue";
 import {
   productdetailApi,
   AppqureyuserCouponProApi,
@@ -562,10 +562,13 @@ export default {
       arrClearSale: " ", //特价清仓"2020-9-28 14:00:00"
       actId: "",
       actType: "",
+      shareinfos: location.href, //分享链接
+      sharelinks: location.href, //分享链接
     };
   },
   computed: {},
   created() {
+    console.log(location.href);
     this.actId = this.$route.query.activityId;
     // this.slyId = this.$route.query.supplyId;
     this.actType = this.$route.query.activityType;
