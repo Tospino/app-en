@@ -179,6 +179,7 @@ export default {
         },
       ],
       tips: "",
+      clear_checkList: [], //清仓活动默认勾选
       clear_shop: [], //清仓活动默认勾选
       clear_state: "", //清仓状态
       clear_type: "", //清仓状态
@@ -239,7 +240,7 @@ export default {
     },
     checkList: {
       handler: function (newVal, oldVal) {
-        console.log(this.clear_shop, "5555监听那个状态");
+        console.log(this.clear_checkList, "5555监听那个状态");
         // if()
         if (this.twodata.length > 0) {
           if (this.checkList.length == 2) {
@@ -338,7 +339,7 @@ export default {
 
       var makeOne = makeupList[0].split(",");
       this.checkList = makeOne.map(Number);
-      this.clear_shop = this.checkList.sort();
+      this.clear_checkList = this.checkList.sort();
       this.twodata.forEach((item) => {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
