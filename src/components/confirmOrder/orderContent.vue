@@ -1,10 +1,5 @@
-/**
- * Undocumented
- * @author: zlj
- * @email: 
- * @Description:  添加优惠券和修改字段
- * @date: 2020/09/01 17:15
- */
+/** * Undocumented * @author: zlj * @email: * @Description: 添加优惠券和修改字段
+* @date: 2020/09/01 17:15 */
 <template>
   <!-- 确认订单填写信息 -->
   <div class="order-content">
@@ -422,6 +417,7 @@ export default {
       fanxianList: [], //返现列表
     };
   },
+
   computed: {
     ...mapState({
       selectionShopCar: (state) => state.selectionShopCar,
@@ -644,8 +640,6 @@ export default {
           if (this.payTypeList.length == 0) {
             //第一次请求
             this.payTypeList = res.Data.payTypeList;
-            // // 我写到这里
-            // console.log(this.payTypeList, "this.payTypeList");
             this.payTypeListLength = this.payTypeList.length;
             this.zffs = "";
             if (res.Data.rewardRegionList.length > 0) {
@@ -717,6 +711,61 @@ export default {
           Toast("FBM products do not support pay by cash.");
           this.refresh();
         }
+
+        //易观数据采集----支付订单
+        let reason = "";
+        if (res.code == 1) {
+          reason = "Parameter “requestModel” cannot be empty.";
+        } else if (res.code == 2) {
+          reason = "Parameter”orderList” cannot not be empty.";
+        } else if (res.code == 3) {
+          reason = "Parameter Method of Payment cannot not be empty.";
+        } else if (res.code == 4) {
+          reason = "Parameter Shipping Address ID cannot not be empty.";
+        } else if (res.code == 5) {
+          reason = "Parameter Anonymous Buyer cannot not be empty.";
+        } else if (res.code == 6) {
+          reason = "Parameter Order List cannot not be empty.";
+        } else if (res.code == 7) {
+          reason = "Parameter”detailList” cannot not be empty.";
+        } else if (res.code == 21) {
+          reason = "The product is invalid. Please reconfirm the order.";
+        } else if (res.code == 22) {
+          reason = "The MOQ is insufficient. Please reconfirm the order.";
+        } else if (res.code == 23) {
+          reason = "The stock is insufficient. Please reconfirm the order.";
+        } else if (res.code == 24) {
+          reason = "The product price is changed. Please reconfirm the order.";
+        } else if (res.code == 25) {
+          reason = "FBM products do not support pay by cash.";
+        }
+        AnalysysAgent.track(
+          "pay_order",
+          {
+            receiver_province: this.defaultAdderss.province,
+            shipping_method: "Fulfillment by Tospino",
+            receiver_city: this.defaultAdderss.city,
+            total_discount: this.orderData.allOrderCouponAmountWebsite,
+            is_anonymous: this.checked == false ? false : true,
+            order_amount: (
+              parseFloat(this.orderData.allOrderProductAmountWebsite) +
+              parseFloat(this.orderData.allOrderFareWebsite)
+            ).toString(),
+            order_actual_amount: this.orderData.allOrderAmountWebsite,
+            receiver_area: this.defaultAdderss.district,
+            shipping_cost: parseFloat(this.orderData.allOrderFareWebsite),
+            order_id: res.Data[0].orderSn,
+            is_successful: res.code == 0 ? true : false,
+            failure_reason: reason,
+            receiver_name: this.defaultAdderss.name,
+            receiver_address: this.defaultAdderss.addreCitys,
+            is_use_discount:
+              this.orderData.allOrderCouponAmountWebsite == 0 ? false : true,
+            pay_channel: this.zffs == 1 ? "Cash on delivery" : "Online payment",
+            receive_phonenum: this.defaultAdderss.phoneNumber,
+          },
+          (rel) => {}
+        );
       });
     },
     //刷新页面
@@ -732,7 +781,6 @@ export default {
     //订单发起支付
     orderlaunchpay(data) {
       orderlaunchpayApi(data).then((res) => {
-        console.log("res");
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {

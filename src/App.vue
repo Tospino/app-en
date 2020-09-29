@@ -5,7 +5,7 @@
  * @LastEditTime: 2020-07-22 17:44:08
  * @Description: 
  * @FilePath: \app-en\src\App.vue
---> 
+-->
 <template>
   <div id="app">
     <keep-alive>
@@ -18,6 +18,19 @@
 <script>
 export default {
   name: "App",
+  created() {
+    //易观数据采集-----核心页面加载
+    let urlHtm = window.location.href;
+    let titHtm = document.title;
+    AnalysysAgent.track(
+      "core_page_load",
+      {
+        $url: urlHtm,
+        $title: titHtm,
+      },
+      (rel) => {}
+    );
+  },
   watch: {
     $route: function (to, from) {
       window.pageYOffset = 0;
@@ -63,5 +76,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

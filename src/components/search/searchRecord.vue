@@ -136,6 +136,14 @@ export default {
     },
     toGoodsOne(seraname) {
       this.$router.push({ name: "搜索商品1", query: { seraname } });
+      //易观数据采集---点击搜索结果
+      AnalysysAgent.track(
+        "search_item_click",
+        {
+          key_word: seraname,
+        },
+        (rel) => {}
+      );
     },
     //输入框获得焦点时触发
     onfocus() {

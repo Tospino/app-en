@@ -5,7 +5,7 @@
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
---> 
+-->
 
 <template>
   <!-- 商品详情页 -->
@@ -473,6 +473,7 @@
           :btnStatus="btnStatus"
           :btnName="btnName"
           :amountTip="amountTip"
+          ref="commodityselection"
         ></commodity-selection>
       </transition>
 
@@ -631,7 +632,6 @@ export default {
               this.amountTip = false;
             }
             this.arrClearSale = this.detailmData.productSkuList[0].tpproductskuattrvalue[0].activityBegin;
-            // console.log("this.arrClearSale", this.arrClearSale);
             this.couponProModel(
               this.detailmData.supplyId,
               this.detailmData.businessId,
@@ -754,6 +754,23 @@ export default {
       let arr = [];
       arr.push(this.detailmData.skuId);
       this.adduserfavorites(arr);
+      //易观数据采集----加入收藏
+      let urlHtm = window.location.href;
+      let titHtm = document.title;
+      AnalysysAgent.track(
+        "collect",
+        {
+          product_id: this.detailmData.supplyId.toString(),
+          product_price: this.detailmData.salePrice,
+          product_name: this.detailmData.supplyTitle,
+          product_sold: this.detailmData.skuSalesNum,
+          coupon_value: this.ProModel.Data.reduceAmount,
+          discount: this.detailmData.discountPrice,
+          $page_url: urlHtm,
+          $paeg_title: titHtm,
+        },
+        (rel) => {}
+      );
     },
     //加入收藏夹
     adduserfavorites(data) {
@@ -780,6 +797,22 @@ export default {
       } else {
         this.moreShop = false;
       }
+      //易观数据采集----商品详情页浏览
+      AnalysysAgent.track(
+        "product_detail_view",
+        {
+          product_price: this.detailmData.salePrice,
+          coupon_name: this.ProModel.Data.couponName,
+          product_id: this.detailmData.supplyId.toString(),
+          product_name: this.detailmData.supplyTitle,
+          product_sold: this.detailmData.skuSalesNum,
+          coupon_value: this.ProModel.Data.reduceAmount,
+          discount: this.detailmData.discountPrice,
+          delivery_place: "海外",
+          product_instock: this.$refs.commodityselection.stock,
+        },
+        (rel) => {}
+      );
     },
     // 最高金额优惠券领取
     async couponsClick(couponId, DetailId, supplyId, businessId, expId) {
@@ -798,6 +831,28 @@ export default {
       } else {
         this.$toast.clear();
       }
+      //易观数据采集----点击领取优惠券
+      let couponType1 = "";
+      if (this.ProModel.Data.couponType == 1) {
+        couponType1 = "平台满减券";
+      } else if (this.ProModel.Data.couponType == 2) {
+        couponType1 = "新人专享券";
+      } else if (this.ProModel.Data.couponType == 3) {
+        couponType1 = "店铺满减券";
+      } else if (this.ProModel.Data.couponType == 4) {
+        couponType1 = "商品立减券";
+      }
+      AnalysysAgent.track(
+        "get_coupon",
+        {
+          coupon_name: this.ProModel.Data.couponName,
+          coupon_value: this.ProModel.Data.reduceAmount,
+          coupon_type: couponType1,
+          coupon_start: this.ProModel.Data.drawBegin,
+          coupon_end: this.ProModel.Data.drawEnd,
+        },
+        (rel) => {}
+      );
     },
     // 更多优惠券
     saleMore() {

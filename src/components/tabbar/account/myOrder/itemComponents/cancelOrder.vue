@@ -1,229 +1,256 @@
 <template>
-<!-- 取消订单遮罩 -->
-    <transition name="updown">
-        <div class="cancel-order" v-show="anima">
-            <div class="cancel-list" >
-                <div class="cancel-title">
-                    <span>Cancel Order</span>
-                    <van-icon name="cross" class="cross" @click="closeCancel"/>
-                </div>
-                <div class="yuanyin">
-                    Reason for cancelling
-                </div>
-                <div class="yuanyin-list" v-for="(reason,index) in reasonList" :key="index">
-                    <span>{{reason.name}}</span>
-                    <div class="yuan" v-if="reason.istrue" @click="checkyuan(reason)"></div>
-                    <div class="yuan-img" v-else>
-                        <img src="@/assets/img/confirmOrder/icon-02@2x.png">
-                        <img src="@/assets/img/confirmOrder/icon-02@2x.png">
-                    </div>
-                </div>
-                <div class="btns">
-                    <div class="btn-zbqx" @click="closeCancel">
-                        Cancel
-                    </div>
-                    <div class="btn-qdqx" @click="submitOrder">
-                        Confirm
-                    </div>
-                </div>
-            </div>
+  <!-- 取消订单遮罩 -->
+  <transition name="updown">
+    <div class="cancel-order" v-show="anima">
+      <div class="cancel-list">
+        <div class="cancel-title">
+          <span>Cancel Order</span>
+          <van-icon name="cross" class="cross" @click="closeCancel" />
         </div>
-    </transition>
+        <div class="yuanyin">Reason for cancelling</div>
+        <div
+          class="yuanyin-list"
+          v-for="(reason, index) in reasonList"
+          :key="index"
+        >
+          <span>{{ reason.name }}</span>
+          <div
+            class="yuan"
+            v-if="reason.istrue"
+            @click="checkyuan(reason)"
+          ></div>
+          <div class="yuan-img" v-else>
+            <img src="@/assets/img/confirmOrder/icon-02@2x.png" />
+            <img src="@/assets/img/confirmOrder/icon-02@2x.png" />
+          </div>
+        </div>
+        <div class="btns">
+          <div class="btn-zbqx" @click="closeCancel">Cancel</div>
+          <div class="btn-qdqx" @click="submitOrder">Confirm</div>
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
-import {revokeorderApi} from '@/api/myOrder/index'
-import { Toast } from 'vant';
+import { revokeorderApi } from "@/api/myOrder/index";
+import { Toast } from "vant";
 export default {
-    props: {
-        orderId:{
-            type:Number,
-            default:0
-        }
+  props: {
+    orderId: {
+      type: Number,
+      default: 0,
     },
-    data() {
-        return {
-            reasonList:[
-                {
-                    name:"I don't want it now.",
-                    istrue:true
-                },
-                {
-                    name:'I have to re-order for wrong info.',
-                    istrue:true
-                },
-                {
-                    name:'Out of stock.',
-                    istrue:true
-                },
-                {
-                    name:'Others.',
-                    istrue:true
-                },
-            ],
-            anima:false,
-            id:0,
-            remark:''
-        };
-    },
-    computed: {
-
-    },
-    created() {
-
-    },
-    mounted() {
-
-    },
-    watch: {
-        orderId:{
-            handler:function(newVal){
-                this.id = newVal
-                this.reasonList.forEach(item => {
-                    item.istrue = true
-                })
-                this.remark = ''
-            }
-        }
-    },
-    methods: {
-        //关闭弹窗
-        closeCancel(){
-            this.$emit('closeOverlay',false)
-            this.anima = false
+  },
+  data() {
+    return {
+      reasonList: [
+        {
+          name: "I don't want it now.",
+          istrue: true,
         },
-        checkyuan(item){
-            this.reasonList.forEach(ele => {
-                ele.istrue = true
-            })
-            item.istrue = false
-            this.remark = item.name
+        {
+          name: "I have to re-order for wrong info.",
+          istrue: true,
         },
-        revokeorder(data){
-           revokeorderApi(data).then(res => {
-                if(res.code == 0){
-                    this.closeCancel()
-                    this.$emit('refreshOrder')
-                }else if(res.code == 1){
-                    Toast('Parameter “requestModel” cannot be empty.')
-                }else if(res.code == 2){
-                    Toast('Parameter Order ID must be larger than 0.')
-                }else if(res.code == 21){
-                    Toast('The order is nonexistent.')
-                }else if(res.code == 22){
-                    Toast('The order isn’t belong to the current user and cannot be operated.')
-                }else if(res.code == 23){
-                    Toast('The order is paid online. It isn’t Unpaid and cannot be canceled.')
-                }else if(res.code == 24){
-                    Toast('The method of payment is Pay by Cash.It is confirmed on background and cannot')
-                }else if(res.code == 25){
-                    Toast('The order is canceled. Do not cancel repeatedly.')
-                }
-            })
+        {
+          name: "Out of stock.",
+          istrue: true,
         },
-        //确定提交
-        submitOrder(){
-            let data = {
-                orderId:this.id,
-                remark:this.remark
-            }
-            Toast('Choose reasons for canceling order')
-            if(!this.remark) return
-            this.revokeorder(data)
+        {
+          name: "Others.",
+          istrue: true,
+        },
+      ],
+      anima: false,
+      id: 0,
+      remark: "",
+    };
+  },
+  computed: {},
+  created() {},
+  mounted() {},
+  watch: {
+    orderId: {
+      handler: function (newVal) {
+        this.id = newVal;
+        this.reasonList.forEach((item) => {
+          item.istrue = true;
+        });
+        this.remark = "";
+      },
+    },
+  },
+  methods: {
+    //关闭弹窗
+    closeCancel() {
+      this.$emit("closeOverlay", false);
+      this.anima = false;
+    },
+    checkyuan(item) {
+      this.reasonList.forEach((ele) => {
+        ele.istrue = true;
+      });
+      item.istrue = false;
+      this.remark = item.name;
+    },
+    revokeorder(data) {
+      revokeorderApi(data).then((res) => {
+        if (res.code == 0) {
+          this.closeCancel();
+          this.$emit("refreshOrder");
+        } else if (res.code == 1) {
+          Toast("Parameter “requestModel” cannot be empty.");
+        } else if (res.code == 2) {
+          Toast("Parameter Order ID must be larger than 0.");
+        } else if (res.code == 21) {
+          Toast("The order is nonexistent.");
+        } else if (res.code == 22) {
+          Toast(
+            "The order isn’t belong to the current user and cannot be operated."
+          );
+        } else if (res.code == 23) {
+          Toast(
+            "The order is paid online. It isn’t Unpaid and cannot be canceled."
+          );
+        } else if (res.code == 24) {
+          Toast(
+            "The method of payment is Pay by Cash.It is confirmed on background and cannot"
+          );
+        } else if (res.code == 25) {
+          Toast("The order is canceled. Do not cancel repeatedly.");
         }
+      });
     },
-    components: {
+    //确定提交
+    submitOrder() {
+      let data = {
+        orderId: this.id,
+        remark: this.remark,
+      };
+      Toast("Choose reasons for canceling order");
+      if (!this.remark) return;
+      this.revokeorder(data);
+      //易观数据采集----取消订单
 
+      let pay_method = "";
+      if (this.$parent.$parent.detailObj.payType == 1) {
+        pay_method = "Cash";
+      } else if (this.$parent.$parent.detailObj.payType == 2) {
+        pay_method = "Online";
+      }
+      AnalysysAgent.track(
+        "cancel_order",
+        {
+          order_id: this.$parent.$parent.detailObj.orderSn,
+          order_actual_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
+          shipping_cost: this.$parent.$parent.detailObj.orderFareWebsite,
+          pay_channel: pay_method,
+          cancel_reason: this.remark,
+          shipping_method: "Fulfillment by Tospino",
+          num_products: this.$parent.$parent.detailObj.goodCount,
+          if_use_discount:
+            this.$parent.$parent.detailObj.orderCouponAmountWebsite == 0
+              ? false
+              : true,
+          order_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
+          total_discount: this.$parent.$parent.detailObj.orderCouponAmountWebsite.toString(),
+        },
+        (rel) => {}
+      );
     },
+  },
+  components: {},
 };
 </script>
 
 <style scoped lang="less">
-.cancel-order{
-    position: fixed;
-    bottom: 0;
-    background-color: #fff;
-    height: 850px;
-    width: 100vw;
-    padding: 0 30px;
-    box-sizing: border-box;
-    .cancel-list{
-        position: relative;
-        height: 100%;
+.cancel-order {
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  height: 850px;
+  width: 100vw;
+  padding: 0 30px;
+  box-sizing: border-box;
+  .cancel-list {
+    position: relative;
+    height: 100%;
+  }
+  .cancel-title {
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 36px;
+    color: #333;
+    position: relative;
+  }
+  .cross {
+    position: absolute;
+    right: 45px;
+    top: 34px;
+  }
+  .yuanyin {
+    font-size: 26px;
+    color: #999;
+    margin-bottom: 30px;
+  }
+  .yuanyin-list {
+    height: 100px;
+    line-height: 100px;
+    font-size: 30px;
+    color: #333;
+    border-bottom: 1px solid #dcdcdc;
+    position: relative;
+  }
+  .yuan {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(153, 153, 153, 1);
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
+  }
+  .yuan-img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
     }
-    .cancel-title{
-        height: 100px;
-        text-align: center;
-        line-height: 100px;
-        font-size:36px;
-        color: #333;
-        position: relative;
+  }
+  .btns {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    .btn-zbqx {
+      width: 300px;
+      height: 100px;
+      background: rgba(153, 153, 153, 1);
+      font-size: 40px;
+      color: #fff;
+      line-height: 100px;
+      text-align: center;
+      float: left;
     }
-    .cross{
-        position: absolute;
-        right:45px;
-        top:34px
+    .btn-qdqx {
+      width: 300px;
+      height: 100px;
+      background-color: #fa5300;
+      font-size: 40px;
+      color: #fff;
+      line-height: 100px;
+      text-align: center;
+      float: right;
     }
-    .yuanyin{
-        font-size:26px;
-        color: #999;
-        margin-bottom: 30px;
-    }
-    .yuanyin-list{
-        height: 100px;
-        line-height: 100px;
-        font-size:30px;
-        color: #333;
-        border-bottom: 1px solid #DCDCDC;
-        position: relative;
-    }
-    .yuan{
-        width:40px;
-        height:40px;
-        position: absolute;
-        border-radius: 50%;
-        border:2px solid rgba(153,153,153,1);
-        top:50%;
-        transform: translateY(-50%);
-        right:30px;
-    }
-    .yuan-img{
-        width:40px;
-        height:40px;
-        position: absolute;
-        top:50%;
-        transform: translateY(-50%);
-        right:30px;
-        img{
-            position: absolute;
-            top:0;
-            left:0
-        }
-    }
-    .btns{
-        position: absolute;
-        bottom: 30px;
-        width: 100%;
-        .btn-zbqx{
-            width:300px;
-            height:100px;
-            background:rgba(153,153,153,1);
-            font-size:40px;
-            color: #fff;
-            line-height: 100px;
-            text-align: center;
-            float: left;
-        }
-        .btn-qdqx{
-            width:300px;
-            height:100px;
-            background-color: #FA5300;
-            font-size:40px;
-            color: #fff;
-            line-height: 100px;
-            text-align: center;
-            float: right;
-        }
-    }
+  }
 }
 </style>

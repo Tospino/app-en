@@ -213,7 +213,19 @@ export default {
       return !this.$fn.isDisabled(this.userData, this.rules) && this.checked;
     },
   },
-  created() {},
+  created() {
+    //易观数据采集-----核心页面加载
+    let urlHtm = window.location.href;
+    let titHtm = document.title;
+    AnalysysAgent.track(
+      "core_page_load",
+      {
+        $url: urlHtm,
+        $title: titHtm,
+      },
+      (rel) => {}
+    );
+  },
   mounted() {
     if (localStorage.mobile) {
       this.userData.username1 = localStorage.mobile;
@@ -278,6 +290,32 @@ export default {
           } else if (res.code == -28) {
             Toast("The phone isn't registered.");
           }
+
+          //易观数据采集----登录
+          let reason = "";
+          if (res.code == -4) {
+            reason = "Password error";
+          } else if (res.code == -26) {
+            reason =
+              "The phone number is frozen. Please contact customer service.";
+          } else if (res.code == -27) {
+            reason =
+              "The phone number is deleted. Please contact customer service.";
+          } else if (res.code == -28) {
+            reason = "The phone isn't registered.";
+          }
+          AnalysysAgent.track(
+            "log_in",
+            {
+              user_id: this.userData.username,
+              login_method: "密码",
+              is_successful: res.code == 0 ? true : false,
+              failure_reason: reason,
+            },
+            (rel) => {
+              AnalysysAgent.alias(this.userData.username, (rek) => {});
+            }
+          );
         });
       }
     },
@@ -299,13 +337,9 @@ export default {
         // 调用facebook登录
         FB.login(
           function (response) {
-            console.log("ThirdLogin -> response", response);
             if (response.status === "connected") {
               a.facebook_id = response.authResponse.userID;
               FB.api("/me", function (response1) {
-                console.log(
-                  "Successful login for: " + JSON.stringify(response1)
-                );
                 doLogin({
                   inputToken: response.authResponse.accessToken,
                   name: response1.name,
@@ -318,7 +352,6 @@ export default {
                   } else if (res.code === -340) {
                     a.show = true;
                   }
-                  console.log("res", res);
                 });
               });
             } else {

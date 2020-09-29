@@ -339,6 +339,7 @@ export default {
 
       var makeOne = makeupList[0].split(",");
       this.checkList = makeOne.map(Number);
+      //   清仓活动
       this.clear_checkList = this.checkList.sort();
       this.twodata.forEach((item) => {
         item.ischeck = false;

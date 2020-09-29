@@ -5,7 +5,7 @@
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
---> 
+-->
 
 <template>
   <!-- 首页 -->
@@ -543,10 +543,6 @@ export default {
   },
   computed: {},
   created() {
-    // FB.getLoginStatus(function (response) {
-    //   console.log("created -> response", response);
-    //   statusChangeCallback(response);
-    // });
     this.newCoupons();
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
@@ -770,6 +766,18 @@ export default {
     swipeClick(el) {
       if (!el.linkUrl) return;
       window.location.href = el.linkUrlEng;
+      //易观数据采集-----轮播图点击
+      let urlHtm = window.location.href;
+      let titHtm = document.title;
+      AnalysysAgent.track(
+        "banner_click",
+        {
+          $page_url: urlHtm,
+          $page_title: titHtm,
+          target_url: el.linkUrlEng,
+        },
+        (rel) => {}
+      );
     },
     //获取用户信息
     getuserinfo() {

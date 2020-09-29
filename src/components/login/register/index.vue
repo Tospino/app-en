@@ -6,7 +6,11 @@
       <div class="item-title">Account Info</div>
       <div class="create-user">
         <van-cell-group>
-          <van-field v-model="formData.nickName" placeholder="User's name" :maxlength="20" />
+          <van-field
+            v-model="formData.nickName"
+            placeholder="User's name"
+            :maxlength="20"
+          />
           <div class="iphone-option">
             <select ref="mobilecode">
               <option value="233">+233</option>
@@ -26,8 +30,17 @@
             class="register-otp"
             :maxlength="6"
           >
-            <div slot="button" class="daojishi" @click="getCode" v-show="countTrue">{{countdown}}</div>
-            <div slot="button" class="daojishi" v-show="!countTrue">{{count}}S</div>
+            <div
+              slot="button"
+              class="daojishi"
+              @click="getCode"
+              v-show="countTrue"
+            >
+              {{ countdown }}
+            </div>
+            <div slot="button" class="daojishi" v-show="!countTrue">
+              {{ count }}S
+            </div>
           </van-field>
           <van-field
             v-model="formData.email"
@@ -64,12 +77,15 @@
       <div class="item-title">Company Info(optional fields)</div>
       <div class="create-user">
         <van-cell-group class="m-10-b border-0">
-          <van-field v-model="formData.companyName" placeholder="Company's name" />
+          <van-field
+            v-model="formData.companyName"
+            placeholder="Company's name"
+          />
         </van-cell-group>
-        <div class="cell" @click="toChoiceList(1,0)">
+        <div class="cell" @click="toChoiceList(1, 0)">
           <input
             type="text"
-            :class="{'c-333':isBace}"
+            :class="{ 'c-333': isBace }"
             class="input-xt"
             placeholder="Choose A Country"
             v-model="form.lev1"
@@ -77,10 +93,10 @@
           />
           <van-icon name="arrow" class="arrow c-999" />
         </div>
-        <div class="cell" @click="toChoiceList(2,choiceForm.lev1.id)">
+        <div class="cell" @click="toChoiceList(2, choiceForm.lev1.id)">
           <input
             type="text"
-            :class="{'c-333':isBace}"
+            :class="{ 'c-333': isBace }"
             class="input-xt"
             placeholder="State/Province/Region"
             v-model="form.lev2"
@@ -88,10 +104,10 @@
           />
           <van-icon name="arrow" class="arrow c-999" />
         </div>
-        <div class="cell" @click="toChoiceList(3,choiceForm.lev2.id)">
+        <div class="cell" @click="toChoiceList(3, choiceForm.lev2.id)">
           <input
             type="text"
-            :class="{'c-333':isBace}"
+            :class="{ 'c-333': isBace }"
             class="input-xt"
             placeholder="City/County/Town"
             v-model="form.lev3"
@@ -99,10 +115,10 @@
           />
           <van-icon name="arrow" class="arrow c-999" />
         </div>
-        <div class="cell" @click="toChoiceList(4,choiceForm.lev3.id)">
+        <div class="cell" @click="toChoiceList(4, choiceForm.lev3.id)">
           <input
             type="text"
-            :class="{'c-333':isBace}"
+            :class="{ 'c-333': isBace }"
             class="input-xt"
             placeholder="County/District/Street"
             v-model="form.lev4"
@@ -120,11 +136,12 @@
           />
         </van-cell-group>
         <van-button
-          style="height: 40px;margin-bottom: 15px;;font-size:16px"
+          style="height: 40px; margin-bottom: 15px; font-size: 16px"
           @click="getLoaction"
           block
-        >Retrieves the location address</van-button>
-        <van-cell-group class="border-0" @click="show=true">
+          >Retrieves the location address</van-button
+        >
+        <van-cell-group class="border-0" @click="show = true">
           <van-field
             class="zyyw"
             v-model="formData.mainBusinessName"
@@ -140,15 +157,24 @@
         <div class="uploader">
           <van-row type="flex" justify="space-between">
             <van-col span="8">
-              <upload-one @getfilePath="getfilePath" imgName="公司正面照"></upload-one>
+              <upload-one
+                @getfilePath="getfilePath"
+                imgName="公司正面照"
+              ></upload-one>
               <div class="uploader-name">Company Front</div>
             </van-col>
             <van-col span="8">
-              <upload-one @getfilePath="getfilePath" imgName="公司内部照"></upload-one>
+              <upload-one
+                @getfilePath="getfilePath"
+                imgName="公司内部照"
+              ></upload-one>
               <div class="uploader-name">Company Inside</div>
             </van-col>
             <van-col span="8">
-              <upload-one @getfilePath="getfilePath" imgName="营业执照"></upload-one>
+              <upload-one
+                @getfilePath="getfilePath"
+                imgName="营业执照"
+              ></upload-one>
               <div class="uploader-name">Business License</div>
             </van-col>
           </van-row>
@@ -156,15 +182,24 @@
         <div class="uploader">
           <van-row type="flex" justify="space-between">
             <van-col span="8">
-              <upload-one @getfilePath="getfilePath" imgName="人像照"></upload-one>
+              <upload-one
+                @getfilePath="getfilePath"
+                imgName="人像照"
+              ></upload-one>
               <div class="uploader-name">Legal Person</div>
             </van-col>
             <van-col span="8">
-              <upload-one @getfilePath="getfilePath" imgName="法人证件正面照"></upload-one>
+              <upload-one
+                @getfilePath="getfilePath"
+                imgName="法人证件正面照"
+              ></upload-one>
               <div class="uploader-name">Front Image</div>
             </van-col>
             <van-col span="8">
-              <upload-one @getfilePath="getfilePath" imgName="法人证件背面照"></upload-one>
+              <upload-one
+                @getfilePath="getfilePath"
+                imgName="法人证件背面照"
+              ></upload-one>
               <div class="uploader-name">Back Image</div>
             </van-col>
           </van-row>
@@ -175,15 +210,22 @@
         <input type="checkbox" class="checkbox" v-model="xieyi" />
         <span>
           <span>I have read and agree to the</span>
-          <span class="c-orange" @click="userStatus=true">Terms of Use</span>
+          <span class="c-orange" @click="userStatus = true">Terms of Use</span>
           <span>and</span>
-          <span class="c-orange" @click="zhengce=true">Privacy Policy.</span>
+          <span class="c-orange" @click="zhengce = true">Privacy Policy.</span>
         </span>
       </div>
       <div class="confirm-btn" @click="toRevise">
-        <div class="btn-zc" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">Register</div>
+        <div
+          class="btn-zc"
+          :style="{ backgroundColor: disabledSubmit ? '#FA5300' : '#999' }"
+        >
+          Register
+        </div>
       </div>
-      <div class="to-login fs-20" @click="$router.push({name:'登录'})">Login My Account</div>
+      <div class="to-login fs-20" @click="$router.push({ name: '登录' })">
+        Login My Account
+      </div>
     </div>
 
     <choiceList
@@ -214,7 +256,7 @@
         <div class="tanchuang-header">
           <span>Privacy Policy</span>
           <div class="fl-right">
-            <van-icon name="cross" @click="zhengce=false" />
+            <van-icon name="cross" @click="zhengce = false" />
           </div>
         </div>
         <div class="tanchuang-content">
@@ -228,7 +270,7 @@
         <div class="tanchuang-header">
           <span>User Agreement</span>
           <div class="fl-right">
-            <van-icon name="cross" @click="userStatus=false" />
+            <van-icon name="cross" @click="userStatus = false" />
           </div>
         </div>
         <div class="tanchuang-content">
@@ -523,6 +565,8 @@ export default {
       this.yzmData.msgphone = this.formData.mobile;
       this.yzmData.areaCode = this.$refs.mobilecode.value;
       this.msglist(this.yzmData);
+      //易观数据采集---点击获取验证码
+      AnalysysAgent.track("get_code", { service_type: "注册" }, (rel) => {});
     },
     getfilePath(path, imgName) {
       if (imgName == "公司正面照") {
@@ -618,6 +662,44 @@ export default {
         } else {
           Toast("error");
         }
+
+        //易观数据采集-----注册
+        let reason = "";
+        if (res.code == -110) {
+          reason = "Incorrect verification code.";
+        } else if (res.code == -25) {
+          reason = "The phone number was registered.";
+        } else if (res.code == -26) {
+          reason =
+            "The phone number is frozen. Please contact customer service.";
+        } else if (res.code == -27) {
+          reason =
+            "The phone number is deleted. Please contact customer service.";
+        } else {
+          reason = "error";
+        }
+        AnalysysAgent.track(
+          "sign_up",
+          {
+            phone_number: this.formData.mobile,
+            company_name: this.formData.companyName,
+            area_country: this.form.lev1,
+            area_province: this.form.lev2,
+            area_city: this.form.lev3,
+            area_district: this.form.lev4,
+            detailed_address: this.formData.companyAddress,
+            email: this.formData.email,
+            failure_reason: reason,
+            registration_type:
+              this.formData.companyName == "" ? "个人" : "公司",
+            is_invite_code: this.formData.recommendCode == "" ? false : true,
+            main_business: this.formData.mainBusinessName,
+            register_method: "手机号",
+            code: this.formData.recommendCode,
+            is_successful: res.code == 0 ? true : false,
+          },
+          (rel) => {}
+        );
       });
     },
     //验证码

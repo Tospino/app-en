@@ -405,7 +405,6 @@ export default {
     // 全部可用优惠券
     async getListData(data, flag) {
       let couponList = await APPgetuserallCouponListApi(data);
-      //   console.log("this.shopCoupon", this.shopCoupon);
       if (flag) {
         this.shopCoupon = this.shopCoupon.concat(couponList.Data.list);
       } else {
@@ -422,7 +421,6 @@ export default {
     },
     // 已使用和已过期优惠券
     async getUseData(data, flag) {
-      //   this.finished = true;
       let couponList = await APPgetuserallcouponlistexpireApi(data);
       if (this.shopCouponEx.length >= couponList.Data.totalCount) {
         this.finished = true;
