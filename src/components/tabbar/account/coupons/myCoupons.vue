@@ -112,7 +112,8 @@
                       shops.expIds,
                       shops.skuId,
                       shops.sellFlag,
-                      shops.isToUse
+                      shops.isToUse,
+                      shops
                     )
                   "
                   class="youhuiquan-right-btn right-btn-a"
@@ -474,7 +475,18 @@ export default {
       }, 300);
     },
     // 优惠券按钮
-    ProBar(id, Detail, Status, Type, busId, expIds, skuId, sellFlag, isToUse) {
+    ProBar(
+      id,
+      Detail,
+      Status,
+      Type,
+      busId,
+      expIds,
+      skuId,
+      sellFlag,
+      isToUse,
+      shops
+    ) {
       // 判断优惠券平台跳转
       if (Status == 0) {
         if (isToUse == 1) {
@@ -491,7 +503,10 @@ export default {
             if (sellFlag == 0) {
               Toast("The goods is not available");
             } else {
-              this.$router.push({ name: "商品详情", query: { skuId: skuId } });
+              this.$router.push({
+                name: "商品详情",
+                query: { skuId: skuId, activityType: shops.activityType },
+              });
             }
           }
         }

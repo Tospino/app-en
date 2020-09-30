@@ -66,10 +66,10 @@
             v-for="data in dataList"
             :key="data.detailId"
           >
-            <div class="good-detail-img" @click="toDetail(data.skuId)">
+            <div class="good-detail-img" @click="toDetail(data.skuId, data)">
               <img v-lazy="$webUrl + data.skuImg" />
             </div>
-            <div class="good-detail-title" @click="toDetail(data.skuId)">
+            <div class="good-detail-title" @click="toDetail(data.skuId, data)">
               <span class="name">{{ data.skuName }}</span>
               <div class="guige">{{ data.skuValuesTitleEng }}</div>
             </div>
@@ -510,8 +510,11 @@ export default {
       });
     },
     //跳转商品详情
-    toDetail(skuid) {
-      this.$router.push({ name: "商品详情", query: { skuId: skuid } });
+    toDetail(skuid, item) {
+      this.$router.push({
+        name: "商品详情",
+        query: { skuId: skuid, activityType: item.activityType },
+      });
     },
     //订单发起支付
     orderlaunchpay(data) {

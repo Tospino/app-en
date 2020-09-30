@@ -4,30 +4,41 @@
     <div class="footprint-header">
       <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)" />
       <span class="header-t1">Similar Items</span>
-      <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')" />
+      <van-icon
+        name="chat-o"
+        class="chat"
+        size="17px"
+        @click="jumpRouter('消息')"
+      />
     </div>
     <div class="place"></div>
     <!-- 未失效商品 -->
-    <div class="footprint-goods-content" v-for="product in footerData.list" :key="product.skuId">
+    <div
+      class="footprint-goods-content"
+      v-for="product in footerData.list"
+      :key="product.skuId"
+    >
       <div class="good-img">
-        <img v-lazy="$webUrl+product.imgUrl" />
+        <img v-lazy="$webUrl + product.imgUrl" />
       </div>
       <div class="good-desc">
-        <span class="p1 clamp-2">{{product.supplyTitle}}</span>
+        <span class="p1 clamp-2">{{ product.supplyTitle }}</span>
         <br />
       </div>
       <div class="country">
         <div class="good-img" v-if="product.locationUrl">
-          <img v-lazy="$webUrl+product.locationUrl" />
+          <img v-lazy="$webUrl + product.locationUrl" />
         </div>
         <div class="guojia" v-if="product.locationNameEng">
-          <span>{{product.locationNameEng}}</span>
+          <span>{{ product.locationNameEng }}</span>
           <br />
         </div>
       </div>
       <div class="good-price">
-        <span class="p1">{{jn}}{{product.discountPrice}}</span>
-        <span class="p3">Sales : {{product.skuSalesNum ? product.skuSalesNum : 0}} Pcs</span>
+        <span class="p1">{{ jn }}{{ product.discountPrice }}</span>
+        <span class="p3"
+          >Sales : {{ product.skuSalesNum ? product.skuSalesNum : 0 }} Pcs</span
+        >
         <span class="p2" @click="buyProduct(product)">Buy</span>
       </div>
     </div>
@@ -47,13 +58,13 @@ export default {
       youlikeData: {
         page: 1,
         limit: 10,
-        categoryId: ""
+        categoryId: "",
       },
       youlikeData2: {
         page: 1,
         limit: 6,
-        seraname: ""
-      }
+        seraname: "",
+      },
     };
   },
   computed: {},
@@ -67,10 +78,10 @@ export default {
   methods: {
     //找相似商品
     guessyoulike(data) {
-      guessyoulikeApi(data).then(res => {
+      guessyoulikeApi(data).then((res) => {
         if (res.code == 0) {
           this.footerData = res.Data;
-          this.footerData.list.forEach(item => {
+          this.footerData.list.forEach((item) => {
             if (item.discountPrice == null) {
               item.discountPrice = item.salePrice;
             }
@@ -80,7 +91,7 @@ export default {
     },
     //猜你喜欢
     guessyoulike2(data) {
-      guessyoulikeApi(data).then(res => {
+      guessyoulikeApi(data).then((res) => {
         if (res.code == 0) {
           this.footerData2 = res.Data;
         }
@@ -91,12 +102,15 @@ export default {
     },
     //点击购买
     buyProduct(item) {
-      this.$router.push({ name: "商品详情", query: { skuId: item.skuId } });
-    }
+      this.$router.push({
+        name: "商品详情",
+        query: { skuId: item.skuId, activityType: item.activityType },
+      });
+    },
   },
   components: {
-    footerExhibition
-  }
+    footerExhibition,
+  },
 };
 </script>
 

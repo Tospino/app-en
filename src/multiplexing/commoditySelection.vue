@@ -92,7 +92,7 @@
             {{ btnName }}
           </div>
           <div class="success-btn" v-else>
-            <div v-if="clear_stateBox != 2">
+            <div v-if="clear_stateBox != 2 || clear_pay">
               <div
                 class="btn-jrgwc fl-left"
                 @click="buyshoppingCar"
@@ -104,7 +104,7 @@
                 Add to Cart
               </div>
               <div
-                v-if="clear_stateBox != 0"
+                v-if="clear_stateBox == 1 || clear_pay"
                 class="btn-qd fl-right"
                 @click="buyProduct"
                 :style="{ backgroundColor: btnbuy }"
@@ -119,7 +119,7 @@
               >
             </div>
             <van-button
-              v-else-if="clear_stateBox == 2"
+              v-else-if="clear_stateBox === 2"
               type="primary"
               disabled
               class="clear_sold"
@@ -193,6 +193,7 @@ export default {
       clear_shop: [], //清仓活动默认勾选
       clear_stateBox: this.clearOne,
       clear_state: "", //清仓状态
+      clear_pay: false,
       clear_type: "", //清仓状态
     };
   },
@@ -252,15 +253,17 @@ export default {
     checkList: {
       handler: function (newVal, oldVal) {
         let newClear = newVal + "";
-        console.log(newClear, "newVal1111111");
-        if (newClear == this.clear_shop) {
-          // 是否清仓
-          if (this.clear_type == 1) {
-            this.clear_stateBox = this.clear_state;
-            console.log(this.clear_state, "青春时尚");
+        this.makeupdata.forEach((item) => {
+          //   console.log(item);
+          if (newClear == item.skuValues + "") {
+            if (item.activityType == 1) {
+              this.clear_stateBox = item.activityState;
+              this.clear_pay = false;
+            } else {
+              this.clear_pay = true;
+            }
           }
-        }
-
+        });
         if (this.twodata.length > 0) {
           if (this.checkList.length == 2) {
             this.setMakeItem();
@@ -308,11 +311,6 @@ export default {
       this.onedata = this.selectionObj.Onedata;
       this.twodata = this.selectionObj.Twodata;
       this.makeupdata.forEach((item) => {
-        this.clear_shop = item.skuValues;
-        this.clear_shop = this.clear_shop.split(",");
-        this.clear_shop = this.clear_shop.map(Number) + "";
-        this.clear_type = item.activityType;
-        this.clear_state = item.activityState;
         if (this.makeupdata.length > 1) {
           if (item.skuPrice > 0) {
             arr.push(item.skuPrice);
@@ -392,7 +390,9 @@ export default {
       };
 
       let arr = [makeItemObj];
-      this.getproductskunumpricelist(arr);
+      if (this.clear_type != 1 && this.clear_type != null) {
+        this.getproductskunumpricelist(arr);
+      }
     },
     //input失焦事件
     blur(item) {
@@ -409,7 +409,9 @@ export default {
         skuId: this.makeItem.skuId,
       };
       let arr = [makeItemObj];
-      this.getproductskunumpricelist(arr);
+      if (this.clear_type != 1 && this.clear_type != null) {
+        this.getproductskunumpricelist(arr);
+      }
     },
     //点击确定收入购物车
     buyshoppingCar() {

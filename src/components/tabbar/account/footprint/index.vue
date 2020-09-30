@@ -2,10 +2,19 @@
   <div>
     <div class="footprint">
       <div class="footprint-header">
-        <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)" />
+        <van-icon
+          name="arrow-left"
+          class="arrow-left"
+          @click="$router.go(-1)"
+        />
         <span class="header-t1">My Browsing</span>
-        <span class="header-t2" @click="editBj">{{editBjName}}</span>
-        <van-icon name="chat-o" class="xiaoxi" info @click="$router.push({name:'消息'})" />
+        <span class="header-t2" @click="editBj">{{ editBjName }}</span>
+        <van-icon
+          name="chat-o"
+          class="xiaoxi"
+          info
+          @click="$router.push({ name: '消息' })"
+        />
       </div>
       <div class="place"></div>
       <scroll
@@ -16,8 +25,16 @@
         @pullup="_pullup"
       >
         <div>
-          <calendar class="riqizujian" :checkArr="calendarList" @cliDay="cliDay"></calendar>
-          <div class="footprint-goods" v-for="(day,index) in dataList" :key="index">
+          <calendar
+            class="riqizujian"
+            :checkArr="calendarList"
+            @cliDay="cliDay"
+          ></calendar>
+          <div
+            class="footprint-goods"
+            v-for="(day, index) in dataList"
+            :key="index"
+          >
             <div class="footprint-goods-header">
               <van-checkbox
                 v-model="day.checked"
@@ -25,15 +42,16 @@
                 class="goods-header-checkbox"
                 v-if="showFooter"
                 checked-color="#F83600"
-                @click="productCheckBox(day,'all')"
+                @click="productCheckBox(day, 'all')"
               ></van-checkbox>
-              <span
-                class="p1"
-              >{{timeSubstring(day.browTime)}} {{dateMinus(timeSubstring(day.browTime,))}}</span>
+              <span class="p1"
+                >{{ timeSubstring(day.browTime) }}
+                {{ dateMinus(timeSubstring(day.browTime)) }}</span
+              >
             </div>
             <div
               class="footprint-goods-content"
-              v-for="(product,index) in day.listhistory"
+              v-for="(product, index) in day.listhistory"
               :key="index"
             >
               <div class="good-img">
@@ -43,21 +61,37 @@
                   class="img-checkbox"
                   checked-color="#F83600"
                   v-if="showFooter"
-                  @click="productCheckBox(product,'',day)"
+                  @click="productCheckBox(product, '', day)"
                 ></van-checkbox>
-                <img v-lazy="$webUrl+product.imgUrl" @click="toDetail(product.skuId)" />
+                <img
+                  v-lazy="$webUrl + product.imgUrl"
+                  @click="toDetail(product.skuId, product)"
+                />
               </div>
               <div class="good-desc">
-                <span class="p1 clamp-2" @click="toDetail(product.skuId)">{{product.supplyTitle}}</span>
-                <span class="p2">Sales:{{product.skuSalesNum?product.skuSalesNum:0}}Pcs</span>
+                <span
+                  class="p1 clamp-2"
+                  @click="toDetail(product.skuId, product)"
+                  >{{ product.supplyTitle }}</span
+                >
+                <span class="p2"
+                  >Sales:{{
+                    product.skuSalesNum ? product.skuSalesNum : 0
+                  }}Pcs</span
+                >
                 <div class="good-price">
-                  <span
-                    class="p1"
-                  >{{jn}}{{product.discountPrice == null ? product.salePrice:product.discountPrice}}</span>
+                  <span class="p1"
+                    >{{ jn
+                    }}{{
+                      product.discountPrice == null
+                        ? product.salePrice
+                        : product.discountPrice
+                    }}</span
+                  >
                   <div class="fl-right" @click="shoucangProdu(product)">
                     <van-icon
-                      :name="product.isfavorites == 0 ?'star-o':'star' "
-                      :class="product.isfavorites == 0?'c-666':''"
+                      :name="product.isfavorites == 0 ? 'star-o' : 'star'"
+                      :class="product.isfavorites == 0 ? 'c-666' : ''"
                     />
                     <span class="c-333">Collection</span>
                   </div>
@@ -146,8 +180,11 @@ export default {
       this.showFooter = !this.showFooter;
     },
     //跳转商品详情
-    toDetail(skuid) {
-      this.$router.push({ name: "商品详情", query: { skuId: skuid } });
+    toDetail(skuid, item) {
+      this.$router.push({
+        name: "商品详情",
+        query: { skuId: skuid, activityType: item.activityType },
+      });
     },
     selectuserbrowhistory(data, flag) {
       selectuserbrowhistoryApi(data).then((res) => {
@@ -291,8 +328,11 @@ export default {
       });
     },
     //跳转商品详情
-    toDetail(skuid) {
-      this.$router.push({ name: "商品详情", query: { skuId: skuid } });
+    toDetail(skuid, item) {
+      this.$router.push({
+        name: "商品详情",
+        query: { skuId: skuid, activityType: item.activityType },
+      });
     },
   },
   components: {

@@ -3,13 +3,18 @@
   <div class="favorites" ref="content">
     <div class="favorites-header">
       <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)" />
-      <span class="header-t1">Collection({{shoucangTotal}})</span>
+      <span class="header-t1">Collection({{ shoucangTotal }})</span>
       <van-icon name="search" class="search" @click="toSearch" v-if="false" />
-      <span class="bj" @click="editBj">{{editBjName}}</span>
+      <span class="bj" @click="editBj">{{ editBjName }}</span>
     </div>
     <!-- 下拉框 -->
     <van-dropdown-menu active-color="#DB9000" class="adropdown">
-      <van-dropdown-item v-model="value1" :options="option1" class="scj" @close="timeSort(value1)" />
+      <van-dropdown-item
+        v-model="value1"
+        :options="option1"
+        class="scj"
+        @close="timeSort(value1)"
+      />
       <van-dropdown-item v-model="value2" :options="option2" disabled />
       <van-dropdown-item v-model="value2" :options="option2" disabled />
       <van-icon name="apps-o" class="apps-o" @click="iconView" />
@@ -21,7 +26,7 @@
     </div>
 
     <div class="img-list" v-show="!viewOne">
-      <div v-for="(good,index) in twoDataList" :key="index">
+      <div v-for="(good, index) in twoDataList" :key="index">
         <van-checkbox
           v-model="good.checked"
           icon-size="15px"
@@ -29,11 +34,15 @@
           checked-color="#FA5300"
           v-if="showFooter"
         ></van-checkbox>
-        <img v-lazy="$webUrl+good.imgUrl" />
+        <img v-lazy="$webUrl + good.imgUrl" />
       </div>
     </div>
     <!-- 你可能还喜欢,推荐商品页 -->
-    <footer-exhibition :footerData="footerData" ref="footer" @clickPro="toDetail"></footer-exhibition>
+    <footer-exhibition
+      :footerData="footerData"
+      ref="footer"
+      @clickPro="toDetail"
+    ></footer-exhibition>
 
     <div class="settlement" v-if="showFooter">
       <span class="settlement-text" v-if="true">
@@ -201,8 +210,11 @@ export default {
       });
     },
     //跳转详情页
-    toDetail(skuId) {
-      this.$router.push({ name: "商品详情", query: { skuId } });
+    toDetail(skuId, actAll) {
+      this.$router.push({
+        name: "商品详情",
+        query: { skuid: skuId, activityType: actAll.activityType },
+      });
     },
     //排序
     timeSort(sort) {

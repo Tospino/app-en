@@ -61,18 +61,18 @@
             <div
               class="clearSale_left flex_col"
               :class="{
-                on_fw: clearSaleGoodState === 0,
-                on_fc: clearSaleGoodState == 1,
-                on_tc: clearSaleGoodState == 2,
+                on_fw: detailmData.activityState === 0,
+                on_fc: detailmData.activityState == 1,
+                on_tc: detailmData.activityState == 2,
               }"
             >
               <div class="flex">
                 <span
                   class="goods_discount flex_center2"
                   :class="{
-                    fz_cw: clearSaleGoodState === 0,
-                    fz_co: clearSaleGoodState == 1,
-                    fz_ct: clearSaleGoodState == 2,
+                    fz_cw: detailmData.activityState === 0,
+                    fz_co: detailmData.activityState == 1,
+                    fz_ct: detailmData.activityState == 2,
                   }"
                 >
                   {{
@@ -83,7 +83,10 @@
                   }}% off
                 </span>
                 <i
-                  v-if="clearSaleGoodState == 1 || clearSaleGoodState == 2"
+                  v-if="
+                    detailmData.activityState == 1 ||
+                    detailmData.activityState == 2
+                  "
                   style="
                     color: #fff;
                     font-weight: blod;
@@ -109,9 +112,9 @@
             <div
               class="clearSale_right flex_col_center2"
               :class="{
-                on_rw: clearSaleGoodState === 0,
-                on_rc: clearSaleGoodState == 1,
-                on_rt: clearSaleGoodState == 2,
+                on_rw: detailmData.activityState === 0,
+                on_rc: detailmData.activityState == 1,
+                on_rt: detailmData.activityState == 2,
               }"
             >
               <h2 class="active_title">Clearance Sale</h2>
@@ -120,7 +123,7 @@
                 <count-down
                   model="timer"
                   :end-time="arrClearSale"
-                  v-if="clearSaleGoodState === 0"
+                  v-if="detailmData.activityState === 0"
                 >
                   <template v-slot="time">
                     starts at
@@ -442,7 +445,7 @@
           <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png" />
           <div class="icon-collection-p">Service</div>
         </div>
-        <div v-if="clearSaleGoodState != 2">
+        <div v-if="detailmData.activityState != 2">
           <van-button
             type="default"
             class="add-shopping-cat"
@@ -450,7 +453,7 @@
             >Add to Cart</van-button
           >
           <van-button
-            v-if="clearSaleGoodState !== 0"
+            v-if="detailmData.activityState !== 0"
             type="primary"
             class="spend spen_on"
             @click="changeComStatus(true, true, 'Buy Now')"
@@ -570,7 +573,6 @@ export default {
   },
   computed: {},
   created() {
-    console.log(location.href);
     this.actId = this.$route.query.activityId;
     // this.slyId = this.$route.query.supplyId;
     this.actType = this.$route.query.activityType;
@@ -615,9 +617,9 @@ export default {
         //清仓活动类型
         getClearanceDetailApi({
           skuid: id,
-          activityId: this.actId,
+          //   activityId: this.actId,
           //   supplyId: this.slyId,
-          activityType: this.actType,
+          //   activityType: this.actType,
           //   activityState: this.actState,
         }).then((res) => {
           if (res.code == 0) {
@@ -627,7 +629,7 @@ export default {
               this.clearSaleGoodType = ele.activityType;
 
               if (ele.activityType == 1) {
-                this.clearSaleGoodState = ele.activityState;
+                // this.clearSaleGoodState = ele.activityState;
                 if (ele.skuid == this.$route.query.skuId) {
                   this.clearOne = ele.activityState;
                 }

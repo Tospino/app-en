@@ -128,7 +128,7 @@ export default {
     },
     //跳转到商品详情
     toProduDetail(skuId, shopall) {
-      this.$emit("clickPro", skuId, shopall);
+      this.$emit("clickPro", skuId, shopall.activityType);
       // this.$router.push({name:'商品详情',query:{skuId}})
     },
     getData() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="goods-list" v-for="(product,index) in dataList" :key="index">
+    <div class="goods-list" v-for="(product, index) in dataList" :key="index">
       <!-- 未失效商品 -->
       <div class="footprint-goods-content">
         <div class="fl-left">
@@ -11,25 +11,34 @@
               class="img-checkbox"
               v-if="showCheck"
             ></van-checkbox>
-            <img v-lazy="$webUrl+product.imgUrl" @click="toDetail(product.skuId)" />
+            <img
+              v-lazy="$webUrl + product.imgUrl"
+              @click="toDetail(product.skuId, product)"
+            />
             <div class="shixiao" v-if="false">Invalid</div>
           </div>
         </div>
         <div class="fl-right clearfix">
           <div class="good-desc">
-            <span class="p1 clamp-2">{{product.supplyTitle}}</span>
-            <span class="p2">Collected by {{product.scTotal}} users</span>
+            <span class="p1 clamp-2">{{ product.supplyTitle }}</span>
+            <span class="p2">Collected by {{ product.scTotal }} users</span>
           </div>
           <div class="good-price">
-            <span
-              class="p1"
-              v-if="true"
-            >{{jn}}{{product.discountPrice ? product.discountPrice : product.salePrice}}</span>
-            <div
-              class="p3"
-              v-else
-            >You can't buy the products. Please contact customer service if you want to order.</div>
-            <span class="p2 fl-right" @click="toResembleGood">Similar Items</span>
+            <span class="p1" v-if="true"
+              >{{ jn
+              }}{{
+                product.discountPrice
+                  ? product.discountPrice
+                  : product.salePrice
+              }}</span
+            >
+            <div class="p3" v-else>
+              You can't buy the products. Please contact customer service if you
+              want to order.
+            </div>
+            <span class="p2 fl-right" @click="toResembleGood"
+              >Similar Items</span
+            >
           </div>
         </div>
       </div>
@@ -50,15 +59,15 @@ export default {
       type: Array,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       checked: false,
       showCheck: false,
       dataObj: {},
-      dataList: []
+      dataList: [],
     };
   },
   computed: {},
@@ -71,10 +80,10 @@ export default {
     //     },
     // },
     list: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.getList();
-      }
-    }
+      },
+    },
   },
   methods: {
     //找相似按钮
@@ -102,14 +111,17 @@ export default {
     // },
     //列表数据
     getList() {
-      this.dataList = this.list.map(o => Object.assign({}, o));
+      this.dataList = this.list.map((o) => Object.assign({}, o));
     },
     //跳转商品详情
-    toDetail(skuid) {
-      this.$router.push({ name: "商品详情", query: { skuId: skuid } });
-    }
+    toDetail(skuid, item) {
+      this.$router.push({
+        name: "商品详情",
+        query: { skuId: skuid, activityType: item.activityType },
+      });
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

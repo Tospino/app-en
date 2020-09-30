@@ -547,7 +547,7 @@ export default {
         // this.clear_type = ele.activityType;
         ele.list.forEach((item) => {
           item.checkStatus = status;
-          //   this.clear_type = ele.activityType;
+          // this.clear_type = ele.activityType;
         });
       });
       this.zongji();
@@ -594,7 +594,23 @@ export default {
         this.totlaNum = 0;
         return;
       }
-      this.getproductskunumpricelist(arr2);
+      if (this.clear_type != 1 && this.clear_type != null) {
+        this.getproductskunumpricelist(arr2);
+      } else {
+        this.dataList.forEach((ele) => {
+          ele.list.forEach((item) => {
+            res.Data.forEach((dataItem) => {
+              if (item.skuId == dataItem.skuId) {
+                if (item.discountPrice) {
+                  item.discountPrice = dataItem.price;
+                } else {
+                  item.salePrice = dataItem.price;
+                }
+              }
+            });
+          });
+        });
+      }
     },
     //更改数量
     changeStepper(itemdetail) {
@@ -682,28 +698,25 @@ export default {
     },
     //根据商品skuid与商品数量获取优惠价
     getproductskunumpricelist(data) {
-      console.log(data);
-      //   if (this.clear_type != 1) {
-      //   getproductskunumpricelistApi(data).then((res) => {
-      //     if (res.code == 0) {
-      //       this.totlaMoney = res.totalprice;
-      //       this.totlaNum = res.totalnum;
-      //       this.dataList.forEach((ele) => {
-      //         ele.list.forEach((item) => {
-      //           res.Data.forEach((dataItem) => {
-      //             if (item.skuId == dataItem.skuId) {
-      //               if (item.discountPrice) {
-      //                 item.discountPrice = dataItem.price;
-      //               } else {
-      //                 item.salePrice = dataItem.price;
-      //               }
-      //             }
-      //           });
-      //         });
-      //       });
-      //     }
-      //   });
-      //   }
+      getproductskunumpricelistApi(data).then((res) => {
+        if (res.code == 0) {
+          this.totlaMoney = res.totalprice;
+          this.totlaNum = res.totalnum;
+          this.dataList.forEach((ele) => {
+            ele.list.forEach((item) => {
+              res.Data.forEach((dataItem) => {
+                if (item.skuId == dataItem.skuId) {
+                  if (item.discountPrice) {
+                    item.discountPrice = dataItem.price;
+                  } else {
+                    item.salePrice = dataItem.price;
+                  }
+                }
+              });
+            });
+          });
+        }
+      });
     },
     //添加购物车
     addshopcart(data) {
