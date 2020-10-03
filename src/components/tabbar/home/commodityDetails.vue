@@ -57,7 +57,10 @@
             </van-swipe>
           </div>
           <!-- 特价清仓销售价 -->
-          <div class="clearSale_content flex" v-if="clearSaleGoodType == 1">
+          <div
+            class="clearSale_content flex"
+            v-if="detailmData.activityType == 1"
+          >
             <div
               class="clearSale_left flex_col"
               :class="{
@@ -123,7 +126,7 @@
                 <count-down
                   model="timer"
                   :end-time="arrClearSale"
-                  v-if="detailmData.activityState === 0"
+                  v-if="detailmData.activityState == 0"
                 >
                   <template v-slot="time">
                     starts at
@@ -154,19 +157,19 @@
             <div class="flex flex_space">
               <div>
                 <div v-if="detailmData.quoteMethod == 1">
-                  <div class="prices" v-if="clearSaleGoodType !== 1">
+                  <div class="prices" v-if="detailmData.activityType !== 1">
                     <span class="mark c-orange">{{ jn }}</span>
                     <span class="p1 c-orange">
                       {{ detailmData.discountPrice }}
                     </span>
-                    <div v-if="clearSaleGoodType !== 1">
+                    <div v-if="detailmData.activityType !== 1">
                       <span class="p2 through" v-if="detailmData.salePriceFlag"
                         >{{ jn }}{{ detailmData.salePrice }}</span
                       >
                     </div>
                   </div>
                   <div>
-                    <span class="p3" v-if="clearSaleGoodType !== 1"
+                    <span class="p3" v-if="detailmData.activityType !== 1"
                       >MOQ:{{ detailmData.numIntervalStart }}Pcs</span
                     >
                   </div>
@@ -184,17 +187,17 @@
                     :key="index"
                     class="qujianjia-item"
                   >
-                    <div class="price">
+                    <div class="price" v-if="detailmData.activityType !== 1">
                       <span class="huobi">{{ jn }}</span>
                       <span>{{ spc.price }}</span>
                     </div>
-                    <div class="piece">
+                    <div class="piece" v-if="detailmData.activityType !== 1">
                       <span v-show="index == 0">MOQ:</span>
                       <span>{{ spc.pcs }}PCS</span>
                     </div>
                   </div>
                 </div>
-                <div v-if="clearSaleGoodType !== 1">
+                <div v-if="detailmData.activityType !== 1">
                   Sales:{{
                     detailmData.skuSalesNum ? detailmData.skuSalesNum : 0
                   }}PCS
@@ -477,6 +480,7 @@
           :btnName="btnName"
           :amountTip="amountTip"
           :clearOne="clearOne"
+          :actId="actId"
           ref="commodityselection"
         ></commodity-selection>
       </transition>
@@ -564,7 +568,7 @@ export default {
       clearSaleGoodType: "", //特价商品类型
       clearSaleGoodState: "", //是否是清仓0 1 2的状态
       arrClearSale: " ", //特价清仓"2020-9-28 14:00:00"
-      actId: "",
+      actId: null,
       actType: "",
       shareinfos: location.href, //分享链接
       sharelinks: location.href, //分享链接
@@ -573,7 +577,7 @@ export default {
   },
   computed: {},
   created() {
-    this.actId = this.$route.query.activityId;
+    // this.actId = this.$route.query.activityId;
     // this.slyId = this.$route.query.supplyId;
     this.actType = this.$route.query.activityType;
     // this.actState = this.$route.query.activityState;
@@ -619,7 +623,7 @@ export default {
           skuid: id,
           //   activityId: this.actId,
           //   supplyId: this.slyId,
-          //   activityType: this.actType,
+          // activityType: this.actType,
           //   activityState: this.actState,
         }).then((res) => {
           if (res.code == 0) {
@@ -627,7 +631,6 @@ export default {
             this.isClearSaleGood = res.Makeupdata;
             this.isClearSaleGood.forEach((ele) => {
               this.clearSaleGoodType = ele.activityType;
-
               if (ele.activityType == 1) {
                 // this.clearSaleGoodState = ele.activityState;
                 if (ele.skuid == this.$route.query.skuId) {
@@ -637,14 +640,13 @@ export default {
             });
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
-
+            this.arrClearSale = this.detailmData.activityBegin;
             //   到货时间展示文字
             if (this.detailmData.expId == 2) {
               this.amountTip = true;
             } else {
               this.amountTip = false;
             }
-            this.arrClearSale = this.detailmData.productSkuList[0].tpproductskuattrvalue[0].activityBegin;
             this.couponProModel(
               this.detailmData.supplyId,
               this.detailmData.businessId,
@@ -684,6 +686,7 @@ export default {
           if (res.code == 0) {
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
+            this.arrClearSale = this.detailmData.activityBegin;
             //   到货时间展示文字
             if (this.detailmData.expId == 2) {
               this.amountTip = true;
@@ -726,10 +729,13 @@ export default {
         });
       }
     },
-    //猜你喜欢点击了商品
+    // 猜你喜欢点击了商品
     clickPro(skuid, actAll) {
-      this.productdetail(skuid, this.actType);
-      this.$refs.wrapper.scrollTo(0, 0, 500);
+      this.productdetail(skuid, actAll.activityType);
+      //   活动
+      window.scrollTo(0, 0);
+      this.actId = skuid;
+      //   this.$refs.wrapper.scrollTo(0, 0, 500);
       this.active = 0;
     },
     //弹出规格框

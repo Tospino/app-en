@@ -108,10 +108,12 @@
                 {{ product.currencySignWebsite }}{{ product.totalPriceWebsite }}
               </div>
               <div class="p4 through" v-if="product.totalOriginPriceWebsite">
+                <!-- 清仓活动价格 -->
                 {{ product.currencySignWebsite
                 }}{{ product.totalOriginPriceWebsite }}
               </div>
               <div class="selection-right-stepper">
+                <!-- 后台修改控制起订量 -->
                 <div class="add-btn" @click="addCount(product)">+</div>
                 <div class="center-input">
                   <input
@@ -568,6 +570,8 @@ export default {
     },
     //input失焦事件
     blur(item) {
+      console.log(item.detailNum, "订单量");
+      console.log(item.minStartNum, "起订量");
       if (item.detailNum < item.minStartNum) {
         Toast("Not less than MOQ" + item.minStartNum);
         item.detailNum = item.minStartNum;

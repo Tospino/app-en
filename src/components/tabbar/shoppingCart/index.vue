@@ -106,18 +106,18 @@
               <div class="good-item">
                 <div class="good-item-l">
                   <van-checkbox
+                    v-if="dataitem.activityState != 0"
                     v-model="dataitem.checkStatus"
                     icon-size="24px"
                     checked-color="#F83600"
                     @click="changeCheckbox(dataitem, '', data)"
                   ></van-checkbox>
-                  <!-- <van-checkbox
-                    v-show="dataitem.activityState == 0"
-                    v-model="dataitem.checkStatus"
+                  <van-checkbox
+                    v-else
                     icon-size="24px"
                     checked-color="#F83600"
                     disabled
-                  ></van-checkbox> -->
+                  ></van-checkbox>
                   <div @click="toDetail(dataitem)">
                     <img
                       class="good-img"
@@ -443,6 +443,15 @@ export default {
         if (res.code == 0) {
           if (flag) {
             this.shopList = this.shopList.concat(res.Data.list);
+            // 取最后一个对象数组
+            let arrShopList = this.shopList;
+            let arrLast =
+              arrShopList[
+                Object.keys(this.shopList)[
+                  Object.keys(this.shopList).length - 1
+                ]
+              ];
+            this.formData.businessId = arrLast.businessId;
           } else {
             this.shopList = res.Data.list;
             // 取最后一个对象数组
@@ -516,7 +525,10 @@ export default {
       if (flag == "all") {
         //订单上的复选框,该订单商品全选中
         item.list.forEach((ele) => {
-          ele.checkStatus = item.checkStatus;
+          // 清仓预热商品
+          if (ele.activityState != 0) {
+            ele.checkStatus = item.checkStatus;
+          }
         });
       } else {
         //点击订单某一个商品的复选框
@@ -524,16 +536,22 @@ export default {
         list.list.forEach((element) => {
           //如果有一个是没选中的
           if (!element.checkStatus) {
-            itemFlag = false;
+            if (element.activityState != 0) {
+              itemFlag = false;
+            }
           }
         });
         //判断状态
         if (itemFlag) {
           //全部选中
-          list.checkStatus = true;
+          if (list.activityState != 0) {
+            list.checkStatus = true;
+          }
         } else {
           //有一个没选中
-          list.checkStatus = false;
+          if (list.activityState != 0) {
+            list.checkStatus = false;
+          }
         }
       }
       //   this.clear_type = item.activityType;
@@ -544,10 +562,8 @@ export default {
     cliAllcheck(status) {
       this.dataList.forEach((ele) => {
         ele.checkStatus = status;
-        // this.clear_type = ele.activityType;
         ele.list.forEach((item) => {
           item.checkStatus = status;
-          // this.clear_type = ele.activityType;
         });
       });
       this.zongji();

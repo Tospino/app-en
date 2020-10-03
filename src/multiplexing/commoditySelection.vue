@@ -92,7 +92,7 @@
             {{ btnName }}
           </div>
           <div class="success-btn" v-else>
-            <div v-if="clear_stateBox != 2 || clear_pay">
+            <section v-if="activityState === null">
               <div
                 class="btn-jrgwc fl-left"
                 @click="buyshoppingCar"
@@ -100,31 +100,65 @@
                   backgroundColor: btncolor.bgc,
                   color: btncolor.color,
                 }"
+                v-show="goodNumber > 0"
               >
                 Add to Cart
               </div>
               <div
-                v-if="clear_stateBox == 1 || clear_pay"
                 class="btn-qd fl-right"
                 @click="buyProduct"
                 :style="{ backgroundColor: btnbuy }"
+                v-show="goodNumber > 0"
               >
                 Buy Now
               </div>
               <van-button
-                v-else-if="clear_stateBox === 0"
                 type="primary"
-                class="btn-qd spen_tw"
-                >Not started</van-button
+                disabled
+                class="clear_sold"
+                v-show="goodNumber === 0"
+                >Sold out</van-button
               >
-            </div>
-            <van-button
-              v-else-if="clear_stateBox === 2"
-              type="primary"
-              disabled
-              class="clear_sold"
-              >Sold out</van-button
-            >
+            </section>
+            <section v-else>
+              <div>
+                <section>
+                  <div
+                    class="btn-jrgwc fl-left"
+                    @click="buyshoppingCar"
+                    :style="{
+                      backgroundColor: btncolor.bgc,
+                      color: btncolor.color,
+                    }"
+                    v-show="activityState !== 2 && goodNumber > 0"
+                  >
+                    Add to Cart
+                  </div>
+                  <div
+                    class="btn-qd fl-right"
+                    @click="buyProduct"
+                    :style="{ backgroundColor: btnbuy }"
+                    v-show="activityState === 1 && goodNumber > 0"
+                  >
+                    Buy Now
+                  </div>
+                </section>
+                <van-button
+                  type="primary"
+                  class="btn-qd spen_tw fl-right"
+                  v-show="activityState === 0 && goodNumber > 0"
+                  >Not started</van-button
+                >
+              </div>
+
+              <van-button
+                type="primary"
+                disabled
+                class="clear_sold"
+                v-show="activityState === 2 || goodNumber === 0"
+                >Sold out</van-button
+              >
+            </section>
           </div>
           <div class="ios-place" v-show="jixing == 'ios'"></div>
         </div>
@@ -166,6 +200,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 新增字段
+    actId: {
+      type: Number,
+      default: false,
+    },
   },
   data() {
     return {
@@ -191,10 +230,10 @@ export default {
       ],
       tips: "",
       clear_shop: [], //清仓活动默认勾选
-      clear_stateBox: this.clearOne,
       clear_state: "", //清仓状态
       clear_pay: false,
       clear_type: "", //清仓状态
+      activityState: null, //活动状态
     };
   },
   computed: {
@@ -247,23 +286,14 @@ export default {
   watch: {
     selectionData: {
       handler: function (newVal, oldVal) {
-        this.getData();
+        if (newVal != null) {
+          console.log("65");
+          this.getData();
+        }
       },
     },
     checkList: {
       handler: function (newVal, oldVal) {
-        let newClear = newVal + "";
-        this.makeupdata.forEach((item) => {
-          //   console.log(item);
-          if (newClear == item.skuValues + "") {
-            if (item.activityType == 1) {
-              this.clear_stateBox = item.activityState;
-              this.clear_pay = false;
-            } else {
-              this.clear_pay = true;
-            }
-          }
-        });
         if (this.twodata.length > 0) {
           if (this.checkList.length == 2) {
             this.setMakeItem();
@@ -281,7 +311,6 @@ export default {
             this.goodNumber = 0;
           }
         }
-        console.log(this.clear_stateBox == 0, "clear_stateBox");
       },
     },
     titleImg: {
@@ -299,8 +328,8 @@ export default {
     closeModal() {
       this.$emit("changeComStatus", false);
     },
-    getData() {
-      this.selectionObj = Object.assign(
+    async getData() {
+      this.selectionObj = await Object.assign(
         {},
         this.selectionObj,
         this.selectionData
@@ -311,6 +340,9 @@ export default {
       this.onedata = this.selectionObj.Onedata;
       this.twodata = this.selectionObj.Twodata;
       this.makeupdata.forEach((item) => {
+        if (item.activityType == 1) {
+          this.clear_type = item.activityType;
+        }
         if (this.makeupdata.length > 1) {
           if (item.skuPrice > 0) {
             arr.push(item.skuPrice);
@@ -328,6 +360,10 @@ export default {
           //默认选中
           if (item.skuId == this.$route.query.skuId) {
             makeupList.push(item.skuValues);
+          } else {
+            if (item.skuId == this.actId) {
+              makeupList.push(item.skuValues);
+            }
           }
         }
       });
@@ -340,8 +376,6 @@ export default {
 
       var makeOne = makeupList[0].split(",");
       this.checkList = makeOne.map(Number);
-      //   清仓活动
-      this.checkList = this.checkList.sort();
       this.twodata.forEach((item) => {
         item.ischeck = false;
         this.checkList.forEach((checkItem) => {
@@ -359,6 +393,7 @@ export default {
         });
       });
     },
+
     //数量加减
     operation(type) {
       // let arr = []
@@ -390,7 +425,7 @@ export default {
       };
 
       let arr = [makeItemObj];
-      if (this.clear_type != 1 && this.clear_type != null) {
+      if (this.clear_type != 1) {
         this.getproductskunumpricelist(arr);
       }
     },
@@ -409,7 +444,7 @@ export default {
         skuId: this.makeItem.skuId,
       };
       let arr = [makeItemObj];
-      if (this.clear_type != 1 && this.clear_type != null) {
+      if (this.clear_type != 1) {
         this.getproductskunumpricelist(arr);
       }
     },
@@ -485,6 +520,7 @@ export default {
           this.checkList.splice(this.checkList.indexOf(ele.valueId), 1);
         }
       }
+      this.clearAct();
       this.$forceUpdate();
     },
     //点击二级类目
@@ -504,6 +540,23 @@ export default {
           this.checkList.splice(this.checkList.indexOf(ele.valueId), 1);
         }
       }
+      this.clearAct();
+      this.$forceUpdate();
+    },
+    // 清仓
+    clearAct() {
+      console.log(this.clear_type, "asda");
+      //   清仓活动
+      this.checkList = this.checkList.sort();
+      this.makeupdata.forEach((item) => {
+        if (item.activityType == 1) {
+          if (this.checkList.join(",") == item.skuValues) {
+            this.clear_pay = false;
+          }
+        } else {
+          this.clear_pay = true;
+        }
+      });
       this.$forceUpdate();
     },
     setMakeItem() {
@@ -531,6 +584,7 @@ export default {
           this.titleImg = this.makeItem.imgUrl;
           this.tsinCode = this.makeItem.tsinCode;
           this.sectionPrice = this.makeItem.skuPrice;
+          this.activityState = this.makeItem.activityState;
           this.stock = this.makeItem.canSalesNum
             ? this.makeItem.canSalesNum
             : 0;
@@ -579,6 +633,7 @@ export default {
             : 0;
           this.attrTitleEng = this.makeItem.supplyTitle;
           this.titleImg = this.makeItem.imgUrl;
+          this.activityState = this.makeItem.activityState;
           this.tsinCode = this.makeItem.tsinCode;
           this.sectionPrice = this.makeItem.skuPrice;
           this.stock = this.makeItem.canSalesNum
@@ -618,6 +673,7 @@ export default {
           this.tips = "Out of Stock";
         }
       }
+      console.log(this.activityState, "this.activityState");
     },
   },
 };

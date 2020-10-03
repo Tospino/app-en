@@ -41,7 +41,7 @@
               discount_gary: item.activityState === 2,
               pre_fb: item.activityState === 0,
             }"
-            >{{ parseInt((1 - item.activityPrice / item.salePrice) * 100) }}%
+            >{{ parseInt(100 - (item.activityPrice / item.salePrice) * 100) }}%
             off</span
           >
         </div>
@@ -63,9 +63,8 @@
               <van-progress
                 :percentage="
                   item.activityState !== 2
-                    ? parseInt(
-                        (item.activitySaleNum / item.activityNum) * 100
-                      ) || 0
+                    ? parseInt(item.activitySaleNum / item.activityNum) * 100 ||
+                      0
                     : 0
                 "
                 :color="item.activityState === 1 ? '#f95300' : '#00a670'"

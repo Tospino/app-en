@@ -10,45 +10,71 @@
       <span class="line-right"></span>
     </div>
     <div class="exhibition-con clearfix">
-      <div v-for="(good,index) in dataList" :key="index">
+      <div v-for="(good, index) in dataList" :key="index">
         <div
           v-if="good.canSalesNum > 0"
           class="exhibition-left"
-          @click="toProduDetail(good.skuId,good)"
+          @click="toProduDetail(good.skuId, good)"
         >
-          <img v-lazy="$webUrl+good.imgUrl" />
+          <img v-lazy="$webUrl + good.imgUrl" />
           <div class="produced">
             <div v-if="good.expId == 1">
               <span class="icon">
-                <img v-lazy="$webUrl+'/common/image/zhiyou.png'" />
+                <img v-lazy="$webUrl + '/common/image/zhiyou.png'" />
               </span>
-              <span class="produced-font">Ships from {{good.areaNameEng}}</span>
+              <span class="produced-font"
+                >Ships from {{ good.areaNameEng }}</span
+              >
             </div>
             <div v-else>
               <span class="icon">
-                <img v-lazy="$webUrl+good.locationUrl" v-if="good.locationUrl" />
+                <img
+                  v-lazy="$webUrl + good.locationUrl"
+                  v-if="good.locationUrl"
+                />
               </span>
-              <span class="produced-font">{{good.locationNameEng ? good.locationNameEng:''}}</span>
+              <span class="produced-font">{{
+                good.locationNameEng ? good.locationNameEng : ""
+              }}</span>
             </div>
           </div>
           <div class="produced-title">
             <span
               v-if="good.activityType"
               class="produced_icon"
-              :class="{'produced_clearone':good.activityState===0&&good.activityTagApp!=null&&good.activityTagApp!='','produced_cleartwo':good.activityState==1&&good.activityTagApp!=null&&good.activityTagApp!='','produced_th':good.activityState==2&&good.activityTagApp!=null&&good.activityTagApp!=''}"
-            >{{good.activityTagApp}}</span>
-            <span>{{good.supplyTitle}}</span>
+              :class="{
+                produced_clearone:
+                  good.activityState === 0 &&
+                  good.activityTagApp != null &&
+                  good.activityTagApp != '',
+                produced_cleartwo:
+                  good.activityState == 1 &&
+                  good.activityTagApp != null &&
+                  good.activityTagApp != '',
+                produced_th:
+                  good.activityState == 2 &&
+                  good.activityTagApp != null &&
+                  good.activityTagApp != '',
+              }"
+              >{{ good.activityTagApp }}</span
+            >
+            <span>{{ good.supplyTitle }}</span>
           </div>
           <div class="score">
             <!-- 评论星 -->
             <!-- <van-rate v-model="good.starNumber" readonly color="#FA5300" /> -->
-            <span>{{good.manNumber}}</span>
+            <span>{{ good.manNumber }}</span>
           </div>
           <div class="price">
-            <span
-              class="price1"
-            >{{jn}}{{good.discountPrice == null ? good.salePrice:good.discountPrice}}</span>
-            <span class="price2" v-if="good.discountPrice != null">{{jn}}{{good.salePrice}}</span>
+            <span class="price1"
+              >{{ jn
+              }}{{
+                good.discountPrice == null ? good.salePrice : good.discountPrice
+              }}</span
+            >
+            <span class="price2" v-if="good.discountPrice != null"
+              >{{ jn }}{{ good.salePrice }}</span
+            >
             <!-- <span class="poin">...</span> -->
           </div>
         </div>
@@ -97,16 +123,16 @@ export default {
     //跳转到商品详情
     toProduDetail(skuId, actAll) {
       this.$emit("clickPro", skuId, actAll);
-      this.$router.push({
-        name: "商品详情",
-        query: {
-          skuId: skuId,
-          activityId: actAll.activityId,
-          //   supplyId: actAll.supplyId,
-          activityType: actAll.activityType,
-          //   activityState: actAll.activityState,
-        },
-      });
+      //   this.$router.push({
+      //     name: "商品详情",
+      //     query: {
+      //       skuId: skuId,
+      //       activityId: actAll.activityId,
+      //       //   supplyId: actAll.supplyId,
+      //       activityType: actAll.activityType,
+      //       //   activityState: actAll.activityState,
+      //     },
+      //   });
     },
     getData() {
       this.footerObj = Object.assign({}, this.footerObj, this.footerData);
