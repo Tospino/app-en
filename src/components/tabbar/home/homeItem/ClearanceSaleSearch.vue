@@ -8,19 +8,44 @@
 -->
 <template>
   <section class="ClearanceSaleSearch">
-    <div class="nav_bar flex" :class="{'on_fb':clear_sea==1,'pre_fb':clear_sea==0}">
+    <div
+      class="nav_bar flex"
+      :class="{ on_fb: clear_sea == 1, pre_fb: clear_sea == 0 }"
+    >
       <div class="logo" @click="routeGo">
         <van-icon name="arrow-left" size="25px" color="#fff" />
       </div>
       <div class="input_warp">
-        <input type="text" v-model="query.sreachName" placeholder="Search" class="input_search" />
-        <van-icon name="search" size="25px" color="#666" class="search" @click="getData"></van-icon>
+        <input
+          type="text"
+          v-model="query.sreachName"
+          placeholder="Search"
+          class="input_search"
+        />
+        <van-icon
+          name="search"
+          size="25px"
+          color="#666"
+          class="search"
+          @click="getClaer(query, flag)"
+        ></van-icon>
       </div>
       <!-- <div class="icons">
         <img src="@/assets/img/tabbar/home/clearsale/share.png" class="img2" />
       </div>-->
     </div>
-    <cleargoods :list="list" />
+    <scroll
+      class="bscroll-wrapper"
+      ref="wrapper"
+      :data="recordGroup"
+      :pulldown="pulldown"
+      :pullup="pullup"
+      @pulldown="_pulldown"
+      @pullup="_pullup"
+      v-show="showData"
+    >
+      <cleargoods :list="list" />
+    </scroll>
   </section>
 </template>
 
@@ -35,11 +60,19 @@ export default {
       query: {
         sreachName: "",
         page: 1,
-        limit: 100,
+        limit: 10,
         sort: 0, //  全部 0	排序 1 销量升序 2 销量降序 3 活动价格升序 4 活动价格降序
         isHome: 0,
       },
       clear_sea: this.$route.query.clearSale, // 是否存在活动中商品
+      flag: true,
+      recordGroup: [],
+      pulldown: true,
+      pullup: true,
+      guanmengou: true, //看门狗
+      showData: false,
+      noSearchStatus: true,
+      totalPage: [],
     };
   },
   computed: {},
@@ -50,13 +83,64 @@ export default {
     routeGo() {
       this.$router.go(-1);
     },
-    getData() {
-      gethomeClearanceList(this.query).then((res) => {
+    // 点击搜索按钮
+    getClaer() {
+      this.refreshOrder();
+    },
+    // 清仓列表
+    getData(data, flag) {
+      gethomeClearanceList(data).then((res) => {
         if (res.code == 0) {
-          this.list = res.Data.list;
-          //   this.isExit = res.IsConcat;
+          if (flag) {
+            this.list = res.Data.list;
+          } else {
+            this.list = [...this.list, ...res.Data.list];
+          }
+          this.recordGroup = this.list;
+          //   this.isExit = this.list[0].activityState;
+          this.totalPage = res.Data.totalPage;
+          if (this.list.length > 0) {
+            this.noSearchStatus = true;
+            if (this.list.length >= res.Data.totalCount) {
+              this.pullup = false;
+            }
+          } else {
+            this.noSearchStatus = false;
+            this.pullup = false;
+            this.pulldown = false;
+          }
+          setTimeout(() => {
+            this.showData = true;
+          }, 1000);
         }
       });
+    },
+    //下拉刷新
+    _pulldown() {
+      setTimeout(() => {
+        this.refreshOrder();
+      }, 500);
+    },
+    //上拉加载
+    _pullup() {
+      console.log("sdfa");
+      if (!this.pullup) return;
+      //不知道为什么触发两次,使用关门狗拦截
+      if (this.guanmengou) {
+        this.query.page++;
+        this.getData(this.query, false);
+        this.guanmengou = false;
+      }
+      setTimeout(() => {
+        this.guanmengou = true;
+      }, 500);
+    },
+    //刷新页面
+    refreshOrder() {
+      this.query.page = 1;
+      this.query.limit = 10;
+      this.getData(this.query, true);
+      this.pullup = true;
     },
   },
   components: { cleargoods },
@@ -64,6 +148,9 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.bscroll-wrapper {
+  height: calc(100vh - 158px);
+}
 .pre_fc {
   color: #00a670 !important;
 }

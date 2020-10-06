@@ -9,10 +9,10 @@
 <template>
   <!-- 更多清仓 -->
   <section class="clear-goods-items">
-    <div v-if="list.length != 0">
+    <div v-if="dataList.length != 0">
       <div
         class="goods_items flex flex_start"
-        v-for="(item, index) in list"
+        v-for="(item, index) in dataList"
         :key="index"
         @click="
           $router.push({
@@ -112,20 +112,33 @@ export default {
   props: {
     list: {
       type: Array,
-      default: () => [],
+      default: () => {
+        return [];
+      },
     },
   },
   name: "",
   data() {
     return {
       nosear1: nosear1,
+      dataList: [],
     };
   },
   computed: {},
   created() {},
   mounted() {},
-  watch: {},
-  methods: {},
+  watch: {
+    list: {
+      handler: function (newVal, oldVal) {
+        this.getData();
+      },
+    },
+  },
+  methods: {
+    getData() {
+      this.dataList = this.list.map((o) => Object.assign({}, o));
+    },
+  },
   components: { noSearGood },
 };
 </script>

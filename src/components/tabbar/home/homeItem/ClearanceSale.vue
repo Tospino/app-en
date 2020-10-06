@@ -31,7 +31,7 @@
         />
       </div>
     </div>
-    <div class="filter_items flex flex_around">
+    <div class="filter_items flex flex_around" v-if="noSearchStatus">
       <span
         :class="{
           on_fc: query.sort === 0 && isExit,
@@ -46,8 +46,22 @@
           pre_fc: (query.sort === 1 || query.sort === 2) && !isExit,
         }"
         @click="ChangeStatus(1)"
-        >Sales</span
-      >
+        >Sales
+        <van-icon
+          v-if="query.sort === 1"
+          name="arrow-up"
+          size="15px"
+          class="ml_5"
+          color="#333333"
+        />
+        <van-icon
+          v-else
+          name="arrow-down"
+          size="15px"
+          class="ml_5"
+          color="#333333"
+        />
+      </span>
       <span
         class="flex"
         :class="{
@@ -58,22 +72,33 @@
       >
         Price
         <van-icon
-          v-show="query.sort === 4"
-          name="arrow-down"
+          v-if="query.sort == 3"
+          name="arrow-up"
           size="15px"
           class="ml_5"
           color="#333333"
         />
         <van-icon
-          v-show="query.sort === 3"
-          name="arrow-up"
+          v-else
+          name="arrow-down"
           size="15px"
           class="ml_5"
           color="#333333"
         />
       </span>
     </div>
-    <cleargoods :list="list" />
+    <scroll
+      class="bscroll-wrapper"
+      ref="wrapper"
+      :data="recordGroup"
+      :pulldown="pulldown"
+      :pullup="pullup"
+      @pulldown="_pulldown"
+      @pullup="_pullup"
+      v-show="showData"
+    >
+      <cleargoods :list="list" />
+    </scroll>
     <share ref="share" :links="sharelinks" :infos="shareinfos" />
   </section>
 </template>
@@ -83,6 +108,7 @@ import cleargoods from "./compoents/clear-goods-items.vue";
 import share from "@/multiplexing/share.vue";
 import { gethomeClearanceList } from "@/api/home/index.js";
 import moment from "moment";
+import flashSaleVue from "./flashSale.vue";
 export default {
   name: "ClearanceSale",
   data() {
@@ -90,26 +116,33 @@ export default {
       list: [],
       query: {
         page: 1,
-        limit: 100,
+        limit: 10,
         sort: 0, //  全部 0	排序 1 销量升序 2 销量降序 3 活动价格升序 4 活动价格降序
         isHome: 0,
       },
       isExit: false, // 是否存在活动中商品
       shareinfos: location.href, //分享链接
       sharelinks: location.href, //分享链接
+      recordGroup: [],
+      pulldown: true,
+      pullup: true,
+      guanmengou: true, //看门狗
+      showData: false,
+      noSearchStatus: true,
     };
   },
   computed: {},
   created() {
-    this.getData();
+    // this.getData(this.query, true);
   },
   mounted() {
+    this.getData(this.query, true);
     let time_atc = setInterval(() => {
       //   清仓时间戳
       let clear_time = moment(this.list[0].activityBegin).valueOf();
       let new_time = new Date().getTime();
       if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
-        this.getData();
+        this.refreshOrder();
       }
     }, 1000);
   },
@@ -118,11 +151,29 @@ export default {
     routeGo() {
       this.$router.go(-1);
     },
-    getData() {
-      gethomeClearanceList(this.query).then((res) => {
+    getData(data, flag) {
+      gethomeClearanceList(data).then((res) => {
         if (res.code == 0) {
-          this.list = res.Data.list;
+          if (flag) {
+            this.list = res.Data.list;
+          } else {
+            this.list = [...this.list, ...res.Data.list];
+          }
+          this.recordGroup = this.list;
           this.isExit = this.list[0].activityState;
+          if (this.list.length > 0) {
+            this.noSearchStatus = true;
+            if (this.list.length >= res.Data.totalCount) {
+              this.pullup = false;
+            }
+          } else {
+            this.noSearchStatus = false;
+            this.pullup = false;
+            this.pulldown = false;
+          }
+          setTimeout(() => {
+            this.showData = true;
+          }, 1000);
         }
       });
     },
@@ -146,9 +197,39 @@ export default {
             this.query.sort = 3;
           }
           break;
+        //   this.$refs.wrapper.scrollTo(0, 0);
+        //   this.refreshOrder();
       }
-      this.getData();
+      this.refreshOrder();
+      //   this.getData(this.query);
     },
+    //下拉刷新
+    _pulldown() {
+      setTimeout(() => {
+        this.refreshOrder();
+      }, 500);
+    },
+    //上拉加载
+    _pullup() {
+      if (!this.pullup) return;
+      //不知道为什么触发两次,使用关门狗拦截
+      if (this.guanmengou) {
+        this.query.page++;
+        this.getData(this.query, false);
+        this.guanmengou = false;
+      }
+      setTimeout(() => {
+        this.guanmengou = true;
+      }, 500);
+    },
+    //刷新页面
+    refreshOrder() {
+      this.query.page = 1;
+      this.query.limit = 10;
+      this.getData(this.query, true);
+      this.pullup = true;
+    },
+    // 分享链接
     showShare() {
       this.$refs["share"].shows();
     },
@@ -161,6 +242,10 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.bscroll-wrapper {
+  height: calc(100vh - 158px);
+  margin-top: 76px;
+}
 .pre_fc {
   color: #00a670 !important;
 }
@@ -185,7 +270,6 @@ export default {
     top: 0;
     left: 0;
     z-index: 1;
-
     .logo {
       position: absolute;
       left: 40px;
@@ -218,7 +302,8 @@ export default {
   }
   .filter_items {
     background-color: #fff;
-    z-index: 1;
+    z-index: 2;
+    position: fixed;
     width: 100%;
     height: 80px;
     font-size: 28px;
