@@ -287,7 +287,6 @@ export default {
     selectionData: {
       handler: function (newVal, oldVal) {
         if (newVal != null) {
-          console.log("65");
           this.getData();
         }
       },
@@ -673,7 +672,6 @@ export default {
           this.tips = "Out of Stock";
         }
       }
-      console.log(this.activityState, "this.activityState");
     },
   },
 };

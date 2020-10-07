@@ -46,16 +46,25 @@
     >
       <cleargoods :list="list" />
     </scroll>
+    <div v-show="list.length == 0">
+      <no-sear-good
+        :imgSrc="nosear1"
+        describe="Sorry, no products"
+      ></no-sear-good>
+    </div>
   </section>
 </template>
 
 <script>
 import cleargoods from "./compoents/clear-goods-items.vue";
 import { gethomeClearanceList } from "@/api/home/index.js";
+import nosear1 from "@/assets/img/search/nosear1.png";
+import noSearGood from "@/multiplexing/noSearGood";
 export default {
   name: "ClearanceSaleSearch",
   data() {
     return {
+      nosear1: nosear1,
       list: [],
       query: {
         sreachName: "",
@@ -87,6 +96,33 @@ export default {
     getClaer() {
       this.refreshOrder();
     },
+    //下拉刷新
+    _pulldown() {
+      setTimeout(() => {
+        this.refreshOrder();
+      }, 500);
+    },
+    //上拉加载
+    _pullup() {
+      console.log("sdfa");
+      if (!this.pullup) return;
+      //不知道为什么触发两次,使用关门狗拦截
+      if (this.guanmengou) {
+        this.query.page++;
+        this.getData(this.query, false);
+        this.guanmengou = false;
+      }
+      setTimeout(() => {
+        this.guanmengou = true;
+      }, 500);
+    },
+    //刷新页面
+    refreshOrder() {
+      this.query.page = 1;
+      this.query.limit = 10;
+      this.getData(this.query, true);
+      this.pullup = true;
+    },
     // 清仓列表
     getData(data, flag) {
       gethomeClearanceList(data).then((res) => {
@@ -115,35 +151,8 @@ export default {
         }
       });
     },
-    //下拉刷新
-    _pulldown() {
-      setTimeout(() => {
-        this.refreshOrder();
-      }, 500);
-    },
-    //上拉加载
-    _pullup() {
-      console.log("sdfa");
-      if (!this.pullup) return;
-      //不知道为什么触发两次,使用关门狗拦截
-      if (this.guanmengou) {
-        this.query.page++;
-        this.getData(this.query, false);
-        this.guanmengou = false;
-      }
-      setTimeout(() => {
-        this.guanmengou = true;
-      }, 500);
-    },
-    //刷新页面
-    refreshOrder() {
-      this.query.page = 1;
-      this.query.limit = 10;
-      this.getData(this.query, true);
-      this.pullup = true;
-    },
   },
-  components: { cleargoods },
+  components: { cleargoods, noSearGood },
 };
 </script>
 
@@ -200,7 +209,7 @@ export default {
       }
       .search {
         position: absolute;
-        right: 27px;
+        right: 30px;
         top: 9px;
       }
     }

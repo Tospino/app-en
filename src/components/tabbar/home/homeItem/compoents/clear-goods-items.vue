@@ -96,18 +96,18 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <!-- <div v-else>
       <no-sear-good
         :imgSrc="nosear1"
         describe="Sorry, no products"
       ></no-sear-good>
-    </div>
+    </div> -->
   </section>
 </template>
 
 <script>
-import noSearGood from "@/multiplexing/noSearGood";
-import nosear1 from "@/assets/img/search/nosear1.png";
+// import noSearGood from "@/multiplexing/noSearGood";
+// import nosear1 from "@/assets/img/search/nosear1.png";
 export default {
   props: {
     list: {
@@ -120,7 +120,7 @@ export default {
   name: "",
   data() {
     return {
-      nosear1: nosear1,
+      //   nosear1: nosear1,
       dataList: [],
     };
   },
@@ -139,7 +139,9 @@ export default {
       this.dataList = this.list.map((o) => Object.assign({}, o));
     },
   },
-  components: { noSearGood },
+  components: {
+    //   noSearGood
+  },
 };
 </script>
 
@@ -159,7 +161,7 @@ export default {
     min-width: 0;
   }
   /deep/ .van-progress__pivot {
-    font-size: 28px;
+    font-size: 24px;
     min-width: 0;
   }
   .goods_items {
