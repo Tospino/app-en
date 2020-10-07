@@ -213,7 +213,7 @@ export default {
     toDetail(skuId, actAll) {
       this.$router.push({
         name: "商品详情",
-        query: { skuid: skuId, activityType: actAll.activityType },
+        query: { skuId: skuId, activityType: actAll.activityType },
       });
     },
     //排序

@@ -371,7 +371,12 @@
                   <img
                     src="@/assets/img/tabbar/home/clearsale/saleout.png"
                     class="goods_sale"
-                    v-show="searchgoodDao.activityState === 2"
+                    v-if="
+                      !searchgoodDao.canSalesNum
+                        ? !searchgoodDao.canSalesNum
+                        : searchgoodDao.activityState === 2 &&
+                          searchgoodDao.activityType == 1
+                    "
                     alt
                     srcset
                   />
