@@ -573,6 +573,7 @@ export default {
       shareinfos: location.href, //分享链接
       sharelinks: location.href, //分享链接
       clearOne: "", //清仓
+      time_atc: null,
     };
   },
   computed: {},
@@ -587,15 +588,21 @@ export default {
       this.productdetail(this.$route.query.skuId, this.actType);
     }, 10);
     this.adduserbrowhistory(this.$route.query.skuId);
-    let time_atc = setInterval(() => {
+    this.time_atc = setInterval(() => {
       //   清仓时间戳
       let clear_time = moment(this.arrClearSale).valueOf();
       let new_time = new Date().getTime();
       if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
         this.productdetail(this.$route.query.skuId, this.actType);
+        clearInterval(this.time_atc);
       }
     }, 1000);
   },
+  beforeDestroy() {
+    //清除定时器
+    clearInterval(this.time_atc);
+  },
+
   beforeRouteLeave(to, from, next) {
     // 设置下一个路由的 meta
     if (to.name == "搜索商品1") {
