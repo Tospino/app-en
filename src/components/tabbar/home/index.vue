@@ -802,9 +802,11 @@ export default {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
           //   特价时间
-          this.clear_one = this.clear_list[0].activityBegin;
-          //   this.isExit = res.IsConcat;
-          this.isExit = this.clear_list[0].activityState;
+          if (this.clear_list.length != 0) {
+            this.clear_one = this.clear_list[0].activityBegin;
+            //   this.isExit = res.IsConcat;
+            this.isExit = this.clear_list[0].activityState;
+          }
         }
       });
     },
