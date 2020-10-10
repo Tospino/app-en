@@ -3,8 +3,13 @@
   <div class="account-settings">
     <div class="settings-header">
       <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)" />
-      <span class="header-t1">{{title}}</span>
-      <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')" />
+      <span class="header-t1">{{ title }}</span>
+      <van-icon
+        name="chat-o"
+        class="chat"
+        size="17px"
+        @click="jumpRouter('消息')"
+      />
     </div>
     <div class="cell" @click="jumpRouter('收货地址')">
       <span>My Shipping Address</span>
@@ -62,8 +67,10 @@
             </div>
           </div>
           <div class="dialog-body">
-            <p>{{gxStatus?bbh:'No New Version!'}}</p>
-            <div class="ljgx-btn" @click="zhezhaoStatus = false">{{gxStatus?'Update Now':'Confirm'}}</div>
+            <p>{{ gxStatus ? bbh : "No New Version!" }}</p>
+            <div class="ljgx-btn" @click="zhezhaoStatus = false">
+              {{ gxStatus ? "Update Now" : "Confirm" }}
+            </div>
           </div>
         </div>
       </div>
@@ -89,7 +96,8 @@ function checkUpdate(version) {
               downWgt(res.downloadurl);
             }
           },
-          "Warm Prompt"
+          "Warm Prompt",
+          ["Yes", "No"]
         );
         break;
       case 1:
