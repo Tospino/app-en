@@ -140,9 +140,13 @@ export default {
     let time_atc = setInterval(() => {
       //   清仓时间戳
       let clear_time = moment(this.list[0].activityBegin).valueOf();
+      let clear_end = moment(this.list[0].activityEnd).valueOf();
       let new_time = new Date().getTime();
       if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
         this.refreshOrder();
+      }
+      if (parseInt(new_time / 1000) == parseInt(clear_end / 1000)) {
+        this.$router.push({ name: "首页" });
       }
     }, 1000);
   },

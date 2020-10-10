@@ -60,14 +60,13 @@
           </div>
           <div class="flex flex_space process_warp">
             <div class="w200 process">
-              <van-progress
+              <!-- <van-progress
                 :percentage="
                   item.activityState !== 2
-                    ? parseInt(item.activitySaleNum / item.activityNum) * 100 ||
-                      0
+                    ? (item.activitySaleNum / item.activityNum) * 100 || 0
                     : 0
                 "
-                :color="item.activityState === 1 ? '#f95300' : '#00a670'"
+                :color="item.activityState == 1 ? '#f95300' : '#00a670'"
                 pivot-color="transparent"
                 track-color="#CBCBCB"
                 text-color="#fff"
@@ -81,7 +80,11 @@
                         'sold' || 0 + '%' + 'sold'
                     : 'sold out'
                 "
-              />
+              /> -->
+              <progress-clear
+                :progressBar="(item.activitySaleNum / item.activityNum) * 100"
+                :pivotTxt="item.activityState"
+              ></progress-clear>
             </div>
 
             <span class="goods_btn flex_center2" v-if="item.activityState === 1"
@@ -108,6 +111,7 @@
 <script>
 // import noSearGood from "@/multiplexing/noSearGood";
 // import nosear1 from "@/assets/img/search/nosear1.png";
+import progressClear from "@/multiplexing/progressClear";
 export default {
   props: {
     list: {
@@ -141,6 +145,7 @@ export default {
   },
   components: {
     //   noSearGood
+    progressClear,
   },
 };
 </script>
@@ -157,13 +162,13 @@ export default {
 }
 .clear-goods-items {
   background-color: #fff;
-  /deep/ .van-progress__portion {
-    min-width: 0;
-  }
-  /deep/ .van-progress__pivot {
-    font-size: 24px;
-    min-width: 0;
-  }
+  //   /deep/ .van-progress__portion {
+  //     min-width: 100%;
+  //   }
+  //   /deep/ .van-progress__pivot {
+  //     font-size: 24px;
+  //     min-width: 100%;
+  //   }
   .goods_items {
     padding: 44px 30px 36px;
     border-bottom: 1px solid #eee;

@@ -320,6 +320,7 @@ import { guessyoulikeApi } from "@/api/search/index";
 import { Toast, Dialog } from "vant";
 import { mapState, mapActions } from "vuex";
 import { adduserfavoritesApi } from "@/api/favorites/index.js";
+import moment from "moment";
 export default {
   props: {},
   data() {
@@ -351,6 +352,8 @@ export default {
       kanmengou: true,
       shopcarTotal: 0,
       clear_type: "", //清仓类型
+      clearTime: null,
+      time_atc: null,
     };
   },
   computed: {
@@ -369,9 +372,22 @@ export default {
     window.addEventListener("scroll", this.menu, true);
     this.shopcartlist(this.formData);
     this.guessyoulike();
+    this.time_atc = setInterval(() => {
+      //   清仓时间戳
+      let clear_time = moment(this.clearTime).valueOf();
+      let new_time = new Date().getTime();
+      if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+        this.formData.page = 1;
+        this.formData.limit = 10;
+        this.shopcartlist(this.formData, true);
+        clearInterval(this.time_atc);
+      }
+    }, 1000);
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.menu, true);
+    //清除定时器
+    clearInterval(this.time_atc);
   },
   beforeRouteLeave(to, from, next) {
     // 设置下一个路由的 meta
@@ -380,7 +396,17 @@ export default {
     }
     next();
   },
-  watch: {},
+  watch: {
+    shopList: {
+      handler(newData) {
+        newData.forEach((item) => {
+          if (item.activityState == 0) {
+            this.clearTime = item.activityBegin;
+          }
+        });
+      },
+    },
+  },
   methods: {
     ...mapActions(
       // 语法糖

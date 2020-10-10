@@ -372,10 +372,9 @@
                     src="@/assets/img/tabbar/home/clearsale/saleout.png"
                     class="goods_sale"
                     v-if="
-                      !searchgoodDao.canSalesNum
-                        ? !searchgoodDao.canSalesNum
-                        : searchgoodDao.activityState === 2 &&
-                          searchgoodDao.activityType == 1
+                      searchgoodDao.activityState === 2 &&
+                      searchgoodDao.activityType == 1 &&
+                      searchgoodDao.canSalesNum === 0
                     "
                     alt
                     srcset
@@ -543,6 +542,7 @@ export default {
       clear_list: [],
       isExit: false,
       clear_one: "", //特价 倒计时
+      clear_end: null, //结束时间
       down_time: "", //特价 倒计时刷新
     };
   },
@@ -588,14 +588,22 @@ export default {
     next();
   },
   mounted() {
+    //   清仓
     let time_atc = setInterval(() => {
       //   清仓时间戳
       let clear_time = moment(this.clear_one).valueOf();
+      //   结束时间
+      let activityEnd = moment(this.clear_end).valueOf();
       let new_time = new Date().getTime();
-      //   //   倒计时
-      //   this.down_time = parseInt(clear_time / 1000 - new_time / 1000);
+      //   倒计时
       if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
         this.getClear();
+        this._pulldown();
+        this.homePagebottom(this.formData);
+      }
+      if (parseInt(new_time / 1000) == parseInt(activityEnd / 1000)) {
+        this.getClear();
+        this._pulldown();
         this.homePagebottom(this.formData);
       }
     }, 1000);
@@ -804,6 +812,7 @@ export default {
           //   特价时间
           if (this.clear_list.length != 0) {
             this.clear_one = this.clear_list[0].activityBegin;
+            this.clear_end = this.clear_list[0].activityEnd;
             //   this.isExit = res.IsConcat;
             this.isExit = this.clear_list[0].activityState;
           }
