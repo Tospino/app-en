@@ -128,14 +128,15 @@ export default {
         Dialog.alert({
           title: "Tips",
           message: "Copy information successfully",
+          confirmButtonText: "Confirm",
         });
         e.clearSelection();
       });
-
       clipboard.on("error", function (e) {
         Dialog.alert({
           title: "Tips",
           message: "Copy information Failed",
+          confirmButtonText: "Confirm",
         });
       });
     },

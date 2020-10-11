@@ -191,9 +191,8 @@
                     class="goods_discount"
                     :class="{ pre_fb: item.activityState === 0 }"
                   >
-                    {{
-                      parseInt((1 - item.activityPrice / item.salePrice) * 100)
-                    }}% off
+                    <!-- parseInt((1 - item.activityPrice / item.salePrice) * 100) -->
+                    {{ item.percent }}% off
                   </span>
                 </div>
                 <div>
@@ -365,7 +364,7 @@
                   @click="toDetail(searchgoodDao.skuId, searchgoodDao)"
                 >
                   <div class="shouwan" v-if="!searchgoodDao.canSalesNum">
-                    Out of Stock
+                    <!-- Out of Stock -->
                   </div>
                   <img v-lazy="$webUrl + searchgoodDao.imgUrl" />
                   <img
@@ -596,11 +595,19 @@ export default {
       let activityEnd = moment(this.clear_end).valueOf();
       let new_time = new Date().getTime();
       //   倒计时
+      //   预热三天 259200
+      if (parseInt(clear_time / 1000) - 259200 == parseInt(new_time / 1000)) {
+        this.getClear();
+        this._pulldown();
+        this.homePagebottom(this.formData);
+      }
+      //   活动中
       if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
         this.getClear();
         this._pulldown();
         this.homePagebottom(this.formData);
       }
+      //   活动结束
       if (parseInt(new_time / 1000) == parseInt(activityEnd / 1000)) {
         this.getClear();
         this._pulldown();

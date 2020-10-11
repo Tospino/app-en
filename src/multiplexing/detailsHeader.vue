@@ -23,7 +23,7 @@
           v-model="value"
           placeholder="Enter key words"
           shape="round"
-          @focus="$router.push({name:'历史记录'})"
+          @focus="$router.push({ name: '历史记录' })"
         ></van-search>
       </div>
       <div class="icons">
@@ -32,12 +32,17 @@
           name="shopping-cart-o"
           class="ellipsis"
           :info="shopCarInfo"
-          @click="$router.push({name:'购物车'})"
+          @click="$router.push({ name: '购物车' })"
         />
-        <van-icon name="chat-o" class="xiaoxi" info @click="$router.push({name:'消息'})" />
+        <van-icon
+          name="chat-o"
+          class="xiaoxi"
+          info
+          @click="$router.push({ name: '消息' })"
+        />
       </div>
     </div>
-    <div style="height:40px"></div>
+    <div style="height: 40px"></div>
   </div>
 </template>
 

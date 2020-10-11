@@ -18,8 +18,9 @@
                 clear_one: good.activityState === 0,
                 clear_two: good.activityState == 1,
               }"
-              >{{ parseInt((1 - good.discountPrice / good.salePrice) * 100) }}%
-              Off</i
+            >
+              <!-- parseInt((1 - good.discountPrice / good.salePrice) * 100) -->
+              {{ good.percent }}% Off</i
             >
             <img v-lazy="$webUrl + good.imgUrl" />
           </div>
@@ -129,7 +130,7 @@ export default {
     //跳转到商品详情
     toProduDetail(skuId, shopall) {
       this.$emit("clickPro", skuId, shopall.activityType);
-      // this.$router.push({name:'商品详情',query:{skuId}})
+      //   this.$router.push({ name: "商品详情", query: { skuId } });
     },
     getData() {
       this.dataList = this.twoDataList.map((o) => Object.assign({}, o));

@@ -60,9 +60,9 @@
                       clear_one: good.activityState === 0,
                       clear_two: good.activityState == 1,
                     }"
-                    >{{
-                      parseInt((1 - good.discountPrice / good.salePrice) * 100)
-                    }}% Off</i
+                  >
+                    <!--  parseInt((1 - good.discountPrice / good.salePrice) * 100) -->
+                    {{ good.percent }}% Off</i
                   >
                   <img v-lazy="$webUrl + good.imgUrl" />
                 </div>

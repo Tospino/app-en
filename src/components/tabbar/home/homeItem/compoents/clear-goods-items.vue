@@ -41,8 +41,9 @@
               discount_gary: item.activityState === 2,
               pre_fb: item.activityState === 0,
             }"
-            >{{ parseInt(100 - (item.activityPrice / item.salePrice) * 100) }}%
-            off</span
+          >
+            <!-- parseInt(100 - (item.activityPrice / item.salePrice) * 100) -->
+            {{ item.percent }}% off</span
           >
         </div>
         <div class="ml_20 w100">

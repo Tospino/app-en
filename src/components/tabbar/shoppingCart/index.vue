@@ -118,16 +118,19 @@
                     checked-color="#F83600"
                     disabled
                   ></van-checkbox>
-                  <div @click="toDetail(dataitem)">
+                  <div @click="toDetail(dataitem.skuId, dataitem)">
                     <img
                       class="good-img"
                       v-lazy="$webUrl + dataitem.imgUrl"
-                      @click="toDetail(dataitem)"
+                      @click="toDetail(dataitem.skuId, dataitem)"
                     />
                   </div>
                 </div>
                 <div class="good-item-r">
-                  <span class="good-describe" @click="toDetail(dataitem)">
+                  <span
+                    class="good-describe"
+                    @click="toDetail(dataitem.skuId, dataitem)"
+                  >
                     <!-- 活动标识 -->
                     <span
                       v-if="dataitem.activityType == 1"
@@ -136,12 +139,12 @@
                         clearone: dataitem.activityState == 0,
                         cleartwo: dataitem.activityState == 1,
                       }"
-                      >{{
-                        parseInt(
+                    >
+                      <!-- parseInt(
                           (1 - dataitem.discountPrice / dataitem.salePrice) *
                             100
-                        )
-                      }}% off</span
+                        ) -->
+                      {{ dataitem.percent }}% off</span
                     >
                     {{ dataitem.skuName }}
                   </span>
@@ -354,6 +357,7 @@ export default {
       clear_type: "", //清仓类型
       clearTime: null,
       time_atc: null,
+      clearTimeOver: null,
     };
   },
   computed: {
@@ -375,8 +379,24 @@ export default {
     this.time_atc = setInterval(() => {
       //   清仓时间戳
       let clear_time = moment(this.clearTime).valueOf();
+      let clear_timeOver = moment(this.clearTimeOver).valueOf();
       let new_time = new Date().getTime();
+      //   活动三天
+      if (parseInt(clear_time / 1000) - 259200 == parseInt(new_time / 1000)) {
+        this.formData.page = 1;
+        this.formData.limit = 10;
+        this.shopcartlist(this.formData, true);
+        clearInterval(this.time_atc);
+      }
+      //   活动中
       if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+        this.formData.page = 1;
+        this.formData.limit = 10;
+        this.shopcartlist(this.formData, true);
+        clearInterval(this.time_atc);
+      }
+      //   活动结束
+      if (parseInt(clear_timeOver / 1000) == parseInt(new_time / 1000)) {
         this.formData.page = 1;
         this.formData.limit = 10;
         this.shopcartlist(this.formData, true);
@@ -396,29 +416,18 @@ export default {
     }
     next();
   },
-  watch: {
-    shopList: {
-      handler(newData) {
-        newData.forEach((item) => {
-          if (item.activityState == 0) {
-            this.clearTime = item.activityBegin;
-          }
-        });
-      },
-    },
-  },
+  watch: {},
   methods: {
     ...mapActions(
       // 语法糖
       ["setstopcarlist"] // 相当于this.$store.dispatch('setstopcarlist'),提交这个方法
     ),
-    toDetail(overall) {
-      if (overall.activityId != null) {
+    toDetail(skuid, overall) {
+      if (overall.activityType == 1) {
         this.$router.push({
           name: "商品详情",
           query: {
             skuId: overall.skuId,
-            activityId: overall.activityId,
             activityType: overall.activityType,
           },
         });
@@ -502,6 +511,11 @@ export default {
               youxiaoList.push(item);
             } else {
               wuxiaoList.push(item);
+            }
+            // 清仓活动
+            if (item.activityType == 1) {
+              this.clearTime = item.activityBegin;
+              this.clearTimeOver = item.activityEnd;
             }
           });
           this.youxiaoList = youxiaoList;

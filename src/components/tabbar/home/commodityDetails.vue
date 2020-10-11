@@ -9,7 +9,7 @@
 
 <template>
   <!-- 商品详情页 -->
-  <div class="commodity-details">
+  <div class="commodity-details" ref="headerapp">
     <section v-if="showServer">
       <customerService :type="1" :data="detailmData" />
     </section>
@@ -78,12 +78,11 @@
                     fz_ct: detailmData.activityState == 2,
                   }"
                 >
-                  {{
-                    parseInt(
+                  <!-- parseInt(
                       (1 - detailmData.discountPrice / detailmData.salePrice) *
                         100
-                    )
-                  }}% off
+                    ) -->
+                  {{ detailmData.percent }}% off
                 </span>
                 <i
                   v-if="
@@ -94,7 +93,8 @@
                     color: #fff;
                     font-weight: blod;
                     margin-top: 10px;
-                    font-size: 18px;
+                    padding-left: 6px;
+                    font-size: 14px;
                   "
                 >
                   Sold:{{
@@ -568,6 +568,7 @@ export default {
       clearSaleGoodType: "", //特价商品类型
       clearSaleGoodState: "", //是否是清仓0 1 2的状态
       arrClearSale: " ", //特价清仓"2020-9-28 14:00:00"
+      timeOver: null,
       actId: null,
       actType: "",
       shareinfos: location.href, //分享链接
@@ -591,8 +592,20 @@ export default {
     this.time_atc = setInterval(() => {
       //   清仓时间戳
       let clear_time = moment(this.arrClearSale).valueOf();
+      let clear_timeOver = moment(this.timeOver).valueOf();
       let new_time = new Date().getTime();
+      //   活动三天
+      if (parseInt(clear_time / 1000) - 259200 == parseInt(new_time / 1000)) {
+        this.productdetail(this.$route.query.skuId, this.actType);
+        clearInterval(this.time_atc);
+      }
+      //   活动中
       if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+        this.productdetail(this.$route.query.skuId, this.actType);
+        clearInterval(this.time_atc);
+      }
+      //   活动结束
+      if (parseInt(clear_timeOver / 1000) == parseInt(new_time / 1000)) {
         this.productdetail(this.$route.query.skuId, this.actType);
         clearInterval(this.time_atc);
       }
@@ -648,6 +661,7 @@ export default {
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
             this.arrClearSale = this.detailmData.activityBegin;
+            this.timeOver = this.detailmData.activityEnd;
             //   到货时间展示文字
             if (this.detailmData.expId == 2) {
               this.amountTip = true;
