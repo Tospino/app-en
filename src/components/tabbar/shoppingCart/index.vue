@@ -508,7 +508,9 @@ export default {
           this.shopList.forEach((item) => {
             if (item.isValid == 1) {
               item.businessIdtwo = item.businessId + "aaa";
-              youxiaoList.push(item);
+              if (item.activityState != 2) {
+                youxiaoList.push(item);
+              }
             } else {
               wuxiaoList.push(item);
             }
@@ -516,9 +518,9 @@ export default {
             if (item.activityType == 1) {
               this.clearTime = item.activityBegin;
               this.clearTimeOver = item.activityEnd;
-            }
-            if (item.activityState == 2) {
-              wuxiaoList.push(item);
+              if (item.activityState == 2) {
+                wuxiaoList.push(item);
+              }
             }
           });
           this.youxiaoList = youxiaoList;
