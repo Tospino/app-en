@@ -146,7 +146,10 @@ export default {
         this.refreshOrder();
       }
       if (parseInt(new_time / 1000) == parseInt(clear_end / 1000)) {
-        this.$router.push({ name: "首页" });
+        if (this.list.length == 0) {
+          this.$router.push({ name: "首页" });
+        }
+        this.refreshOrder();
       }
     }, 1000);
   },

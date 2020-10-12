@@ -517,6 +517,9 @@ export default {
               this.clearTime = item.activityBegin;
               this.clearTimeOver = item.activityEnd;
             }
+            if (item.activityState == 2) {
+              wuxiaoList.push(item);
+            }
           });
           this.youxiaoList = youxiaoList;
           this.wuxiaoList = wuxiaoList;
@@ -819,8 +822,10 @@ export default {
   background: #fa5400;
 }
 .clear_on {
-  box-sizing: border-box;
-  //   padding: 0 20px;
+  margin-top: 30px;
+  font-size: 20px;
+  height: 60px;
+  line-height: 60px;
 }
 .on_fc {
   color: #00a670 !important;
@@ -948,8 +953,9 @@ export default {
       }
       .good-item-r {
         .good-describe {
-          width: 410px;
+          width: 404px;
           line-height: 50px;
+          font-size: 26px;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;

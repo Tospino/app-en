@@ -94,7 +94,7 @@
                     font-weight: blod;
                     margin-top: 10px;
                     padding-left: 6px;
-                    font-size: 14px;
+                    font-size: 12px;
                   "
                 >
                   Sold:{{
@@ -1511,6 +1511,7 @@ export default {
       margin-top: 15px;
       width: 100px;
       height: 26px;
+      font-size: 12px;
       background: rgba(255, 255, 255, 1);
       border: 1px solid rgba(255, 255, 255, 1);
       border-radius: 13px;
