@@ -30,14 +30,17 @@
           class="flex_col_center share_item copy_info"
           @click="CopyInfo"
           :data-clipboard-text="infos"
+          v-show="clearShare"
         >
           <img src="@/assets/img/coupon/copyinfo.png" alt />
           <span class="mt_8">Copy Info</span>
         </div>
+
         <div
           class="flex_col_center share_item copy_link"
           @click="CopyLink"
           :data-clipboard-text="links"
+          v-show="clearShareLink"
         >
           <img src="@/assets/img/coupon/copylink.png" alt />
           <span class="mt_8">Copy Link</span>
@@ -51,7 +54,7 @@
 </template>
 
 <script>
-import { Dialog } from "vant";
+import { Dialog, Notify } from "vant";
 export default {
   props: {
     infos: {
@@ -61,6 +64,14 @@ export default {
     links: {
       type: String,
       default: () => "",
+    },
+    clearShareLink: {
+      type: Boolean,
+      default: true,
+    },
+    clearShare: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -125,38 +136,49 @@ export default {
     CopyInfo() {
       var clipboard = new this.clipboard(".copy_info");
       clipboard.on("success", function (e) {
-        Dialog.alert({
-          title: "Tips",
+        // Dialog.alert({
+        //   title: "Tips",
+        //   message: "Copy information successfully",
+        //   confirmButtonText: " ",
+        // });
+        Notify({
+          background: "#fa5400",
           message: "Copy information successfully",
-          confirmButtonText: "Confirm",
         });
         e.clearSelection();
       });
       clipboard.on("error", function (e) {
-        Dialog.alert({
-          title: "Tips",
-          message: "Copy information Failed",
-          confirmButtonText: "Confirm",
-        });
+        // Dialog.alert({
+        //   title: "Tips",
+        //   message: "Copy information Failed",
+        //   confirmButtonText: " ",
+        // });
+        Notify({ type: "warning", message: "Copy information Failed" });
       });
+      this.closeShows();
     },
     // 复制链接
     CopyLink() {
       var clipboard = new this.clipboard(".copy_link");
       clipboard.on("success", function (e) {
-        Dialog.alert({
-          title: "Tips",
-          message: "Link Message Successful",
-        });
+        // Dialog.alert({
+        //   title: "Tips",
+        //   message: "Link Message Successful",
+        //   confirmButtonText: " ",
+        // });
+        Notify({ type: "primary", message: "Link Message Successful" });
         e.clearSelection();
       });
 
       clipboard.on("error", function (e) {
-        Dialog.alert({
-          title: "Tips",
-          message: "Link Message Failed",
-        });
+        // Dialog.alert({
+        //   title: "Tips",
+        //   message: "Link Message Failed",
+        //   confirmButtonText: " ",
+        // });
+        Notify({ type: "warning", message: "Link Message Failed" });
       });
+      this.closeShows();
     },
   },
   components: {},

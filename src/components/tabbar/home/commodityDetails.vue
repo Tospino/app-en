@@ -211,7 +211,7 @@
                   alt
                   srcset
                 />
-                <span>分享</span>
+                <span>Share</span>
               </div>
             </div>
             <div class="supplement" v-if="false">
@@ -498,7 +498,13 @@
         @couponSucceed="couponSucceed"
       ></shop-coupon-pop>
     </section>
-    <share ref="share" :links="sharelinks" :infos="shareinfos" />
+    <share
+      ref="share"
+      :links="sharelinks"
+      :infos="shareinfos"
+      :clearShareLink="clearShareLink"
+      :clearShare="clearShare"
+    />
   </div>
 </template>
 
@@ -571,7 +577,9 @@ export default {
       timeOver: null,
       actId: null,
       actType: "",
-      shareinfos: location.href, //分享链接
+      clearShare: true,
+      clearShareLink: true,
+      shareinfos: "", //分享链接
       sharelinks: location.href, //分享链接
       clearOne: "", //清仓
       time_atc: null,
@@ -591,23 +599,25 @@ export default {
     this.adduserbrowhistory(this.$route.query.skuId);
     this.time_atc = setInterval(() => {
       //   清仓时间戳
-      let clear_time = moment(this.arrClearSale).valueOf();
-      let clear_timeOver = moment(this.timeOver).valueOf();
-      let new_time = new Date().getTime();
-      //   活动三天
-      if (parseInt(clear_time / 1000) - 259200 == parseInt(new_time / 1000)) {
-        this.productdetail(this.$route.query.skuId, this.actType);
-        clearInterval(this.time_atc);
-      }
-      //   活动中
-      if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
-        this.productdetail(this.$route.query.skuId, this.actType);
-        clearInterval(this.time_atc);
-      }
-      //   活动结束
-      if (parseInt(clear_timeOver / 1000) == parseInt(new_time / 1000)) {
-        this.productdetail(this.$route.query.skuId, this.actType);
-        clearInterval(this.time_atc);
+      if (this.arrClearSale != null) {
+        let clear_time = moment(this.arrClearSale).valueOf();
+        let clear_timeOver = moment(this.timeOver).valueOf();
+        let new_time = new Date().getTime();
+        //   活动三天
+        if (parseInt(clear_time / 1000) - 259200 == parseInt(new_time / 1000)) {
+          this.productdetail(this.$route.query.skuId, this.actType);
+          clearInterval(this.time_atc);
+        }
+        //   活动中
+        if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+          this.productdetail(this.$route.query.skuId, this.actType);
+          clearInterval(this.time_atc);
+        }
+        //   活动结束
+        if (parseInt(clear_timeOver / 1000) == parseInt(new_time / 1000)) {
+          this.productdetail(this.$route.query.skuId, this.actType);
+          clearInterval(this.time_atc);
+        }
       }
     }, 1000);
   },
@@ -650,6 +660,7 @@ export default {
             // 清仓活动
             this.isClearSaleGood = res.Makeupdata;
             this.isClearSaleGood.forEach((ele) => {
+              this.shareinfos = ele.supplyTitle;
               this.clearSaleGoodType = ele.activityType;
               if (ele.activityType == 1) {
                 // this.clearSaleGoodState = ele.activityState;

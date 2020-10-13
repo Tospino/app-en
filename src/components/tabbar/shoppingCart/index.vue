@@ -527,9 +527,6 @@ export default {
           });
           this.youxiaoList = youxiaoList;
           this.wuxiaoList = wuxiaoList;
-          // 去重
-          //   this.wuxiaoList = new Set([...wuxiaoList]);
-          //   console.log(this.wuxiaoList);
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessIdtwo");
         } else {

@@ -99,7 +99,12 @@
     >
       <cleargoods :list="list" />
     </scroll>
-    <share ref="share" :links="sharelinks" :infos="shareinfos" />
+    <share
+      ref="share"
+      :links="sharelinks"
+      :clearShareLink="clearShareLink"
+      :clearShare="clearShare"
+    />
   </section>
 </template>
 
@@ -121,7 +126,9 @@ export default {
         isHome: 0,
       },
       isExit: false, // 是否存在活动中商品
-      shareinfos: location.href, //分享链接
+      clearShare: false,
+      clearShareLink: true,
+      //   shareinfos: location.href, //分享标题链接
       sharelinks: location.href, //分享链接
       recordGroup: [],
       pulldown: true,
@@ -139,17 +146,19 @@ export default {
     this.getData(this.query, true);
     let time_atc = setInterval(() => {
       //   清仓时间戳
-      let clear_time = moment(this.list[0].activityBegin).valueOf();
-      let clear_end = moment(this.list[0].activityEnd).valueOf();
-      let new_time = new Date().getTime();
-      if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
-        this.refreshOrder();
-      }
-      if (parseInt(new_time / 1000) == parseInt(clear_end / 1000)) {
-        if (this.list.length == 0) {
-          this.$router.push({ name: "首页" });
+      if (this.list[0].activityBegin != null) {
+        let clear_time = moment(this.list[0].activityBegin).valueOf();
+        let clear_end = moment(this.list[0].activityEnd).valueOf();
+        let new_time = new Date().getTime();
+        if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
+          this.refreshOrder();
         }
-        this.refreshOrder();
+        if (parseInt(new_time / 1000) == parseInt(clear_end / 1000)) {
+          if (this.list.length == 0) {
+            this.$router.push({ name: "首页" });
+          }
+          this.refreshOrder();
+        }
       }
     }, 1000);
   },
