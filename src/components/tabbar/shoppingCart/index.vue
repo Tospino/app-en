@@ -512,7 +512,9 @@ export default {
                 youxiaoList.push(item);
               }
             } else {
-              wuxiaoList.push(item);
+              if (item.activityType != 1) {
+                wuxiaoList.push(item);
+              }
             }
             // 清仓活动
             if (item.activityType == 1) {
@@ -525,6 +527,9 @@ export default {
           });
           this.youxiaoList = youxiaoList;
           this.wuxiaoList = wuxiaoList;
+          // 去重
+          //   this.wuxiaoList = new Set([...wuxiaoList]);
+          //   console.log(this.wuxiaoList);
           //根据businessId分类
           this.dataList = this.groupArr(this.youxiaoList, "businessIdtwo");
         } else {
