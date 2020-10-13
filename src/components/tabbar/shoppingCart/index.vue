@@ -354,10 +354,11 @@ export default {
       pullUp: true,
       kanmengou: true,
       shopcarTotal: 0,
-      clear_type: "", //清仓类型
       clearTime: null,
       time_atc: null,
       clearTimeOver: null,
+      initialPrice: 0,
+      initialNum: 0,
     };
   },
   computed: {
@@ -601,7 +602,6 @@ export default {
           }
         }
       }
-      //   this.clear_type = item.activityType;
       this.zongji();
       this.$forceUpdate();
     },
@@ -634,46 +634,45 @@ export default {
     zongji() {
       let arr = [];
       let arr2 = [];
+      //   区分是否清仓
+      let initialPrice = 0,
+        initialNum = 0;
       this.dataList.forEach((ele) => {
         ele.list.forEach((item) => {
           if (item.checkStatus) {
+            if (item.activityState === null) {
+              let obj2 = {
+                skuId: item.skuId,
+                num: item.shopNumber,
+              };
+              arr2.push(obj2);
+            } else {
+              initialPrice += item.activityPrice * item.shopNumber;
+              initialNum += item.shopNumber;
+              this.initialPrice = initialPrice;
+              this.initialNum = initialNum;
+            }
             let obj = {
               skuId: item.skuId,
               detailNum: item.shopNumber,
               shopcrtId: item.shopcrtId,
             };
-            let obj2 = {
-              skuId: item.skuId,
-              num: item.shopNumber,
-            };
             arr.push(obj);
-            arr2.push(obj2);
           }
         });
       });
       this.selectionList = arr.map((o) => Object.assign({}, o));
-      if (arr2.length == 0) {
+      if (this.selectionList.length == 0) {
         this.totlaMoney = 0;
         this.totlaNum = 0;
+      }
+      if (arr2.length == 0) {
+        this.totlaMoney = this.initialPrice;
+        this.totlaNum = this.initialNum;
         return;
       }
-      if (this.clear_type != 1 && this.clear_type != null) {
-        this.getproductskunumpricelist(arr2);
-      } else {
-        this.dataList.forEach((ele) => {
-          ele.list.forEach((item) => {
-            res.Data.forEach((dataItem) => {
-              if (item.skuId == dataItem.skuId) {
-                if (item.discountPrice) {
-                  item.discountPrice = dataItem.price;
-                } else {
-                  item.salePrice = dataItem.price;
-                }
-              }
-            });
-          });
-        });
-      }
+      // 是否清仓，调用阶梯价
+      this.getproductskunumpricelist(arr2);
     },
     //更改数量
     changeStepper(itemdetail) {
