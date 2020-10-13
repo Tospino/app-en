@@ -316,6 +316,22 @@ export default {
               AnalysysAgent.alias(this.userData.username, (rek) => {});
             }
           );
+          //易观绑定用户属性
+          AnalysysAgent.profileSet({
+            user_id: res.user.userId,     
+            user_type: res.user.isBusiness,    
+            phone: res.user.mobile,   
+            name: res.user.nickName,   
+            vip_level: res.user.levelTitle,   
+            register_date: res.user.userAddtime,   
+            company_name: res.user.companyName,   
+            cumulative_order: res.user.orderTotalNum,  
+            balance: res.user.balance,  
+            first_source: res.user.auditRemark,   
+            total_gmv: res.user.orderAmountWebsite,  
+            detailed_address: res.user.companyAddress,  
+            main_business: res.user.typeTitle   
+          },rel => {})
         });
       }
     },

@@ -42,7 +42,7 @@
       >Add Now</div>
     </div>
 
-    <!-- 选择付款方式弹窗 -->
+    <!-- 选择付款方式弹窗 --> 
     <action-sheet-paymen
       ref="actionSheetPaymen"
       :moeny="Number(currentItem.discountPrice)"
@@ -172,6 +172,14 @@ export default {
         } else {
           Toast("error");
         }
+        
+        //易观数据采集----话费充值
+        AnalysysAgent.track('add_minutes',{
+          price: data.prepaidActuallyMoney,
+          add_value: data.prepaidMoney,
+          is_successful: res.status_code == 200 ? true:false,
+          failure_reason: res.message
+        },rel => {})
       });
     },
     //创建一个发票并发回slydepay支付令牌

@@ -1,7 +1,7 @@
 <template>
   <!-- 退款页面 -->
   <div class="refund">
-    <balance-header :title="headerTitle"></balance-header>
+    <balance-header :title="headerTitle"></balance-header>    
     <div class="good-information">
       <div class="good-detail">
         <div class="good-detail-header">
@@ -168,8 +168,24 @@ export default {
           );
         }
       });
+
+      //易观数据采集----退货
+      AnalysysAgent.track(
+        "return_goods",
+        {
+          product_name: this.detailObj.detailList[0].skuName,
+          product_detail: this.detailObj.detailList[0].skuValuesTitleEng,
+          order_id: this.formData.orderId,
+          commodity_amount: this.detailObj.orderAmountWebsite,
+          refund_reason: this.formData.reason,
+          refund_amount: this.detailObj.orderAmountWebsite,
+          product_id: this.detailObj.detailList[0].skuId.toString(),
+          quantity: this.detailObj.detailList[0].shouldRefundNum,
+        },
+        (rel) => {}
+      );
     },
-    //提交订单
+    //提交退款
     submit() {
       if (this.formData.reason == "Choose one") {
         Toast("Choose reason for refund");

@@ -88,7 +88,7 @@ AnalysysAgent.init({
   appkey: 'b9a147c9ff75c354', //APPKEY
   uploadURL: 'http://124.156.105.108:8089', //上传数据的地址
   SDKFileDirectory: 'http://124.156.105.108:8089', //可视化与热图模块SDK存放目录。
-  debugMode: 0
+  debugMode: 2 //0 - 关闭调试模式(默认)；1 - 开启调试模式，数据不入库；2 - 开启调试模式，数据入库
 })
 
 // 引入图片懒加载

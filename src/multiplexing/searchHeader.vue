@@ -14,7 +14,7 @@
         <img
           src="@/assets/img/tabbar/home/Message_.png"
           class="img1"
-          @click="$router.push({path:'/control/customerService'})"
+          @click="toMessage()"
         />
         <img
           src="@/assets/img/tabbar/home/msg@3x.png"
@@ -47,6 +47,13 @@ export default {
       this.$router.push({ name: "扫码" });
     },
     onSearch() {},
+    toMessage(){
+      this.$router.push({path:'/control/customerService'});
+      //易观数据采集---联系客服
+      AnalysysAgent.track('contact',{
+        contact_type: '自定义'
+      },rel => {})
+    }
   },
   components: {},
 };
