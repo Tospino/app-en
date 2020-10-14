@@ -202,7 +202,7 @@
                     >{{ jn }}{{ item.activityPrice }}</span
                   >
                   <span class="goods_dis_price"
-                    >{{ jn }}{{ item.salePrice.toFixed(0) }}</span
+                    >{{ jn }}{{ item.salePrice }}</span
                   >
                 </div>
                 <span
