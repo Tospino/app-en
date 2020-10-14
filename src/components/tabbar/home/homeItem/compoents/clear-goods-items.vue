@@ -94,7 +94,7 @@
             <span
               class="goods_btn flex_center2 pre_fb"
               v-if="item.activityState === 0"
-              >Not started</span
+              >Coming Soon</span
             >
           </div>
         </div>
@@ -252,7 +252,7 @@ export default {
       .goods_btn {
         width: 180px;
         padding: 14px 24px;
-        font-size: 30px;
+        font-size: 26px;
         font-weight: bold;
         color: rgba(255, 255, 255, 1);
         background: #f95300;

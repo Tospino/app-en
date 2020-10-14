@@ -147,7 +147,7 @@
                   type="primary"
                   class="btn-qd spen_tw fl-right"
                   v-show="activityState === 0 && goodNumber > 0"
-                  >Not started</van-button
+                  >Coming Soon</van-button
                 >
               </div>
 

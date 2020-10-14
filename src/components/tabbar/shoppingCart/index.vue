@@ -163,7 +163,11 @@
                         on_fc: dataitem.activityState == 0,
                         pre_fc: dataitem.activityState == 1,
                       }"
-                      >Promotion sale starts</span
+                      >{{
+                        dataitem.activityState == 1
+                          ? "Clearance Sale Ongoing"
+                          : "Available at  " + clearTXT
+                      }}</span
                     >
                   </div>
                   <div class="good-logistics" v-if="dataitem.expId == 1">
@@ -357,6 +361,7 @@ export default {
       clearTime: null,
       time_atc: null,
       clearTimeOver: null,
+      clearTXT: "",
       initialPrice: 0,
       initialNum: 0,
     };
@@ -521,6 +526,21 @@ export default {
             if (item.activityType == 1) {
               this.clearTime = item.activityBegin;
               this.clearTimeOver = item.activityEnd;
+              let clearTXT = new Date(this.clearTimeOver.replace(/-/g, "/"));
+              //如果是全球项目，需要转成【协调世界时】（UTC）
+              let globalDate = clearTXT.toUTCString();
+              let clear_timeStr = globalDate.replace(/,/g, "");
+              let clear_timeOne = clear_timeStr.substring(0, 6);
+              let clear_timeTwo = clear_timeStr.substring(16, 21);
+              let clear_timeThree = clear_timeStr.substring(16, 18);
+              if (clear_timeThree > 12) {
+                let clear_timeAm = "am";
+              } else {
+                let clear_timeAm = "pm";
+              }
+
+              //   console.log(clear_timeOne, "888", clear_timeThree);
+              this.clearTXT = clear_timeThree;
               if (item.activityState == 2) {
                 wuxiaoList.push(item);
               }

@@ -463,7 +463,7 @@
             >Buy Now</van-button
           >
           <van-button v-else type="primary" disabled class="spend spen_tw"
-            >Not started</van-button
+            >Coming Soon</van-button
           >
         </div>
         <van-button v-else type="primary" disabled class="clear_sold"

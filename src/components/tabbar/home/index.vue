@@ -208,7 +208,7 @@
                 <span
                   class="goods_btn flex_center2"
                   v-if="item.activityState === 0"
-                  >Not started</span
+                  >Coming Soon</span
                 >
                 <span
                   class="goods_btn on_fb flex_center2"
@@ -365,19 +365,19 @@
                 >
                   <div class="shouwan" v-if="!searchgoodDao.canSalesNum">
                     <!-- Out of Stock -->
+                    <img
+                      src="@/assets/img/tabbar/home/clearsale/saleout.png"
+                      class="goods_sale"
+                      v-if="
+                        searchgoodDao.activityState === 2 &&
+                        searchgoodDao.activityType == 1 &&
+                        searchgoodDao.canSalesNum === 0
+                      "
+                      alt
+                      srcset
+                    />
                   </div>
                   <img v-lazy="$webUrl + searchgoodDao.imgUrl" />
-                  <img
-                    src="@/assets/img/tabbar/home/clearsale/saleout.png"
-                    class="goods_sale"
-                    v-if="
-                      searchgoodDao.activityState === 2 &&
-                      searchgoodDao.activityType == 1 &&
-                      searchgoodDao.canSalesNum === 0
-                    "
-                    alt
-                    srcset
-                  />
                 </div>
                 <div class="produced">
                   <span class="icon" v-if="searchgoodDao.expId == 1">
@@ -938,7 +938,7 @@ export default {
           margin-left: 12px;
         }
         .goods_btn {
-          width: 200px;
+          width: 210px;
           margin-top: 20px;
           padding: 14px 24px;
           font-size: 30px;
@@ -1414,8 +1414,8 @@ export default {
           position: relative;
           .goods_sale {
             position: absolute;
-            margin-top: 50px;
-            // top: 37px;
+            // margin-top: 6px;
+            top: 56px;
             left: 20px;
             width: 300px;
             height: 220px;
