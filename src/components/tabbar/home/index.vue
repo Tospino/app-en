@@ -786,6 +786,14 @@ export default {
     swipeClick(el) {
       if (!el.linkUrl) return;
       window.location.href = el.linkUrlEng;
+      var targetType = '';
+      if(el.linkUrlEng.substring(25,31) == 'commod'){
+        targetType = '商品详情页';
+      }else if(el.linkUrlEng.substring(25,31) == 'search'){
+        targetType = '列表页';
+      }else {
+        targetType = '其它';
+      }
       //易观数据采集-----轮播图点击
       let urlHtm = window.location.href;
       let titHtm = document.title;
@@ -795,6 +803,7 @@ export default {
           $page_url: urlHtm,
           $page_title: titHtm,
           target_url: el.linkUrlEng,
+          target_type: targetType,
         },
         (rel) => {}
       );
