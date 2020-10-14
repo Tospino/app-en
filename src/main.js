@@ -31,7 +31,6 @@ import {
   objDeepCopy,
   deepnull,
   MyLocalStorage
-<<<<<<< HEAD
 } from '@/common/utils.js'
 import store from './store'
 import * as mycomponents from '@/common/mycomponents.js'
@@ -41,15 +40,6 @@ import clipboard from 'clipboard'
 import {
   gethttpimgurlApi
 } from '@/api/login/index'
-=======
-} from "@/common/utils.js";
-import store from "./store";
-import * as mycomponents from "@/common/mycomponents.js";
-import VueScroller from "vue-scroller";
-import clipboard from "clipboard";
-
-import { gethttpimgurlApi } from "@/api/login/index";
->>>>>>> 8692f17378a1d1a0daf9f2cefb22a0470a872535
 
 Vue.prototype.$webUrl = "";
 Vue.prototype.jn = "";
