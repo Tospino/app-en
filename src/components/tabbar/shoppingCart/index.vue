@@ -363,6 +363,7 @@ export default {
       clearTimeOver: null,
       clearTXT: "",
       clear_timeAm: "",
+      clearTimeWebsite: null,
       initialPrice: 0,
       initialNum: 0,
     };
@@ -528,24 +529,29 @@ export default {
               this.clearTime = item.activityBegin;
               this.clearTimeOver = item.activityEnd;
 
-              let clearTXT = new Date(this.clearTimeOver.replace(/-/g, "/"));
-              //如果是全球项目，需要转成【协调世界时】（UTC）
-              let globalDate = clearTXT.toUTCString();
-              let clear_timeStr = globalDate.replace(/,/g, "");
+              this.clearTimeWebsite = item.activityBeginWebsite;
+              let clearTXT = new Date(this.clearTimeWebsite.replace(/-/g, "/"));
+              //   现在时间转英文
+              let chinaDate = clearTXT.toDateString();
+              let clear_timeStr = chinaDate.replace(/,/g, "");
               //   日期
-              let clear_timeOne = clear_timeStr.substring(0, 6);
+              let clear_timeOne = clear_timeStr.substring(4, 10);
               //   时间
-              let clear_timeTwo = clear_timeStr.substring(16, 21);
+              let clear_timeTwo = this.clearTimeWebsite.substring(10, 16);
               //   时
-              let clear_timeThree = clear_timeStr.substring(16, 18);
+              let clear_timeThree = this.clearTimeWebsite.substring(10, 13);
               if (clear_timeThree < 12) {
                 this.clear_timeAm = "am";
+                this.clearTXT =
+                  clear_timeTwo + this.clear_timeAm + "," + clear_timeOne;
               } else {
+                let clear_timeTwoPM = moment(this.clearTimeWebsite).format(
+                  "hh:mm"
+                );
                 this.clear_timeAm = "pm";
+                this.clearTXT =
+                  clear_timeTwoPM + this.clear_timeAm + "," + clear_timeOne;
               }
-
-              this.clearTXT =
-                clear_timeTwo + this.clear_timeAm + "," + clear_timeOne;
 
               if (item.activityState == 2) {
                 wuxiaoList.push(item);
