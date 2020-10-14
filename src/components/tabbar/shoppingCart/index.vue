@@ -362,6 +362,7 @@ export default {
       time_atc: null,
       clearTimeOver: null,
       clearTXT: "",
+      clear_timeAm: "",
       initialPrice: 0,
       initialNum: 0,
     };
@@ -526,21 +527,26 @@ export default {
             if (item.activityType == 1) {
               this.clearTime = item.activityBegin;
               this.clearTimeOver = item.activityEnd;
+
               let clearTXT = new Date(this.clearTimeOver.replace(/-/g, "/"));
               //如果是全球项目，需要转成【协调世界时】（UTC）
               let globalDate = clearTXT.toUTCString();
               let clear_timeStr = globalDate.replace(/,/g, "");
+              //   日期
               let clear_timeOne = clear_timeStr.substring(0, 6);
+              //   时间
               let clear_timeTwo = clear_timeStr.substring(16, 21);
+              //   时
               let clear_timeThree = clear_timeStr.substring(16, 18);
-              if (clear_timeThree > 12) {
-                let clear_timeAm = "am";
+              if (clear_timeThree < 12) {
+                this.clear_timeAm = "am";
               } else {
-                let clear_timeAm = "pm";
+                this.clear_timeAm = "pm";
               }
 
-              //   console.log(clear_timeOne, "888", clear_timeThree);
-              this.clearTXT = clear_timeThree;
+              this.clearTXT =
+                clear_timeTwo + this.clear_timeAm + "," + clear_timeOne;
+
               if (item.activityState == 2) {
                 wuxiaoList.push(item);
               }
