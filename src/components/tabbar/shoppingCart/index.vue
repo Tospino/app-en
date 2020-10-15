@@ -640,11 +640,11 @@ export default {
     //点击全选
     cliAllcheck(status) {
       this.dataList.forEach((ele) => {
-        if (item.activityState != 0 && item.activityState != 1) {
+        if (ele.activityState != 0) {
           ele.checkStatus = status;
         }
         ele.list.forEach((item) => {
-          if (item.activityState != 0 && item.activityState != 1) {
+          if (item.activityState != 0) {
             item.checkStatus = status;
           }
         });
