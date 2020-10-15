@@ -544,7 +544,6 @@ export default {
     },
     // 清仓
     clearAct() {
-      console.log(this.clear_type, "asda");
       //   清仓活动
       this.checkList = this.checkList.sort();
       this.makeupdata.forEach((item) => {

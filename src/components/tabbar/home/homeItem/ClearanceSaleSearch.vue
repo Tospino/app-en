@@ -104,7 +104,6 @@ export default {
     },
     //上拉加载
     _pullup() {
-      console.log("sdfa");
       if (!this.pullup) return;
       //不知道为什么触发两次,使用关门狗拦截
       if (this.guanmengou) {

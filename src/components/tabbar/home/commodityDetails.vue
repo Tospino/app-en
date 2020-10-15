@@ -853,14 +853,16 @@ export default {
         "product_detail_view",
         {
           product_price: this.detailmData.salePrice,
-          coupon_name: this.moreShop == true ? this.ProModel.Data.couponName : '无优惠卷',
+          coupon_name:
+            this.moreShop == true ? this.ProModel.Data.couponName : "无优惠卷",
           product_id: this.detailmData.supplyId.toString(),
           product_name: this.detailmData.supplyTitle,
           product_sold: this.detailmData.skuSalesNum,
-          coupon_value: this.moreShop == true ? this.ProModel.Data.reduceAmount : 0,
+          coupon_value:
+            this.moreShop == true ? this.ProModel.Data.reduceAmount : 0,
           discount: this.detailmData.discountPrice,
           delivery_place: "海外",
-          product_instock: this.$refs.commodityselection.stock
+          product_instock: this.$refs.commodityselection.stock,
         },
         (rel) => {}
       );
