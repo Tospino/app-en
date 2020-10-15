@@ -685,6 +685,8 @@ export default {
             } else {
               initialPrice += item.activityPrice * item.shopNumber;
               initialNum += item.shopNumber;
+              this.initialPrice = initialPrice;
+              this.initialNum = initialNum;
             }
             let obj = {
               skuId: item.skuId,
@@ -692,12 +694,8 @@ export default {
               shopcrtId: item.shopcrtId,
             };
             arr.push(obj);
-          }
-          //   清仓是否累加
-          if (item.checkStatus) {
-            this.initialPrice = initialPrice;
-            this.initialNum = initialNum;
           } else {
+            //   清仓是否累加
             this.initialPrice = initialPrice;
             this.initialNum = initialNum;
           }
