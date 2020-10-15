@@ -275,7 +275,7 @@
           <span class="c-999">Select All</span>
           <div class="fl-right">
             <span class="p2">Total:</span>
-            <span class="p3">{{ jn }}{{ totlaMoney }}</span>
+            <span class="p3">{{ jn }}{{ totlaMoney.toFixed(2) }}</span>
             <span
               class="btn"
               @click="settlementBtn"
@@ -640,9 +640,13 @@ export default {
     //点击全选
     cliAllcheck(status) {
       this.dataList.forEach((ele) => {
-        ele.checkStatus = status;
+        if (item.activityState != 0 && item.activityState != 1) {
+          ele.checkStatus = status;
+        }
         ele.list.forEach((item) => {
-          item.checkStatus = status;
+          if (item.activityState != 0 && item.activityState != 1) {
+            item.checkStatus = status;
+          }
         });
       });
       this.zongji();
@@ -681,8 +685,6 @@ export default {
             } else {
               initialPrice += item.activityPrice * item.shopNumber;
               initialNum += item.shopNumber;
-              this.initialPrice = initialPrice;
-              this.initialNum = initialNum;
             }
             let obj = {
               skuId: item.skuId,
@@ -690,6 +692,14 @@ export default {
               shopcrtId: item.shopcrtId,
             };
             arr.push(obj);
+          }
+          //   清仓是否累加
+          if (item.checkStatus) {
+            this.initialPrice = initialPrice;
+            this.initialNum = initialNum;
+          } else {
+            this.initialPrice = initialPrice;
+            this.initialNum = initialNum;
           }
         });
       });
@@ -794,8 +804,8 @@ export default {
     getproductskunumpricelist(data) {
       getproductskunumpricelistApi(data).then((res) => {
         if (res.code == 0) {
-          this.totlaMoney = res.totalprice;
-          this.totlaNum = res.totalnum;
+          this.totlaMoney = res.totalprice + this.initialPrice;
+          this.totlaNum = res.totalnum + this.initialNum;
           this.dataList.forEach((ele) => {
             ele.list.forEach((item) => {
               res.Data.forEach((dataItem) => {
