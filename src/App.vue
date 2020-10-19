@@ -22,6 +22,8 @@ export default {
     //易观数据采集-----核心页面加载
     let urlHtm = window.location.href;
     let titHtm = document.title;
+      console.log(returnCitySN["cip"] + "," + returnCitySN["cname"]);
+
     AnalysysAgent.track(
       "core_page_load",
       {
@@ -30,6 +32,8 @@ export default {
       },
       (rel) => {}
     );
+    //注册通用属性 $ip 获取客户端IP地址
+    AnalysysAgent.registerSuperProperty("$ip", returnCitySN['cip'], rel => {});
   },
   watch: {
     $route: function (to, from) {
