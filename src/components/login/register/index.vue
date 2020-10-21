@@ -550,6 +550,13 @@ export default {
         this.formData.mobile = this.formData.phone;
       }
       this.userregister();
+
+      //易观数据采集---按钮点击
+      let titHtm = document.title;
+      AnalysysAgent.track("btn_click",{
+        $title: titHtm,
+        btn_name: 'Register'
+      },rel => {})
     },
     getCode() {
       if (this.formData.phone == "") {

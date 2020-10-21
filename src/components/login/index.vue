@@ -334,6 +334,13 @@ export default {
           },rel => {})
         });
       }
+
+      //易观数据采集---按钮点击
+      let titHtm = document.title;
+      AnalysysAgent.track("btn_click",{
+        $title: titHtm,
+        btn_name: 'Log In'
+      },rel => {})
     },
     //回车键
     keyupEnter() {

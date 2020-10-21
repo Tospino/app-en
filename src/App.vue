@@ -33,7 +33,10 @@ export default {
       (rel) => {}
     );
     //注册通用属性 $ip 获取客户端IP地址
-    AnalysysAgent.registerSuperProperty("$ip", returnCitySN['cip'], rel => {});
+    AnalysysAgent.registerSuperProperty({
+      "$ip": returnCitySN['cip'],
+      "$city": returnCitySN["cname"]
+    }, rel => {});         
   },
   watch: {
     $route: function (to, from) {

@@ -791,6 +791,8 @@ export default {
         targetType = '商品详情页';
       }else if(el.linkUrlEng.substring(25,31) == 'search'){
         targetType = '列表页';
+      }else if(el.linkUrlEng.substring(25,31) == 'rechar'){
+        targetType = '话费充值页';
       }else {
         targetType = '其它';
       }

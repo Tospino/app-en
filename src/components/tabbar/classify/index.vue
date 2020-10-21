@@ -12,10 +12,14 @@
       </van-sidebar>
       <div class="classify-right">
         <div class="banner">
-          <img v-lazy="$webUrl+leftImgSrc" />
+          <img v-lazy="$webUrl + leftImgSrc" />
         </div>
-        <div class="recommend" v-for="rightGoods in rightList" :key="rightGoods.categoryId">
-          <span class="title">{{rightGoods.classNameEng}}</span>
+        <div
+          class="recommend"
+          v-for="rightGoods in rightList"
+          :key="rightGoods.categoryId"
+        >
+          <span class="title">{{ rightGoods.classNameEng }}</span>
           <div>
             <van-row gutter="40">
               <van-col
@@ -23,10 +27,14 @@
                 v-for="product in rightGoods.productCategory"
                 :key="product.categoryId"
               >
-                <div class="sanji" @click="toSearOne(product.categoryId)" prop="product.classNameEng"> 
-                  <img v-lazy="$webUrl+product.categoryImg" />
+                <div
+                  class="sanji"
+                  @click="toSearOne(product.categoryId,product)"
+                  prop="product.classNameEng"
+                >
+                  <img v-lazy="$webUrl + product.categoryImg" />
                   <div class="parent">
-                    <span class="name">{{product.classNameEng}}</span>
+                    <span class="name">{{ product.classNameEng }}</span>
                   </div>
                 </div>
               </van-col>
@@ -138,11 +146,24 @@ export default {
       });
     },
     //去到搜索里面
-    toSearOne(categoryId) {
+    toSearOne(categoryId,product) {
       this.$router.push({
         name: "搜索商品1",
         query: { categoryId: categoryId }
       });
+
+      //易观数据采集---导航栏点击
+      let urlHtm = window.location.href;
+      let titHtm = document.title;
+      AnalysysAgent.track("navigation_click", {
+        $page_title: titHtm,
+        $page_url: urlHtm,
+        target_url:
+          "https://gh.tospino.com/#/search/searchGoodsOne" +
+          "?categoryId=" +
+          categoryId,
+        navigation_name: product.classNameEng
+      },rel => {});
     }
   },
   components: {
