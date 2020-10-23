@@ -124,7 +124,6 @@
           </div>
           <select ref="phone_select">
             <option value="+233">+233</option>
-            <option value="+86">+86</option>
           </select>
         </div>
         <div class="flex items flex_space mt_20">
@@ -200,7 +199,7 @@ export default {
         phone: "",
         code: "",
         password: "",
-        areaCode: "+86",
+        areaCode: "+233",
       },
       showKeyboard: false,
       facebook_id: "",
@@ -317,30 +316,37 @@ export default {
             }
           );
           //易观绑定用户属性
-          AnalysysAgent.profileSet({
-            user_id: res.user.userId,     
-            user_type: res.user.isBusiness,    
-            phone: res.user.mobile,   
-            name: res.user.nickName,   
-            vip_level: res.user.levelTitle,   
-            register_date: res.user.userAddtime,   
-            company_name: res.user.companyName,   
-            cumulative_order: res.user.orderTotalNum,  
-            balance: res.user.balance,  
-            first_source: res.user.auditRemark,   
-            total_gmv: res.user.orderAmountWebsite,  
-            detailed_address: res.user.companyAddress,  
-            main_business: res.user.typeTitle   
-          },rel => {})
+          AnalysysAgent.profileSet(
+            {
+              user_id: res.user.userId,
+              user_type: res.user.isBusiness,
+              phone: res.user.mobile,
+              name: res.user.nickName,
+              vip_level: res.user.levelTitle,
+              register_date: res.user.userAddtime,
+              company_name: res.user.companyName,
+              cumulative_order: res.user.orderTotalNum,
+              balance: res.user.balance,
+              first_source: res.user.auditRemark,
+              total_gmv: res.user.orderAmountWebsite,
+              detailed_address: res.user.companyAddress,
+              main_business: res.user.typeTitle,
+            },
+            (rel) => {}
+          );
         });
       }
 
       //易观数据采集---按钮点击
       let titHtm = document.title;
-      AnalysysAgent.track("btn_click",{
-        $title: titHtm,
-        btn_name: 'Log In'
-      },rel => {})
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: titHtm,
+          btn_name: "Log In",
+        },
+        (rel) => {}
+      );
     },
     //回车键
     keyupEnter() {
