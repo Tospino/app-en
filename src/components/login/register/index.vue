@@ -14,7 +14,6 @@
           <div class="iphone-option">
             <select ref="mobilecode">
               <option value="233">+233</option>
-              <option value="86">+86</option>
             </select>
           </div>
           <van-field
@@ -553,10 +552,14 @@ export default {
 
       //易观数据采集---按钮点击
       let titHtm = document.title;
-      AnalysysAgent.track("btn_click",{
-        $title: titHtm,
-        btn_name: 'Register'
-      },rel => {})
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: titHtm,
+          btn_name: "Register",
+        },
+        (rel) => {}
+      );
     },
     getCode() {
       if (this.formData.phone == "") {
