@@ -4,8 +4,10 @@
     <settings-header :title="headTitle"></settings-header>
     <div class="tospino-body" v-if="ifAbout">
       <div class="ewm-body">
-        <div class="ewm-img"></div>
-        <div>V1.0.0.0</div>
+        <div class="ewm-img">
+          <img src="@/assets/img/tabbar/my/account/512.png" alt="" />
+        </div>
+        <div>V19.1.6</div>
       </div>
       <div class="cell" @click="jumpRouter('Privacy Policy')">
         <span>Privacy Policy</span>
@@ -25,7 +27,6 @@
       </div>
       <div class="cell">
         <span>Customer service:0302949239</span>
-        <van-icon name="arrow" class="arrow c-999" />
       </div>
     </div>
     <router-view v-else></router-view>
