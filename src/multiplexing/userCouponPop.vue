@@ -92,6 +92,7 @@ export default {
     width: 750px;
     height: 770px;
     overflow: hidden;
+    
     .wrapper-main {
       position: relative;
       top: -45%;

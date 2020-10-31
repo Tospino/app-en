@@ -78,7 +78,7 @@
         <div class="good-recommend box">
           <div class="flash-sale-1">
             <span class="put-line"></span>
-            <span class="t1">Selectives</span>
+            <span class="t1" @click="jumpRouter('黑色星期五')">Selectives</span>
             <!-- <span class="t2">查看更多</span> -->
           </div>
           <div class="flash-sale-2">
@@ -108,7 +108,7 @@
                       clear_th:
                         finework.activityState == 2 &&
                         finework.activityTagApp != null &&
-                        finework.activityTagApp != '',
+                        finework.activityTagApp != ''
                     }"
                     >{{ finework.activityTagApp }}</span
                   >
@@ -171,8 +171,8 @@
                   query: {
                     skuId: item.skuId,
                     activityId: item.activityId,
-                    activityType: item.activityType,
-                  },
+                    activityType: item.activityType
+                  }
                 })
               "
             >
@@ -370,8 +370,8 @@
                       class="goods_sale"
                       v-if="
                         searchgoodDao.activityState === 2 &&
-                        searchgoodDao.activityType == 1 &&
-                        searchgoodDao.canSalesNum === 0
+                          searchgoodDao.activityType == 1 &&
+                          searchgoodDao.canSalesNum === 0
                       "
                       alt
                       srcset
@@ -424,7 +424,7 @@
                       clear_th:
                         searchgoodDao.activityState == 2 &&
                         searchgoodDao.activityTagApp != null &&
-                        searchgoodDao.activityTagApp != '',
+                        searchgoodDao.activityTagApp != ''
                     }"
                     >{{ searchgoodDao.activityTagApp }}</span
                   >
@@ -480,7 +480,7 @@ import {
   HomePagebottomApi,
   homeAdvertPictureApi,
   APPgetuserIsfullApi,
-  gethomeClearanceList,
+  gethomeClearanceList
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -498,15 +498,15 @@ export default {
       fineSaleList2: [],
       brandLogo1: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       brandLogo2: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       brandLogo3: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       formData: {
         brandId: 0,
@@ -514,7 +514,7 @@ export default {
         limit: 10,
         page: 1,
         seraname: "",
-        sort: 0,
+        sort: 0
       },
       bottomTabs: [],
       searchgoodDaolist: [],
@@ -527,13 +527,13 @@ export default {
       codeUrl: "",
       topBananerList: [],
       banner1: {
-        advertImg: "",
+        advertImg: ""
       },
       banner2: {
-        advertImg: "",
+        advertImg: ""
       },
       banner3: {
-        advertImg: "",
+        advertImg: ""
       },
       newCouponShow: "", //判断是否为新用户是否展示
       newCoupon: {},
@@ -542,7 +542,7 @@ export default {
       isExit: false,
       clear_one: "", //特价 倒计时
       clear_end: null, //结束时间
-      down_time: "", //特价 倒计时刷新
+      down_time: "" //特价 倒计时刷新
     };
   },
   computed: {},
@@ -620,7 +620,7 @@ export default {
   methods: {
     // 首页新用户优惠券
     newCoupons() {
-      APPgetuserIsfullApi().then((res) => {
+      APPgetuserIsfullApi().then(res => {
         // this.newCouponShow = res.code;
         if (res.code == 0) {
           let userNews = res.Data;
@@ -640,7 +640,7 @@ export default {
     },
     // 领取优惠按钮
     evBus(id) {
-      couponDrawApi(id).then((res) => {
+      couponDrawApi(id).then(res => {
         Toast("Get the success");
       });
     },
@@ -649,7 +649,7 @@ export default {
     },
     //首页数据
     homePage(data) {
-      homePageApi(data).then((res) => {
+      homePageApi(data).then(res => {
         if (res.code == 0) {
           this.homeObj = res.Data;
           this.globalProList = this.homeObj["producteFineBrand"].slice(3);
@@ -681,7 +681,7 @@ export default {
     },
     //底部数据分类
     homePagebottom(data, flag) {
-      HomePagebottomApi(data).then((res) => {
+      HomePagebottomApi(data).then(res => {
         if (res.code == 0) {
           this.bottomTabs = res.top;
 
@@ -752,8 +752,8 @@ export default {
         query: {
           skuId: skuid,
           activityId: overall.activityId,
-          activityType: overall.activityType,
-        },
+          activityType: overall.activityType
+        }
       });
     },
     //去到搜索里面
@@ -766,7 +766,7 @@ export default {
     },
     //首页广告
     homeAdvertPicture() {
-      homeAdvertPictureApi().then((res) => {
+      homeAdvertPictureApi().then(res => {
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
@@ -786,15 +786,15 @@ export default {
     swipeClick(el) {
       if (!el.linkUrl) return;
       window.location.href = el.linkUrlEng;
-      var targetType = '';
-      if(el.linkUrlEng.substring(25,31) == 'commod'){
-        targetType = '商品详情页';
-      }else if(el.linkUrlEng.substring(25,31) == 'search'){
-        targetType = '列表页';
-      }else if(el.linkUrlEng.substring(25,31) == 'rechar'){
-        targetType = '话费充值页';
-      }else {
-        targetType = '其它';
+      var targetType = "";
+      if (el.linkUrlEng.substring(25, 31) == "commod") {
+        targetType = "商品详情页";
+      } else if (el.linkUrlEng.substring(25, 31) == "search") {
+        targetType = "列表页";
+      } else if (el.linkUrlEng.substring(25, 31) == "rechar") {
+        targetType = "话费充值页";
+      } else {
+        targetType = "其它";
       }
       //易观数据采集-----轮播图点击
       let urlHtm = window.location.href;
@@ -805,14 +805,14 @@ export default {
           $page_url: urlHtm,
           $page_title: titHtm,
           target_url: el.linkUrlEng,
-          target_type: targetType,
+          target_type: targetType
         },
-        (rel) => {}
+        rel => {}
       );
     },
     //获取用户信息
     getuserinfo() {
-      getuserinfoApi().then((res) => {
+      getuserinfoApi().then(res => {
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }
@@ -824,7 +824,7 @@ export default {
     },
     // 获取特价清仓数据
     getClear() {
-      gethomeClearanceList({ isHome: 1 }).then((res) => {
+      gethomeClearanceList({ isHome: 1 }).then(res => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
           //   特价时间
@@ -836,12 +836,12 @@ export default {
           }
         }
       });
-    },
+    }
   },
   components: {
     searchHeader,
-    userPopup,
-  },
+    userPopup
+  }
 };
 </script>
 
@@ -878,91 +878,101 @@ export default {
     .active_bg {
       background-color: #f95300 !important;
     }
-    padding: 30px;
+    padding: 30px 0;
     .flash-sale-1 {
-      height: 50px;
-      line-height: 50px;
+      height: 60px;
+      line-height: 60px;
+      padding-left: 30px;
+      background: url(../../../assets/img/activity/background.png) no-repeat;
+      background-position: 0;
+      background-size: 100% ;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #fa5300;
+        background-color: #ffffff;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #333;
+        color: #ffffff;
         margin-left: 13px;
         margin-right: 14px;
       }
       .desc {
         font-size: 24px;
         font-weight: 500;
-        color: rgba(0, 165, 111, 1);
+        color: #ffffff;
       }
       .t2 {
         font-size: 24px;
         font-weight: bold;
-        color: #333;
+        color: #ffffff;
         margin-right: 10px;
       }
+      /deep/ .van-icon {
+        color: #ffffff;
+      }
+      
     }
     .flash-sale-2 {
-      background-color: #fff;
-      border-radius: 10px;
-      margin-top: 20px;
-      .goods_items {
-        padding: 30px 20px;
-        border-bottom: 1px solid #eee;
-        .goods_sale {
-          position: absolute;
-          margin-top: 20px;
-          //   top: 37px;
-          //   left: 10px;
-          width: 200px;
-          height: 160px;
-        }
-        .goods_img {
-          min-width: 200px;
-          width: 200px;
-          height: 200px;
-          margin-right: 16px;
-        }
-        .goods_discount {
-          margin-top: 18px;
-          padding: 5px 17px;
-          font-weight: 500;
-          color: rgba(255, 255, 255, 1);
-          background: #f95300;
-          font-size: 20px;
-          border-radius: 13px;
-        }
-        .goods_price {
-          font-size: 40px;
-          color: #f95300;
-          font-weight: 500;
-        }
-        .goods_dis_price {
-          font-size: 20px;
-          font-weight: 300;
-          text-decoration: line-through;
-          color: rgba(101, 101, 101, 1);
-          margin-left: 12px;
-        }
-        .goods_btn {
-          width: 210px;
-          margin-top: 20px;
-          padding: 14px 24px;
-          font-size: 30px;
-          font-weight: bold;
-          color: rgba(255, 255, 255, 1);
-          background: rgba(0, 165, 111, 1);
-          border-radius: 26px;
-        }
-        &:last-child {
-          border-bottom: none;
+        border-radius: 10px;
+        margin-top: 20px;
+        // padding: 0 30px;
+        .goods_items {
+          margin: 0 30px;
+          padding: 30px 20px;
+          background-color: #fff;
+          border-bottom: 1px solid #eee;
+          .goods_sale {
+            position: absolute;
+            margin-top: 20px;
+            //   top: 37px;
+            //   left: 10px;
+            width: 200px;
+            height: 160px;
+          }
+          .goods_img {
+            min-width: 200px;
+            width: 200px;
+            height: 200px;
+            margin-right: 16px;
+          }
+          .goods_discount {
+            margin-top: 18px;
+            padding: 5px 17px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 1);
+            background: #f95300;
+            font-size: 20px;
+            border-radius: 13px;
+          }
+          .goods_price {
+            font-size: 40px;
+            color: #f95300;
+            font-weight: 500;
+          }
+          .goods_dis_price {
+            font-size: 20px;
+            font-weight: 300;
+            text-decoration: line-through;
+            color: rgba(101, 101, 101, 1);
+            margin-left: 12px;
+          }
+          .goods_btn {
+            width: 210px;
+            margin-top: 20px;
+            padding: 14px 24px;
+            font-size: 30px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 1);
+            background: rgba(0, 165, 111, 1);
+            border-radius: 26px;
+          }
+          &:last-child {
+            border-bottom: none;
+          }
         }
       }
-    }
   }
   .commodity-swipe {
     margin: 7px 0 40px;
@@ -989,6 +999,11 @@ export default {
     vertical-align: text-top;
     .flash-sale-1 {
       position: relative;
+      height: 60px;
+      line-height: 60px;
+      background: url(../../../assets/img/activity/background.png) no-repeat;
+      background-position: 0;
+      background-size: 100% ;
       .put-line {
         width: 6px;
         height: 40px;
@@ -1088,24 +1103,29 @@ export default {
     }
   }
   .good-recommend {
-    width: 100%;
-    padding: 0 30px;
+    // width: 100%;
+    // padding: 0 30px;
     margin-bottom: 40px;
     .flash-sale-1 {
+      // width: 100%;
       position: relative;
-      height: 50px;
-      line-height: 50px;
+      height: 60px;
+      line-height: 60px;
+      padding-left: 30px;
+      background: url(../../../assets/img/activity/background.png) no-repeat;
+      background-position: 0;
+      background-size: 100% ;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #fa5300;
+        background-color: #ffffff;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #333;
+        color: #ffffff;
         margin-right: 20px;
       }
       .t2 {
@@ -1115,7 +1135,7 @@ export default {
       }
     }
     .flash-sale-2 {
-      width: 100%;
+      padding: 0 30px;
       margin-top: 17px;
       .pictures {
         display: flex;
@@ -1150,37 +1170,41 @@ export default {
     }
   }
   .good-world {
-    width: 100%;
+    // width: 100%;
     height: 600px;
-    padding: 0 30px;
+    // padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 50px;
-      line-height: 50px;
+      height: 60px;
+      line-height: 60px;
+      padding-left: 30px;
+      background: url(../../../assets/img/activity/background.png) no-repeat;
+      background-position: 0;
+      background-size: 100% ;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #fa5300;
+        background-color: #ffffff;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #333;
+        color:#ffffff;
         margin-right: 20px;
       }
       .t2 {
         float: right;
         font-size: 20px;
-        color: #666;
+        color:#ffffff;
       }
       .t3 {
         position: absolute;
         top: 20px;
         right: 145px;
         font-size: 24px;
-        color: #666;
+        color:#ffffff;
       }
       .van-count-down {
         display: inline-block;
@@ -1191,8 +1215,9 @@ export default {
     }
     .good-world-brand {
       height: 550px;
-      width: 100%;
+      // width: 100%;
       margin-top: 17px;
+      padding: 0 30px;
       .brand-p-1 {
         width: 100%;
         height: 340px;
@@ -1235,20 +1260,25 @@ export default {
   }
   .good-world-best {
     margin-bottom: 40px;
-    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
+      height: 60px;
+      line-height: 60px;
+      padding-left: 30px;
+      background: url(../../../assets/img/activity/background.png) no-repeat;
+      background-position: 0;
+      background-size: 100% ;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #fa5300;
+        background-color: #ffffff;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #333;
+        color:  #ffffff;
         margin-right: 20px;
       }
       .t2 {
@@ -1256,12 +1286,13 @@ export default {
         top: 20px;
         right: 30px;
         font-size: 20px;
-        color: #666;
+        color: #ffffff;
       }
     }
     .flash-sale-2 {
-      width: 100%;
+      // width: 100%;
       margin-top: 17px;
+      padding: 0 30px;
       .pictures {
         background-color: #f7e8c7;
         padding: 24px 24px 20px;
@@ -1335,36 +1366,39 @@ export default {
     }
   }
   .good-popular {
-    width: 100%;
     height: 462px;
-    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 50px;
-      line-height: 50px;
+      height: 60px;
+      line-height: 60px;
+      padding-left: 30px;
+      background: url(../../../assets/img/activity/background.png) no-repeat;
+      background-position: 0;
+      background-size: 100% ;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #fa5300;
+        background-color:#ffffff;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #333;
+        color:#ffffff;
         margin-right: 20px;
       }
       .t2 {
         float: right;
         font-size: 20px;
-        color: #666;
+        color:#ffffff;
       }
     }
     .good-popular-top {
-      width: 100%;
+      // width: 100%;
       height: 170px;
       margin: 19px 0 10px;
+      padding: 0 30px;
       position: relative;
       display: flex;
       flex-direction: row;
@@ -1389,6 +1423,7 @@ export default {
     /deep/ .van-tabs {
       .van-tabs__wrap {
         min-height: 100px;
+        
         .van-tab {
           // line-height: 88px;
           .van-tab__text {

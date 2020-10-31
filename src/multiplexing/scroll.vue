@@ -6,7 +6,9 @@
       </div>
       <slot></slot>
       <!-- 底部提示信息 -->
-      <div class="bottom-tip" v-show="!pullup && data.length>0">Wow! The end</div>
+      <div v-show="footerTips">
+         <div class="bottom-tip" v-show="!pullup && data.length>0">Wow! The end</div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,6 +28,10 @@ export default {
     probeType: {
       type: Number,
       default: 1,
+    },
+    footerTips:{
+      type: Boolean,
+      default: true,
     },
     /**
      * 点击列表是否派发click事件

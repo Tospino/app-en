@@ -4,20 +4,20 @@
     <div class="search-header c-b-gray">
       <div class="search">
         <van-search v-model="value" shape="round" @click="toSearch">
-          <template #right-icon>
+          <!-- <template #right-icon>    隐藏掉搜索框里的扫描
             <van-icon name="scan" size="20" style="margin-top:6px" />
-          </template>
+          </template> -->
         </van-search>
       </div>
       <div class="icons">
         <!-- 扫码功能去掉 -->
         <img
-          src="@/assets/img/tabbar/home/Message_.png"
+          src="@/assets/img/activity/Message.png"
           class="img1"
           @click="toMessage()"
         />
         <img
-          src="@/assets/img/tabbar/home/msg@3x.png"
+          src="@/assets/img/activity/msg.png"
           class="img2"
           @click="$router.push({name:'消息'})"
         />
@@ -65,6 +65,7 @@ export default {
   height: 88px;
   position: fixed;
   z-index: 1;
+  background-color: #940000; //新增
   .logo {
     position: absolute;
     left: 40px;
@@ -80,11 +81,12 @@ export default {
     position: absolute;
     left: 20px;
     top: 20px;
-    width: 600px;
+    width: 510px;  
     height: 58px;
     overflow: hidden;
     /deep/ .van-search {
-      background: #f2f3f5 !important;
+      // background: #f2f3f5 !important;
+      background: #940000!important;  //修改
       .van-search__content--round {
         height: 58px;
         border-radius: 29px;
@@ -102,16 +104,16 @@ export default {
   }
   .icons {
     position: absolute;
-    left: 623px;
-    top: 30px;
+    left: 560px;
+    top: 20px;
     .img1 {
-      width: 35px;
-      height: 35px;
-      margin-right: 25px;
+      width: 56px;
+      height: 56px;
+      margin-right: 30px;
     }
     .img2 {
-      width: 34px;
-      height: 34px;
+      width: 56px;
+      height: 56px;
     }
   }
 }
