@@ -29,7 +29,7 @@
         <span class="t1">BLACK FRIDAY DISCOUNT</span>
         <span class="t3">RECOMMENDATION</span>
       </div>
-      <div class="product-list" >
+      <div class="product-list">
         <div
           class="product-item"
           v-for="(item, index) in showProduct"
@@ -54,6 +54,7 @@
           </div>
         </div>
       </div>
+      <div class="kongbai" v-show="jixing == 'ios'"></div>
     </scroll>
   </div>
 </template>
@@ -129,11 +130,27 @@ export default {
       pullup: true,
       pulldown: true,
       showData: true,
-      guanmengou: true //看门狗
+      guanmengou: true, //看门狗
+      jixing: null,
     };
   },
   mounted() {
     this.showProductList(this.formData, true);
+
+    //获取当前手机设备型号
+    function checkSystem(){
+      var u = window.navigator.userAgent,
+        app = window.navigator.appVersion;
+      var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Linux") > -1; //g
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isAndroid) {
+        return "android";
+      }
+      if (isIOS) {
+        return "ios";
+      }
+    }
+    this.jixing = checkSystem();
   },
   methods: {
     clickCate(classIdTwo, expIds) {
@@ -221,7 +238,7 @@ export default {
   .banner {
     width: 100%;
     position: relative;
-   background-color: #940000;
+    background-color: #940000;
 
     .t1 {
       display: block;
@@ -252,49 +269,54 @@ export default {
       left: 183px;
     }
   }
-}
-.product-list {
-  padding: 30px 0 75px 30px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-   background-color: #940000;
+  .product-list {
+    padding: 30px 0 75px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    background-color: #940000;
 
-  .product-item {
-    width: 220px;
-    height: 320px;
-    background-color: #ffffff;
-    margin: 15px 15px 0 0;
-    .image {
-      width: 100%;
-      height: 220px;
-    }
-    .original-price {
-      height: 21px;
-      padding-top: 18px;
-      font-size: 20px;
-      font-family: Arial;
-      color: #666666;
-      text-align: center;
-      text-decoration: line-through;
-    }
-    .discount-price {
-      margin: 2px 0 0 30px;
-      width: 160px;
-      height: 48px;
-      background-color: #360b42;
-      border-radius: 24px;
-      text-align: center;
-      span {
-        display: block;
-        padding-top: 10px;
-        color: #fc0f0f;
-        font-size: 30px;
+    .product-item {
+      width: 220px;
+      height: 320px;
+      background-color: #ffffff;
+      margin: 15px 15px 0 0;
+      .image {
+        width: 100%;
+        height: 220px;
+      }
+      .original-price {
+        height: 21px;
+        padding-top: 18px;
+        font-size: 20px;
         font-family: Arial;
-        font-weight: bold;
-        font-style: oblique;
+        color: #666666;
+        text-align: center;
+        text-decoration: line-through;
+      }
+      .discount-price {
+        margin: 2px 0 0 30px;
+        width: 160px;
+        height: 48px;
+        background-color: #360b42;
+        border-radius: 24px;
+        text-align: center;
+        span {
+          display: block;
+          padding-top: 10px;
+          color: #fc0f0f;
+          font-size: 30px;
+          font-family: Arial;
+          font-weight: bold;
+          font-style: oblique;
+        }
       }
     }
+  }
+  .kongbai {
+    width: 100%;
+    height: 80px;
+    background-color: #940000;
   }
 }
 </style>

@@ -163,7 +163,7 @@ import {
   userAddthird,
   userregister,
   msglistApi,
-  getuserinfo,
+  getuserinfo
 } from "@/api/login/index";
 import { accReg, passReg } from "@/common/reg.js";
 import zhezhao from "@/multiplexing/zhezhao";
@@ -181,17 +181,17 @@ export default {
       userData: {
         username: "",
         password: "",
-        username1: "",
+        username1: ""
       },
       rules: {
         username1: {
           required: true,
-          messages: "Enter login username",
+          messages: "Enter login username"
         },
         password: {
           required: true,
-          messages: "Enter login password",
-        },
+          messages: "Enter login password"
+        }
       },
       zhengce: false,
       show: false,
@@ -199,18 +199,18 @@ export default {
         phone: "",
         code: "",
         password: "",
-        areaCode: "+233",
+        areaCode: "+233"
       },
       showKeyboard: false,
       facebook_id: "",
       hasUser: true, // 是否是已注册用户
-      msg: "get code",
+      msg: "get code"
     };
   },
   computed: {
     disabledSubmit() {
       return !this.$fn.isDisabled(this.userData, this.rules) && this.checked;
-    },
+    }
   },
   created() {
     //易观数据采集-----核心页面加载
@@ -220,9 +220,9 @@ export default {
       "core_page_load",
       {
         $url: urlHtm,
-        $title: titHtm,
+        $title: titHtm
       },
-      (rel) => {}
+      rel => {}
     );
   },
   mounted() {
@@ -239,15 +239,15 @@ export default {
   }, //生命周期 - 销毁完成
   watch: {
     eyeStatus: {
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         this.eyeStatus
           ? (this.eyeName = "eye-o")
           : (this.eyeName = "closed-eye");
         this.eyeStatus
           ? (this.inputType = "text")
           : (this.inputType = "password");
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapActions(["classifykeep"]),
@@ -261,7 +261,7 @@ export default {
           this.userData.username = this.userData.username1;
         }
 
-        loginApi(this.userData).then((res) => {
+        loginApi(this.userData).then(res => {
           if (res.code == 0) {
             localStorage.token = res.token;
             if (this.$storage("?historyList")) {
@@ -309,31 +309,32 @@ export default {
               user_id: this.userData.username,
               login_method: "密码",
               is_successful: res.code == 0 ? true : false,
-              failure_reason: reason,
+              failure_reason: reason
             },
-            (rel) => {
-              AnalysysAgent.alias(this.userData.username, (rek) => {});
-            }
+            rel => {}
           );
-          //易观绑定用户属性
-          AnalysysAgent.profileSet(
-            {
-              user_id: res.user.userId,
-              user_type: res.user.isBusiness,
-              phone: res.user.mobile,
-              name: res.user.nickName,
-              vip_level: res.user.levelTitle,
-              register_date: res.user.userAddtime,
-              company_name: res.user.companyName,
-              cumulative_order: res.user.orderTotalNum,
-              balance: res.user.balance,
-              first_source: res.user.auditRemark,
-              total_gmv: res.user.orderAmountWebsite,
-              detailed_address: res.user.companyAddress,
-              main_business: res.user.typeTitle,
-            },
-            (rel) => {}
-          );
+          if (res.code == 0) {
+            AnalysysAgent.alias(this.userData.username, rek => {});
+            //易观绑定用户属性
+            AnalysysAgent.profileSet(
+              {
+                user_id: res.user.userId,
+                user_type: res.user.isBusiness,
+                phone: res.user.mobile,
+                name: res.user.nickName,
+                vip_level: res.user.levelTitle,
+                register_date: res.user.userAddtime,
+                company_name: res.user.companyName,
+                cumulative_order: res.user.orderTotalNum,
+                balance: res.user.balance,
+                first_source: res.user.auditRemark,
+                total_gmv: res.user.orderAmountWebsite,
+                detailed_address: res.user.companyAddress,
+                main_business: res.user.typeTitle
+              },
+              rel => {}
+            );
+          }
         });
       }
 
@@ -343,9 +344,9 @@ export default {
         "btn_click",
         {
           $title: titHtm,
-          btn_name: "Log In",
+          btn_name: "Log In"
         },
-        (rel) => {}
+        rel => {}
       );
     },
     //回车键
@@ -365,14 +366,14 @@ export default {
       if (val === "facebook") {
         // 调用facebook登录
         FB.login(
-          function (response) {
+          function(response) {
             if (response.status === "connected") {
               a.facebook_id = response.authResponse.userID;
-              FB.api("/me", function (response1) {
+              FB.api("/me", function(response1) {
                 doLogin({
                   inputToken: response.authResponse.accessToken,
-                  name: response1.name,
-                }).then((res) => {
+                  name: response1.name
+                }).then(res => {
                   if (res.code === 0) {
                     localStorage.token = res.token;
                     a.$router.push({ name: "首页" });
@@ -386,7 +387,7 @@ export default {
             } else {
               Dialog.alert({
                 title: "Tips",
-                message: "User cancelled login or did not fully authorize.",
+                message: "User cancelled login or did not fully authorize."
               }).then(() => {
                 // on close
               });
@@ -407,8 +408,8 @@ export default {
         checkphonethird({
           userPhone: this.bindForm.phone,
           thirduserId: this.facebook_id,
-          type: 1,
-        }).then((res) => {
+          type: 1
+        }).then(res => {
           switch (res.code) {
             case -110:
               this.hasUser = false;
@@ -444,19 +445,19 @@ export default {
         smsCode: this.bindForm.code,
         password: this.bindForm.password,
         ishaveuser: this.hasUser ? 1 : 0,
-        type: 1,
+        type: 1
       };
       if (this.hasUser) {
         delete query.password;
       }
-      userregister(query).then((res) => {
+      userregister(query).then(res => {
         if (res.code === 0) {
           Toast("Binding success");
           setTimeout(() => {
             localStorage.token = res.token;
             this.$router.push({ name: "首页" });
           }, 1500);
-          getuserinfo().then((req) => {
+          getuserinfo().then(req => {
             this.$storage.set("userinfoShop", req.user);
             this.$storage.set("thirdapp", req.applist);
           });
@@ -469,8 +470,8 @@ export default {
         msglistApi({
           msgphone: this.bindForm.phone,
           areaCode: this.$refs["phone_select"].value,
-          types: 8,
-        }).then((res) => {
+          types: 8
+        }).then(res => {
           if (res.code == 0) {
             Toast("Send Successfully");
             this.msg = 60;
@@ -485,12 +486,12 @@ export default {
       } else {
         Toast("please enter a valid phone number");
       }
-    },
+    }
   },
   components: {
     zhezhao,
-    yinsi,
-  },
+    yinsi
+  }
 };
 </script>
 
