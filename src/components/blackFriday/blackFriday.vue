@@ -15,6 +15,9 @@
       <div class="sale">
         <img src="@/assets/img/activity/heiwu/sale.png" alt="" />
       </div>
+      <div class="callback" @click="$router.go(-1)">
+        <img src="@/assets/img/activity/heiwu/callback1.png" alt="" />
+      </div>
       <div class="banner">
         <img src="@/assets/img/activity/heiwu/banner.png" alt="" />
         <span class="t1">BLACK FRIDAY DISCOUNT</span>
@@ -26,20 +29,28 @@
         <span class="t1">BLACK FRIDAY DISCOUNT</span>
         <span class="t3">RECOMMENDATION</span>
       </div>
-      <div class="product-list">
+      <div class="product-list" >
         <div
           class="product-item"
           v-for="(item, index) in showProduct"
           :key="index"
+          @click="toProductDetail(item.skuId)"
         >
           <div class="image">
             <img v-lazy="$webUrl + item.skuImg" alt="" />
           </div>
           <div class="original-price">
-            <span>{{item.discountPrice == null ? "": (jn + item.salePrice)}}</span>
+            <span>{{
+              item.discountPrice == null ? "" : jn + item.salePrice
+            }}</span>
           </div>
-          <div class="discount-price" @click="toProductDetail(item.skuId)">
-            <span>{{ jn }}{{ item.discountPrice == null ? item.salePrice:item.discountPrice }}</span>
+          <div class="discount-price">
+            <span
+              >{{ jn
+              }}{{
+                item.discountPrice == null ? item.salePrice : item.discountPrice
+              }}</span
+            >
           </div>
         </div>
       </div>
@@ -118,8 +129,7 @@ export default {
       pullup: true,
       pulldown: true,
       showData: true,
-      guanmengou: true, //看门狗
-      
+      guanmengou: true //看门狗
     };
   },
   mounted() {
@@ -194,11 +204,25 @@ export default {
 
 <style scoped lang="less">
 #heiwu {
-  background-color: #940000;
   width: 100%;
+  position: relative;
+  background-color: #940000;
+
+  .bscroll-wrapper {
+    height: 100vh;
+  }
+  .callback {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 64px;
+    left: 22px;
+  }
   .banner {
     width: 100%;
     position: relative;
+   background-color: #940000;
+
     .t1 {
       display: block;
       font-family: Arial;
@@ -234,6 +258,8 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+   background-color: #940000;
+
   .product-item {
     width: 220px;
     height: 320px;

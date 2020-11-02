@@ -1,14 +1,14 @@
 <template>
   <div class="category">
-    <div class="category-item" v-for="(item,index) in categorys" :key="index">
+    <div class="category-item" v-for="(item, index) in categorys" :key="index" @click="toProduList(item.classIdTwo, item.expIds)">
       <div class="image">
-        <img :src=item.img alt="" />
+        <img :src="item.img" alt="" />
       </div>
       <div class="t1">
-        <span>{{item.name}}</span>
+        <span>{{ item.name }}</span>
       </div>
-      <div class="shop-now" @click="toProduList(item.classIdTwo,item.expIds)">
-        <span>{{item.shop}}</span>
+      <div class="shop-now">
+        <span>{{ item.shop }}</span>
       </div>
     </div>
   </div>
@@ -17,24 +17,22 @@
 <script>
 // import categoryItem from "@/components/blackFriday/category/categoryItem";
 
-export default { 
+export default {
   name: "category",
   props: {
-      categorys: {
-        type: Array,
-        default() {
-          return [];
-        }
+    categorys: {
+      type: Array,
+      default() {
+        return [];
       }
+    }
   },
   data() {
-    return {
-      
-    };
+    return {};
   },
   methods: {
-    toProduList(classIdTwo,expIds){
-      this.$emit("clickCate",classIdTwo,expIds);
+    toProduList(classIdTwo, expIds) {
+      this.$emit("clickCate", classIdTwo, expIds);
     }
   },
   components: {}
@@ -46,8 +44,8 @@ export default {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-
-  .category-item {
+  background-color: #940000;
+.category-item {
     width: 50%;
     height: 399px;
     box-sizing: border-box;
