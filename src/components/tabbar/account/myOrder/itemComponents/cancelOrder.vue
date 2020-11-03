@@ -144,7 +144,7 @@ export default {
         "cancel_order",
         {
           order_id: this.$parent.$parent.detailObj.orderSn,
-          order_actual_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
+          order_actual_amounts: this.$parent.$parent.detailObj.orderAmountWebsite,
           shipping_cost: this.$parent.$parent.detailObj.orderFareWebsite,
           pay_channel: pay_method,
           cancel_reason: this.remark,
@@ -154,7 +154,7 @@ export default {
             this.$parent.$parent.detailObj.orderCouponAmountWebsite == 0
               ? false
               : true,
-          order_amount: this.$parent.$parent.detailObj.orderAmountWebsite.toString(),
+          order_amounts: this.$parent.$parent.detailObj.orderAmountWebsite,
           total_discount: this.$parent.$parent.detailObj.orderCouponAmountWebsite.toString(),
         },
         (rel) => {}

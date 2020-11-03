@@ -675,7 +675,9 @@ export default {
 
         //易观数据采集-----注册
         let reason = "";
-        if (res.code == -110) {
+        if (res.code == 0) {
+          reason = 'success';
+        } else if (res.code == -110) {
           reason = "Incorrect verification code.";
         } else if (res.code == -25) {
           reason = "The phone number was registered.";
@@ -708,7 +710,9 @@ export default {
             code: this.formData.recommendCode,
             is_successful: res.code == 0 ? true : false,
           },
-          (rel) => {}
+          (rel) => {
+            AnalysysAgent.alias(this.formData.mobile, (rek) => {});
+          }
         );
         //绑定用户ID
         if(res.code == 0){
