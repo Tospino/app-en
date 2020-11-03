@@ -345,11 +345,23 @@ export default new Router({
                 import(`@/components/tabbar/account/accountBalance/comment`)
         },
         {
-            path: '/accountBalance/accountDetails',
-            name: '账户明细',
-            component: () =>
-                import(`@/components/tabbar/account/accountBalance/accountDetails`)
+            path: '/accountBalance/rechargeIndex',
+            name: '账户明细母页',
+            component: () => import(`@/multiplexing/router.vue`),
+            children: [
+                {
+                    path: 'accountDetails',
+                    name: '账户明细',
+                    component: () => import(`@/components/tabbar/account/accountBalance/accountDetails`)
+                },
+                {
+                    path: 'prepaiRecharge',
+                    name: '余额充值',
+                    component: () => import(`@/components/tabbar/account/prepaidRefill/prepaiRecharge`)
+                },
+            ]
         },
+
         //话费充值
         {
             path: '/rechargeIndex',

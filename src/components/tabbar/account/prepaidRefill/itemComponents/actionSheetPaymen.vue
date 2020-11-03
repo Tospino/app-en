@@ -12,15 +12,17 @@
         <div class="paymen-content-top" @click="showyinhang">
           <span>Pay by</span>
           <van-icon name="arrow" />
-          <span>{{oneTypeName}}</span>
+          <span>{{ oneTypeName }}</span>
         </div>
         <div class="paymen-content-top">
           <span>Total Payment</span>
-          <span class="c-orange">{{jn}}{{paymoeny}}</span>
+          <span class="c-orange">{{ jn }}{{ paymoeny }}</span>
         </div>
       </div>
       <div class="upload">
-        <van-button type="info" size="large" class="load-btn" @click="confirm">Confirm the Payment</van-button>
+        <van-button type="info" size="large" class="load-btn" @click="confirm"
+          >Confirm the Payment</van-button
+        >
       </div>
     </van-action-sheet>
     <action-sheet-yinhang
@@ -33,15 +35,21 @@
 
     <zhezhao v-if="zhezhaoStatus">
       <div class="tanchuang">
-        <p class="p1">{{tips1}}</p>
-        <p class="p2">{{tips2}}</p>
+        <p class="p1">{{ tips1 }}</p>
+        <p class="p2">{{ tips2 }}</p>
         <div v-if="payStatus">
-          <div class="fl-left btn-left" @click="zhezhaoStatus = false">Other Ways</div>
+          <div class="fl-left btn-left" @click="zhezhaoStatus = false">
+            Other Ways
+          </div>
           <div class="fl-right btn-right" @click="orderlaunchpay">OK</div>
         </div>
         <div v-else>
-          <div class="fl-left btn-left" @click="leavePay">Leave without paying</div>
-          <div class="fl-right btn-right" @click="zhezhaoStatus = false">Proceed To Pay</div>
+          <div class="fl-left btn-left" @click="leavePay">
+            Leave without paying
+          </div>
+          <div class="fl-right btn-right" @click="zhezhaoStatus = false">
+            Proceed To Pay
+          </div>
         </div>
       </div>
     </zhezhao>
@@ -64,6 +72,11 @@ export default {
       default: () => {
         return [];
       },
+    },
+    ifYuEStatus: {
+      //是否余额
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -174,13 +187,15 @@ export default {
             arr.push(itemObj);
           });
           //单独添加余额支付类型
-          arr.push({
-            name: "Balance",
-            shortName: "Balance",
-            logourl: this.$webUrl + "/common/image/yuan.png",
-            checked: false,
-            type: 201,
-          });
+          if (!this.ifYuEStatus) {
+            arr.push({
+              name: "Balance",
+              shortName: "Balance",
+              logourl: this.$webUrl + "/common/image/yuan.png",
+              checked: false,
+              type: 201,
+            });
+          }
           this.showList = arr;
         }
       });
