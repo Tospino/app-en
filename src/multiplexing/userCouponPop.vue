@@ -12,7 +12,7 @@
             <i>OFF</i>
           </div>
           <div class="wrapper-btn">
-            <p class="wrapper-title">For &nbsp;New&nbsp; User</p>
+            <p class="wrapper-title">FOR &nbsp;NEW&nbsp; USER</p>
             <div class="btn" @click="newPre(newCoupon.couponId)">
               <img src="@/assets/img/activity/home-btn@2x.png" />
               <span class="btn-box">Get it now</span>
@@ -117,6 +117,7 @@ export default {
         font-size: 31px;
         color:#F3C686;
         padding-bottom: 13px;
+        font-weight: bold;
       }
       .btn {
         width: 230px;

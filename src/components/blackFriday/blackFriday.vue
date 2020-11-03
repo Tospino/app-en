@@ -15,6 +15,9 @@
       <div class="sale">
         <img src="@/assets/img/activity/heiwu/sale.png" alt="" />
       </div>
+      <div class="callback" @click="$router.go(-1)">
+        <img src="@/assets/img/activity/heiwu/callback1.png" alt="" />
+      </div>
       <div class="banner">
         <img src="@/assets/img/activity/heiwu/banner.png" alt="" />
         <span class="t1">BLACK FRIDAY DISCOUNT</span>
@@ -31,18 +34,27 @@
           class="product-item"
           v-for="(item, index) in showProduct"
           :key="index"
+          @click="toProductDetail(item.skuId)"
         >
           <div class="image">
             <img v-lazy="$webUrl + item.skuImg" alt="" />
           </div>
           <div class="original-price">
-            <span>{{item.discountPrice == null ? "": (jn + item.salePrice)}}</span>
+            <span>{{
+              item.discountPrice == null ? "" : jn + item.salePrice
+            }}</span>
           </div>
-          <div class="discount-price" @click="toProductDetail(item.skuId)">
-            <span>{{ jn }}{{ item.discountPrice == null ? item.salePrice:item.discountPrice }}</span>
+          <div class="discount-price">
+            <span
+              >{{ jn
+              }}{{
+                item.discountPrice == null ? item.salePrice : item.discountPrice
+              }}</span
+            >
           </div>
         </div>
       </div>
+      <div class="kongbai" v-show="jixing == 'ios'"></div>
     </scroll>
   </div>
 </template>
@@ -119,11 +131,26 @@ export default {
       pulldown: true,
       showData: true,
       guanmengou: true, //看门狗
-      
+      jixing: null,
     };
   },
   mounted() {
     this.showProductList(this.formData, true);
+
+    //获取当前手机设备型号
+    function checkSystem(){
+      var u = window.navigator.userAgent,
+        app = window.navigator.appVersion;
+      var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Linux") > -1; //g
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isAndroid) {
+        return "android";
+      }
+      if (isIOS) {
+        return "ios";
+      }
+    }
+    this.jixing = checkSystem();
   },
   methods: {
     clickCate(classIdTwo, expIds) {
@@ -194,11 +221,25 @@ export default {
 
 <style scoped lang="less">
 #heiwu {
-  background-color: #940000;
   width: 100%;
+  position: relative;
+  background-color: #940000;
+
+  .bscroll-wrapper {
+    height: 100vh;
+  }
+  .callback {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 64px;
+    left: 22px;
+  }
   .banner {
     width: 100%;
     position: relative;
+    background-color: #940000;
+
     .t1 {
       display: block;
       font-family: Arial;
@@ -228,47 +269,54 @@ export default {
       left: 183px;
     }
   }
-}
-.product-list {
-  padding: 30px 0 75px 30px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  .product-item {
-    width: 220px;
-    height: 320px;
-    background-color: #ffffff;
-    margin: 15px 15px 0 0;
-    .image {
-      width: 100%;
-      height: 220px;
-    }
-    .original-price {
-      height: 21px;
-      padding-top: 18px;
-      font-size: 20px;
-      font-family: Arial;
-      color: #666666;
-      text-align: center;
-      text-decoration: line-through;
-    }
-    .discount-price {
-      margin: 2px 0 0 30px;
-      width: 160px;
-      height: 48px;
-      background-color: #360b42;
-      border-radius: 24px;
-      text-align: center;
-      span {
-        display: block;
-        padding-top: 10px;
-        color: #fc0f0f;
-        font-size: 30px;
+  .product-list {
+    padding: 30px 0 75px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    background-color: #940000;
+
+    .product-item {
+      width: 220px;
+      height: 320px;
+      background-color: #ffffff;
+      margin: 15px 15px 0 0;
+      .image {
+        width: 100%;
+        height: 220px;
+      }
+      .original-price {
+        height: 21px;
+        padding-top: 18px;
+        font-size: 20px;
         font-family: Arial;
-        font-weight: bold;
-        font-style: oblique;
+        color: #666666;
+        text-align: center;
+        text-decoration: line-through;
+      }
+      .discount-price {
+        margin: 2px 0 0 30px;
+        width: 160px;
+        height: 48px;
+        background-color: #360b42;
+        border-radius: 24px;
+        text-align: center;
+        span {
+          display: block;
+          padding-top: 10px;
+          color: #fc0f0f;
+          font-size: 30px;
+          font-family: Arial;
+          font-weight: bold;
+          font-style: oblique;
+        }
       }
     }
+  }
+  .kongbai {
+    width: 100%;
+    height: 80px;
+    background-color: #940000;
   }
 }
 </style>
