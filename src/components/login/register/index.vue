@@ -710,6 +710,10 @@ export default {
           },
           (rel) => {}
         );
+        //绑定用户ID
+        if(res.code == 0){
+          AnalysysAgent.alias(this.formData.mobile, rek => {});
+        }
       });
     },
     //验证码

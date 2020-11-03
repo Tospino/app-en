@@ -314,6 +314,7 @@ export default {
             rel => {}
           );
           if (res.code == 0) {
+            //绑定用户ID
             AnalysysAgent.alias(this.userData.username, rek => {});
             //易观绑定用户属性
             AnalysysAgent.profileSet(

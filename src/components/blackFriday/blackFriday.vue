@@ -315,7 +315,7 @@ export default {
   }
   .kongbai {
     width: 100%;
-    height: 80px;
+    height: 160px;
     background-color: #940000;
   }
 }
