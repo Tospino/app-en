@@ -1,5 +1,9 @@
 <template>
   <div id="heiwu">
+    <div class="callback" @click="$router.go(-1)" >
+      <img src="@/assets/img/activity/heiwu/callback1.png" alt="" />
+      <span>Black Friday</span>
+    </div>
     <!-- 模式一 -->
     <scroll
       class="bscroll-wrapper"
@@ -15,9 +19,7 @@
       <div class="sale">
         <img src="@/assets/img/activity/heiwu/sale.png" alt="" />
       </div>
-      <div class="callback" @click="$router.go(-1)">
-        <img src="@/assets/img/activity/heiwu/callback1.png" alt="" />
-      </div>
+
       <div class="banner">
         <img src="@/assets/img/activity/heiwu/banner.png" alt="" />
         <span class="t1">BLACK FRIDAY DISCOUNT</span>
@@ -83,35 +85,35 @@ export default {
           name: "Clothing",
           shop: "SHOP NOW",
           classIdTwo: 24,
-          expIds: 2
+          expIds: 0
         },
         {
           img: bag,
           name: "Fashion Bag",
           shop: "SHOP NOW",
           classIdTwo: 15,
-          expIds: 2
+          expIds: 0
         },
         {
           img: digital,
           name: "Digital",
           shop: "SHOP NOW",
           classIdTwo: 47,
-          expIds: 2
+          expIds: 0
         },
         {
           img: smart,
           name: "Smart Home",
           shop: "SHOP NOW",
           classIdTwo: 244,
-          expIds: 2
+          expIds: 0
         },
         {
           img: lighting,
           name: "Lighting",
           shop: "SHOP NOW",
           classIdTwo: 38,
-          expIds: 2
+          expIds: 0
         },
         {
           img: overseas,
@@ -132,13 +134,14 @@ export default {
       showData: true,
       guanmengou: true, //看门狗
       jixing: null,
+      back: ""
     };
   },
   mounted() {
     this.showProductList(this.formData, true);
 
     //获取当前手机设备型号
-    function checkSystem(){
+    function checkSystem() {
       var u = window.navigator.userAgent,
         app = window.navigator.appVersion;
       var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Linux") > -1; //g
@@ -224,17 +227,35 @@ export default {
   width: 100%;
   position: relative;
   background-color: #940000;
-
+  .callback {
+    height: 80px;
+    width: 100%;
+    line-height: 80px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: #940000;
+    text-align: center;
+    z-index: 999;
+    img{
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: 20px;
+      left: 32px;
+    }
+    span{
+      color: #FEFEFE;
+      font-size: 32px;
+      font-family: Arial;
+      font-weight: bold;
+    }
+  }
   .bscroll-wrapper {
     height: 100vh;
+    margin-top: 80px;
   }
-  .callback {
-    height: 40px;
-    width: 40px;
-    position: absolute;
-    top: 64px;
-    left: 22px;
-  }
+
   .banner {
     width: 100%;
     position: relative;
