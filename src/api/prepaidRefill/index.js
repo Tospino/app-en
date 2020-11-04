@@ -18,11 +18,11 @@ export function addPhoneRechargeOrderApi(params) {
 }
 
 //创建一个发票并发回slydepay支付令牌
-export function createInvoiceApi(params) {
+export function createInvoiceApi(data) {
     return park({
         url: `/appWallet/CreateInvoice`,
         method: 'GET',
-        params
+        data
     })
 }
 
@@ -68,5 +68,23 @@ export function balancePrepaidRechargeApi(params) {
         url: `/appWallet/balancePrepaidRecharge`,
         method: 'POST',
         data: params
+    })
+}
+
+//余额充值模板
+export function getTodayPayTemplateApi(params) {
+    return park({
+        url: `/appWallet/getTodayPayTemplate`,
+        method: 'POST',
+        data: params
+    })
+}
+
+//钱包模块-余额充值接口
+export function TopupBalanceApi(data) {
+    return park({
+        url: `/appWallet/TopupBalance`,
+        method: 'get',
+        data
     })
 }
