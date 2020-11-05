@@ -1,6 +1,6 @@
 <template>
   <div id="heiwu">
-    <div class="callback" @click="$router.go(-1)" >
+    <div class="callback" @click="$router.go(-1)">
       <img src="@/assets/img/activity/heiwu/callback1.png" alt="" />
       <span>Black Friday</span>
     </div>
@@ -36,7 +36,7 @@
           class="product-item"
           v-for="(item, index) in showProduct"
           :key="index"
-          @click="toProductDetail(item.skuId)"
+          @click="toProductDetail(item.skuId, item)"
         >
           <div class="image">
             <img v-lazy="$webUrl + item.skuImg" alt="" />
@@ -136,6 +136,13 @@ export default {
       jixing: null,
       back: ""
     };
+  },
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由的 meta
+    if (to.name == "商品详情") {
+      to.meta.isBack = true;
+    }
+    next();
   },
   mounted() {
     this.showProductList(this.formData, true);
@@ -237,15 +244,15 @@ export default {
     background-color: #940000;
     text-align: center;
     z-index: 999;
-    img{
+    img {
       width: 40px;
       height: 40px;
       position: absolute;
       top: 20px;
       left: 32px;
     }
-    span{
-      color: #FEFEFE;
+    span {
+      color: #fefefe;
       font-size: 32px;
       font-family: Arial;
       font-weight: bold;
@@ -336,7 +343,7 @@ export default {
   }
   .kongbai {
     width: 100%;
-    height: 160px;
+    height: 200px;
     background-color: #940000;
   }
 }

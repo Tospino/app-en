@@ -711,7 +711,7 @@ export default {
               this.$router.go(-1);
             }, 1000);
           }
-        });
+        }); 
       } else {
         //  无清仓类型
         productdetailApi({ skuid: id }).then((res) => {

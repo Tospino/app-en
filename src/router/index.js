@@ -693,7 +693,10 @@ export default new Router({
     {
       path: "/blackFriday",
       name: "黑色星期五",
-      component: () => import(`@/components/blackFriday/blackFriday.vue`)
+      component: () => import(`@/components/blackFriday/blackFriday.vue`),
+      meta: {
+        keepAlive: true
+      }
     }
   ]
 });
