@@ -419,6 +419,62 @@ export default new Router({
           component: () => import(`@/components/search/searchRecord.vue`)
         },
         {
+          path: '/accountBalance/commentDetail',
+          name: '评论详情',
+          component: () =>
+            import(`@/components/tabbar/account/accountBalance/commentDetail`)
+        },
+        {
+          path: '/accountBalance/commentDetail/comment',
+          name: '我的评论',
+          component: () =>
+            import(`@/components/tabbar/account/accountBalance/comment`)
+        },
+        {
+          path: '/accountBalance/rechargeIndex',
+          name: '账户明细母页',
+          component: () => import(`@/multiplexing/router.vue`),
+          children: [
+            {
+              path: 'accountDetails',
+              name: '账户明细',
+              component: () => import(`@/components/tabbar/account/accountBalance/accountDetails`)
+            },
+            {
+              path: 'prepaiRecharge',
+              name: '余额充值',
+              component: () => import(`@/components/tabbar/account/prepaidRefill/prepaiRecharge`)
+            },
+          ]
+        },
+
+        //话费充值
+        {
+          path: '/rechargeIndex',
+          name: '话费充值母页',
+          component: () => import(`@/multiplexing/router.vue`),
+          children: [
+            {
+              path: 'recharge',
+              name: '话费充值',
+              component: () =>
+                import(`@/components/tabbar/account/prepaidRefill/recharge`)
+            },
+            {
+              path: 'recharge/rechargeDetails',
+              name: '话费充值详情',
+              component: () =>
+                import(`@/components/tabbar/account/prepaidRefill/rechargeDetails`)
+            },
+            {
+              path: 'recharge/rechargeFlow',
+              name: '话费充值记录',
+              component: () =>
+                import(`@/components/tabbar/account/prepaidRefill/rechargeFlow`)
+            }
+          ]
+        },
+        {
           path: "noSearch",
           name: "无搜索商品",
           component: () => import(`@/components/search/noSearch.vue`)
