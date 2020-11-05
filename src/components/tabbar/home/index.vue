@@ -32,7 +32,7 @@
             <van-swipe-item
               v-for="(banner, index) in topBananerList"
               :key="index"
-              @click="swipeClick(banner)"
+              @click="swipeClick(banner,index)"
             >
               <div class="w1">
                 <img v-lazy="$webUrl + banner.advertImg" />
@@ -284,7 +284,7 @@
             </div>
           </div>
         </div>
-        <div class="banner" @click="swipeClick(banner1)">
+        <div class="banner" @click="swipeClick(banner1,6)">
           <img v-lazy="$webUrl + banner1.advertImg" />
         </div>
         <div class="exhibition">
@@ -316,7 +316,7 @@
             </div>
           </div>
         </div>
-        <div class="banner" @click="swipeClick(banner2)">
+        <div class="banner" @click="swipeClick(banner2,7)">
           <img v-lazy="$webUrl + banner2.advertImg" />
         </div>
         <div class="good-popular box">
@@ -336,7 +336,7 @@
             </div>
           </div>
         </div>
-        <div class="banner" @click="swipeClick(banner3)">
+        <div class="banner" @click="swipeClick(banner3,8)">
           <img v-lazy="$webUrl + banner3.advertImg" />
         </div>
         <div class="good-sort">
@@ -783,7 +783,7 @@ export default {
       });
     },
     //点击轮播图
-    swipeClick(el) {
+    swipeClick(el,index) {   
       if (!el.linkUrl) return;
       window.location.href = el.linkUrlEng;
       var targetType = "";
@@ -799,13 +799,15 @@ export default {
       //易观数据采集-----轮播图点击
       let urlHtm = window.location.href;
       let titHtm = document.title;
+      let num = parseInt(index);
       AnalysysAgent.track(
         "banner_click",
         {
           $page_url: urlHtm,
           $page_title: titHtm,
           target_url: el.linkUrlEng,
-          target_type: targetType
+          target_type: targetType,
+          banner_rank: num
         },
         rel => {}
       );
