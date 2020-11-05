@@ -710,13 +710,11 @@ export default {
             code: this.formData.recommendCode,
             is_successful: res.code == 0 ? true : false,
           },
-          (rel) => {
-            AnalysysAgent.alias(this.formData.mobile, (rek) => {});
-          }
+          (rel) => {}
         );
         //绑定用户ID
         if(res.code == 0){
-          AnalysysAgent.alias(this.formData.mobile, rek => {});
+          AnalysysAgent.alias(this.formData.mobile, (rek) => {});
         }
       });
     },
