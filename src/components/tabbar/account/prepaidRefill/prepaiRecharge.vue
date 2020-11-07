@@ -29,7 +29,12 @@
         </div>
       </div>
       <div class="enter-amount" @click="customNum">
-        <van-field v-model="customMony" type="number" class="field" />
+        <van-field
+          v-model="customMony"
+          type="number"
+          class="field"
+          @input="changeMoney"
+        />
       </div>
       <div
         class="btn-next"
@@ -234,6 +239,9 @@ export default {
     //获取到密码,请求接口
     getPassWord(value) {
       (this.payPwd = value), this.topupBalance(this.paidMoneyData);
+    },
+    changeMoney(e) {
+      this.customMony = e.replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
     },
   },
   components: {
