@@ -84,7 +84,7 @@
           <span class="price2" v-if="good.discountPrice != null"
             >{{ jn }}{{ good.salePrice }}</span
           >
-          <span class="fl_ri" style="color: red"
+          <span style="color: red" v-show="good.skuSalesNum"
             >Sales:{{ good.skuSalesNum ? good.skuSalesNum : 0 }}</span
           >
           <!-- <span class="poin">...</span> -->
@@ -260,10 +260,6 @@ export default {
         font-size: 60px;
         top: -35px;
         right: 0;
-      }
-      .fl_ri {
-        position: relative;
-        left: 140px;
       }
     }
     .exhibition-img {

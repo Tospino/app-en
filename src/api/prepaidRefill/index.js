@@ -9,11 +9,11 @@ export function topupFlexiProductListApi(params) {
 }
 
 //生成话费充值订单
-export function addPhoneRechargeOrderApi(params) {
+export function addPhoneRechargeOrderApi(data) {
     return park({
         url: `/appWallet/addPhoneRechargeOrder`,
         method: 'GET',
-        data: params
+        data
     })
 }
 
@@ -27,38 +27,38 @@ export function createInvoiceApi(data) {
 }
 
 //支付回调接口
-export function callbackApi(params) {
+export function callbackApi(data) {
     return park({
         url: `/appWallet/callback`,
         method: 'GET',
-        params
+        data
     })
 }
 
 //话费充值订单详情
-export function phoneOrderDetailApi(params) {
+export function phoneOrderDetailApi(data) {
     return park({
         url: `/appWallet/PhoneOrderDetail`,
         method: 'GET',
-        params
+        data
     })
 }
 
 //话费充值订单列表
-export function phoneOrderListApi(params) {
+export function phoneOrderListApi(data) {
     return park({
         url: `/appWallet/PhoneOrderList`,
         method: 'GET',
-        params
+        data
     })
 }
 
 //删除话费充值订单
-export function deleteRecordApi(params) {
+export function deleteRecordApi(data) {
     return park({
         url: `/appWallet/deleteRecord`,
         method: 'GET',
-        params
+        data
     })
 }
 

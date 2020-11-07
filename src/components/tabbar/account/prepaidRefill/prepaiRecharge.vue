@@ -328,6 +328,7 @@ export default {
       height: 100%;
       .van-field__body {
         height: 100%;
+        font-size: 40px;
       }
     }
   }
