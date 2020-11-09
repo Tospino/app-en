@@ -9,7 +9,9 @@
     ></balance-header>
     <div class="balance-bottom">
       <p class="bottom-p1">Top Up</p>
-      <p class="bottom-p2">Balance: {{ jn }}{{ walletMoney }}</p>
+      <p class="bottom-p2">
+        Balance: {{ jn }}{{ walletMoney ? walletMoney : 0 }}
+      </p>
       <div class="line"></div>
       <p class="tips-middle">
         Select an amount(you can choose an amount below or enter an amount)
@@ -118,7 +120,10 @@ export default {
   },
   computed: {
     disabledSubmit() {
-      return Number(this.customMony) || this.currentItem.money;
+      return (
+        (Number(this.customMony) && Number(this.customMony) > 0) ||
+        (this.currentItem.money && Number(this.customMony) > 0)
+      );
     },
   },
   created() {},
