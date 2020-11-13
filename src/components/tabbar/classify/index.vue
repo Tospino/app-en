@@ -29,7 +29,7 @@
               >
                 <div
                   class="sanji"
-                  @click="toSearOne(product.categoryId,product)"
+                  @click="toSearOne(product.categoryId,product,leftList[activeKey].classNameEng,rightGoods.classNameEng)"
                   prop="product.classNameEng"
                 >
                   <img v-lazy="$webUrl + product.categoryImg" />
@@ -146,12 +146,12 @@ export default {
       });
     },
     //去到搜索里面
-    toSearOne(categoryId,product) {
+    toSearOne(categoryId,product,yiji,erji) {
       this.$router.push({
         name: "搜索商品1",
         query: { categoryId: categoryId }
       });
-
+      console.log(product);
       //易观数据采集---导航栏点击
       let urlHtm = window.location.href;
       let titHtm = document.title;
@@ -162,7 +162,9 @@ export default {
           "https://gh.tospino.com/#/search/searchGoodsOne" +
           "?categoryId=" +
           categoryId,
-        navigation_name: product.classNameEng
+        navigation_name: product.classNameEng,
+        navigation_first_category: yiji,
+        navigation_second_category: erji
       },rel => {});
     }
   },

@@ -85,12 +85,12 @@
             <div class="pictures">
               <div
                 class="p1"
-                v-for="finework in homeObj.producteFineWorkpro"
+                v-for="(finework, index) in homeObj.producteFineWorkpro"
                 :key="finework.skuId"
               >
                 <img
                   v-lazy="$webUrl + finework.imgUrl"
-                  @click="toDetail(finework.skuId, finework)"
+                  @click="toDetail(finework.skuId, finework, 'finework', index)"
                 />
                 <div class="good-name clamp-2">
                   <span
@@ -108,7 +108,7 @@
                       clear_th:
                         finework.activityState == 2 &&
                         finework.activityTagApp != null &&
-                        finework.activityTagApp != '',
+                        finework.activityTagApp != ''
                     }"
                     >{{ finework.activityTagApp }}</span
                   >
@@ -171,8 +171,8 @@
                   query: {
                     skuId: item.skuId,
                     activityId: item.activityId,
-                    activityType: item.activityType,
-                  },
+                    activityType: item.activityType
+                  }
                 })
               "
             >
@@ -230,17 +230,17 @@
               <img
                 v-lazy="$webUrl + brandLogo1.brandLogo"
                 class="brand-p-1-left"
-                @click="toSearOne(brandLogo1.brandId, 'brandId')"
+                @click="toSearOne(brandLogo1.brandId, 'brandId', 10)"
               />
               <img
                 v-lazy="$webUrl + brandLogo2.brandLogo"
                 class="brand-p-1-right-top"
-                @click="toSearOne(brandLogo2.brandId, 'brandId')"
+                @click="toSearOne(brandLogo2.brandId, 'brandId', 11)"
               />
               <img
                 v-lazy="$webUrl + brandLogo3.brandLogo"
                 class="brand-p-1-right-bottom"
-                @click="toSearOne(brandLogo3.brandId, 'brandId')"
+                @click="toSearOne(brandLogo3.brandId, 'brandId', 12)"
               />
             </div>
             <div class="brand-p-2">
@@ -248,7 +248,7 @@
                 v-lazy="$webUrl + globalPro.brandLogo"
                 v-for="(globalPro, index) in globalProList"
                 :key="index"
-                @click="toSearOne(globalPro.brandId, 'brandId')"
+                @click="toSearOne(globalPro.brandId, 'brandId', index)"
               />
             </div>
           </div>
@@ -269,7 +269,9 @@
               >
                 <img
                   v-lazy="$webUrl + fineSale1.imgUrl"
-                  @click="toDetail(fineSale1.skuId, fineSale1)"
+                  @click="
+                    toDetail(fineSale1.skuId, fineSale1, 'fineSale1', index)
+                  "
                 />
                 <div class="good-name">{{ fineSale1.supplyTitle }}</div>
                 <span class="good-price">
@@ -292,12 +294,14 @@
             <div class="pictures">
               <div
                 class="p1"
-                v-for="fineSale2 in fineSaleList2"
+                v-for="(fineSale2, index) in fineSaleList2"
                 :key="fineSale2.skuId"
               >
                 <img
                   v-lazy="$webUrl + fineSale2.imgUrl"
-                  @click="toDetail(fineSale2.skuId, fineSale2)"
+                  @click="
+                    toDetail(fineSale2.skuId, fineSale2, 'fineSale2', index)
+                  "
                 />
                 <span class="good-name clamp-2">
                   {{ fineSale2.supplyTitle }}
@@ -328,9 +332,9 @@
           <div class="good-popular-top">
             <div
               class="good-popular-top-1"
-              v-for="category in homeObj.producteFinecategory"
+              v-for="(category, index) in homeObj.producteFinecategory"
               :key="category.categoryId"
-              @click="toSearOne(category.categoryId, 'categoryId')"
+              @click="toSearOne(category.categoryId, 'categoryId', index)"
             >
               <img v-lazy="$webUrl + category.categoryImg" />
             </div>
@@ -370,8 +374,8 @@
                       class="goods_sale"
                       v-if="
                         searchgoodDao.activityState === 2 &&
-                        searchgoodDao.activityType == 1 &&
-                        searchgoodDao.canSalesNum === 0
+                          searchgoodDao.activityType == 1 &&
+                          searchgoodDao.canSalesNum === 0
                       "
                       alt
                       srcset
@@ -424,7 +428,7 @@
                       clear_th:
                         searchgoodDao.activityState == 2 &&
                         searchgoodDao.activityTagApp != null &&
-                        searchgoodDao.activityTagApp != '',
+                        searchgoodDao.activityTagApp != ''
                     }"
                     >{{ searchgoodDao.activityTagApp }}</span
                   >
@@ -484,7 +488,7 @@ import {
   HomePagebottomApi,
   homeAdvertPictureApi,
   APPgetuserIsfullApi,
-  gethomeClearanceList,
+  gethomeClearanceList
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -502,15 +506,15 @@ export default {
       fineSaleList2: [],
       brandLogo1: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       brandLogo2: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       brandLogo3: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       formData: {
         brandId: 0,
@@ -518,7 +522,7 @@ export default {
         limit: 10,
         page: 1,
         seraname: "",
-        sort: 0,
+        sort: 0
       },
       bottomTabs: [],
       searchgoodDaolist: [],
@@ -531,13 +535,13 @@ export default {
       codeUrl: "",
       topBananerList: [],
       banner1: {
-        advertImg: "",
+        advertImg: ""
       },
       banner2: {
-        advertImg: "",
+        advertImg: ""
       },
       banner3: {
-        advertImg: "",
+        advertImg: ""
       },
       newCouponShow: "", //判断是否为新用户是否展示
       newCoupon: {},
@@ -546,7 +550,7 @@ export default {
       isExit: false,
       clear_one: "", //特价 倒计时
       clear_end: null, //结束时间
-      down_time: "", //特价 倒计时刷新
+      down_time: "" //特价 倒计时刷新
     };
   },
   computed: {},
@@ -624,7 +628,7 @@ export default {
   methods: {
     // 首页新用户优惠券
     newCoupons() {
-      APPgetuserIsfullApi().then((res) => {
+      APPgetuserIsfullApi().then(res => {
         // this.newCouponShow = res.code;
         if (res.code == 0) {
           let userNews = res.Data;
@@ -644,7 +648,7 @@ export default {
     },
     // 领取优惠按钮
     evBus(id) {
-      couponDrawApi(id).then((res) => {
+      couponDrawApi(id).then(res => {
         Toast("Get the success");
       });
     },
@@ -653,7 +657,7 @@ export default {
     },
     //首页数据
     homePage(data) {
-      homePageApi(data).then((res) => {
+      homePageApi(data).then(res => {
         if (res.code == 0) {
           this.homeObj = res.Data;
           this.globalProList = this.homeObj["producteFineBrand"].slice(3);
@@ -685,7 +689,7 @@ export default {
     },
     //底部数据分类
     homePagebottom(data, flag) {
-      HomePagebottomApi(data).then((res) => {
+      HomePagebottomApi(data).then(res => {
         if (res.code == 0) {
           this.bottomTabs = res.top;
 
@@ -749,28 +753,120 @@ export default {
       this.pullup = true;
     },
     //跳转商品详情
-    toDetail(skuid, overall) {
+    toDetail(skuid, overall, type, index) {
       // 活动清仓根据activityId,supplyId,activityType,activityState
       this.$router.push({
         name: "商品详情",
         query: {
           skuId: skuid,
           activityId: overall.activityId,
-          activityType: overall.activityType,
-        },
+          activityType: overall.activityType
+        }
       });
+      if (type == "finework") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Selectives",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品详情页",
+            product_name: overall.supplyTitle,
+            discount: overall.discountPrice == null ? 0 : overall.discountPrice,
+            product_price: overall.salePrice,
+            products_id: overall.skuId,
+            product_sold: overall.skuSalesNum
+          },
+          rel => {}
+        );
+      } else if (type == "fineSale1") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Hot Sales",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品详情页",
+            product_name: overall.supplyTitle,
+            discount: overall.discountPrice == null ? 0 : overall.discountPrice,
+            product_price: overall.salePrice,
+            products_id: overall.skuId,
+            product_sold: overall.skuSalesNum
+          },
+          rel => {}
+        );
+      } else if (type == "fineSale2") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Hot Sales",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index+10,
+            resource_page_name: "商品详情页",
+            product_name: overall.supplyTitle,
+            discount: overall.discountPrice == null ? 0 : overall.discountPrice,
+            product_price: overall.salePrice,
+            products_id: overall.skuId,
+            product_sold: overall.skuSalesNum
+          },
+          rel => {}
+        );
+      }
     },
     //去到搜索里面
-    toSearOne(id, type) {
+    toSearOne(id, type, index) {
       if (type == "categoryId") {
         this.$router.push({ name: "搜索商品1", query: { categoryId: id } });
       } else if (type == "brandId") {
         this.$router.push({ name: "搜索商品1", query: { brandId: id } });
       }
+      if (type == "categoryId") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Hot",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品列表页"
+          },
+          rel => {}
+        );
+      } else if (type == "brandId") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Global Brands",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品列表页"
+          },
+          rel => {}
+        );
+      }
     },
     //首页广告
     homeAdvertPicture() {
-      homeAdvertPictureApi().then((res) => {
+      homeAdvertPictureApi().then(res => {
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
@@ -811,14 +907,14 @@ export default {
           $page_title: titHtm,
           target_url: el.linkUrlEng,
           target_type: targetType,
-          banner_rank: num,
+          banner_rank: num
         },
-        (rel) => {}
+        rel => {}
       );
     },
     //获取用户信息
     getuserinfo() {
-      getuserinfoApi().then((res) => {
+      getuserinfoApi().then(res => {
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }
@@ -830,7 +926,7 @@ export default {
     },
     // 获取特价清仓数据
     getClear() {
-      gethomeClearanceList({ isHome: 1 }).then((res) => {
+      gethomeClearanceList({ isHome: 1 }).then(res => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
           //   特价时间
@@ -842,12 +938,12 @@ export default {
           }
         }
       });
-    },
+    }
   },
   components: {
     searchHeader,
-    userPopup,
-  },
+    userPopup
+  }
 };
 </script>
 

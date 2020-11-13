@@ -474,13 +474,20 @@ export default {
           }, 1000);
         }
       });
-
+      let category = this.$parent.detailmData.typeName.split(",");
       //易观数据采集---加入购物车
       AnalysysAgent.track("add_cart",{
         product_id: this.makeItem.skuId.toString(),
         product_price: this.sectionPrice,
         cart_quantity: this.goodNumber,
         product_name: this.attrTitleEng,
+        total: this.sectionPrice * this.goodNumber,
+        product_sold: this.$parent.detailmData.numIntervalStart,
+        discount: this.$parent.detailmData.discountPrice,
+        coupon_name: this.$parent.moreShop == true ? this.$parent.ProModel.Data.couponName : "无优惠卷",
+        coupon_value: this.$parent.moreShop == true ? this.$parent.ProModel.Data.reduceAmount : 0,
+        product_first_category: category[0],
+        product_second_category: category[1]
       },rel => {})
     },
     //确定按钮购买商品
