@@ -29,8 +29,8 @@
             <span class="t1" @click="jumpRouter('我的足迹')">Pageviews</span>
             <span class="num">{{ zujiTotal }}</span>
           </van-col>
-          <van-col span="8" @click="jumpRouter('余额充值')">
-            <!-- <van-col span="8" @click="jumpRouter('账户明细')"> -->
+          <!-- <van-col span="8" @click="jumpRouter('余额充值')"> -->
+          <van-col span="8" @click="jumpRouter('账户明细')">
             <span class="t1">Balance</span>
             <span class="num">{{ jn }}{{ walletMoney ? walletMoney : 0 }}</span>
           </van-col>
