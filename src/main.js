@@ -42,6 +42,7 @@ import {
 } from '@/api/login/index'
 
 Vue.prototype.$webUrl = "";
+Vue.prototype.$bigwebUrl = "";
 Vue.prototype.jn = "";
 gethttpimgurlApi().then(res => {
   if (res.code == 0) {
