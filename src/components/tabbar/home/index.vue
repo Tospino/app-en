@@ -285,7 +285,7 @@
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner1)">
-          <img v-lazy="$webUrl + banner1.advertImg" />
+          <img v-lazy="$bigwebUrl + banner1.advertImg" />
         </div>
         <div class="exhibition">
           <div class="flash-sale-2">
@@ -317,7 +317,7 @@
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner2)">
-          <img v-lazy="$webUrl + banner2.advertImg" />
+          <img v-lazy="$bigwebUrl + banner2.advertImg" />
         </div>
         <div class="good-popular box">
           <div class="flash-sale-1">
@@ -337,7 +337,7 @@
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner3)">
-          <img v-lazy="$webUrl + banner3.advertImg" />
+          <img v-lazy="$bigwebUrl + banner3.advertImg" />
         </div>
         <div class="good-sort">
           <van-tabs
@@ -786,15 +786,15 @@ export default {
     swipeClick(el) {
       if (!el.linkUrl) return;
       window.location.href = el.linkUrlEng;
-      var targetType = '';
-      if(el.linkUrlEng.substring(25,31) == 'commod'){
-        targetType = '商品详情页';
-      }else if(el.linkUrlEng.substring(25,31) == 'search'){
-        targetType = '列表页';
-      }else if(el.linkUrlEng.substring(25,31) == 'rechar'){
-        targetType = '话费充值页';
-      }else {
-        targetType = '其它';
+      var targetType = "";
+      if (el.linkUrlEng.substring(25, 31) == "commod") {
+        targetType = "商品详情页";
+      } else if (el.linkUrlEng.substring(25, 31) == "search") {
+        targetType = "列表页";
+      } else if (el.linkUrlEng.substring(25, 31) == "rechar") {
+        targetType = "话费充值页";
+      } else {
+        targetType = "其它";
       }
       //易观数据采集-----轮播图点击
       let urlHtm = window.location.href;
