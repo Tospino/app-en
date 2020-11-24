@@ -752,7 +752,7 @@ export default {
             order_amounts:
               parseFloat(this.orderData.allOrderProductAmountWebsite) +
               parseFloat(this.orderData.allOrderFareWebsite),
-            order_actual_amount: this.orderData.allOrderAmountWebsite,
+            order_actual_amounts: parseFloat(this.orderData.allOrderAmountWebsite),
             receiver_area: this.defaultAdderss.district,
             shipping_cost: parseFloat(this.orderData.allOrderFareWebsite),
             order_id: res.Data[0].orderSn,

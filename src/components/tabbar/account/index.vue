@@ -12,26 +12,27 @@
         <div class="head-img">
           <img src="@/assets/img/tabbar/my/account/touxiang@2x.png" />
           <br />
-          <span
-            class="head-name"
-          >{{userinfoShop.userName?userinfoShop.userName:"Set your nickname"}}</span>
+          <span class="head-name">{{
+            userinfoShop.userName ? userinfoShop.userName : "Set your nickname"
+          }}</span>
           <br />
-          <span class="head-id">Account:{{userinfoShop.userId}}</span>
+          <span class="head-id">Account:{{ userinfoShop.userId }}</span>
         </div>
       </div>
       <div class="record">
         <van-row>
           <van-col span="8" @click="jumpRouter('收藏夹')">
             <span class="t1">Collection</span>
-            <span class="num">{{shoucangTotal}}</span>
+            <span class="num">{{ shoucangTotal }}</span>
           </van-col>
           <van-col span="8">
             <span class="t1" @click="jumpRouter('我的足迹')">Pageviews</span>
-            <span class="num">{{zujiTotal}}</span>
+            <span class="num">{{ zujiTotal }}</span>
           </van-col>
+          <!-- <van-col span="8" @click="jumpRouter('余额充值')"> -->
           <van-col span="8" @click="jumpRouter('账户明细')">
             <span class="t1">Balance</span>
-            <span class="num">{{jn}}{{walletMoney ? walletMoney:0}}</span>
+            <span class="num">{{ jn }}{{ walletMoney ? walletMoney : 0 }}</span>
           </van-col>
         </van-row>
       </div>
@@ -40,7 +41,12 @@
           <span>My Order</span>
         </div>
         <div class="order-tabbar">
-          <van-tabbar class="icons" v-model="active" active-color="#666" inactive-color="#666">
+          <van-tabbar
+            class="icons"
+            v-model="active"
+            active-color="#666"
+            inactive-color="#666"
+          >
             <van-tabbar-item @click="toMyOrder(1)">
               <span>Pending Payment</span>
               <img
@@ -163,7 +169,12 @@
           <span>My TOSPINO</span>
         </div>
         <div class="order-tabbar">
-          <van-tabbar class="icons" v-model="active" active-color="#666" inactive-color="#666">
+          <van-tabbar
+            class="icons"
+            v-model="active"
+            active-color="#666"
+            inactive-color="#666"
+          >
             <!-- <span>自定义</span> -->
             <!-- <img slot="icon" slot-scope="props" :src="props.active ? icon.active : icon.inactive"> -->
             <van-tabbar-item info="99" v-if="false">
@@ -260,7 +271,10 @@
           @click="toBindThird"
         >
           <div slot="left-icon" size="small" type="primary" class="icon-left">
-            <img src="@/assets/img/coupon/facebook.png" style="width:20px;height:20px" />
+            <img
+              src="@/assets/img/coupon/facebook.png"
+              style="width: 20px; height: 20px"
+            />
           </div>
         </van-field>
       </van-cell-group>
@@ -275,7 +289,9 @@
           @click="toLanguage('语言')"
         >
           <div slot="left-icon" size="small" type="primary" class="icon-left">
-            <img src="@/assets/img/tabbar/my/account/genggaiguojiadiqu@2x.png" />
+            <img
+              src="@/assets/img/tabbar/my/account/genggaiguojiadiqu@2x.png"
+            />
           </div>
         </van-field>
       </van-cell-group>
@@ -290,7 +306,10 @@
           @click="jumpRouter('话费充值')"
         >
           <div slot="left-icon" size="small" type="primary" class="icon-left">
-            <img src="@/assets/img/tabbar/my/account/chongzhi.png" class="chongzhi" />
+            <img
+              src="@/assets/img/tabbar/my/account/chongzhi.png"
+              class="chongzhi"
+            />
           </div>
         </van-field>
       </van-cell-group>

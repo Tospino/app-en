@@ -285,13 +285,13 @@ export default new Router({
                 },
                 {
                     path: 'aboutTospino',
-                    name: '关于TOSPINO',
+                    name: 'About TOSPINO',
                     component: () =>
                         import(`@/components/tabbar/account/accountSettings/aboutTospino`),
                     children: [
                         {
                             path: 'helpCenter',
-                            name: '帮助中心',
+                            name: 'Help Center',
                             component: () =>
                                 import(
                                     `@/components/tabbar/account/accountSettings/aboutItem/helpCenter`
@@ -299,7 +299,7 @@ export default new Router({
                         },
                         {
                             path: 'introduce',
-                            name: '平台介绍',
+                            name: 'About Tospino',
                             component: () =>
                                 import(
                                     `@/components/tabbar/account/accountSettings/aboutItem/introduce`
@@ -307,7 +307,7 @@ export default new Router({
                         },
                         {
                             path: 'privacyPolicy',
-                            name: '隐私政策',
+                            name: 'Privacy Policy',
                             component: () =>
                                 import(
                                     `@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy`
@@ -315,7 +315,7 @@ export default new Router({
                         },
                         {
                             path: 'userAgreement',
-                            name: '用户协议',
+                            name: 'User Agreement',
                             component: () =>
                                 import(
                                     `@/components/tabbar/account/accountSettings/aboutItem/userAgreement`
@@ -345,11 +345,23 @@ export default new Router({
                 import(`@/components/tabbar/account/accountBalance/comment`)
         },
         {
-            path: '/accountBalance/accountDetails',
-            name: '账户明细',
-            component: () =>
-                import(`@/components/tabbar/account/accountBalance/accountDetails`)
+            path: '/accountBalance/rechargeIndex',
+            name: '账户明细母页',
+            component: () => import(`@/multiplexing/router.vue`),
+            children: [
+                {
+                    path: 'accountDetails',
+                    name: '账户明细',
+                    component: () => import(`@/components/tabbar/account/accountBalance/accountDetails`)
+                },
+                {
+                    path: 'prepaiRecharge',
+                    name: '余额充值',
+                    component: () => import(`@/components/tabbar/account/prepaidRefill/prepaiRecharge`)
+                },
+            ]
         },
+
         //话费充值
         {
             path: '/rechargeIndex',

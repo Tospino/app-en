@@ -474,6 +474,14 @@ export default {
           }, 1000);
         }
       });
+
+      //易观数据采集---加入购物车
+      AnalysysAgent.track("add_cart",{
+        product_id: this.makeItem.skuId.toString(),
+        product_price: this.sectionPrice,
+        cart_quantity: this.goodNumber,
+        product_name: this.attrTitleEng,
+      },rel => {})
     },
     //确定按钮购买商品
     buyProduct() {

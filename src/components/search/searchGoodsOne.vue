@@ -483,6 +483,7 @@ export default {
         position: relative;
         top: 20px;
         left: 30px;
+        overflow: hidden;
         .img-checkbox {
           position: absolute;
           left: 20px;

@@ -7,22 +7,35 @@
         <div class="good-detail-header">
           <span>Product Info</span>
         </div>
-        <div class="good-detail-content" v-for="(data,index) in dataList" :key="index">
+        <div
+          class="good-detail-content"
+          v-for="(data, index) in dataList"
+          :key="index"
+        >
           <div class="good-detail-img">
-            <img v-lazy="$webUrl+data.skuImg" />
+            <img v-lazy="$webUrl + data.skuImg" />
           </div>
           <div class="good-detail-title">
-            <span class="name">{{data.skuName}}</span>
-            <div class="guige">{{data.skuValuesTitleEng}}</div>
+            <span class="name">{{ data.skuName }}</span>
+            <div class="guige">{{ data.skuValuesTitleEng }}</div>
           </div>
           <div class="price">
-            <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
+            <div class="p3">
+              {{ data.currencySignWebsite }}{{ data.priceWebsite }}
+            </div>
             <div class="selection-right-stepper">
               <div
                 class="add-btn"
-                :style="{color:(data.shouldReturnNum == data.canReturnMaxNum?'#dcdcdc':'#999')}"
-                @click="changeStepper(data,'add')"
-              >+</div>
+                :style="{
+                  color:
+                    data.shouldReturnNum == data.canReturnMaxNum
+                      ? '#dcdcdc'
+                      : '#999',
+                }"
+                @click="changeStepper(data, 'add')"
+              >
+                +
+              </div>
               <div class="center-input">
                 <input
                   type="number"
@@ -34,26 +47,39 @@
               </div>
               <div
                 class="reduce-btn"
-                :style="{color:(data.shouldReturnNum==1?'#dcdcdc':'#999')}"
-                @click="changeStepper(data,'reduce')"
-              >一</div>
+                :style="{
+                  color: data.shouldReturnNum == 1 ? '#dcdcdc' : '#999',
+                }"
+                @click="changeStepper(data, 'reduce')"
+              >
+                一
+              </div>
             </div>
           </div>
           <div class="tkje">
             <span class="c-999 f-22">Refund:</span>
-            <span class="fl-right fs-26">{{data.currencySignWebsite}}{{data.totalPriceWebsite}}</span>
+            <span class="fl-right fs-26"
+              >{{ data.currencySignWebsite }}{{ data.totalPriceWebsite }}</span
+            >
           </div>
         </div>
       </div>
       <div class="cell" @click="showReason">
         <span>Reason for refunding</span>
-        <span class="text" :class="{'c-999':formData.reason=='Choose one'}">{{formData.reason}}</span>
+        <span
+          class="text"
+          :class="{ 'c-999': formData.reason == 'Choose one' }"
+          >{{ formData.reason }}</span
+        >
         <van-icon name="arrow" class="arrow c-999" />
       </div>
       <div class="cell">
         <span>Refund</span>
         <span class="text-tk c-orange f-30">
-          <span>{{orderData.currencySignWebsite}}{{orderData.orderAmountWebsite}}</span>
+          <span
+            >{{ orderData.currencySignWebsite
+            }}{{ orderData.orderAmountWebsite }}</span
+          >
           <span class="c-999 f-22"></span>
         </span>
         <div>The refund is your actual payment.</div>
@@ -61,17 +87,28 @@
     </div>
     <div class="cell">
       <span>Refund Description</span>
-      <input type="text" class="input-xt" placeholder="optional" v-model="formData.remark" />
+      <input
+        type="text"
+        class="input-xt"
+        placeholder="optional"
+        v-model="formData.remark"
+      />
     </div>
     <div class="up-load">
       <div class="title">Upload Evidence</div>
       <div class="uploader">
-        <upload-all @getfilePathList="getfilePathList" :maxCount="6"></upload-all>
+        <upload-all
+          @getfilePathList="getfilePathList"
+          :maxCount="6"
+        ></upload-all>
       </div>
     </div>
     <div class="btn-submit" @click="submit">Submit</div>
     <!-- 退款原因 -->
-    <refundReason ref="refundReason" @getReasonText="getReasonText"></refundReason>
+    <refundReason
+      ref="refundReason"
+      @getReasonText="getReasonText"
+    ></refundReason>
   </div>
 </template>
 
@@ -242,13 +279,13 @@ export default {
     blur(itemdetail) {
       if (itemdetail.shouldReturnNum >= itemdetail.canReturnMaxNum) {
         itemdetail.shouldReturnNum = itemdetail.canReturnMaxNum;
-      } else if (itemdetail.shouldReturnNum <= itemdetail.canReturnMaxNum) {
+      } else if (itemdetail.shouldReturnNum <= 0) {
         itemdetail.shouldReturnNum = 1;
       }
       this.changeNumber();
     },
     //更改数量
-    changeNumber() {
+    changeNumber(num) {
       let orderData = {
         orderId: this.$route.query.orderId,
         detailList: [],
@@ -260,6 +297,7 @@ export default {
         };
         orderData.detailList.push(obj);
       });
+
       this.getconfirmreturnorder(orderData);
     },
   },
@@ -377,7 +415,7 @@ export default {
         .add-btn {
           position: absolute;
           top: 20px;
-          right: 0;
+          right: -10px;
           width: 40px;
           height: 40px;
           border: 1px solid #999999;
@@ -387,6 +425,7 @@ export default {
           color: #666;
           border-left: none;
           font-size: 40px;
+          z-index: 999;
         }
         .reduce-btn {
           position: absolute;

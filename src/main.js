@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-09 10:00:20
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-21 18:18:03
+ * @LastEditTime: 2020-10-19 18:20:24
  * @Description:
  * @FilePath: \app-en\src\main.js
  */
@@ -84,10 +84,11 @@ Object.keys(mycomponents).forEach(key => {
 // 易观数据分析
 import AnalysysAgent from "ans-javascript-sdk/SDK/AnalysysAgent_JS_SDK.es6.min.js";
 AnalysysAgent.init({
-  appkey: 'b9a147c9ff75c354', //APPKEY
-  uploadURL: 'http://124.156.105.108:8089', //上传数据的地址
-  SDKFileDirectory: 'http://124.156.105.108:8089', //可视化与热图模块SDK存放目录。
-  debugMode: 1 //0 - 关闭调试模式(默认)；1 - 开启调试模式，数据不入库；2 - 开启调试模式，数据入库
+  appkey: 'f7221fde3eaadc87', //APPKEY
+  uploadURL: 'https://yg.tospino.com/', //上传数据的地址
+  //SDKFileDirectory: 'http://124.156.105.108:8089', //可视化与热图模块SDK存放目录。
+  debugMode: window.location.protocol === 'http:' ? 1 : 0, //0 - 关闭调试模式(默认)；1 - 开启调试模式，数据不入库；2 - 开启调试模式，数据入库
+  sendType: 'post'
 })
 
 // 引入图片懒加载

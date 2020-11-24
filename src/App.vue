@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-09 10:00:20
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-22 17:44:08
+ * @LastEditTime: 2020-10-19 18:20:14
  * @Description: 
  * @FilePath: \app-en\src\App.vue
 -->
@@ -22,6 +22,8 @@ export default {
     //易观数据采集-----核心页面加载
     let urlHtm = window.location.href;
     let titHtm = document.title;
+    //   console.log(returnCitySN["cip"] + "," + returnCitySN["cname"]);
+
     AnalysysAgent.track(
       "core_page_load",
       {
@@ -30,6 +32,11 @@ export default {
       },
       (rel) => {}
     );
+    //注册通用属性 $ip 获取客户端IP地址
+    AnalysysAgent.registerSuperProperty({
+      "$ip": returnCitySN['cip'],
+      "$city": returnCitySN["cname"]
+    }, rel => {});         
   },
   watch: {
     $route: function (to, from) {

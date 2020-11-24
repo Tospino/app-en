@@ -182,6 +182,12 @@ export default {
         name: "搜索商品1",
         query: { seraname: this.goodName },
       });
+      //易观数据采集---搜索按钮点击
+      AnalysysAgent.track('search_btn_click',{
+        '$page_title': 'shop',
+        '$page_url': 'https://gh.tospino.com/#/search/searchGoodsOne'+'?seraname=' + this.goodName
+      },rel => {})
+
       this.$store.state.serchName = this.goodName;
       if (!this.goodName || !this.$storage("?userinfoShop")) return;
       //储存历史数据

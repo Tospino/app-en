@@ -14,7 +14,6 @@
           <div class="iphone-option">
             <select ref="mobilecode">
               <option value="233">+233</option>
-              <option value="86">+86</option>
             </select>
           </div>
           <van-field
@@ -550,6 +549,17 @@ export default {
         this.formData.mobile = this.formData.phone;
       }
       this.userregister();
+
+      //易观数据采集---按钮点击
+      let titHtm = document.title;
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: titHtm,
+          btn_name: "Register",
+        },
+        (rel) => {}
+      );
     },
     getCode() {
       if (this.formData.phone == "") {
@@ -665,7 +675,9 @@ export default {
 
         //易观数据采集-----注册
         let reason = "";
-        if (res.code == -110) {
+        if (res.code == 0) {
+          reason = 'success';
+        } else if (res.code == -110) {
           reason = "Incorrect verification code.";
         } else if (res.code == -25) {
           reason = "The phone number was registered.";
@@ -698,7 +710,9 @@ export default {
             code: this.formData.recommendCode,
             is_successful: res.code == 0 ? true : false,
           },
-          (rel) => {}
+          (rel) => {
+            AnalysysAgent.alias(this.formData.mobile, (rek) => {});
+          }
         );
       });
     },
