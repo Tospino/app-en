@@ -12,12 +12,12 @@
       <div class="icons">
         <!-- 扫码功能去掉 -->
         <img
-          src="@/assets/img/activity/Message.png"
+          src="@/assets/img/activity/christmas/christmas_nav_hlep_3.png"
           class="img1"
           @click="toMessage()"
         />
         <img
-          src="@/assets/img/activity/msg.png"
+          src="@/assets/img/activity/christmas/christmas_nav_hlep_4.png"
           class="img2"
           @click="$router.push({name:'消息'})"
         />
@@ -65,7 +65,7 @@ export default {
   height: 88px;
   position: fixed;
   z-index: 1;
-  background-color: #940000; //新增
+  background-color: #A3030D; //新增
   .logo {
     position: absolute;
     left: 40px;
@@ -86,7 +86,7 @@ export default {
     overflow: hidden;
     /deep/ .van-search {
       // background: #f2f3f5 !important;
-      background: #940000!important;  //修改
+      background: #A3030D!important;  //修改
       .van-search__content--round {
         height: 58px;
         border-radius: 29px;

@@ -4,7 +4,7 @@
     <van-tabbar
       class="icons"
       v-model="active"
-      active-color="#C1272D"
+      active-color="#A3030D"
       inactive-color="#000000"
       route
     >
@@ -15,7 +15,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.home : icon.home"
+          :src="props.active ? icon.home1 : icon.home"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -24,7 +24,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.sort : icon.sort"
+          :src="props.active ? icon.sort1 : icon.sort"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -33,7 +33,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.Message : icon.Message"
+          :src="props.active ? icon.Message1 : icon.Message"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -42,7 +42,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.cart : icon.cart"
+          :src="props.active ? icon.cart1 : icon.cart"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -51,7 +51,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.mine : icon.mine"
+          :src="props.active ? icon.mine1 : icon.mine"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -60,15 +60,21 @@
 </template>
 
 <script>
-import home from "@/assets/img/activity/home.png";
+import home from "@/assets/img/activity/christmas/christmas_nav_home_1.png";
+import cart from "@/assets/img/activity/christmas/christmas_nav_cart_4.png";
+import mine from "@/assets/img/activity/christmas/christmas_nav_my_5.png";
+import sort from "@/assets/img/activity/christmas/christmas_nav_categor_2.png";
+import Message from "@/assets/img/activity/christmas/christmas_nav_hlep_3.png";
+
+import home1 from "@/assets/img/activity/christmas/christmas_nav_home_1hover.png";
+import cart1 from "@/assets/img/activity/christmas/christmas_nav_cart_4hover.png";
+import mine1 from "@/assets/img/activity/christmas/christmas_nav_my_5hover.png";
+import sort1 from "@/assets/img/activity/christmas/christmas_nav_categor_2hover.png";
+import Message1 from "@/assets/img/activity/christmas/christmas_nav_hlep_3hover.png";
 // import home from "@/assets/img/tabbar/home/home@3x.png";
 // import cart1 from "@/assets/img/tabbar/home/cart1@3x.png";
-import cart from "@/assets/img/activity/cart.png";
-import mine from "@/assets/img/activity/mine.png";
 // import mine1 from "@/assets/img/tabbar/home/mine1@3x.png";
-import sort from "@/assets/img/activity/sort.png";
 // import sort1 from "@/assets/img/tabbar/home/sort1@3x.png";
-import Message from "@/assets/img/activity/Message.png";
 // import Message1 from "@/assets/img/tabbar/home/Message.png";
 export default {
   props: {},
@@ -77,15 +83,16 @@ export default {
       active: 0,
       icon: {
         home,
-        // home1,
-        // cart1,
-        cart,
-        mine,
-        // mine1,
-        sort,
-        // sort1,
-        Message,
-        // Message1,
+		cart,
+		mine,
+		sort,
+		Message,
+		
+        home1,
+        cart1,
+        mine1,
+        sort1,
+        Message1,
       },
       isreplace: false,
     };
