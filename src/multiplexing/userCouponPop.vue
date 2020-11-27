@@ -5,21 +5,21 @@
     <van-overlay :show="sale">
       <div class="wrapper">
         <div class="block">
-          <img src="@/assets/img/activity/newUser@2x.png" class="wrapper-youhui" />
+          <img src="@/assets/img/activity/christmas/christmas_home_users_1.png" class="wrapper-youhui" />
           <div class="wrapper-main">
-            <i>GH{{jn}}</i>
+            <i class="money">GH{{jn}}</i>
             {{newCoupon.reduceAmount}}
-            <i>OFF</i>
+            <i class="money">OFF</i>
           </div>
           <div class="wrapper-btn">
-            <p class="wrapper-title">FOR &nbsp;NEW&nbsp; USER</p>
+            <p class="wrapper-title"><!-- FOR &nbsp;NEW&nbsp; USER --></p>
             <div class="btn" @click="newPre(newCoupon.couponId)">
-              <img src="@/assets/img/activity/home-btn@2x.png" />
-              <span class="btn-box">Get it now</span>
+              <!-- <img src="@/assets/img/activity/home-btn@2x.png" /> -->
+              <div class="btn-box">Get it now</div>
             </div>
           </div>
         </div>
-        <div class="line-w"></div>
+        <!-- <div class="line-w"></div> -->
         <div class="wrapper-footer">
           <img src="@/assets/img/coupon/home-icon@2x.png" class="close-icon" @click="close" />
         </div>
@@ -86,37 +86,39 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
+	position: relative;
   }
 
   .block {
-    width: 750px;
-    height: 770px;
+    width: 556px;
+    height: 692px;
     overflow: hidden;
     
     .wrapper-main {
       position: relative;
-      top: -45%;
-      left: 7%;
+      top: -63%;
+      left: -10%;
       text-align: center;
-      font-size: 50px;
+      font-size: 42px;
       color: #F9CF96;
       font-weight: bold;
       width: 660px;
-      i {
-        font-size: 18px;
+      .money {
+        font-size: 14px;
+		 font-weight: 0;
       }
     }
     .wrapper-btn {
       position: relative;
-      top: -38%;
-      left: 33%;
+      top: -64%;
+      left: 26%;
       width: 266px;
       text-align: center;
       .wrapper-title {
         height: 22px;
         font-size: 31px;
         color:#F3C686;
-        padding-bottom: 13px;
+        padding-bottom: 318px;
         font-weight: bold;
       }
       .btn {
@@ -129,8 +131,12 @@ export default {
         }
         .btn-box {
           position: relative;
-          top: -88%;
-          font-size: 36px;
+		  width: 210px;
+		  height: 50px;
+		  line-height: 50px;
+          top: -98%;
+		  left:6%;
+          font-size: 30px;
           color: #ffffff;
         }
       }
@@ -142,10 +148,13 @@ export default {
     background: rgba(255, 255, 255, 1);
   }
   .wrapper-footer {
-    text-align: center;
+    // text-align: center;
+	position: relative;
+	top:-676px;
+	left: 260px;
     .close-icon {
-      width: 70px;
-      height: 70px;
+      width: 40px;
+      height: 40px;
     }
   }
 }

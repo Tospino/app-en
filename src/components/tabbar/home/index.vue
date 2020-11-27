@@ -60,7 +60,7 @@
 				<!-- 圣诞 -->
 				<div class="good-recommend" :style="christmas_home_top">
 					<div class="christmas_top_bg">
-						<img src="@/assets/img/activity/christmas/christmas_top_1.png" class="christmas_top_1" @click="toMessage()" />
+						<img src="@/assets/img/activity/christmas/christmas_top_1.png" class="christmas_top_1" @click="toChristmas()" />
 					</div>
 				</div>
 				<!-- 精品推荐 -->
@@ -566,6 +566,12 @@
 			jumpRouter(name) {
 				this.$router.push({
 					name
+				});
+			},
+			// 圣诞页面
+			toChristmas() {
+				this.$router.push({
+					name: "圣诞节",
 				});
 			},
 			//首页数据
@@ -1636,7 +1642,7 @@
 						}
 					}
 
-					
+
 					.primary {
 						font-size: 26px;
 						// width: 100px;
@@ -1648,7 +1654,7 @@
 
 					.line_right {
 						border-right: 2px solid #fff;
-						height:30px;
+						height: 30px;
 					}
 				}
 			}
