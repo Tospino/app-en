@@ -9,7 +9,9 @@
     ></balance-header>
     <div class="balance-bottom">
       <p class="bottom-p1">Top Up</p>
-      <p class="bottom-p2">Balance: {{ jn }}{{ walletMoney }}</p>
+      <p class="bottom-p2">
+        Balance: {{ jn }}{{ walletMoney ? walletMoney : 0 }}
+      </p>
       <div class="line"></div>
       <p class="tips-middle">
         Select an amount(you can choose an amount below or enter an amount)
@@ -29,7 +31,12 @@
         </div>
       </div>
       <div class="enter-amount" @click="customNum">
-        <van-field v-model="customMony" type="number" class="field" />
+        <van-field
+          v-model="customMony"
+          type="number"
+          class="field"
+          @input="changeMoney"
+        />
       </div>
       <div
         class="btn-next"
@@ -79,7 +86,7 @@ import actionSheetPassword from "./itemComponents/actionSheetPassword";
 import {
   getTodayPayTemplateApi,
   TopupBalanceApi,
-  createInvoiceApi,
+  createInvoiceApi
 } from "@/api/prepaidRefill/index.js";
 import { walletInfoApi } from "@/api/accountBalance/index.js";
 import { Toast } from "vant";
@@ -97,7 +104,7 @@ export default {
         disMoney: null, //赠送金额
         payMethod: 1, //充值方式 （1.三方支付）
         payType: null, //1.选择模板充值 2.输入金额充值
-        payTemplateId: null, //充值模板ID,（在选择模板充值时必填）
+        payTemplateId: null //充值模板ID,（在选择模板充值时必填）
       },
       userinfoShop: {},
       currentIndex: null,
@@ -105,15 +112,18 @@ export default {
       invoiceData: {
         payMainNo: "",
         provider: "",
-        orderSource: "1",
+        orderSource: "1"
       },
       customMony: "",
-      walletMoney: "",
+      walletMoney: ""
     };
   },
   computed: {
     disabledSubmit() {
-      return Number(this.customMony) || this.currentItem.money;
+      return (
+        (Number(this.customMony) && Number(this.customMony) > 0) ||
+        (this.currentItem.money && Number(this.customMony) > 0)
+      );
     },
   },
   created() {},
@@ -135,7 +145,7 @@ export default {
     },
     //话费充值产品列表
     getTodayPayTemplate() {
-      getTodayPayTemplateApi().then((res) => {
+      getTodayPayTemplateApi().then(res => {
         if (res.status_code == 200) {
           this.prepaidMoneyData = res.data.payTemplateList[0];
           this.prepaidMoneyList = this.prepaidMoneyData.payMoneyList;
@@ -147,15 +157,15 @@ export default {
     },
     //钱包信息
     walletInfo() {
-      walletInfoApi().then((res) => {
+      walletInfoApi().then(res => {
         if (res.code == 0) {
           this.walletMoney = res.wallet.walletMoney;
         }
       });
     },
-    //生成话费充值订单
+
     topupBalance(data) {
-      TopupBalanceApi(data).then((res) => {
+      TopupBalanceApi(data).then(res => {
         if (res.status_code == 200) {
           this.invoiceData.payMainNo = res.data.sn;
           this.createInvoice(this.invoiceData);
@@ -165,23 +175,11 @@ export default {
         } else {
           Toast("error");
         }
-
-        //易观数据采集----话费充值
-        AnalysysAgent.track(
-          "add_minutes",
-          {
-            price: data.prepaidActuallyMoney,
-            add_value: data.prepaidMoney,
-            is_successful: res.status_code == 200 ? true : false,
-            failure_reason: res.message,
-          },
-          (rel) => {}
-        );
       });
     },
     //创建一个发票并发回slydepay支付令牌
     createInvoice(data) {
-      createInvoiceApi(data).then((res) => {
+      createInvoiceApi(data).then(res => {
         if (res.status_code == 200) {
           window.location.href = res.data.resultUrl;
         } else {
@@ -213,7 +211,7 @@ export default {
         this.currentItem = {
           arrivalAmount: this.customMony,
           donateMoney: 0,
-          money: this.customMony,
+          money: this.customMony
         };
       }
       if (!this.disabledSubmit) return;
@@ -235,13 +233,16 @@ export default {
     getPassWord(value) {
       (this.payPwd = value), this.topupBalance(this.paidMoneyData);
     },
+    changeMoney(e) {
+      this.customMony = e.replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
+    }
   },
   components: {
     balanceHeader,
     actionSheetPaymen,
     actionSheetSucess,
-    actionSheetPassword,
-  },
+    actionSheetPassword
+  }
 };
 </script>
 
@@ -328,6 +329,7 @@ export default {
       height: 100%;
       .van-field__body {
         height: 100%;
+        font-size: 40px;
       }
     }
   }

@@ -4,8 +4,8 @@
     <van-tabbar
       class="icons"
       v-model="active"
-      active-color="#F83600"
-      inactive-color="#010101"
+      active-color="#C1272D"
+      inactive-color="#000000"
       route
     >
       <!-- <span>自定义</span> -->
@@ -15,7 +15,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.home1 : icon.home"
+          :src="props.active ? icon.home : icon.home"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -24,7 +24,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.sort1 : icon.sort"
+          :src="props.active ? icon.sort : icon.sort"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -33,7 +33,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.Message1 : icon.Message"
+          :src="props.active ? icon.Message : icon.Message"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -42,7 +42,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.cart1 : icon.cart"
+          :src="props.active ? icon.cart : icon.cart"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -51,7 +51,7 @@
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? icon.mine1 : icon.mine"
+          :src="props.active ? icon.mine : icon.mine"
           class="icon-style"
         />
       </van-tabbar-item>
@@ -60,32 +60,32 @@
 </template>
 
 <script>
-import home1 from "@/assets/img/tabbar/home/home1@3x.png";
-import home from "@/assets/img/tabbar/home/home@3x.png";
-import cart1 from "@/assets/img/tabbar/home/cart1@3x.png";
-import cart from "@/assets/img/tabbar/home/cart@3x.png";
-import mine from "@/assets/img/tabbar/home/mine@3x.png";
-import mine1 from "@/assets/img/tabbar/home/mine1@3x.png";
-import sort from "@/assets/img/tabbar/home/sort@3x.png";
-import sort1 from "@/assets/img/tabbar/home/sort1@3x.png";
-import Message from "@/assets/img/tabbar/home/Message_.png";
-import Message1 from "@/assets/img/tabbar/home/Message.png";
+import home from "@/assets/img/activity/home.png";
+// import home from "@/assets/img/tabbar/home/home@3x.png";
+// import cart1 from "@/assets/img/tabbar/home/cart1@3x.png";
+import cart from "@/assets/img/activity/cart.png";
+import mine from "@/assets/img/activity/mine.png";
+// import mine1 from "@/assets/img/tabbar/home/mine1@3x.png";
+import sort from "@/assets/img/activity/sort.png";
+// import sort1 from "@/assets/img/tabbar/home/sort1@3x.png";
+import Message from "@/assets/img/activity/Message.png";
+// import Message1 from "@/assets/img/tabbar/home/Message.png";
 export default {
   props: {},
   data() {
     return {
       active: 0,
       icon: {
-        home1,
         home,
-        cart1,
+        // home1,
+        // cart1,
         cart,
         mine,
-        mine1,
+        // mine1,
         sort,
-        sort1,
+        // sort1,
         Message,
-        Message1,
+        // Message1,
       },
       isreplace: false,
     };
@@ -116,8 +116,8 @@ export default {
     }
   }
   .icon-style {
-    width: 43px;
-    height: 43px;
+    width: 56px;
+    height: 56px;
     margin-bottom: 3px;
   }
 }

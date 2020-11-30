@@ -126,7 +126,7 @@
                   <span class="p3" v-if="good.discountPrice != null"
                     >{{ jn }}{{ good.salePrice }}</span
                   >
-                  <span class="fl-right"
+                  <span class="fl-right" v-show="good.skuSalesNum"
                     >Sales:{{ good.skuSalesNum ? good.skuSalesNum : 0 }}</span
                   >
                   <!-- 省略号,暂时先隐藏 -->
@@ -200,6 +200,7 @@ export default {
         isPC: 2,
         businessId: "",
         expIds: "",
+        classIdTwo: "",
       },
       dataList: [],
       footerData: {},
@@ -227,6 +228,9 @@ export default {
     this.formData.businessId = this.$route.query.businessId;
     this.formData.expIds = this.$route.query.expIds;
     this.searName = this.$route.query.seraname;
+    this.formData.classIdTwo = this.$route.query.classIdTwo
+      ? this.$route.query.classIdTwo
+      : "";
     this.refreshOrder();
   },
   activated() {
@@ -243,6 +247,9 @@ export default {
       this.formData.businessId = this.$route.query.businessId;
       this.formData.expIds = this.$route.query.expIds;
       this.searName = this.$route.query.seraname;
+      this.formData.classIdTwo = this.$route.query.classIdTwo
+        ? this.$route.query.classIdTwo
+        : "";
       this.refreshOrder();
       try {
         this.$refs.wrapper.scrollTo(0, 0);

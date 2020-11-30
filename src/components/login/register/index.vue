@@ -394,6 +394,8 @@ export default {
       },
       zhengce: false,
       userStatus: false,
+      register_time: null, //注册时长定时器
+      duration: null
     };
   },
   computed: {
@@ -406,6 +408,10 @@ export default {
   },
   mounted() {
     this.membertypelit();
+    this.duration = 0;
+    this.register_time = setInterval(() => {
+      this.duration++;
+    },1000)
   },
   watch: {
     eyeStatus: {
@@ -527,6 +533,7 @@ export default {
     },
     toRevise() {
       if (!this.disabledSubmit) return;
+      clearInterval(this.register_time);
       var emReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/; //正则表达式
       if (this.formData.email == "") {
       } else if (!emReg.test(this.formData.email)) {
@@ -709,11 +716,15 @@ export default {
             register_method: "手机号",
             code: this.formData.recommendCode,
             is_successful: res.code == 0 ? true : false,
+            nickname: this.formData.nickName,
+            duration: this.duration
           },
-          (rel) => {
-            AnalysysAgent.alias(this.formData.mobile, (rek) => {});
-          }
+          (rel) => {}
         );
+        //绑定用户ID
+        if(res.code == 0){
+          AnalysysAgent.alias(this.formData.mobile, (rek) => {});
+        }
       });
     },
     //验证码

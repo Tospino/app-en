@@ -305,7 +305,7 @@ import {
   orderlistApi,
   orderlaunchpayApi,
   completeorderApi,
-  orderinfoApi,
+  orderinfoApi
 } from "@/api/myOrder/index.js";
 import cancelOrder from "./itemComponents/cancelOrder";
 import actionSheetPassword from "@/multiplexing/actionSheetPassword";
@@ -326,7 +326,7 @@ export default {
       show2: false,
       show3: false,
       formData: {
-        order_id: "",
+        order_id: ""
       },
       dataList: [],
       detailObj: {},
@@ -336,17 +336,17 @@ export default {
         { type: 2, name: "Pending Receiving" },
         { type: 3, name: "Finish" },
         { type: 4, name: "Closed" },
-        { type: 5, name: "Refused" },
+        { type: 5, name: "Refused" }
       ],
       deliverTypes: [
         { type: 1, name: "Fulfillment by Tospino" },
         { type: 2, name: "Pickup" },
-        { type: 3, name: "Third-party Logistics" },
+        { type: 3, name: "Third-party Logistics" }
       ],
       payTypes: [
         { type: 1, name: "Cash" },
         { type: 2, name: "Online" },
-        { type: 3, name: "Balance" },
+        { type: 3, name: "Balance" }
       ],
       orderId: 0,
       userinfoShop: {},
@@ -354,6 +354,19 @@ export default {
       typeLeixing: "",
       payTypeDetail: 201, //余额支付ID,暂时写死
       showServer: false, // 是否显示客户弹框
+      productName: [], //易观采集--订单详情商品名称
+      productTitle: [], //易观采集--订单详情商品规格
+      productNum: [], //易观采集--订单详情商品购买数量
+      productTsin: [], //易观采集--订单详情商品tsin码
+      productId: [], //易观采集--订单详情商品ID
+      productPrice: [], //易观采集--订单详情商品单价
+      productCategory: [], //易观采集--订单详情商品分类
+      productStoreName: [], //易观采集--订单详情商家名称
+      productSold: [], //易观采集--订单详情商品售出量
+      productNames: null, //易观采集--商品订单商品名称
+      productTitles: null, //易观采集--商品订单商品规格
+      productNums: null, //易观采集--商品订单商品加购数量
+      productTsins: null, //易观采集--商品订单商品tsin码
     };
   },
   computed: {},
@@ -377,39 +390,74 @@ export default {
     },
     orderinfo() {
       this.formData.order_id = this.$route.query.id;
-      orderinfoApi(this.formData).then((res) => {
+      orderinfoApi(this.formData).then(res => {
         if (res.code == 0) {
           this.detailObj = res.Data;
           this.dataList = res.Data.detailList;
         }
         //易观数据采集----支付订单详情
+        for (let i in this.dataList) {
+          this.productName.push(this.dataList[i].skuName);
+          this.productTitle.push(this.dataList[i].skuValuesTitleEng);
+          this.productNum.push(this.dataList[i].detailNum.toString());
+          this.productTsin.push(this.dataList[i].tsinCode);
+          this.productId.push(this.dataList[i].skuId.toString());
+          this.productPrice.push(this.dataList[i].priceWebsite.toString());
+          this.productCategory.push(this.dataList[i].typeName);
+          this.productStoreName.push(this.dataList[i].businessName);
+          this.productSold.push(this.dataList[i].skuSalesNum.toString())
+        }
+        // console.log(this.dataList,this.productName, this.productTitle, this.productNum,this.productTsin,this.productCategory);
+        console.log(this.dataList);
         if (res.Data.orderStatusApp == 1) {
           AnalysysAgent.track(
             "pay_order_detail",
             {
               order_id: res.Data.orderSn,
-              product_id: res.Data.detailList[0].skuId.toString(),
-              order_amount: res.Data.orderAmountWebsite.toString(),
-              product_name: res.Data.detailList[0].skuName,
-              quantity: res.Data.goodCount,
-              product_detail: res.Data.detailList[0].skuValuesTitleEng,
-              product_price: res.Data.detailList[0].priceWebsite,
+              order_amounts: res.Data.orderAmountWebsite,
+              coupon_value: res.Data.orderCouponAmountWebsite,
+              product_names: this.productName,
+              product_details: this.productTitle,
+              quantitys: this.productNum,
+              product_tsins: this.productTsin,
+              product_ids: this.productId,
+              product_prices: this.productPrice,
+              product_categorys: this.productCategory,
+              product_store_name: this.productStoreName,
+              product_solds: this.productSold
             },
-            (rel) => {}
+            rel => {
+              for (let j in this.dataList) {
+                this.productNames = this.productName[j];
+                this.productTitles = this.productTitle[j];
+                this.productNums = Number(this.productNum[j]);
+                this.productTsins = this.productTsin[j];
+                //易观数据采集----商品订单数据
+                AnalysysAgent.track("product_order_data",{
+                  product_name: this.productNames,
+                  product_detail: this.productTitles,
+                  quantity: this.productNums,
+                  product_tsin: this.productTsins
+                },rel => {});
+              }
+            }
           );
         } else if (res.Data.orderStatusApp == 4) {
           AnalysysAgent.track(
             "cancel_detail",
             {
               order_id: res.Data.orderSn,
-              product_id: res.Data.detailList[0].skuId.toString(),
-              order_amount: res.Data.orderAmountWebsite.toString(),
-              product_name: res.Data.detailList[0].skuName,
-              quantity: res.Data.goodCount,
-              product_detail: res.Data.detailList[0].skuValuesTitleEng,
-              product_price: res.Data.detailList[0].priceWebsite,
+              product_ids: this.productId,
+              order_amounts: res.Data.orderAmountWebsite,
+              product_names: this.productName,
+              quantitys: this.productNum,
+              product_details: this.productTitle,
+              product_prices: this.productPrice,
+              product_categorys: this.productCategory,
+              product_store_name: this.productStoreName,
+              product_solds: this.productSold
             },
-            (rel) => {}
+            rel => {}
           );
         }
       });
@@ -422,7 +470,7 @@ export default {
     //编译状态
     orderStatus(type, list) {
       let name = "";
-      this[list].forEach((statu) => {
+      this[list].forEach(statu => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -452,14 +500,14 @@ export default {
     toRefund() {
       this.$router.push({
         name: "退款页面",
-        query: { orderId: this.detailObj.orderId },
+        query: { orderId: this.detailObj.orderId }
       });
     },
     //退货退款页面
     toReturnRefund(item) {
       let arr = [];
       if (!item.detailId) {
-        this.dataList.forEach((ele) => {
+        this.dataList.forEach(ele => {
           if (ele.canReturn == 1) {
             let obj = { detailId: ele.detailId };
             arr.push(obj);
@@ -472,23 +520,23 @@ export default {
       }
       this.$router.push({
         name: "退货退款页面",
-        query: { orderId: this.detailObj.orderId },
+        query: { orderId: this.detailObj.orderId }
       });
     },
     //批量退货退款页面
     toBatchRefund() {
       let arr = [];
-      let arr1 = this.dataList.map((o) => Object.assign({}, o));
-      arr1.forEach((item) => {
+      let arr1 = this.dataList.map(o => Object.assign({}, o));
+      arr1.forEach(item => {
         let obj = {
-          detailId: item.detailId,
+          detailId: item.detailId
         };
         arr.push(obj);
       });
       this.setorderdetaillist(arr);
       this.$router.push({
         name: "批量退货退款",
-        query: { orderId: this.detailObj.orderId },
+        query: { orderId: this.detailObj.orderId }
       });
     },
     refreshOrder() {
@@ -502,10 +550,10 @@ export default {
     copyLink() {
       let _this = this;
       let clipboard = _this.copyBtn;
-      clipboard.on("success", function () {
+      clipboard.on("success", function() {
         Toast("Successful copy!");
       });
-      clipboard.on("error", function () {
+      clipboard.on("error", function() {
         Toast("Failed! Please choose manual copy!");
       });
     },
@@ -513,12 +561,12 @@ export default {
     toDetail(skuid, item) {
       this.$router.push({
         name: "商品详情",
-        query: { skuId: skuid, activityType: item.activityType },
+        query: { skuId: skuid, activityType: item.activityType }
       });
     },
     //订单发起支付
     orderlaunchpay(data) {
-      orderlaunchpayApi(data).then((res) => {
+      orderlaunchpayApi(data).then(res => {
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
@@ -567,13 +615,13 @@ export default {
         let obj = {
           payTypeDetail: this.payTypeDetail,
           payPwd: value,
-          orderList: orderList,
+          orderList: orderList
         };
         this.orderlaunchpay(obj);
       } else if (type == "确认收货") {
         let obj = {
           orderId: this.detailObj.orderId,
-          payPwd: value,
+          payPwd: value
         };
         this.completeorder(obj);
       }
@@ -595,7 +643,7 @@ export default {
     },
     //确认收货
     completeorder(data) {
-      completeorderApi(data).then((res) => {
+      completeorderApi(data).then(res => {
         if (res.code == 0) {
           this.showPassWord(false);
           this.refreshOrder();
@@ -630,7 +678,7 @@ export default {
           );
         }
       });
-    },
+    }
   },
   components: {
     cancelOrder,
@@ -640,8 +688,8 @@ export default {
     balanceHeader,
     actionSheetPaymen,
     actionSheetSucess,
-    customerService,
-  },
+    customerService
+  }
 };
 </script>
 

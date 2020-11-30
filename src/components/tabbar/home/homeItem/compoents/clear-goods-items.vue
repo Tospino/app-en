@@ -14,16 +14,7 @@
         class="goods_items flex flex_start"
         v-for="(item, index) in dataList"
         :key="index"
-        @click="
-          $router.push({
-            name: '商品详情',
-            query: {
-              skuId: item.skuId,
-              activityId: item.activityId,
-              activityType: item.activityType,
-            },
-          })
-        "
+        @click="toProduct(item.skuId,item,index)"
       >
         <div class="goods_warp">
           <div :class="{ img_model: item === 1 }"></div>
@@ -39,7 +30,7 @@
             class="discount"
             :class="{
               discount_gary: item.activityState === 2,
-              pre_fb: item.activityState === 0,
+              pre_fb: item.activityState === 0
             }"
           >
             <!-- parseInt(100 - (item.activityPrice / item.salePrice) * 100) -->
@@ -53,7 +44,7 @@
               class="goods_price"
               :class="{
                 on_fc: item.activityState === 1,
-                pre_fc: item.activityState === 0,
+                pre_fc: item.activityState === 0
               }"
               >₵{{ item.activityPrice }}</span
             >
@@ -119,14 +110,14 @@ export default {
       type: Array,
       default: () => {
         return [];
-      },
-    },
+      }
+    }
   },
   name: "",
   data() {
     return {
       //   nosear1: nosear1,
-      dataList: [],
+      dataList: []
     };
   },
   computed: {},
@@ -134,24 +125,49 @@ export default {
   mounted() {},
   watch: {
     list: {
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         this.getData();
-      },
-    },
+      }
+    }
   },
   methods: {
     getData() {
-      this.dataList = this.list.map((o) => Object.assign({}, o));
+      this.dataList = this.list.map(o => Object.assign({}, o));
     },
+    toProduct(skuId, item,index) {
+      this.$router.push({
+        name: "商品详情",
+        query: {
+          skuId: skuId,
+          activityId: item.activityId,
+          activityType: item.activityType
+        }
+      });
+      //易观数据采集---资源位点击
+      let urlHtm = window.location.href;
+      let titHtm = document.title;
+      AnalysysAgent.track("resource_click",{
+        resource_type: "Clearance Sale",
+        $page_url: urlHtm,
+        $page_title: titHtm,
+        resource_rank: index,
+        resource_page_name: "商品详情页",
+        product_name: item.skuName,
+        discount: item.activityPrice,
+        product_price: item.salePrice,
+        products_id: item.skuId,
+        product_sold: item.activitySaleNum
+      }, rel => {})
+    }
   },
   components: {
     //   noSearGood
-    progressClear,
-  },
+    progressClear
+  }
 };
 </script>
 
-<style scoped lang='less'>
+<style scoped lang="less">
 .pre_fc {
   color: #00a670 !important;
 }
