@@ -980,49 +980,46 @@ export default {
     .active_bg {
       background-color: #f95300 !important;
     }
-    padding: 30px 0;
+    padding: 30px;
     .flash-sale-1 {
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background: url(../../../assets/img/activity/background.png) no-repeat;
-      background-position: 0;
-      background-size: 100%;
+      height: 50px;
+      line-height: 50px;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #ffffff;
+        background-color:#fa5300;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-left: 13px;
         margin-right: 14px;
       }
       .desc {
         font-size: 24px;
         font-weight: 500;
-        color: #ffffff;
+        color: rgba(0, 165, 111, 1);
       }
       .t2 {
         font-size: 24px;
         font-weight: bold;
-        color: #ffffff;
+        color: #333;
         margin-right: 10px;
       }
-      /deep/ .van-icon {
-        color: #ffffff;
-      }
+      // /deep/ .van-icon {
+      //   color: #ffffff;
+      // }
     }
     .flash-sale-2 {
+      background-color: #fff;
       border-radius: 10px;
       margin-top: 20px;
-      // padding: 0 30px;
+      padding: 0 30px;
       .goods_items {
-        margin: 0 30px;
+        // margin: 0 30px;
         padding: 30px 20px;
-        background-color: #fff;
+        // background-color: #fff;
         border-bottom: 1px solid #eee;
         .goods_sale {
           position: absolute;
@@ -1100,11 +1097,11 @@ export default {
     vertical-align: text-top;
     .flash-sale-1 {
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      background: url(../../../assets/img/activity/background.png) no-repeat;
-      background-position: 0;
-      background-size: 100%;
+      // height: 60px;
+      // line-height: 60px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
@@ -1204,29 +1201,29 @@ export default {
     }
   }
   .good-recommend {
-    // width: 100%;
-    // padding: 0 30px;
+    width: 100%;
+    padding: 0 30px;
     margin-bottom: 40px;
     .flash-sale-1 {
-      // width: 100%;
+      width: 100%;
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background: url(../../../assets/img/activity/background.png) no-repeat;
-      background-position: 0;
-      background-size: 100%;
+      height: 50px;
+      line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #ffffff;
+        background-color: #fa5300;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color:#333;
         margin-right: 20px;
       }
       .t2 {
@@ -1236,7 +1233,8 @@ export default {
       }
     }
     .flash-sale-2 {
-      padding: 0 30px;
+      width: 100%;
+      // padding: 0 30px;
       margin-top: 17px;
       .pictures {
         display: flex;
@@ -1271,41 +1269,41 @@ export default {
     }
   }
   .good-world {
-    // width: 100%;
+    width: 100%;
     height: 600px;
-    // padding: 0 30px;
+    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background: url(../../../assets/img/activity/background.png) no-repeat;
-      background-position: 0;
-      background-size: 100%;
+      height: 50px;
+      line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #ffffff;
+        background-color:#fa5300;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-right: 20px;
       }
       .t2 {
         float: right;
         font-size: 20px;
-        color: #ffffff;
+        color: #666;
       }
       .t3 {
         position: absolute;
         top: 20px;
         right: 145px;
         font-size: 24px;
-        color: #ffffff;
+        color: #666;
       }
       .van-count-down {
         display: inline-block;
@@ -1316,7 +1314,7 @@ export default {
     }
     .good-world-brand {
       height: 550px;
-      // width: 100%;
+      width: 100%;
       margin-top: 17px;
       padding: 0 30px;
       .brand-p-1 {
@@ -1361,25 +1359,26 @@ export default {
   }
   .good-world-best {
     margin-bottom: 40px;
+    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background: url(../../../assets/img/activity/background.png) no-repeat;
-      background-position: 0;
-      background-size: 100%;
+      // height: 60px;
+      // line-height: 60px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #ffffff;
+        background-color: #fa5300;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-right: 20px;
       }
       .t2 {
@@ -1387,13 +1386,13 @@ export default {
         top: 20px;
         right: 30px;
         font-size: 20px;
-        color: #ffffff;
+        color:#666;
       }
     }
     .flash-sale-2 {
-      // width: 100%;
+      width: 100%;
       margin-top: 17px;
-      padding: 0 30px;
+      // padding: 0 30px;
       .pictures {
         background-color: #f7e8c7;
         padding: 24px 24px 20px;
@@ -1467,39 +1466,41 @@ export default {
     }
   }
   .good-popular {
+    width: 100%;
     height: 462px;
+    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background: url(../../../assets/img/activity/background.png) no-repeat;
-      background-position: 0;
-      background-size: 100%;
+      height: 50px;
+      line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #ffffff;
+        background-color: #fa5300;
         display: inline-block;
         position: relative;
         top: 5px;
       }
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color:#333;
         margin-right: 20px;
       }
       .t2 {
         float: right;
         font-size: 20px;
-        color: #ffffff;
+        color:  #666;
       }
     }
     .good-popular-top {
-      // width: 100%;
+      width: 100%;
       height: 170px;
       margin: 19px 0 10px;
-      padding: 0 30px;
+      // padding: 0 30px;
       position: relative;
       display: flex;
       flex-direction: row;
