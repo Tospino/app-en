@@ -372,23 +372,18 @@ export default {
         query: {
           skuId: overall.skuId,
           activityId: overall.activityId,
-          //   supplyId: overall.supplyId,
           activityType: overall.activityType,
-          //   activityState: overall.activityState,
         },
       });
     },
     //猜你喜欢点击了商品
     clickPro(skuId, actAll) {
-      //   this.$router.push({ name: "商品详情", query: { skuId } });
       this.$router.push({
         name: "商品详情",
         query: {
           skuId: skuId,
           activityId: actAll.activityId,
-          //   supplyId: actAll.supplyId,
           activityType: actAll.activityType,
-          //   activityState: actAll.activityState,
         },
       });
     },
