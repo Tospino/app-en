@@ -5,16 +5,16 @@
     <van-overlay :show="sale">
       <div class="wrapper">
         <div class="block">
-          <img src="@/assets/img/activity/newUser@2x.png" class="wrapper-youhui" />
+          <img src="@/assets/img/coupon/home@2x.png" class="wrapper-youhui" />
           <div class="wrapper-main">
             <i>GH{{jn}}</i>
             {{newCoupon.reduceAmount}}
             <i>OFF</i>
           </div>
           <div class="wrapper-btn">
-            <p class="wrapper-title">FOR &nbsp;NEW&nbsp; USER</p>
+            <p class="wrapper-title">Sitewide</p>
             <div class="btn" @click="newPre(newCoupon.couponId)">
-              <img src="@/assets/img/activity/home-btn@2x.png" />
+              <img src="@/assets/img/coupon/home-btn@2x.png" />
               <span class="btn-box">Get it now</span>
             </div>
           </div>
@@ -89,40 +89,37 @@ export default {
   }
 
   .block {
-    width: 750px;
-    height: 770px;
+    width: 694px;
+    height: 574px;
     overflow: hidden;
     
     .wrapper-main {
       position: relative;
-      top: -45%;
-      left: 7%;
+      top: -50%;
       text-align: center;
-      font-size: 50px;
-      color: #F9CF96;
+      font-size: 60px;
+      color: #a3672d;
       font-weight: bold;
       width: 660px;
       i {
-        font-size: 18px;
+        font-size: 22px;
       }
     }
     .wrapper-btn {
       position: relative;
-      top: -38%;
-      left: 33%;
-      width: 266px;
+      top: -33%;
+      left: 30%;
+      width: 264px;
       text-align: center;
       .wrapper-title {
-        height: 22px;
-        font-size: 31px;
-        color:#F3C686;
+        font-size: 28px;
+        color: #fa5300;
         padding-bottom: 13px;
-        font-weight: bold;
       }
       .btn {
-        width: 230px;
-        height: 60px;
-        padding: 27px 0 0 16px;
+        width: 264px;
+        height: 64px;
+        // padding: 27px 0 0 16px;
         img {
           max-width: 100%;
           max-height: 100%;

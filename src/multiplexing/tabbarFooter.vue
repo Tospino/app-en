@@ -60,19 +60,14 @@
 </template>
 
 <script>
-// import home from "@/assets/img/activity/home.png";
 import home1 from "@/assets/img/tabbar/home/home1@3x.png";
 import home from "@/assets/img/tabbar/home/home@3x.png";
 import cart1 from "@/assets/img/tabbar/home/cart1@3x.png";
 import cart from "@/assets/img/tabbar/home/cart@3x.png";
-// import cart from "@/assets/img/activity/cart.png";
-// import mine from "@/assets/img/activity/mine.png";
 import mine1 from "@/assets/img/tabbar/home/mine1@3x.png";
 import mine from "@/assets/img/tabbar/home/mine@3x.png";
-// import sort from "@/assets/img/activity/sort.png";
 import sort1 from "@/assets/img/tabbar/home/sort1@3x.png";
 import sort from "@/assets/img/tabbar/home/sort@3x.png";
-// import Message from "@/assets/img/activity/Message.png";
 import Message from "@/assets/img/tabbar/home/Message_.png";
 import Message1 from "@/assets/img/tabbar/home/Message.png";
 export default {
