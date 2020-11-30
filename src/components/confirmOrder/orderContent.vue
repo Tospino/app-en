@@ -765,7 +765,7 @@ export default {
             pay_channel: this.zffs == 1 ? "Cash on delivery" : "Online payment",
             receive_phonenum: this.defaultAdderss.phoneNumber,
             num_products: this.orderData.orderList[0].detailList[0].actDetailNum,
-            shop_id: this.orderData.orderList[0].businessSn
+            store_name: this.orderData.orderList[0].businessSn
           },
           rel => {}
         );

@@ -922,7 +922,6 @@ export default {
       }else if(this.ProModel.Data.couponStatus == 2){
         status = "已结束";
       }
-      console.log(this.ProModel.Data,11111111);
       AnalysysAgent.track(
         "get_coupon",
         {

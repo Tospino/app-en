@@ -533,7 +533,7 @@ export default {
     },
     toRevise() {
       if (!this.disabledSubmit) return;
-      clearTimeout(this.register_time);
+      clearInterval(this.register_time);
       var emReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/; //正则表达式
       if (this.formData.email == "") {
       } else if (!emReg.test(this.formData.email)) {

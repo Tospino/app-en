@@ -408,6 +408,7 @@ export default {
           this.productSold.push(this.dataList[i].skuSalesNum.toString())
         }
         // console.log(this.dataList,this.productName, this.productTitle, this.productNum,this.productTsin,this.productCategory);
+        console.log(this.dataList);
         if (res.Data.orderStatusApp == 1) {
           AnalysysAgent.track(
             "pay_order_detail",
