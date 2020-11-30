@@ -768,7 +768,7 @@ export default {
     },
     //复制内容
     copyinfo(price, title) {
-      this.shareinfos = `Copied to the clipboard Successfully!\nGHS${price} | Tospino\n${title}\n${window.location.href}`;
+      this.shareinfos = `Guessing you'll like it and save a lot!\nGHS${price} | Tospino\n${title}\n${window.location.href}`;
     },
     // 猜你喜欢点击了商品
     clickPro(skuid, actAll) {
