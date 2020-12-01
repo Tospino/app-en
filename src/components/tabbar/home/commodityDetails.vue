@@ -649,18 +649,11 @@ export default {
     productdetail(id, activityType) {
       if (activityType == 1) {
         //清仓活动类型
-        getClearanceDetailApi({
-          skuid: id,
-          //   activityId: this.actId,
-          //   supplyId: this.slyId,
-          // activityType: this.actType,
-          //   activityState: this.actState,
-        }).then((res) => {
+        getClearanceDetailApi({ skuid: id }).then((res) => {
           if (res.code == 0) {
             // 清仓活动
             this.isClearSaleGood = res.Makeupdata;
             this.isClearSaleGood.forEach((ele) => {
-              this.shareinfos = ele.supplyTitle;
               this.clearSaleGoodType = ele.activityType;
               if (ele.activityType == 1) {
                 // this.clearSaleGoodState = ele.activityState;
@@ -671,6 +664,12 @@ export default {
             });
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
+            this.copyinfo(
+              this.detailmData.discountPrice
+                ? this.detailmData.discountPrice
+                : this.detailmData.salePrice,
+              this.detailmData.supplyTitle
+            );
             this.arrClearSale = this.detailmData.activityBegin;
             this.timeOver = this.detailmData.activityEnd;
             //   到货时间展示文字
@@ -711,13 +710,19 @@ export default {
               this.$router.go(-1);
             }, 1000);
           }
-        }); 
+        });
       } else {
         //  无清仓类型
         productdetailApi({ skuid: id }).then((res) => {
           if (res.code == 0) {
             Toast.loading({ loadingType: "spinner", message: "loading..." });
             this.detailmData = res.Data;
+            this.copyinfo(
+              this.detailmData.discountPrice
+                ? this.detailmData.discountPrice
+                : this.detailmData.salePrice,
+              this.detailmData.supplyTitle
+            );
             this.arrClearSale = this.detailmData.activityBegin;
             //   到货时间展示文字
             if (this.detailmData.expId == 2) {
@@ -760,6 +765,10 @@ export default {
           }
         });
       }
+    },
+    //复制内容
+    copyinfo(price, title) {
+      this.shareinfos = `Guessing you'll like it and save a lot!\nGHS${price} | Tospino\n${title}\n${window.location.href}`;
     },
     // 猜你喜欢点击了商品
     clickPro(skuid, actAll) {
@@ -817,12 +826,15 @@ export default {
           product_price: this.detailmData.salePrice,
           product_name: this.detailmData.supplyTitle,
           product_sold: this.detailmData.skuSalesNum,
-          coupon_value: this.ProModel.Data.reduceAmount == null ? 0 : this.ProModel.Data.reduceAmount,
+          coupon_value:
+            this.ProModel.Data.reduceAmount == null
+              ? 0
+              : this.ProModel.Data.reduceAmount,
           discount: this.detailmData.discountPrice,
           $page_url: urlHtm,
           $paeg_title: titHtm,
           product_first_category: category[0],
-          product_second_category: category[1]
+          product_second_category: category[1],
         },
         (rel) => {}
       );
@@ -854,15 +866,15 @@ export default {
       }
       //易观数据采集----商品详情页浏览
       let place = "";
-      if(expId == 1){
+      if (expId == 1) {
         place = "FBM";
-      }else if(expId == 2){
+      } else if (expId == 2) {
         place = "FBT";
       }
       let souce = "";
-      if(this.detailmData.activityType == null){
+      if (this.detailmData.activityType == null) {
         souce = "无活动";
-      }else if(this.detailmData.activityType == 1){
+      } else if (this.detailmData.activityType == 1) {
         souce = "清仓活动";
       }
       let typeName = this.detailmData.typeName;
@@ -883,7 +895,7 @@ export default {
           product_instock: this.$refs.commodityselection.stock,
           commodity_detail_souce: souce,
           product_first_category: category[0],
-          product_second_category: category[1]
+          product_second_category: category[1],
         },
         (rel) => {}
       );
@@ -917,9 +929,9 @@ export default {
         couponType1 = "商品立减券";
       }
       let status = "";
-      if(this.ProModel.Data.couponStatus == 1){
+      if (this.ProModel.Data.couponStatus == 1) {
         status = "活动中";
-      }else if(this.ProModel.Data.couponStatus == 2){
+      } else if (this.ProModel.Data.couponStatus == 2) {
         status = "已结束";
       }
       AnalysysAgent.track(
@@ -935,7 +947,7 @@ export default {
           uptoamount: this.ProModel.Data.upToAmount,
           usermaxdrawnum: this.ProModel.Data.userMaxDrawNum,
           publishNum: this.ProModel.Data.publishNum,
-          couponstatus: status
+          couponstatus: status,
         },
         (rel) => {}
       );
