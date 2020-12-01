@@ -696,14 +696,14 @@ export default new Router({
         //   name: '第三方支付页',
         //   component: thirdPartyPayment
         // },
-        {
-            path: "/blackFriday",
-            name: "黑色星期五",
-            component: () => import(`@/components/blackFriday/blackFriday.vue`),
-            meta: {
-                keepAlive: true
-            }
-        }
+        // {
+        //     path: "/blackFriday",
+        //     name: "黑色星期五",
+        //     component: () => import(`@/components/blackFriday/blackFriday.vue`),
+        //     meta: {
+        //         keepAlive: true
+        //     }
+        // }
     ]
 });
 // 解决重复点击导航路由报错

@@ -1328,7 +1328,6 @@
 				height: 60px;
 				line-height: 60px;
 				padding-left: 30px;
-				background: url(../../../assets/img/activity/background.png) no-repeat;
 				background-position: 0;
 				background-size: 100%;
 
@@ -1430,7 +1429,6 @@
 				height: 60px;
 				line-height: 60px;
 				padding-left: 30px;
-				background: url(../../../assets/img/activity/background.png) no-repeat;
 				background-position: 0;
 				background-size: 100%;
 
@@ -1556,7 +1554,6 @@
 				height: 60px;
 				line-height: 60px;
 				padding-left: 30px;
-				background: url(../../../assets/img/activity/background.png) no-repeat;
 				background-position: 0;
 				background-size: 100%;
 
