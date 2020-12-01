@@ -41,8 +41,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="christmas_red_fixed" v-if="styleFixed==true"></div>
-			<div class="christmas_list_red">
+			<!-- <div class="christmas_red_fixed" v-if="styleFixed==true"></div> -->
+			<div class="christmas_list_red" >
 				<div class="christmas_old_content flex_col_center">
 					<div class="christmas_old_item" v-for="(christmasOldItem,idxo) in christmasOld ">
 						<div class="flex_space box_two">
@@ -63,7 +63,6 @@
 									</div>
 									<div class="christmas_btn mt_22 ml_20">Buy Now</div>
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -167,12 +166,12 @@
 				// 页面滚动距顶部距离
 				var scrollTop = window.pageYOffset || document.documentElement.scrollTop ||
 					document.body.scrollTop
-				console.log(scrollTop)
-				if (scrollTop < 698) {
+				if (scrollTop < 600) {
 					this.styleFixed = false
 				} else {
 					this.styleFixed = true
 				}
+
 				if (scrollTop > 10) {
 					this.christmasBg = true;
 				} else {
@@ -244,7 +243,8 @@
 	}
 
 	.christmas_top {
-		position: fixed;
+		position: sticky;
+		top: 0;
 		width: 100%;
 		z-index: 2;
 		height: 88px;
@@ -259,16 +259,15 @@
 	}
 
 	.christmas_old_fixed {
-		position: fixed;
+		position: sticky;
 		z-index: 1;
 		// top: 0;
 		top: -82px;
 	}
 
-	.christmas_red_fixed {
-		height:340px;
-		background-color: #A3030D;
-	}
+	// .christmas_red_fixed {
+	// 	// background-color: #A3030D;
+	// }
 
 	.christmas_banner {
 		background: url('~@/assets/img/activity/christmas/christmas_list_first_had.png') no-repeat;
@@ -359,10 +358,11 @@
 
 		.christmas_list_red {
 			background-color: #A3030D;
-			padding: 50px 16px 40px 16px;
+			padding: 40px 16px 40px 16px;
 
 			.christmas_old_content {
 				// box-sizing: border-box;
+				// height: 1160px;
 				background: #FFF6EF;
 				border: 4px solid #E8A976;
 				// border-top: 0;

@@ -39,6 +39,7 @@
       </div>
     </div>
     <div class="cell">
+			<!-- <span style="color: red;font-size: 16px;">*</span> -->
       <span>Refund Description</span>
       <input type="text" class="input-xt" placeholder="optional" v-model="formData.remark" />
     </div>
@@ -191,6 +192,13 @@ export default {
         Toast("Choose reason for refund");
         return;
       }
+	  // else if(this.formData.remark==''){
+		 //  Toast("Please state refund instructions");
+		 //  return;
+	  // }else if(this.uploadList.length===0){
+		 //  Toast("Please upload pictures of valid refund");
+		 //  return;
+	  // }
       let arr = [];
       let imgList = [];
       this.uploadList.forEach((ele) => {
