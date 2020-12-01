@@ -987,7 +987,7 @@ export default {
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #fa5300;
+        background-color:#fa5300;
         top: 5px;
       }
       .t1 {
@@ -1223,7 +1223,7 @@ export default {
       }
       .t1 {
         font-size: 30px;
-        color: #333;
+        color:#333;
         margin-right: 20px;
       }
       .t2 {
@@ -1283,7 +1283,7 @@ export default {
       .put-line {
         width: 6px;
         height: 40px;
-        background-color: #fa5300;
+        background-color:#fa5300;
         display: inline-block;
         position: relative;
         top: 5px;
@@ -1316,7 +1316,7 @@ export default {
       height: 550px;
       width: 100%;
       margin-top: 17px;
-      // padding: 0 0px;
+      padding: 0 30px;
       .brand-p-1 {
         width: 100%;
         height: 340px;
@@ -1386,7 +1386,7 @@ export default {
         top: 20px;
         right: 30px;
         font-size: 20px;
-        color: #666;
+        color:#666;
       }
     }
     .flash-sale-2 {
@@ -1487,13 +1487,13 @@ export default {
       }
       .t1 {
         font-size: 30px;
-        color: #333;
+        color:#333;
         margin-right: 20px;
       }
       .t2 {
         float: right;
         font-size: 20px;
-        color: #666;
+        color:  #666;
       }
     }
     .good-popular-top {
