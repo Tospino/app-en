@@ -122,9 +122,9 @@ export default {
         font-weight: bold;
       }
       .btn {
-        width: 230px;
-        height: 60px;
-        padding: 27px 0 0 16px;
+        width: 264px;
+        height: 64px;
+        // padding: 27px 0 0 16px;
         img {
           max-width: 100%;
           max-height: 100%;

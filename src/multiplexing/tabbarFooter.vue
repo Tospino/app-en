@@ -123,8 +123,8 @@ export default {
     }
   }
   .icon-style {
-    width: 56px;
-    height: 56px;
+    width: 43px;
+    height: 43px;
     margin-bottom: 3px;
   }
 }

@@ -81,7 +81,7 @@ export default {
     position: absolute;
     left: 20px;
     top: 20px;
-    width: 510px;  
+    width: 600px;  
     height: 58px;
     overflow: hidden;
     /deep/ .van-search {
@@ -104,16 +104,16 @@ export default {
   }
   .icons {
     position: absolute;
-    left: 560px;
-    top: 20px;
+    left: 623px;
+    top: 30px;
     .img1 {
-      width: 56px;
-      height: 56px;
-      margin-right: 30px;
+      width: 35px;
+      height: 35px;
+      margin-right: 25px;
     }
     .img2 {
-      width: 56px;
-      height: 56px;
+      width: 34px;
+      height: 34px;
     }
   }
 }

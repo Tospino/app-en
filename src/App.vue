@@ -28,15 +28,18 @@ export default {
       {
         $url: urlHtm,
         $title: titHtm,
-        duration: startTime/1000
+        duration: startTime / 1000,
       },
       (rel) => {}
     );
     //注册通用属性 $ip 获取客户端IP地址
-    AnalysysAgent.registerSuperProperty({
-      "$ip": returnCitySN['cip'],
-      "$city": returnCitySN["cname"]
-    }, rel => {});         
+    AnalysysAgent.registerSuperProperty(
+      {
+        $ip: returnCitySN["cip"],
+        $city: returnCitySN["cname"],
+      },
+      (rel) => {}
+    );
   },
   watch: {
     $route: function (to, from) {
@@ -78,6 +81,20 @@ export default {
       } catch (err) {
         console.log(err.message);
       }
+
+      function clearCaching() {
+        if (window.plus) {
+          plusReady();
+        } else {
+          document.addEventListener("plusready", plusReady, false);
+        }
+
+        function plusReady() {
+          alert(0);
+          plus.cache.clear();
+        }
+      }
+      clearCaching();
     }, 1000);
   },
 };

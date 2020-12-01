@@ -715,32 +715,7 @@ export default {
         }
 
         //易观数据采集----支付订单
-        // let reason = "";
-        // if (res.code == 1) {
-        //   reason = "Parameter “requestModel” cannot be empty.";
-        // } else if (res.code == 2) {
-        //   reason = "Parameter”orderList” cannot not be empty.";
-        // } else if (res.code == 3) {
-        //   reason = "Parameter Method of Payment cannot not be empty.";
-        // } else if (res.code == 4) {
-        //   reason = "Parameter Shipping Address ID cannot not be empty.";
-        // } else if (res.code == 5) {
-        //   reason = "Parameter Anonymous Buyer cannot not be empty.";
-        // } else if (res.code == 6) {
-        //   reason = "Parameter Order List cannot not be empty.";
-        // } else if (res.code == 7) {
-        //   reason = "Parameter”detailList” cannot not be empty.";
-        // } else if (res.code == 21) {
-        //   reason = "The product is invalid. Please reconfirm the order.";
-        // } else if (res.code == 22) {
-        //   reason = "The MOQ is insufficient. Please reconfirm the order.";
-        // } else if (res.code == 23) {
-        //   reason = "The stock is insufficient. Please reconfirm the order.";
-        // } else if (res.code == 24) {
-        //   reason = "The product price is changed. Please reconfirm the order.";
-        // } else if (res.code == 25) {
-        //   reason = "FBM products do not support pay by cash.";
-        // }
+        
         AnalysysAgent.track(
           "pay_order",
           {
@@ -766,9 +741,8 @@ export default {
               this.orderData.allOrderCouponAmountWebsite == 0 ? false : true,
             pay_channel: this.zffs == 1 ? "Cash on delivery" : "Online payment",
             receive_phonenum: this.defaultAdderss.phoneNumber,
-            num_products: this.orderData.orderList[0].detailList[0]
-              .actDetailNum,
-            store_name: this.orderData.orderList[0].businessSn,
+            num_products: this.orderData.orderList[0].detailList[0].actDetailNum,
+            store_name: this.orderData.orderList[0].businessSn
           },
           (rel) => {}
         );
