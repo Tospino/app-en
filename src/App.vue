@@ -90,8 +90,8 @@ export default {
         }
 
         function plusReady() {
-          alert(0);
           plus.cache.clear();
+          alert(0);
         }
       }
       clearCaching();
