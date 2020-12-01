@@ -179,7 +179,7 @@ export default {
           add_value: data.prepaidMoney,
           is_successful: res.status_code == 200 ? true:false,
           failure_reason: res.message,
-          phone_num: Number(data.referalNumber)
+          phone_num: data.referalNumber
         },rel => {})
       });
     },
