@@ -17,9 +17,9 @@
 					<div class="main_shop_box flex flex_warp " :class="{'flex':(christmasFrist.length%3)!==0,'flex_space':(christmasFrist.length%3)===0}">
 						<div :class="{'mr_15':idx==0||idx==1 ||idx==3 ||idx==4}" v-for="(christmasItem,idx) in christmasFrist">
 							<div class="main_christmas flex_col_center pd_b_40">
-								<img src="@/assets/img/activity/christmas/christmas_list_first_had.png" class="main_img" />
+								<img  class="main_img"  v-lazy="$webUrl + christmasItem.skuImg" @click="toDetail(christmasItem.skuId)"/>
 								<span class="main_text txt_color mt_10">
-									<i>{{jn}}</i> 26.88
+									<i>{{jn}}</i> {{christmasItem.activityPrice}}
 								</span>
 								<div class="christmas_btn mt_6">Buy Now</div>
 							</div>
@@ -32,17 +32,17 @@
 		<!-- 圣诞-红 -->
 		<div class="christmas_old">
 			<div class="christmas_old_img" :class="{christmas_old_fixed:styleFixed==true}">
-				<div class="christmas__old_item  flex_space flex_warp">
+				<div class="christmas__old_item  flex flex_warp">
 					<div class="christmas_old_box" v-for="(tabItem,idx) in christmasTab">
 						<img src="@/assets/img/activity/christmas/christmas_list_lable.png" class="tab_click_icon" v-if="arrSelect==idx" />
 						<div class="tab_bg tab_bg_r " :class="{'tab_bg_click':arrSelect==idx}" @click="btnTitle(idx)">
-							{{tabItem.lable}}
+							{{tabItem.themeModuleName}}
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- <div class="christmas_red_fixed" v-if="styleFixed==true"></div> -->
-			<div class="christmas_list_red" >
+			<div class="christmas_list_red">
 				<div class="christmas_old_content flex_col_center">
 					<div class="christmas_old_item" v-for="(christmasOldItem,idxo) in christmasOld ">
 						<div class="flex_space box_two">
@@ -76,49 +76,17 @@
 <script>
 	// import detailsHeader from "@/multiplexing/detailsHeader";
 	// import { productevaluationlistApi } from "@/api/home/commodityDetails";
+	import {
+		christmasThemeApi,
+		christmasThemeategoryApi
+	} from "@/api/home/index";
 	export default {
 		name: "christmas",
 		props: {},
 		data() {
 			return {
-				christmasFrist: [{
-						money: 26.88
-					},
-					{
-						money: 26.88
-					},
-					{
-						money: 26.88
-					},
-					{
-						money: 26.88
-					},
-					{
-						money: 26.88
-					},
-					{
-						money: 26.88
-					},
-				],
-				christmasTab: [{
-						lable: "Lighting"
-					},
-					{
-						lable: "Smart Life"
-					},
-					{
-						lable: "Overseas"
-					},
-					{
-						lable: "Men"
-					},
-					{
-						lable: "Women"
-					},
-					{
-						lable: "Beauty"
-					},
-				],
+				christmasFrist: [],
+				christmasTab: [],
 				christmasOld: [{
 						lable: "2020 new bag women's small fragrance rhombus chain bag shoulder bag messenger bag female bag",
 						delet: 60.88
@@ -146,11 +114,22 @@
 				],
 				arrSelect: 0,
 				christmasBg: false, //圣诞
-				styleFixed: false
+				styleFixed: false,
+				christmasData: {
+					page: 1,
+					limit: 10,
+					moduleId: 0
+				},
+				christmasPage:{
+					page: 1,
+					limit: 10,
+				}
 			};
 		},
 		computed: {},
-		created() {},
+		created() {
+			this.theme()
+		},
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll, true);
 			// 监听（绑定）滚轮 滚动事件
@@ -177,6 +156,25 @@
 				} else {
 					this.christmasBg = false;
 				}
+			},
+			
+			// 圣诞专栏
+			theme() {
+				christmasThemeategoryApi(this.christmasData).then((res) => {
+					if(res.code==0){
+						this.christmasFrist=res.page.list
+					}
+				})
+				christmasThemeApi(this.christmasPage).then((res) => {
+					this.christmasTab=res.page.list
+				})
+			},
+			//跳转详情页
+			toDetail(skuId) {
+			  this.$router.push({
+			    name: "商品详情",
+			    query: { skuId: skuId },
+			  });
 			},
 		},
 		components: {},
