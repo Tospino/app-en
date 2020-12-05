@@ -17,11 +17,11 @@
 					<div class="main_shop_box flex flex_warp " :class="{'flex':(christmasFrist.length%3)!==0,'flex_space':(christmasFrist.length%3)===0}">
 						<div :class="{'mr_15':idx==0||idx==1 ||idx==3 ||idx==4}" v-for="(christmasItem,idx) in christmasFrist">
 							<div class="main_christmas flex_col_center pd_b_40">
-								<img  class="main_img"  v-lazy="$webUrl + christmasItem.skuImg" @click="toDetail(christmasItem.skuId)"/>
+								<img class="main_img" v-lazy="$webUrl + christmasItem.skuImg" @click="toDetail(christmasItem.skuId)" />
 								<span class="main_text txt_color mt_10">
-									<i>{{jn}}</i> {{christmasItem.activityPrice}}
+									<i>{{jn}}</i> {{christmasItem.activityPrice?christmasItem.activityPrice:christmasItem.salePrice}}
 								</span>
-								<div class="christmas_btn mt_6">Buy Now</div>
+								<div class="christmas_btn mt_6" @click="toDetail(christmasItem.skuId)">Buy Now</div>
 							</div>
 						</div>
 					</div>
@@ -35,38 +35,53 @@
 				<div class="christmas__old_item  flex flex_warp">
 					<div class="christmas_old_box" v-for="(tabItem,idx) in christmasTab">
 						<img src="@/assets/img/activity/christmas/christmas_list_lable.png" class="tab_click_icon" v-if="arrSelect==idx" />
-						<div class="tab_bg tab_bg_r " :class="{'tab_bg_click':arrSelect==idx}" @click="btnTitle(idx)">
+						<div class="tab_bg tab_bg_r " :class="{'tab_bg_click':arrSelect==idx}" @click="btnTitle(idx,tabItem)">
 							{{tabItem.themeModuleName}}
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- <div class="christmas_red_fixed" v-if="styleFixed==true"></div> -->
-			<div class="christmas_list_red">
-				<div class="christmas_old_content flex_col_center">
-					<div class="christmas_old_item" v-for="(christmasOldItem,idxo) in christmasOld ">
-						<div class="flex_space box_two">
-							<img src="@/assets/img/activity/christmas/christmas_list_first_had.png" class="christmas_old_img" />
-							<div class="box_right">
-								<div class="title_two">
-									<img src="@/assets/img/activity/christmas/christmas_list_lable.png" class="title_two_icon" />
-									<span class="title_two_text">Christmas Festival</span>
-								</div>
-								<div class="text_conter">
-									{{christmasOldItem.lable}}
-								</div>
 
-								<div class="mt_22 flex">
-									<div>
-										<del class="text_del">{{jn}} {{christmasOldItem.delet}}</del>
-										<div class="text_price txt_color"><i>{{jn}}</i> {{christmasOldItem.delet}}</div>
+			<div class="christmas_list_red">
+				<div class="christmas_list_red_bg" v-if="styleBg==false"></div>
+				<div class="christmas_old_content flex_col_center">
+					<div v-if="christmasOld.length!==0" >
+						<scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown"
+						 @pullup="_pullup" v-show="showData">
+							<div class="christmas_old_item" v-for="(christmasOldItem,idxo) in christmasOld ">
+								<div class="flex_space box_two">
+									<img v-lazy="$webUrl + christmasOldItem.skuImg" class="christmas_old_img" @click="toDetail(christmasOldItem.skuId)"/>
+									<div class="box_right">
+										<div class="title_two">
+											<img src="@/assets/img/activity/christmas/christmas_list_lable.png" class="title_two_icon" />
+											<span class="title_two_text">Christmas Festival</span>
+										</div>
+										<div class="text_conter">
+											{{christmasOldItem.skuValuesTitleEng}}
+										</div>
+
+										<div class="mt_22 flex">
+											<div>
+												<del class="text_del">{{jn}} {{christmasOldItem.salePrice}}</del>
+												<div class="text_price txt_color"><i>{{jn}}</i>
+													{{christmasOldItem.activityPrice?christmasOldItem.activityPrice:christmasOldItem.salePrice}}</div>
+											</div>
+											<div class="christmas_btn mt_22 ml_20" @click="toDetail(christmasOldItem.skuId)">Buy Now</div>
+										</div>
 									</div>
-									<div class="christmas_btn mt_22 ml_20">Buy Now</div>
 								</div>
 							</div>
+						</scroll>
+					</div>
+					<div v-else>
+						<div class="flex_col_cocenter bscroll-wrapper">
+							<img :src="nosear" style="width: 260px;height: 300px;" />
+							<div style="text-align: center;font-size: 18px;color: #ccc;padding-bottom:20px ;">Sorry, no products</div>
 						</div>
+						<!-- <no-sear-good :imgSrc="nosear" describe="Sorry, no products"></no-sear-good> -->
 					</div>
 				</div>
+				
 			</div>
 
 		</div>
@@ -80,6 +95,8 @@
 		christmasThemeApi,
 		christmasThemeategoryApi
 	} from "@/api/home/index";
+	import noSearGood from "@/multiplexing/noSearGood";
+	import nosear from "@/assets/img/activity/christmas/christmas_nav_shop.png";
 	export default {
 		name: "christmas",
 		props: {},
@@ -87,48 +104,47 @@
 			return {
 				christmasFrist: [],
 				christmasTab: [],
-				christmasOld: [{
-						lable: "2020 new bag women's small fragrance rhombus chain bag shoulder bag messenger bag female bag",
-						delet: 60.88
-					},
-					{
-						lable: "2020 new bag women's small fragrance rhombus chain bag shoulder bag messenger bag female bag",
-						delet: 60.88
-					},
-					{
-						lable: "2020 new bag women's small fragrance rhombus chain bag shoulder bag messenger bag female bag",
-						delet: 60.88
-					},
-					{
-						lable: "2020 new bag women's small fragrance rhombus chain bag shoulder bag messenger bag female bag",
-						delet: 60.88
-					},
-					{
-						lable: "2020 new bag women's small fragrance rhombus chain bag shoulder bag messenger bag female bag",
-						delet: 60.88
-					},
-					{
-						lable: "2020 new bag women's small fragrance rhombus chain bag shoulder bag messenger bag female bag",
-						delet: 60.88
-					},
-				],
+				christmasOld: [],
 				arrSelect: 0,
 				christmasBg: false, //圣诞
 				styleFixed: false,
+				styleBg: false,
 				christmasData: {
 					page: 1,
 					limit: 10,
 					moduleId: 0
 				},
-				christmasPage:{
+				christmasPage: {
 					page: 1,
 					limit: 10,
-				}
+				},
+				nosear: nosear,
+				recordGroup: [],
+				pulldown: true,
+				pullup: true,
+				guanmengou: true, //看门狗
+				showData: false,
+				noSearchStatus: true,
 			};
 		},
 		computed: {},
 		created() {
-			this.theme()
+			christmasThemeategoryApi(this.christmasData).then((res) => {
+				if (res.code == 0) {
+					this.christmasFrist = res.page.list
+				}
+			})
+			christmasThemeApi(this.christmasPage).then((res) => {
+				this.christmasTab = res.page.list
+				this.christmasData.moduleId = this.christmasTab[0].id
+				// christmasThemeategoryApi(this.christmasData).then((res) => {
+				// 	if (res.code == 0) {
+				// 		this.christmasOld = res.page.list
+				// 		this.recordGroup = this.christmasOld;
+				// 	}
+				// })
+				this.refreshOrder();
+			})
 		},
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll, true);
@@ -137,51 +153,115 @@
 		watch: {},
 		methods: {
 			// 点击样式
-			btnTitle(key) {
+			btnTitle(key, tabItem) {
 				//  点击后改变样式颜色
 				this.arrSelect = key;
+				this.christmasData.moduleId = tabItem.id
+				this.refreshOrder();
+			},
+			// 圣诞
+			therm(christmasData, flag) {
+				christmasThemeategoryApi(christmasData).then((res) => {
+					if (res.code == 0) {
+						if (flag) {
+							this.christmasOld = res.page.list
+						} else {
+							this.christmasOld = [...this.christmasOld, ...res.page.list];
+						}
+						this.recordGroup = this.christmasOld;
+						if (this.christmasOld.length > 0) {
+							this.noSearchStatus = true;
+							if (this.christmasOld.length >= res.page.totalCount) {
+								this.pullup = false;
+							}
+						} else {
+							this.noSearchStatus = false;
+							this.pullup = false;
+							this.pulldown = false;
+						}
+					}
+					setTimeout(() => {
+						this.showData = true;
+					}, 1000);
+				})
 			},
 			handleScroll() {
 				// 页面滚动距顶部距离
 				var scrollTop = window.pageYOffset || document.documentElement.scrollTop ||
 					document.body.scrollTop
+				//变量windowHeight是可视区的高度
+				var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+				//变量scrollHeight是滚动条的总高度
+				var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+				//滚动条到底部的条件
+				if (scrollTop + windowHeight > scrollHeight-20) {
+					console.log("77")
+					this.styleBg = true
+				} else {
+						console.log("88")
+					this.styleBg = false
+				}
+				
 				if (scrollTop < 600) {
 					this.styleFixed = false
 				} else {
 					this.styleFixed = true
 				}
-
+				
 				if (scrollTop > 10) {
 					this.christmasBg = true;
 				} else {
 					this.christmasBg = false;
 				}
 			},
-			
-			// 圣诞专栏
-			theme() {
-				christmasThemeategoryApi(this.christmasData).then((res) => {
-					if(res.code==0){
-						this.christmasFrist=res.page.list
-					}
-				})
-				christmasThemeApi(this.christmasPage).then((res) => {
-					this.christmasTab=res.page.list
-				})
+			//下拉刷新
+			_pulldown() {
+				setTimeout(() => {
+					this.refreshOrder();
+				}, 500);
+			},
+			//上拉加载
+			_pullup() {
+				if (!this.pullup) return;
+				//不知道为什么触发两次,使用关门狗拦截
+				if (this.guanmengou) {
+					this.christmasData.page++;
+					this.therm(this.christmasData, false);
+					this.guanmengou = false;
+				}
+				setTimeout(() => {
+					this.guanmengou = true;
+				}, 500);
+			},
+			//刷新页面
+			refreshOrder() {
+				this.christmasData.page = 1;
+				this.christmasData.limit = 10;
+				this.therm(this.christmasData, true);
+				this.pullup = true;
 			},
 			//跳转详情页
 			toDetail(skuId) {
-			  this.$router.push({
-			    name: "商品详情",
-			    query: { skuId: skuId },
-			  });
+				this.$router.push({
+					name: "商品详情",
+					query: {
+						skuId: skuId
+					},
+				});
 			},
 		},
-		components: {},
+		components: {
+			noSearGood
+		},
 	};
 </script>
 
 <style scoped lang="less">
+	.bscroll-wrapper {
+		height: calc(100vh - 350px);
+		// margin-top: 76px;
+	}
+
 	.mt_10 {
 		margin-top: 10px;
 	}
@@ -256,15 +336,30 @@
 		}
 	}
 
-	.christmas_old_fixed {
-		position: sticky;
-		z-index: 1;
-		// top: 0;
-		top: -82px;
+	// .christmas_old_fixed {
+	// 	position: sticky;
+	// 	z-index: 1;
+	// 	top: 0;
+	// 	// top: -82px;
+	// }
+
+	.christmas_list_red_bg {
+		background-color: ivory;
+		box-sizing: border-box;
+		position: absolute;
+		width: 96%;
+		padding: 40px 16px 0px 16px;
+		top: 450px;
+		height: calc(100vh - 450px);
+		z-index: 9;
 	}
 
-	// .christmas_red_fixed {
-	// 	// background-color: #A3030D;
+	.christmas_red_height {
+		margin-top: 100px;
+	}
+
+	// .christmas_red_heightl {
+	// 	height: 1268px;
 	// }
 
 	.christmas_banner {
@@ -326,6 +421,8 @@
 	}
 
 	.christmas_old {
+		position: relative;
+
 		.christmas_old_img {
 			background: url('~@/assets/img/activity/christmas/christmas_list_two_bg.png') no-repeat;
 			background-size: 100%;
@@ -355,16 +452,22 @@
 		}
 
 		.christmas_list_red {
+			// height: calc(100vh - 500px);
+			box-sizing: border-box;
 			background-color: #A3030D;
-			padding: 40px 16px 40px 16px;
+			padding: 30px 16px 0px 16px;
 
 			.christmas_old_content {
-				// box-sizing: border-box;
-				// height: 1160px;
+				box-sizing: border-box;
+				height: 100%;
 				background: #FFF6EF;
 				border: 4px solid #E8A976;
-				// border-top: 0;
-				overflow: hidden;
+				border-bottom: 0;
+				overflow: auto;
+
+				&::-webkit-scrollbar {
+					width: 0;
+				}
 			}
 
 			.christmas_old_item {
