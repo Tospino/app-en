@@ -377,7 +377,7 @@
                       @click="
                         couponsClick(
                           ProModel.Data.couponId,
-                          ProModel.Data.couponDetailId,
+                          ProModel.Data.couponDetailId,	
                           ProModel.Data.supplyId,
                           ProModel.Data.businessId
                         )

@@ -16,7 +16,7 @@
 				<div class="main_shop mt_22">
 					<div class="main_shop_box flex flex_warp " :class="{'flex':(christmasFrist.length%3)!==0,'flex_space':(christmasFrist.length%3)===0}">
 						<div :class="{'mr_15':idx==0||idx==1 ||idx==3 ||idx==4}" v-for="(christmasItem,idx) in christmasFrist">
-							<div class="main_christmas flex_col_center pd_b_40">
+							<div class="main_christmas flex_col_center pd_b_46">
 								<img class="main_img" v-lazy="$webUrl + christmasItem.skuImg" @click="toDetail(christmasItem.skuId)" />
 								<span class="main_text txt_color mt_10">
 									<i>{{jn}}</i> {{christmasItem.activityPrice?christmasItem.activityPrice:christmasItem.salePrice}}
@@ -43,7 +43,7 @@
 			</div>
 
 			<div class="christmas_list_red">
-				<div class="christmas_list_red_bg" v-if="styleBg==false"></div>
+				<!-- <div class="christmas_list_red_bg" v-if="styleBg==false"></div> -->
 				<div class="christmas_old_content flex_col_center">
 					<div v-if="christmasOld.length!==0" >
 						<scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown"
@@ -108,7 +108,7 @@
 				arrSelect: 0,
 				christmasBg: false, //圣诞
 				styleFixed: false,
-				styleBg: false,
+				// styleBg: false,
 				christmasData: {
 					page: 1,
 					limit: 10,
@@ -195,10 +195,8 @@
 				var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
 				//滚动条到底部的条件
 				if (scrollTop + windowHeight > scrollHeight-20) {
-					console.log("77")
 					this.styleBg = true
 				} else {
-						console.log("88")
 					this.styleBg = false
 				}
 				
@@ -274,8 +272,8 @@
 		margin-top: 22px;
 	}
 
-	.pd_b_40 {
-		padding-bottom: 40px;
+	.pd_b_46 {
+		padding-bottom: 46px;
 	}
 
 	// 圣诞字体样式
@@ -343,16 +341,16 @@
 	// 	// top: -82px;
 	// }
 
-	.christmas_list_red_bg {
-		background-color: ivory;
-		box-sizing: border-box;
-		position: absolute;
-		width: 96%;
-		padding: 40px 16px 0px 16px;
-		top: 450px;
-		height: calc(100vh - 450px);
-		z-index: 9;
-	}
+	// .christmas_list_red_bg {
+	// 	// background-color: ivory;
+	// 	box-sizing: border-box;
+	// 	position: absolute;
+	// 	width: 96%;
+	// 	padding: 40px 16px 0px 16px;
+	// 	top: 450px;
+	// 	height: calc(100vh - 450px);
+	// 	z-index: 9;
+	// }
 
 	.christmas_red_height {
 		margin-top: 100px;
@@ -393,6 +391,7 @@
 			height: 724px;
 			background: #FFF6EF;
 			border: 4px solid #E8A976;
+			overflow: hidden;
 		}
 
 		.main_shop_box {
