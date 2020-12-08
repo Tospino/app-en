@@ -8,10 +8,8 @@
       </div>
       <div class="success-test c-orange">
         Your order was paid successfully.
-        <button
-          class="success-shop"
-          @click="shop"
-        >Continue shopping</button>
+        <div class="success-shop" @click="shop">Continue shopping</div>
+        <div class="success-shop" @click="toOrder">View the order</div>
       </div>
     </div>
     <div v-else>
@@ -32,6 +30,11 @@ export default {
   },
   computed: {},
   created() {
+    setTimeout(() => {
+      if (this.$route.query.token) {
+        this.$storage.set("token", this.$route.query.token);
+      }
+    }, 500);
     if (this.$route.query.status == 1) {
       this.show = true;
     } else if (this.$route.query.status == 0) {
@@ -43,6 +46,10 @@ export default {
   methods: {
     shop() {
       this.$router.push("/control/home");
+    },
+    //去订单
+    toOrder() {
+      this.$router.push({ name: "我的订单" });
     },
   },
   components: {
@@ -72,16 +79,13 @@ export default {
     top: 200px;
     font-size: 36px;
     .success-shop {
-      position: relative;
-      top: 26px;
-      display: block;
       width: 500px;
       height: 78px;
+      margin-top: 20px;
       background-color: #fa5300;
       color: #ffffff;
-      margin: 0 auto;
-      outline: none;
-      border: 0px;
+      margin: 40px auto;
+      line-height: 78px;
       font-size: 36px;
     }
   }

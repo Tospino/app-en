@@ -48,9 +48,7 @@
       <div class="tips-bottom">
         <div class="b1">What is Top Up?</div>
         <div class="c-999">
-          "Account recharge" refers to the act of making a payment through a
-          payment method supported by Topino and recharging to the Tospino
-          account of the purchaser.
+          {{ prepaidMoneyData.payExplain ? prepaidMoneyData.payExplain : "" }}
         </div>
       </div>
     </div>
@@ -86,7 +84,7 @@ import actionSheetPassword from "./itemComponents/actionSheetPassword";
 import {
   getTodayPayTemplateApi,
   TopupBalanceApi,
-  createInvoiceApi
+  createInvoiceApi,
 } from "@/api/prepaidRefill/index.js";
 import { walletInfoApi } from "@/api/accountBalance/index.js";
 import { Toast } from "vant";
@@ -104,7 +102,7 @@ export default {
         disMoney: null, //赠送金额
         payMethod: 1, //充值方式 （1.三方支付）
         payType: null, //1.选择模板充值 2.输入金额充值
-        payTemplateId: null //充值模板ID,（在选择模板充值时必填）
+        payTemplateId: null, //充值模板ID,（在选择模板充值时必填）
       },
       userinfoShop: {},
       currentIndex: null,
@@ -112,17 +110,17 @@ export default {
       invoiceData: {
         payMainNo: "",
         provider: "",
-        orderSource: "1"
+        orderSource: "1",
       },
       customMony: "",
-      walletMoney: ""
+      walletMoney: "",
     };
   },
   computed: {
     disabledSubmit() {
       return (
         (Number(this.customMony) && Number(this.customMony) > 0) ||
-        (this.currentItem.money && Number(this.customMony) > 0)
+        this.currentItem.money
       );
     },
   },
@@ -145,10 +143,14 @@ export default {
     },
     //话费充值产品列表
     getTodayPayTemplate() {
-      getTodayPayTemplateApi().then(res => {
+      getTodayPayTemplateApi().then((res) => {
         if (res.status_code == 200) {
-          this.prepaidMoneyData = res.data.payTemplateList[0];
-          this.prepaidMoneyList = this.prepaidMoneyData.payMoneyList;
+          this.prepaidMoneyData = res.data.payTemplateList[0]
+            ? res.data.payTemplateList[0]
+            : [];
+          this.prepaidMoneyList = this.prepaidMoneyData.payMoneyList
+            ? this.prepaidMoneyData.payMoneyList
+            : [];
           Toast.clear();
         } else {
           Toast("error");
@@ -157,7 +159,7 @@ export default {
     },
     //钱包信息
     walletInfo() {
-      walletInfoApi().then(res => {
+      walletInfoApi().then((res) => {
         if (res.code == 0) {
           this.walletMoney = res.wallet.walletMoney;
         }
@@ -165,7 +167,7 @@ export default {
     },
 
     topupBalance(data) {
-      TopupBalanceApi(data).then(res => {
+      TopupBalanceApi(data).then((res) => {
         if (res.status_code == 200) {
           this.invoiceData.payMainNo = res.data.sn;
           this.createInvoice(this.invoiceData);
@@ -179,7 +181,7 @@ export default {
     },
     //创建一个发票并发回slydepay支付令牌
     createInvoice(data) {
-      createInvoiceApi(data).then(res => {
+      createInvoiceApi(data).then((res) => {
         if (res.status_code == 200) {
           window.location.href = res.data.resultUrl;
         } else {
@@ -211,7 +213,7 @@ export default {
         this.currentItem = {
           arrivalAmount: this.customMony,
           donateMoney: 0,
-          money: this.customMony
+          money: this.customMony,
         };
       }
       if (!this.disabledSubmit) return;
@@ -235,14 +237,14 @@ export default {
     },
     changeMoney(e) {
       this.customMony = e.replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
-    }
+    },
   },
   components: {
     balanceHeader,
     actionSheetPaymen,
     actionSheetSucess,
-    actionSheetPassword
-  }
+    actionSheetPassword,
+  },
 };
 </script>
 
