@@ -31,7 +31,7 @@
 
 		<!-- 圣诞-红 -->
 		<div class="christmas_old">
-			<div class="christmas_old_img " :class="{christmas_old_fixed:styleFixed==true}" >
+			<div class="christmas_old_img " :class="{christmas_old_fixed:styleFixed==true}">
 				<div class="christmas__old_item  flex flex_warp">
 					<div class="christmas_old_box" v-for="(tabItem,idx) in christmasTab">
 						<img src="@/assets/img/activity/christmas/christmas_list_lable.png" class="tab_click_icon" v-if="arrSelect==idx" />
@@ -138,7 +138,14 @@
 			christmasThemeApi(this.christmasPage).then((res) => {
 
 				this.christmasTab = res.page.list.splice(0, 6)
-				this.christmasData.moduleId = this.christmasTab[0].id
+				if (sessionStorage.thermtabItem) {
+					this.christmasData.moduleId = sessionStorage.thermtabItem;
+					this.arrSelect = sessionStorage.thermkeys;
+				} else {
+						
+					this.christmasData.moduleId = this.christmasTab[0].id
+				}
+
 
 				// christmasThemeategoryApi(this.christmasData).then((res) => {
 				// 	if (res.code == 0) {
@@ -158,9 +165,13 @@
 		methods: {
 			// 点击样式
 			btnTitle(key, tabItem) {
+				// 由于返回没有选中之前的,只能记录在浏览器
+				sessionStorage.thermkeys = key
+				console.log("localStorage.thermkeys",sessionStorage.thermkeys)
+				sessionStorage.thermtabItem = JSON.stringify(tabItem.id);
 				//  点击后改变样式颜色
-				this.arrSelect = key;
-				this.christmasData.moduleId = tabItem.id
+				this.arrSelect = sessionStorage.thermkeys;
+				this.christmasData.moduleId = sessionStorage.thermtabItem;
 				this.refreshOrder();
 			},
 			// 圣诞
@@ -175,7 +186,7 @@
 						this.recordGroup = this.christmasOld;
 						if (this.christmasOld.length > 0) {
 							this.noSearchStatus = true;
-							
+
 							if (this.christmasOld.length >= res.page.totalCount) {
 								this.pullup = false;
 							}
@@ -243,7 +254,7 @@
 				this.christmasData.limit = 10;
 				this.therm(this.christmasData, true);
 				this.pullup = true;
-				this.pulldown=true;
+				this.pulldown = true;
 			},
 			//跳转详情页
 			toDetail(skuId) {
@@ -330,7 +341,7 @@
 		position: sticky;
 		top: 0;
 		width: 100%;
-		z-index: 2;
+		z-index: 3;
 		height: 88px;
 		background-color: #A3030D;
 		color: #fff;
