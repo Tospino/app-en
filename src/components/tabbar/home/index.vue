@@ -76,11 +76,10 @@
         </div>-->
         <!-- 圣诞 -->
         <div class="good-recommend" :style="christmas_home_top">
-          <div class="christmas_top_bg">
+          <div class="christmas_top_bg" @click="toChristmas()">
             <img
               src="@/assets/img/activity/christmas/christmas_top_1.png"
               class="christmas_top_1"
-              @click="toChristmas()"
             />
           </div>
         </div>

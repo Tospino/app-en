@@ -31,7 +31,7 @@
 
 		<!-- 圣诞-红 -->
 		<div class="christmas_old">
-			<div class="christmas_old_img" :class="{christmas_old_fixed:styleFixed==true}">
+			<div class="christmas_old_img " :class="{christmas_old_fixed:styleFixed==true}" >
 				<div class="christmas__old_item  flex flex_warp">
 					<div class="christmas_old_box" v-for="(tabItem,idx) in christmasTab">
 						<img src="@/assets/img/activity/christmas/christmas_list_lable.png" class="tab_click_icon" v-if="arrSelect==idx" />
@@ -43,21 +43,22 @@
 			</div>
 
 			<div class="christmas_list_red">
-				<!-- <div class="christmas_list_red_bg" v-if="styleBg==false"></div> -->
+				<!--  v-if="styleBg==false"  -->
+				<div class="christmas_list_red_bg"></div>
 				<div class="christmas_old_content flex_col_center">
-					<div v-if="christmasOld.length!==0" >
+					<div v-if="christmasOld.length!==0">
 						<scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown"
 						 @pullup="_pullup" v-show="showData">
 							<div class="christmas_old_item" v-for="(christmasOldItem,idxo) in christmasOld ">
 								<div class="flex_space box_two">
-									<img v-lazy="$webUrl + christmasOldItem.skuImg" class="christmas_old_img" @click="toDetail(christmasOldItem.skuId)"/>
+									<img v-lazy="$webUrl + christmasOldItem.skuImg" class="christmas_old_img" @click="toDetail(christmasOldItem.skuId)" />
 									<div class="box_right">
 										<div class="title_two">
 											<img src="@/assets/img/activity/christmas/christmas_list_lable.png" class="title_two_icon" />
 											<span class="title_two_text">Christmas Festival</span>
 										</div>
 										<div class="text_conter">
-											{{christmasOldItem.skuValuesTitleEng}}
+											{{christmasOldItem.skuName}}
 										</div>
 
 										<div class="mt_22 flex">
@@ -81,7 +82,7 @@
 						<!-- <no-sear-good :imgSrc="nosear" describe="Sorry, no products"></no-sear-good> -->
 					</div>
 				</div>
-				
+
 			</div>
 
 		</div>
@@ -108,7 +109,7 @@
 				arrSelect: 0,
 				christmasBg: false, //圣诞
 				styleFixed: false,
-				// styleBg: false,
+				styleBg: false,
 				christmasData: {
 					page: 1,
 					limit: 10,
@@ -135,8 +136,10 @@
 				}
 			})
 			christmasThemeApi(this.christmasPage).then((res) => {
-				this.christmasTab = res.page.list
+
+				this.christmasTab = res.page.list.splice(0, 6)
 				this.christmasData.moduleId = this.christmasTab[0].id
+
 				// christmasThemeategoryApi(this.christmasData).then((res) => {
 				// 	if (res.code == 0) {
 				// 		this.christmasOld = res.page.list
@@ -149,6 +152,7 @@
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll, true);
 			// 监听（绑定）滚轮 滚动事件
+			this.refreshOrder();
 		},
 		watch: {},
 		methods: {
@@ -171,6 +175,7 @@
 						this.recordGroup = this.christmasOld;
 						if (this.christmasOld.length > 0) {
 							this.noSearchStatus = true;
+							
 							if (this.christmasOld.length >= res.page.totalCount) {
 								this.pullup = false;
 							}
@@ -194,18 +199,18 @@
 				//变量scrollHeight是滚动条的总高度
 				var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
 				//滚动条到底部的条件
-				if (scrollTop + windowHeight > scrollHeight-20) {
+				if (scrollTop + windowHeight > scrollHeight - 20) {
 					this.styleBg = true
 				} else {
 					this.styleBg = false
 				}
-				
+
 				if (scrollTop < 600) {
 					this.styleFixed = false
 				} else {
 					this.styleFixed = true
 				}
-				
+
 				if (scrollTop > 10) {
 					this.christmasBg = true;
 				} else {
@@ -220,6 +225,7 @@
 			},
 			//上拉加载
 			_pullup() {
+				console.log("7888")
 				if (!this.pullup) return;
 				//不知道为什么触发两次,使用关门狗拦截
 				if (this.guanmengou) {
@@ -237,6 +243,7 @@
 				this.christmasData.limit = 10;
 				this.therm(this.christmasData, true);
 				this.pullup = true;
+				this.pulldown=true;
 			},
 			//跳转详情页
 			toDetail(skuId) {
@@ -302,6 +309,7 @@
 
 	.christmas_btn {
 		background: #BB2229;
+		font-size: 24px;
 		width: 160px;
 		height: 48px;
 		line-height: 48px;
@@ -343,13 +351,16 @@
 
 	// .christmas_list_red_bg {
 	// 	// background-color: ivory;
+	// 	border:40px solid #E8DDD7;
+	// 	border-top: 20px solid #E8DDD7;
+	// 	border-bottom: 0;
 	// 	box-sizing: border-box;
 	// 	position: absolute;
 	// 	width: 96%;
 	// 	padding: 40px 16px 0px 16px;
 	// 	top: 450px;
 	// 	height: calc(100vh - 450px);
-	// 	z-index: 9;
+	// 	z-index: 1;
 	// }
 
 	.christmas_red_height {
@@ -373,6 +384,7 @@
 		background-size: 100%;
 		box-sizing: border-box;
 		height: 884px;
+		z-index: 2;
 
 		.head_tilte {
 			background: url('~@/assets/img/activity/christmas/christmas_list_first.png') no-repeat;
@@ -382,6 +394,7 @@
 			margin-top: 32px;
 			color: #fff;
 			font-size: 26px;
+			font-weight: bold;
 			line-height: 40px;
 			text-align: center;
 		}
@@ -391,6 +404,7 @@
 			height: 724px;
 			background: #FFF6EF;
 			border: 4px solid #E8A976;
+			z-index: 2;
 			overflow: hidden;
 		}
 
@@ -410,7 +424,7 @@
 
 		.main_text {
 			text-align: center;
-			font-size: 30px;
+			font-size: 32px;
 			font-weight: bold;
 
 			i {
@@ -448,6 +462,8 @@
 			line-height: 58px;
 			text-align: center;
 			color: #fff;
+			font-size: 24px;
+			font-weight: bold;
 		}
 
 		.christmas_list_red {
@@ -500,6 +516,7 @@
 			.title_two_text {
 				background-color: #BB2229;
 				box-sizing: border-box;
+				font-size: 22px;
 				padding: 4px 12px;
 			}
 
@@ -513,7 +530,7 @@
 
 			.text_conter {
 				width: 364px;
-				font-size: 20px;
+				font-size: 24px;
 				line-height: 26px;
 				margin-top: 16px;
 				overflow: hidden;
@@ -525,13 +542,14 @@
 
 			.text_del {
 				color: #02261C;
-				font-size: 22px;
+				font-size: 24px;
 			}
 
 			.text_price {
 				font-size: 36px;
 				font-weight: bold;
 				padding-top: 10px;
+				width: 200px;
 
 				i {
 					font-size: 20px;
