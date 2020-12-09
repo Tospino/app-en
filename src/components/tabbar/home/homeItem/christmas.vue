@@ -154,12 +154,13 @@
 				// 	}
 				// })
 				this.refreshOrder();
+				this._pullup();
+				this.$refs.wrapper.scrollTo(0, 0);
 			})
 		},
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll, true);
 			// 监听（绑定）滚轮 滚动事件
-			this.refreshOrder();
 		},
 		watch: {},
 		methods: {
@@ -209,12 +210,12 @@
 				var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
 				//变量scrollHeight是滚动条的总高度
 				var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-				//滚动条到底部的条件
-				if (scrollTop + windowHeight > scrollHeight - 20) {
-					this.styleBg = true
-				} else {
-					this.styleBg = false
-				}
+				// //滚动条到底部的条件
+				// if (scrollTop + windowHeight > scrollHeight - 20) {
+				// 	this.styleBg = true
+				// } else {
+				// 	this.styleBg = false
+				// }
 
 				if (scrollTop < 600) {
 					this.styleFixed = false
@@ -236,7 +237,6 @@
 			},
 			//上拉加载
 			_pullup() {
-				console.log("7888")
 				if (!this.pullup) return;
 				//不知道为什么触发两次,使用关门狗拦截
 				if (this.guanmengou) {
