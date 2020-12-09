@@ -7,7 +7,7 @@
     </div>
     <div class="success-test c-orange">
       Your order was failed to be paid.
-      <button class="success-shop" @click="shop">View the order</button>
+      <div class="success-shop" @click="toOrder">View the order</div>
     </div>
   </div>
 </template>
@@ -18,34 +18,17 @@ import { main, park } from "@/api/index";
 export default {
   props: {},
   data() {
-    return {
-      // getPayStatusParams: {
-      //   status: 0,
-      //   transac_id: "221b2611-8ac8-11ea-9377-02273b027730",
-      //   pay_token: "eff11e4d-5f96-4d96-8191-eeb559dc2feb",
-      //   cust_ref: "FKD202004301750406499d4a43b4e"
-      // }
-    };
+    return {};
   },
-  computed: {},
-  created() {
-    // this.getParams();
-    // this.getPayStatus();
-  },
-  mounted() {
-    // setTimeout(()=>{
-    //     this.$router.go(-3)
-    // },1500)
-  },
-  watch: {},
   methods: {
-    shop() {
-      this.$router.push("/control/account");
+    //去订单
+    toOrder() {
+      this.$router.push({ name: "我的订单" });
     },
   },
   components: {
-    thirdHeader
-  }
+    thirdHeader,
+  },
 };
 </script>
 
@@ -63,20 +46,15 @@ export default {
   .success-test {
     position: relative;
     top: 200px;
-    font-size: 30px;
-    font-family: PingFang SC;
-    font-weight: bold;
+    font-size: 36px;
     .success-shop {
-      position: relative;
-      top: 26px;
-      display: block;
       width: 500px;
       height: 78px;
+      margin-top: 20px;
       background-color: #fa5300;
       color: #ffffff;
-      margin: 0 auto;
-      outline: none;
-      border: 0px;
+      margin: 40px auto;
+      line-height: 78px;
       font-size: 36px;
     }
   }
