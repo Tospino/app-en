@@ -63,7 +63,7 @@
 
 										<div class="mt_22 flex">
 											<div>
-												<del class="text_del">{{jn}} {{christmasOldItem.salePrice}}</del>
+												<del class="text_del" v-if="christmasOldItem.activityPrice!=null">{{jn}} {{christmasOldItem.salePrice}}</del>
 												<div class="text_price txt_color"><i>{{jn}}</i>
 													{{christmasOldItem.activityPrice?christmasOldItem.activityPrice:christmasOldItem.salePrice}}</div>
 											</div>
