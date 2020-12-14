@@ -63,7 +63,7 @@
 
 										<div class="mt_22 flex">
 											<div>
-												<del class="text_del">{{jn}} {{christmasOldItem.salePrice}}</del>
+												<del class="text_del" v-if="christmasOldItem.activityPrice!=null">{{jn}} {{christmasOldItem.salePrice}}</del>
 												<div class="text_price txt_color"><i>{{jn}}</i>
 													{{christmasOldItem.activityPrice?christmasOldItem.activityPrice:christmasOldItem.salePrice}}</div>
 											</div>
@@ -136,26 +136,21 @@
 				}
 			})
 			christmasThemeApi(this.christmasPage).then((res) => {
-
 				this.christmasTab = res.page.list.splice(0, 6)
-				if (sessionStorage.thermtabItem) {
+				this._pullup();
+				if (this.$store.state.christmasListArr.includes('首页')) {
+					this.christmasData.moduleId = this.christmasTab[0].id
+					this.$store.state.christmasListArr = []
+				} else {
 					this.christmasData.moduleId = sessionStorage.thermtabItem;
 					this.arrSelect = sessionStorage.thermkeys;
-				} else {
-						
-					this.christmasData.moduleId = this.christmasTab[0].id
+					// this.christmasData.page = sessionStorage.thermPage;
 				}
 
-
-				// christmasThemeategoryApi(this.christmasData).then((res) => {
-				// 	if (res.code == 0) {
-				// 		this.christmasOld = res.page.list
-				// 		this.recordGroup = this.christmasOld;
-				// 	}
-				// })
-				this.refreshOrder();
-				this._pullup();
 				this.$refs.wrapper.scrollTo(0, 0);
+				this.christmasData.page = 1;
+				this.christmasData.limit = 10;
+
 			})
 		},
 		mounted() {
@@ -168,7 +163,6 @@
 			btnTitle(key, tabItem) {
 				// 由于返回没有选中之前的,只能记录在浏览器
 				sessionStorage.thermkeys = key
-				console.log("localStorage.thermkeys",sessionStorage.thermkeys)
 				sessionStorage.thermtabItem = JSON.stringify(tabItem.id);
 				//  点击后改变样式颜色
 				this.arrSelect = sessionStorage.thermkeys;
@@ -184,6 +178,7 @@
 						} else {
 							this.christmasOld = [...this.christmasOld, ...res.page.list];
 						}
+						// sessionStorage.thermPage=this.christmasData.page
 						this.recordGroup = this.christmasOld;
 						if (this.christmasOld.length > 0) {
 							this.noSearchStatus = true;
