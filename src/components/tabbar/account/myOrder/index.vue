@@ -2,15 +2,25 @@
   <!-- 我的订单 -->
   <div class="my-order">
     <div class="footprint-header">
-      <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)" />
+      <van-icon name="arrow-left" class="arrow-left" @click="arrowLeft" />
       <span class="header-t1">My Order</span>
       <span class="header-t2" @click="jumpRouter('我的订单历史记录')">
         <van-icon name="search" class="search" />
       </span>
-      <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')" />
+      <van-icon
+        name="chat-o"
+        class="chat"
+        size="17px"
+        @click="jumpRouter('消息')"
+      />
     </div>
     <div class="commodity-tab">
-      <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
+      <van-tabs
+        v-model="active"
+        class="tab-list"
+        title-active-color="#FA5300"
+        @change="changeTab"
+      >
         <van-tab :title="tab.title" v-for="tab in tabList" :key="tab.id">
           <scroll
             class="bscroll-wrapper"
@@ -46,7 +56,10 @@
       </zhezhao>
     </transition>
     <!-- 支付成功弹窗 -->
-    <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
+    <action-sheet-sucess
+      ref="sucess"
+      @showsucess="showsucess"
+    ></action-sheet-sucess>
     <!-- 密码弹窗 -->
     <action-sheet-password
       ref="actionSheetPassword"
@@ -262,6 +275,9 @@ export default {
     },
     //刷新页面
     refreshOrder() {
+      if (this.$route.query.token && this.$route.query.token != "undefined") {
+        localStorage.token = this.$route.query.token;
+      }
       this.formData.page = 1;
       this.formData.limit = 10;
       this.orderlist(this.formData, true);
@@ -297,6 +313,14 @@ export default {
         this.showPassWord(false);
         this.refreshOrder();
       }, 1000);
+    },
+    //后退键
+    arrowLeft() {
+      if (this.$route.query.isThree) {
+        this.$router.push({ name: "我的" });
+      } else {
+        this.$router.go(-1);
+      }
     },
     //确认收货
     completeorder(data) {

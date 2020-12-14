@@ -8,8 +8,13 @@
       </div>
       <div class="success-test c-orange">
         Your order was paid successfully.
-        <div class="success-shop" @click="shop">Continue shopping</div>
-        <div class="success-shop" @click="toOrder">View the order</div>
+        <div v-if="orderType == 1">
+          <div class="success-shop" @click="shop">Continue shopping</div>
+          <div class="success-shop" @click="toOrder">View the order</div>
+        </div>
+        <div v-if="orderType == 2 || orderType == 3">
+          <div class="success-shop" @click="toMy">To my</div>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -21,18 +26,22 @@
 <script>
 import thirdHeader from "./itemComponents/thirdHeader";
 import thirdLose from "./itemComponents/thirdLose";
+import { getuserinfoApi } from "@/api/accountSettings/index";
 export default {
   props: {},
   data() {
     return {
       show: false,
+      orderType: null, //orderType：1平台商品订单，2话费充值订单 3余额充值
     };
   },
   computed: {},
   created() {
+    this.orderType = this.$route.query.orderType;
     setTimeout(() => {
       if (this.$route.query.token) {
         this.$storage.set("token", this.$route.query.token);
+        this.getuserinfo();
       }
     }, 500);
     if (this.$route.query.status == 1) {
@@ -41,15 +50,33 @@ export default {
       this.show = false;
     }
   },
-  mounted() {},
-  watch: {},
   methods: {
     shop() {
-      this.$router.push("/control/home");
+      this.$router.push({
+        name: "首页",
+        query: { token: this.$route.query.token },
+      });
     },
     //去订单
     toOrder() {
-      this.$router.push({ name: "我的订单" });
+      this.$router.push({
+        name: "我的订单",
+        query: { token: this.$route.query.token, isThree: true },
+      });
+    },
+    toMy() {
+      this.$router.push({
+        name: "我的",
+        query: { token: this.$route.query.token },
+      });
+    },
+    //用户信息
+    getuserinfo() {
+      getuserinfoApi().then((res) => {
+        if (res.code == 0) {
+          localStorage.userinfoShop = JSON.stringify(res.user);
+        }
+      });
     },
   },
   components: {
