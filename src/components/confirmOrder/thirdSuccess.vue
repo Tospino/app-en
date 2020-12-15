@@ -8,12 +8,8 @@
       </div>
       <div class="success-test c-orange">
         Your order was paid successfully.
-        <div v-if="orderType == 1">
+        <div>
           <div class="success-shop" @click="shop">Continue shopping</div>
-          <div class="success-shop" @click="toOrder">View the order</div>
-        </div>
-        <div v-if="orderType == 2 || orderType == 3">
-          <div class="success-shop" @click="toMy">To my</div>
         </div>
       </div>
     </div>

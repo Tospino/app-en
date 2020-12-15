@@ -399,9 +399,6 @@ export default {
     } else {
       this.getUser();
     }
-    if (this.$route.query.token && this.$route.query.token != "undefined") {
-      localStorage.token = this.$route.query.token;
-    }
   },
   mounted() {
     this.selectuserfavorites();
