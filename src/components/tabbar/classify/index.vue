@@ -29,7 +29,14 @@
               >
                 <div
                   class="sanji"
-                  @click="toSearOne(product.categoryId,product,leftList[activeKey].classNameEng,rightGoods.classNameEng)"
+                  @click="
+                    toSearOne(
+                      product.categoryId,
+                      product,
+                      leftList[activeKey].classNameEng,
+                      rightGoods.classNameEng
+                    )
+                  "
                   prop="product.classNameEng"
                 >
                   <img v-lazy="$webUrl + product.categoryImg" />
@@ -57,18 +64,18 @@ export default {
       activeKey: 0,
       formData: {
         category_level: 1,
-        parent_id: 0
+        parent_id: 0,
       },
       leftList: [],
       rightList: [],
       leftImgSrc: "",
-      classifyData: {}
+      classifyData: {},
     };
   },
   computed: {
     ...mapState({
-      classifyKeep: state => state.classifyKeep
-    })
+      classifyKeep: (state) => state.classifyKeep,
+    }),
   },
   activated() {
     if (this.classifyKeep) {
@@ -113,7 +120,7 @@ export default {
   methods: {
     ...mapActions(["classifykeep"]),
     procategorylist() {
-      procategorylistApi(this.formData).then(res => {
+      procategorylistApi(this.formData).then((res) => {
         if (res.code == 0) {
           this.leftList = res.leftdataList;
           this.rightList = res.righdataList;
@@ -131,7 +138,7 @@ export default {
       this.leftImgSrc = this.leftList[index].categoryImg;
       this.formData.category_level = 2;
       this.formData.parent_id = this.leftList[index].categoryId;
-      procategorylistApi(this.formData).then(res => {
+      procategorylistApi(this.formData).then((res) => {
         if (res.code == 0) {
           this.rightList = res.righdataList;
           this.leftList = res.leftdataList;
@@ -146,31 +153,34 @@ export default {
       });
     },
     //去到搜索里面
-    toSearOne(categoryId,product,yiji,erji) {
+    toSearOne(categoryId, product, yiji, erji) {
       this.$router.push({
         name: "搜索商品1",
-        query: { categoryId: categoryId }
+        query: { categoryId: categoryId },
       });
-      console.log(product);
       //易观数据采集---导航栏点击
       let urlHtm = window.location.href;
       let titHtm = document.title;
-      AnalysysAgent.track("navigation_click", {
-        $page_title: titHtm,
-        $page_url: urlHtm,
-        target_url:
-          "https://gh.tospino.com/#/search/searchGoodsOne" +
-          "?categoryId=" +
-          categoryId,
-        navigation_name: product.classNameEng,
-        navigation_first_category: yiji,
-        navigation_second_category: erji
-      },rel => {});
-    }
+      AnalysysAgent.track(
+        "navigation_click",
+        {
+          $page_title: titHtm,
+          $page_url: urlHtm,
+          target_url:
+            "https://gh.tospino.com/#/search/searchGoodsOne" +
+            "?categoryId=" +
+            categoryId,
+          navigation_name: product.classNameEng,
+          navigation_first_category: yiji,
+          navigation_second_category: erji,
+        },
+        (rel) => {}
+      );
+    },
   },
   components: {
-    searchHeader
-  }
+    searchHeader,
+  },
 };
 </script>
 
