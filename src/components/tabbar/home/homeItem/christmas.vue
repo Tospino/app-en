@@ -140,22 +140,25 @@
 				this._pullup();
 				if (this.$store.state.christmasListArr.includes('首页')) {
 					this.christmasData.moduleId = this.christmasTab[0].id
-					this.$store.state.christmasListArr = []
+					this.$store.state.christmasListArr = [];
+					
 				} else {
 					this.christmasData.moduleId = sessionStorage.thermtabItem;
 					this.arrSelect = sessionStorage.thermkeys;
 					// this.christmasData.page = sessionStorage.thermPage;
 				}
-
-				this.$refs.wrapper.scrollTo(0, 0);
 				this.christmasData.page = 1;
 				this.christmasData.limit = 10;
-
+				this.therm(this.christmasData, true);
+            if (this.$refs.wrapper) {
+            	this.$refs.wrapper.scrollTo(0, 0);
+            }
 			})
 		},
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll, true);
 			// 监听（绑定）滚轮 滚动事件
+
 		},
 		watch: {},
 		methods: {
@@ -167,18 +170,23 @@
 				//  点击后改变样式颜色
 				this.arrSelect = sessionStorage.thermkeys;
 				this.christmasData.moduleId = sessionStorage.thermtabItem;
-				this.refreshOrder();
+				this._pullup();
+				this._pulldown();
+				if (this.$refs.wrapper) {
+					this.$refs.wrapper.scrollTo(0, 0);
+				}
 			},
 			// 圣诞
 			therm(christmasData, flag) {
 				christmasThemeategoryApi(christmasData).then((res) => {
 					if (res.code == 0) {
+						sessionStorage.thermPage = this.christmasData.page
 						if (flag) {
 							this.christmasOld = res.page.list
 						} else {
 							this.christmasOld = [...this.christmasOld, ...res.page.list];
 						}
-						// sessionStorage.thermPage=this.christmasData.page
+
 						this.recordGroup = this.christmasOld;
 						if (this.christmasOld.length > 0) {
 							this.noSearchStatus = true;
