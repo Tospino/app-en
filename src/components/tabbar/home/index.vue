@@ -1293,7 +1293,7 @@ export default {
           text-align: center;
           .good-name {
             font-size: 20px;
-
+            width: 200px;
             color: #333333;
           }
           .good-price1 {
@@ -1617,6 +1617,7 @@ export default {
             font-size: 20px;
             color: #333333;
             margin-top: 9px;
+            width: 166px;
           }
           .good-price1 {
             display: inline-block;
