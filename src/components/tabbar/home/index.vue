@@ -1153,6 +1153,7 @@ export default {
       .pictures {
         height: 240px;
         width: 1000px;
+        box-sizing: border-box;
         .p1 {
           width: 200px;
           height: 210px;
@@ -1161,7 +1162,7 @@ export default {
           text-align: center;
           .good-name {
             font-size: 20px;
-
+            width: 200px;
             color: #333333;
           }
           .good-price1 {
@@ -1237,6 +1238,7 @@ export default {
       // padding: 0 30px;
       margin-top: 17px;
       .pictures {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -1257,6 +1259,7 @@ export default {
             color: #333333;
             margin-top: 9px;
             height: 58px;
+            width: 220px;
           }
           .good-price1 {
             display: inline-block;
@@ -1394,6 +1397,7 @@ export default {
       margin-top: 17px;
       // padding: 0 30px;
       .pictures {
+        box-sizing: border-box;
         background-color: #f7e8c7;
         padding: 24px 24px 20px;
         .good-world-best-p1 {
@@ -1439,6 +1443,7 @@ export default {
     background-color: #fff;
     .flash-sale-2 {
       .pictures {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -1455,6 +1460,7 @@ export default {
             font-size: 20px;
             color: #333333;
             margin-top: 9px;
+            width: 166px;
           }
           .good-price1 {
             display: inline-block;
