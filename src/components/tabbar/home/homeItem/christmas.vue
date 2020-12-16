@@ -220,18 +220,19 @@ export default {
     });
     christmasThemeApi(this.christmasPage).then((res) => {
       this.christmasTab = res.page.list.splice(0, 6);
-      this._pullup();
       if (this.$store.state.christmasListArr.includes("首页")) {
         this.christmasData.moduleId = this.christmasTab[0].id;
         this.$store.state.christmasListArr = [];
       } else {
-        this.christmasData.moduleId = sessionStorage.thermtabItem;
-        this.arrSelect = sessionStorage.thermkeys;
-        // this.christmasData.page = sessionStorage.thermPage;
+        if (sessionStorage.thermtabItem) {
+          this.christmasData.moduleId = sessionStorage.thermtabItem;
+          this.arrSelect = sessionStorage.thermkeys;
+        } else {
+          this.christmasData.moduleId = this.christmasTab[0].id;
+          this.arrSelect = 0;
+        }
       }
-      this.christmasData.page = 1;
-      this.christmasData.limit = 10;
-      this.therm(this.christmasData, true);
+      this.refreshOrder();
       if (this.$refs.wrapper) {
         this.$refs.wrapper.scrollTo(0, 0);
       }
@@ -251,8 +252,9 @@ export default {
       //  点击后改变样式颜色
       this.arrSelect = sessionStorage.thermkeys;
       this.christmasData.moduleId = sessionStorage.thermtabItem;
-      this._pullup();
-      this._pulldown();
+      //   this._pullup();
+      //   this._pulldown();
+      this.refreshOrder();
       if (this.$refs.wrapper) {
         this.$refs.wrapper.scrollTo(0, 0);
       }
@@ -271,9 +273,8 @@ export default {
           this.recordGroup = this.christmasOld;
           if (this.christmasOld.length > 0) {
             this.noSearchStatus = true;
-
             if (this.christmasOld.length >= res.page.totalCount) {
-              // this.pullup = false;
+              //   this.pullup = false;
             }
           } else {
             this.noSearchStatus = false;
