@@ -20,7 +20,7 @@
 				</div>
 			</div>
 			<div class="enter-amount" @click="customNum">
-				<van-field v-model="customMony" type="number" class="field" @input="changeMoney" placeholder="₵ Enter an amount" />
+				<van-field maxlength="12" v-model="customMony" type="number" class="field" @input="changeMoney" placeholder="₵ Enter an amount" />
 			</div>
 			<div style="color: red;margin-top: 10px;" v-if="customMony<=0">
 				Please enter a value greater than zero
