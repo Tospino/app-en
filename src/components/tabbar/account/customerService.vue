@@ -82,11 +82,13 @@ export default {
         //   普通聊天
         otherParams = {
           nickName: nickName,
+					agent: "8001",
         };
       } else if (this.type === 1) {
         // 商品详情私聊客服
         otherParams = {
           nickName: nickName,
+					agent: "8001",
           productInfo: {
             // 客户端展示
             visible: true,
@@ -121,6 +123,7 @@ export default {
         // 订单详情私聊客服
         otherParams = {
           nickName: nickName,
+			agent: "8001",
           productInfo: {
             // 客户端展示
             visible: true,

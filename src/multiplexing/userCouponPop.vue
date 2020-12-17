@@ -134,8 +134,8 @@ export default {
 		  width: 210px;
 		  height: 50px;
 		  line-height: 50px;
-          top: -98%;
-		  left:6%;
+          top: -50%;
+		  left:10%;
           font-size: 30px;
           color: #ffffff;
         }
