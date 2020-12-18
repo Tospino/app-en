@@ -258,6 +258,15 @@ export default {
       if (this.$refs.wrapper) {
         this.$refs.wrapper.scrollTo(0, 0);
       }
+      //易观数据采集----按钮点击
+        AnalysysAgent.track(
+          "btn_click",
+          {
+            $title: "圣诞活动主会场",
+            btn_name: "圣诞活动主会场分类----" + tabItem.themeModuleName
+          },
+          rel => {}
+        );
     },
     // 圣诞
     therm(christmasData, flag) {
@@ -347,12 +356,22 @@ export default {
     },
     //跳转详情页
     toDetail(skuId) {
+      localStorage.setItem("skuid",skuId);
       this.$router.push({
         name: "商品详情",
         query: {
           skuId: skuId,
         },
       });
+      //易观数据采集----按钮点击
+        AnalysysAgent.track(
+          "btn_click",
+          {
+            $title: "圣诞活动主会场",
+            btn_name: "圣诞活动主会场主推产品详情页---skuID " + skuId
+          },
+          rel => {}
+        );
     },
   },
   components: {

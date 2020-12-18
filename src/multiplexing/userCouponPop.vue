@@ -5,7 +5,7 @@
     <van-overlay :show="sale">
       <div class="wrapper">
         <div class="block">
-          <img src="@/assets/img/activity/christmas/christmas_home_users_1.png" class="wrapper-youhui" />
+          <img src="@/assets/img/activity/christmas/christmas_home_users_1.png" class="wrapper-youhui" @click="kongbai" />
           <div class="wrapper-main">
             <i class="money">GH{{jn}}</i>
             {{newCoupon.reduceAmount}}
@@ -22,7 +22,7 @@
         <!-- <div class="line-w"></div> -->
         <div class="wrapper-footer">
           <img src="@/assets/img/coupon/home-icon@2x.png" class="close-icon" @click="close" />
-        </div>
+        </div> 
       </div>
     </van-overlay>
   </div>
@@ -69,7 +69,20 @@ export default {
     close() {
       this.userStyle = document.getElementById("userPopUp");
       this.$emit("userPopUp", this.userStyle);
+
+      //易观数据采集--按钮点击
+      AnalysysAgent.track("btn_click",{
+        $title:"圣诞页",
+        btn_name: "新人优惠券弹窗关闭按钮"
+      },rel => {})
     },
+    //易观数据采集--按钮点击
+    kongbai(){
+      AnalysysAgent.track("btn_click",{
+        $title:"圣诞页",
+        btn_name: "新人优惠券弹窗未正确点击按钮"
+      },rel => {})
+    }
   },
 };
 </script>
@@ -86,14 +99,20 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
-	position: relative;
+	  position: relative;
   }
-
   .block {
     width: 556px;
     height: 692px;
     overflow: hidden;
     
+    .zhezhao{
+      width: 400px;
+      height: 400px;
+      background-color: #ffffff;
+      position: absolute;
+      top: 0px;
+    }
     .wrapper-main {
       position: relative;
       top: -63%;

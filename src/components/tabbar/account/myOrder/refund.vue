@@ -214,6 +214,7 @@ export default {
           refund_amount: this.detailObj.orderAmountWebsite,
           product_id: this.detailObj.detailList[0].skuId.toString(),
           quantity: this.detailObj.detailList[0].shouldRefundNum,
+          module_source: this.$storage.get("skuid").toString() == this.detailObj.detailList[0].skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
         },
         (rel) => {}
       );

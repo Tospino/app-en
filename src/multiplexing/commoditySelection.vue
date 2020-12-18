@@ -487,7 +487,8 @@ export default {
         coupon_name: this.$parent.moreShop == true ? this.$parent.ProModel.Data.couponName : "无优惠卷",
         coupon_value: this.$parent.moreShop == true ? this.$parent.ProModel.Data.reduceAmount : 0,
         product_first_category: category[0],
-        product_second_category: category[1]
+        product_second_category: category[1],
+        module_source: this.$storage.get("skuid").toString() == this.makeItem.skuId.toString()  ? "圣诞活动主会场" : "正常页面进入"
       },rel => {})
     },
     //确定按钮购买商品

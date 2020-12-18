@@ -120,7 +120,7 @@
                       clear_th:
                         finework.activityState == 2 &&
                         finework.activityTagApp != null &&
-                        finework.activityTagApp != '',
+                        finework.activityTagApp != ''
                     }"
                     >{{ finework.activityTagApp }}</span
                   >
@@ -183,8 +183,8 @@
                   query: {
                     skuId: item.skuId,
                     activityId: item.activityId,
-                    activityType: item.activityType,
-                  },
+                    activityType: item.activityType
+                  }
                 })
               "
             >
@@ -394,8 +394,8 @@
                       class="goods_sale"
                       v-if="
                         searchgoodDao.activityState === 2 &&
-                        searchgoodDao.activityType == 1 &&
-                        searchgoodDao.canSalesNum === 0
+                          searchgoodDao.activityType == 1 &&
+                          searchgoodDao.canSalesNum === 0
                       "
                       alt
                       srcset
@@ -448,7 +448,7 @@
                       clear_th:
                         searchgoodDao.activityState == 2 &&
                         searchgoodDao.activityTagApp != null &&
-                        searchgoodDao.activityTagApp != '',
+                        searchgoodDao.activityTagApp != ''
                     }"
                     >{{ searchgoodDao.activityTagApp }}</span
                   >
@@ -508,7 +508,7 @@ import {
   HomePagebottomApi,
   homeAdvertPictureApi,
   APPgetuserIsfullApi,
-  gethomeClearanceList,
+  gethomeClearanceList
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -526,15 +526,15 @@ export default {
       fineSaleList2: [],
       brandLogo1: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       brandLogo2: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       brandLogo3: {
         brandLogo: "",
-        brandId: 0,
+        brandId: 0
       },
       formData: {
         brandId: 0,
@@ -542,7 +542,7 @@ export default {
         limit: 10,
         page: 1,
         seraname: "",
-        sort: 0,
+        sort: 0
       },
       bottomTabs: [],
       searchgoodDaolist: [],
@@ -555,13 +555,13 @@ export default {
       codeUrl: "",
       topBananerList: [],
       banner1: {
-        advertImg: "",
+        advertImg: ""
       },
       banner2: {
-        advertImg: "",
+        advertImg: ""
       },
       banner3: {
-        advertImg: "",
+        advertImg: ""
       },
       newCouponShow: "", //判断是否为新用户是否展示
       newCoupon: {},
@@ -578,7 +578,7 @@ export default {
           require("../../../assets/img/activity/christmas/christmas_home_labe.png") +
           ")",
         backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
+        backgroundSize: "100% 100%"
       },
       christmas_home_top: {
         backgroundImage:
@@ -586,8 +586,8 @@ export default {
           require("../../../assets/img/activity/christmas/christmas_top.png") +
           ")",
         backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
-      },
+        backgroundSize: "100% 100%"
+      }
     };
   },
   computed: {},
@@ -665,7 +665,7 @@ export default {
   methods: {
     // 首页新用户优惠券
     newCoupons() {
-      APPgetuserIsfullApi().then((res) => {
+      APPgetuserIsfullApi().then(res => {
         // this.newCouponShow = res.code;
         if (res.code == 0) {
           let userNews = res.Data;
@@ -685,24 +685,43 @@ export default {
     },
     // 领取优惠按钮
     evBus(id) {
-      couponDrawApi(id).then((res) => {
+      couponDrawApi(id).then(res => {
         Toast("Get the success");
+
+        //易观数据采集----按钮点击
+        AnalysysAgent.track(
+          "btn_click",
+          {
+            $title: "圣诞页",
+            btn_name: "新人优惠券弹窗领取按钮"
+          },
+          rel => {}
+        );
       });
     },
     jumpRouter(name) {
       this.$router.push({
-        name,
+        name
       });
     },
     // 圣诞页面
     toChristmas() {
       this.$router.push({
-        name: "圣诞节",
+        name: "圣诞节"
       });
+      //易观数据采集----按钮点击
+        AnalysysAgent.track(
+          "btn_click",
+          {
+            $title: "圣诞活动落地页",
+            btn_name: "圣诞活动落地页进入按钮"
+          },
+          rel => {}
+        );
     },
     //首页数据
     homePage(data) {
-      homePageApi(data).then((res) => {
+      homePageApi(data).then(res => {
         if (res.code == 0) {
           this.homeObj = res.Data;
           this.globalProList = this.homeObj["producteFineBrand"].slice(3);
@@ -734,7 +753,7 @@ export default {
     },
     //底部数据分类
     homePagebottom(data, flag) {
-      HomePagebottomApi(data).then((res) => {
+      HomePagebottomApi(data).then(res => {
         if (res.code == 0) {
           this.bottomTabs = res.top;
 
@@ -805,8 +824,8 @@ export default {
         query: {
           skuId: skuid,
           activityId: overall.activityId,
-          activityType: overall.activityType,
-        },
+          activityType: overall.activityType
+        }
       });
       if (type == "finework") {
         //易观数据采集---资源位点击
@@ -824,9 +843,9 @@ export default {
             discount: overall.discountPrice == null ? 0 : overall.discountPrice,
             product_price: overall.salePrice,
             products_id: overall.skuId,
-            product_sold: overall.skuSalesNum,
+            product_sold: overall.skuSalesNum
           },
-          (rel) => {}
+          rel => {}
         );
       } else if (type == "fineSale1") {
         //易观数据采集---资源位点击
@@ -844,9 +863,9 @@ export default {
             discount: overall.discountPrice == null ? 0 : overall.discountPrice,
             product_price: overall.salePrice,
             products_id: overall.skuId,
-            product_sold: overall.skuSalesNum,
+            product_sold: overall.skuSalesNum
           },
-          (rel) => {}
+          rel => {}
         );
       } else if (type == "fineSale2") {
         //易观数据采集---资源位点击
@@ -864,9 +883,9 @@ export default {
             discount: overall.discountPrice == null ? 0 : overall.discountPrice,
             product_price: overall.salePrice,
             products_id: overall.skuId,
-            product_sold: overall.skuSalesNum,
+            product_sold: overall.skuSalesNum
           },
-          (rel) => {}
+          rel => {}
         );
       }
     },
@@ -876,15 +895,15 @@ export default {
         this.$router.push({
           name: "搜索商品1",
           query: {
-            categoryId: id,
-          },
+            categoryId: id
+          }
         });
       } else if (type == "brandId") {
         this.$router.push({
           name: "搜索商品1",
           query: {
-            brandId: id,
-          },
+            brandId: id
+          }
         });
       }
       if (type == "categoryId") {
@@ -898,9 +917,9 @@ export default {
             $page_url: urlHtm,
             $page_title: titHtm,
             resource_rank: index,
-            resource_page_name: "商品列表页",
+            resource_page_name: "商品列表页"
           },
-          (rel) => {}
+          rel => {}
         );
       } else if (type == "brandId") {
         //易观数据采集---资源位点击
@@ -913,32 +932,32 @@ export default {
             $page_url: urlHtm,
             $page_title: titHtm,
             resource_rank: index,
-            resource_page_name: "商品列表页",
+            resource_page_name: "商品列表页"
           },
-          (rel) => {}
+          rel => {}
         );
       }
     },
     //首页广告
     homeAdvertPicture() {
-      homeAdvertPictureApi().then((res) => {
+      homeAdvertPictureApi().then(res => {
         if (res.code == 0) {
           this.topBananerList = res.Data.slideShow;
           this.leng = this.topBananerList.length;
           this.banner1 = res.Data.newHouse[0]
             ? res.Data.newHouse[0]
             : {
-                advertImg: "",
+                advertImg: ""
               };
           this.banner2 = res.Data.newHouse[1]
             ? res.Data.newHouse[1]
             : {
-                advertImg: "",
+                advertImg: ""
               };
           this.banner3 = res.Data.newHouse[2]
             ? res.Data.newHouse[2]
             : {
-                advertImg: "",
+                advertImg: ""
               };
         }
       });
@@ -968,14 +987,14 @@ export default {
           $page_title: titHtm,
           target_url: el.linkUrlEng,
           target_type: targetType,
-          banner_rank: num,
+          banner_rank: num
         },
-        (rel) => {}
+        rel => {}
       );
     },
     //获取用户信息
     getuserinfo() {
-      getuserinfoApi().then((res) => {
+      getuserinfoApi().then(res => {
         if (res.code == 0) {
           localStorage.userinfoShop = JSON.stringify(res.user);
         }
@@ -984,14 +1003,14 @@ export default {
     // 去特价清仓页面
     toClearance() {
       this.$router.push({
-        name: "特价清仓",
+        name: "特价清仓"
       });
     },
     // 获取特价清仓数据
     getClear() {
       gethomeClearanceList({
-        isHome: 1,
-      }).then((res) => {
+        isHome: 1
+      }).then(res => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
           //   特价时间
@@ -1003,12 +1022,12 @@ export default {
           }
         }
       });
-    },
+    }
   },
   components: {
     searchHeader,
-    userPopup,
-  },
+    userPopup
+  }
 };
 </script>
 
