@@ -110,7 +110,7 @@
                 <div class="flex_space box_two">
                   <img
                     v-lazy="$webUrl + christmasOldItem.skuImg"
-                    class="christmas_old_img"
+                    class="christmas_old_imgs"
                     @click="toDetail(christmasOldItem.skuId)"
                   />
                   <div class="box_right">
@@ -525,6 +525,7 @@ export default {
   .main_img {
     width: 210px;
     height: 210px;
+	background: #fff;
   }
 
   .main_text {
@@ -601,9 +602,10 @@ export default {
       padding: 30px 20px;
     }
 
-    .christmas_old_img {
+    .christmas_old_imgs {
       width: 230px;
       height: 230px;
+	  background: #fff;
     }
 
     .box_right {
