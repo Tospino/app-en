@@ -9,7 +9,11 @@
 <template>
   <section class="customerService">
     <!-- 头部搜索框 -->
-    <details-header title="Message" v-if="isshow" :isBack="type!==0?true:false"></details-header>
+    <details-header
+      title="Message"
+      v-if="isshow"
+      :isBack="type !== 0 ? true : false"
+    ></details-header>
     <iframe
       :src="seversUrl"
       v-if="showServer && token"
@@ -67,7 +71,9 @@ export default {
       this.getData();
     } else {
       this.$router.push({ name: "登录" });
-      location.reload();
+      for (i = 0; i < 1; i++) {
+        location.reload();
+      }
     }
     window.addEventListener("message", this.HandleMessage);
   },
@@ -82,13 +88,13 @@ export default {
         //   普通聊天
         otherParams = {
           nickName: nickName,
-					agent: "8001",
+          agent: "8001",
         };
       } else if (this.type === 1) {
         // 商品详情私聊客服
         otherParams = {
           nickName: nickName,
-					agent: "8001",
+          agent: "8001",
           productInfo: {
             // 客户端展示
             visible: true,
@@ -123,7 +129,7 @@ export default {
         // 订单详情私聊客服
         otherParams = {
           nickName: nickName,
-			agent: "8001",
+          agent: "8001",
           productInfo: {
             // 客户端展示
             visible: true,
