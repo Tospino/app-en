@@ -71,9 +71,9 @@ export default {
       this.getData();
     } else {
       this.$router.push({ name: "登录" });
-      for (i = 0; i < 1; i++) {
+      setTimeout(() => {
         location.reload();
-      }
+      }, 500);
     }
     window.addEventListener("message", this.HandleMessage);
   },
