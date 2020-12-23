@@ -716,36 +716,36 @@ export default {
 
         // //易观数据采集----支付订单
         
-        // AnalysysAgent.track(
-        //   "pay_order",
-        //   {
-        //     receiver_province: this.defaultAdderss.province,
-        //     shipping_method: "Fulfillment by Tospino",
-        //     receiver_city: this.defaultAdderss.city,
-        //     total_discount: this.orderData.allOrderCouponAmountWebsite,
-        //     is_anonymous: this.checked == false ? false : true,
-        //     order_amounts:
-        //       parseFloat(this.orderData.allOrderProductAmountWebsite) +
-        //       parseFloat(this.orderData.allOrderFareWebsite),
-        //     order_actual_amounts: parseFloat(
-        //       this.orderData.allOrderAmountWebsite
-        //     ),
-        //     receiver_area: this.defaultAdderss.district,
-        //     shipping_cost: parseFloat(this.orderData.allOrderFareWebsite),
-        //     order_id: res.Data[0].orderSn,
-        //     is_successful: res.code == 0 ? true : false,
-        //     failure_reason: res.code.toString(),
-        //     receiver_name: this.defaultAdderss.name,
-        //     receiver_address: this.defaultAdderss.addreCitys,
-        //     is_use_discount:
-        //       this.orderData.allOrderCouponAmountWebsite == 0 ? false : true,
-        //     pay_channel: this.zffs == 1 ? "Cash on delivery" : "Online payment",
-        //     receive_phonenum: this.defaultAdderss.phoneNumber,
-        //     num_products: this.orderData.orderList[0].detailList[0].actDetailNum,
-        //     store_name: this.orderData.orderList[0].businessSn
-        //   },
-        //   (rel) => {}
-        // );
+        AnalysysAgent.track(
+          "pay_order",
+          {
+            receiver_province: this.defaultAdderss.province,
+            shipping_method: "Fulfillment by Tospino",
+            receiver_city: this.defaultAdderss.city,
+            total_discount: this.orderData.allOrderCouponAmountWebsite,
+            is_anonymous: this.checked == false ? false : true,
+            order_amounts:
+              parseFloat(this.orderData.allOrderProductAmountWebsite) +
+              parseFloat(this.orderData.allOrderFareWebsite),
+            order_actual_amounts: parseFloat(
+              this.orderData.allOrderAmountWebsite
+            ),
+            receiver_area: this.defaultAdderss.district,
+            shipping_cost: parseFloat(this.orderData.allOrderFareWebsite),
+            order_id: res.Data[0].orderSn,
+            is_successful: res.code == 0 ? true : false,
+            failure_reason: res.code.toString(),
+            receiver_name: this.defaultAdderss.name,
+            receiver_address: this.defaultAdderss.addreCitys,
+            is_use_discount:
+              this.orderData.allOrderCouponAmountWebsite == 0 ? false : true,
+            pay_channel: this.zffs == 1 ? "Cash on delivery" : "Online payment",
+            receive_phonenum: this.defaultAdderss.phoneNumber,
+            num_products: this.orderData.orderList[0].detailList[0].actDetailNum,
+            store_name: this.orderData.orderList[0].businessSn
+          },
+          (rel) => {}
+        );
       });
     },
     //刷新页面

@@ -476,6 +476,13 @@ export default {
       });
       let category = this.$parent.detailmData.typeName.split(",");
       //易观数据采集---加入购物车
+      let moduleSource
+      if(!this.$storage.get("skuid")){
+        moduleSource = '普通页面'
+      }else{
+        moduleSource = this.$storage.get("skuid").toString() == this.detailmData.skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
+      }
+
       AnalysysAgent.track("add_cart",{
         product_id: this.makeItem.skuId.toString(),
         product_price: this.sectionPrice,
@@ -488,7 +495,7 @@ export default {
         coupon_value: this.$parent.moreShop == true ? this.$parent.ProModel.Data.reduceAmount : 0,
         product_first_category: category[0],
         product_second_category: category[1],
-        module_source: this.$storage.get("skuid").toString() == this.makeItem.skuId.toString()  ? "圣诞活动主会场" : "正常页面进入"
+        module_source: moduleSource
       },rel => {})
     },
     //确定按钮购买商品

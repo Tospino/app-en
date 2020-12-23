@@ -819,6 +819,13 @@ export default {
       let titHtm = document.title;
       let typeName = this.detailmData.typeName;
       let category = typeName.split(",");
+      let moduleSource ;
+      if(!this.$storage.get("skuid")){
+        moduleSource = '普通页面'
+      }else{
+        moduleSource = this.$storage.get("skuid").toString() == this.detailmData.skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
+      }
+      
       AnalysysAgent.track(
         "collect",
         {
@@ -835,7 +842,7 @@ export default {
           $paeg_title: titHtm,
           product_first_category: category[0],
           product_second_category: category[1],
-          module_source: this.$storage.get("skuid").toString() == this.detailmData.skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
+          module_source: moduleSource
         },
         (rel) => {}
       );
@@ -880,7 +887,13 @@ export default {
       }
       let typeName = this.detailmData.typeName;
       let category = typeName.split(",");
-      
+      let moduleSource ;
+      if(!this.$storage.get("skuid")){
+        moduleSource = '普通页面'
+      }else{
+        moduleSource = this.$storage.get("skuid").toString() == this.detailmData.skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
+      }
+
       AnalysysAgent.track(
         "product_detail_view",
         {
@@ -898,7 +911,7 @@ export default {
           commodity_detail_souce: souce,
           product_first_category: category[0],
           product_second_category: category[1],
-          module_source: this.$storage.get("skuid").toString() == this.detailmData.skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
+          module_source: moduleSource
         },
         (rel) => {}
       );
