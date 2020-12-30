@@ -9,7 +9,6 @@
       <div class="success-test c-orange">
         Your order was paid successfully.
         <div class="success-shop" @click="shop">Continue shopping</div>
-        <div class="success-shop" @click="toOrder">View the order</div>
       </div>
     </div>
     <div v-else>
@@ -46,10 +45,6 @@ export default {
   methods: {
     shop() {
       this.$router.push("/control/home");
-    },
-    //去订单
-    toOrder() {
-      this.$router.push({ name: "我的订单" });
     },
   },
   components: {

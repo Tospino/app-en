@@ -31,7 +31,7 @@
                 >
                   <div class="con-p1">
                     <span>{{ account.listNo }}</span>
-                    <span class="fl-right">{{ account.paidTime }}</span>
+                    <span class="fl-right">{{ account.ghanaLocalTime }}</span>
                   </div>
                   <div class="con-p2">
                     <span>{{
