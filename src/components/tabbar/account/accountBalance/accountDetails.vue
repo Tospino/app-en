@@ -2,8 +2,17 @@
   <div class="account-details">
     <balance-header title="Details"></balance-header>
     <div class="account-tab">
-      <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
-        <van-tab :title="tab.title" v-for="(tab,index) in tabList" :key="index">
+      <van-tabs
+        v-model="active"
+        class="tab-list"
+        title-active-color="#FA5300"
+        @change="changeTab"
+      >
+        <van-tab
+          :title="tab.title"
+          v-for="(tab, index) in tabList"
+          :key="index"
+        >
           <scroll
             class="bscroll-wrapper"
             ref="wrapper"
@@ -15,28 +24,39 @@
           >
             <div class="bscroll-con">
               <div v-if="noSearchStatus">
-                <div class="tab-con" v-for="(account,index) in dataList" :key="index">
+                <div
+                  class="tab-con"
+                  v-for="(account, index) in dataList"
+                  :key="index"
+                >
                   <div class="con-p1">
-                    <span>{{account.listNo}}</span>
-                    <span class="fl-right">{{account.paidTime}}</span>
+                    <span>{{ account.listNo }}</span>
+                    <span class="fl-right">{{ account.ghanaLocalTime }}</span>
                   </div>
                   <div class="con-p2">
-                    <span>{{orderStatus(account.accountType,'accountList')}}</span>
-                    <span>{{jn}}{{account.amount}}</span>
+                    <span>{{
+                      orderStatus(account.accountType, "accountList")
+                    }}</span>
+                    <span>{{ jn }}{{ account.amount }}</span>
                   </div>
-                  <div class="con-p4" v-if="account.giveMoney > 0 && account.accountType==1">
-                    <span>Get {{jn}}{{account.giveMoney}} for free.</span>
+                  <div
+                    class="con-p4"
+                    v-if="account.giveMoney > 0 && account.accountType == 1"
+                  >
+                    <span>Get {{ jn }}{{ account.giveMoney }} for free.</span>
                   </div>
                   <div class="con-p3">
                     <span>Serial No:</span>
-                    <span>{{account.payNo}}</span>
-                    <span>{{orderStatus(account.isPaid,'payStatusList')}}</span>
+                    <span>{{ account.payNo }}</span>
+                    <span>{{
+                      orderStatus(account.isPaid, "payStatusList")
+                    }}</span>
                   </div>
                 </div>
               </div>
               <div class="no-sear-good-img" v-else>
                 <img src="@/assets/img/search/nosear3.png" />
-                <div>{{describe}}</div>
+                <div>{{ describe }}</div>
               </div>
             </div>
           </scroll>
@@ -76,6 +96,7 @@ export default {
         { type: 2, name: "Pay by Balance" },
         { type: 11, name: "Reward" },
         { type: 12, name: "Reduce" },
+        { type: 13, name: "Refund" },
       ],
       payStatusList: [
         { type: 1, name: "Success" },

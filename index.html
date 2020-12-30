@@ -1,7 +1,7 @@
 <!--
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
- * @LastEditTime: 2020-10-20 11:03:40
+ * @LastEditTime: 2020-12-30 17:02:45
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\index.html
@@ -15,9 +15,12 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
     <title>shop</title>
+    <!-- 通过定位IP获取地址 -->
     <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script type="text/javascript">
-      //console.log(returnCitySN["cip"] + "," + returnCitySN["cname"]);
+        //console.log(returnCitySN["cip"] + "," + returnCitySN["cname"]);
+        var startTime = new Date().getTime() - window.performance.timing.navigationStart
+      // console.log('启动时间',startTime)
     </script>
     <style>
         .cjy-skeleton .van-skeleton {

@@ -64,10 +64,10 @@ import home1 from "@/assets/img/tabbar/home/home1@3x.png";
 import home from "@/assets/img/tabbar/home/home@3x.png";
 import cart1 from "@/assets/img/tabbar/home/cart1@3x.png";
 import cart from "@/assets/img/tabbar/home/cart@3x.png";
-import mine from "@/assets/img/tabbar/home/mine@3x.png";
 import mine1 from "@/assets/img/tabbar/home/mine1@3x.png";
-import sort from "@/assets/img/tabbar/home/sort@3x.png";
+import mine from "@/assets/img/tabbar/home/mine@3x.png";
 import sort1 from "@/assets/img/tabbar/home/sort1@3x.png";
+import sort from "@/assets/img/tabbar/home/sort@3x.png";
 import Message from "@/assets/img/tabbar/home/Message_.png";
 import Message1 from "@/assets/img/tabbar/home/Message.png";
 export default {
@@ -76,8 +76,8 @@ export default {
     return {
       active: 0,
       icon: {
-        home1,
         home,
+        home1,
         cart1,
         cart,
         mine,

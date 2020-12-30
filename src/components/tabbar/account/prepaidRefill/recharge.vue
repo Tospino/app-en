@@ -178,7 +178,8 @@ export default {
           price: data.prepaidActuallyMoney,
           add_value: data.prepaidMoney,
           is_successful: res.status_code == 200 ? true:false,
-          failure_reason: res.message
+          failure_reason: res.message,
+          phone_num: Number(data.referalNumber)
         },rel => {})
       });
     },

@@ -92,6 +92,7 @@ export default {
     width: 694px;
     height: 574px;
     overflow: hidden;
+    
     .wrapper-main {
       position: relative;
       top: -50%;
@@ -118,6 +119,7 @@ export default {
       .btn {
         width: 264px;
         height: 64px;
+        // padding: 27px 0 0 16px;
         img {
           max-width: 100%;
           max-height: 100%;

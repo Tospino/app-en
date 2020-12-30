@@ -11,12 +11,12 @@
       <div class="paymen-content">
         <div
           class="paymen-content-top"
-          v-for="(reason,index) in list"
+          v-for="(reason, index) in list"
           :key="index"
           @click="cliItem(index)"
         >
           <img v-lazy="reason.logourl" class="icon-img" />
-          <span>{{reason.name}}</span>
+          <span>{{ reason.name }}</span>
           <van-checkbox
             v-model="reason.checked"
             icon-size="24px"
@@ -25,12 +25,13 @@
           ></van-checkbox>
         </div>
       </div>
-      <div class="btn-ljzf" @click="pay">Pay GHS {{paymoeny}}</div>
+      <div class="btn-ljzf" @click="pay">Pay GHS {{ paymoeny }}</div>
     </van-action-sheet>
   </div>
 </template>
 
 <script>
+import { Toast } from "vant";
 export default {
   props: {
     title: {
@@ -94,7 +95,11 @@ export default {
           trueItem = ele;
         }
       });
-      this.$emit("toParnet", trueItem);
+      if (JSON.stringify(trueItem) == "{}") {
+        Toast("Please select payment method");
+      } else {
+        this.$emit("toParnet", trueItem);
+      }
     },
     //关闭弹窗
     closeYinggang() {

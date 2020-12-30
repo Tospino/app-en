@@ -14,7 +14,6 @@
           <div class="iphone-option">
             <select ref="mobilecode">
               <option value="233">+233</option>
-              <option value="86">+86</option>
             </select>
           </div>
           <van-field
@@ -395,6 +394,8 @@ export default {
       },
       zhengce: false,
       userStatus: false,
+      register_time: null, //注册时长定时器
+      duration: null
     };
   },
   computed: {
@@ -407,6 +408,10 @@ export default {
   },
   mounted() {
     this.membertypelit();
+    this.duration = 0;
+    this.register_time = setInterval(() => {
+      this.duration++;
+    },1000)
   },
   watch: {
     eyeStatus: {
@@ -528,6 +533,7 @@ export default {
     },
     toRevise() {
       if (!this.disabledSubmit) return;
+      clearInterval(this.register_time);
       var emReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/; //正则表达式
       if (this.formData.email == "") {
       } else if (!emReg.test(this.formData.email)) {
@@ -550,6 +556,17 @@ export default {
         this.formData.mobile = this.formData.phone;
       }
       this.userregister();
+
+      //易观数据采集---按钮点击
+      let titHtm = document.title;
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: titHtm,
+          btn_name: "Register",
+        },
+        (rel) => {}
+      );
     },
     getCode() {
       if (this.formData.phone == "") {
@@ -665,7 +682,9 @@ export default {
 
         //易观数据采集-----注册
         let reason = "";
-        if (res.code == -110) {
+        if (res.code == 0) {
+          reason = 'success';
+        } else if (res.code == -110) {
           reason = "Incorrect verification code.";
         } else if (res.code == -25) {
           reason = "The phone number was registered.";
@@ -697,9 +716,15 @@ export default {
             register_method: "手机号",
             code: this.formData.recommendCode,
             is_successful: res.code == 0 ? true : false,
+            nickname: this.formData.nickName,
+            duration: this.duration
           },
           (rel) => {}
         );
+        //绑定用户ID
+        if(res.code == 0){
+          AnalysysAgent.alias(this.formData.mobile, (rek) => {});
+        }
       });
     },
     //验证码

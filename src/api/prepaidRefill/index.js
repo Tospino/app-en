@@ -9,56 +9,56 @@ export function topupFlexiProductListApi(params) {
 }
 
 //生成话费充值订单
-export function addPhoneRechargeOrderApi(params) {
+export function addPhoneRechargeOrderApi(data) {
     return park({
         url: `/appWallet/addPhoneRechargeOrder`,
         method: 'GET',
-        data: params
+        data
     })
 }
 
 //创建一个发票并发回slydepay支付令牌
-export function createInvoiceApi(params) {
+export function createInvoiceApi(data) {
     return park({
         url: `/appWallet/CreateInvoice`,
         method: 'GET',
-        params
+        data
     })
 }
 
 //支付回调接口
-export function callbackApi(params) {
+export function callbackApi(data) {
     return park({
         url: `/appWallet/callback`,
         method: 'GET',
-        params
+        data
     })
 }
 
 //话费充值订单详情
-export function phoneOrderDetailApi(params) {
+export function phoneOrderDetailApi(data) {
     return park({
         url: `/appWallet/PhoneOrderDetail`,
         method: 'GET',
-        params
+        data
     })
 }
 
 //话费充值订单列表
-export function phoneOrderListApi(params) {
+export function phoneOrderListApi(data) {
     return park({
         url: `/appWallet/PhoneOrderList`,
         method: 'GET',
-        params
+        data
     })
 }
 
 //删除话费充值订单
-export function deleteRecordApi(params) {
+export function deleteRecordApi(data) {
     return park({
         url: `/appWallet/deleteRecord`,
         method: 'GET',
-        params
+        data
     })
 }
 
@@ -68,5 +68,23 @@ export function balancePrepaidRechargeApi(params) {
         url: `/appWallet/balancePrepaidRecharge`,
         method: 'POST',
         data: params
+    })
+}
+
+//余额充值模板
+export function getTodayPayTemplateApi(params) {
+    return park({
+        url: `/appWallet/getTodayPayTemplate`,
+        method: 'POST',
+        data: params
+    })
+}
+
+//钱包模块-余额充值接口
+export function TopupBalanceApi(data) {
+    return park({
+        url: `/appWallet/TopupBalance`,
+        method: 'get',
+        data
     })
 }

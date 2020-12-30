@@ -32,7 +32,7 @@
             <van-swipe-item
               v-for="(banner, index) in topBananerList"
               :key="index"
-              @click="swipeClick(banner)"
+              @click="swipeClick(banner, index)"
             >
               <div class="w1">
                 <img v-lazy="$webUrl + banner.advertImg" />
@@ -85,12 +85,12 @@
             <div class="pictures">
               <div
                 class="p1"
-                v-for="finework in homeObj.producteFineWorkpro"
+                v-for="(finework, index) in homeObj.producteFineWorkpro"
                 :key="finework.skuId"
               >
                 <img
                   v-lazy="$webUrl + finework.imgUrl"
-                  @click="toDetail(finework.skuId, finework)"
+                  @click="toDetail(finework.skuId, finework, 'finework', index)"
                 />
                 <div class="good-name clamp-2">
                   <span
@@ -230,17 +230,17 @@
               <img
                 v-lazy="$webUrl + brandLogo1.brandLogo"
                 class="brand-p-1-left"
-                @click="toSearOne(brandLogo1.brandId, 'brandId')"
+                @click="toSearOne(brandLogo1.brandId, 'brandId', 10)"
               />
               <img
                 v-lazy="$webUrl + brandLogo2.brandLogo"
                 class="brand-p-1-right-top"
-                @click="toSearOne(brandLogo2.brandId, 'brandId')"
+                @click="toSearOne(brandLogo2.brandId, 'brandId', 11)"
               />
               <img
                 v-lazy="$webUrl + brandLogo3.brandLogo"
                 class="brand-p-1-right-bottom"
-                @click="toSearOne(brandLogo3.brandId, 'brandId')"
+                @click="toSearOne(brandLogo3.brandId, 'brandId', 12)"
               />
             </div>
             <div class="brand-p-2">
@@ -248,7 +248,7 @@
                 v-lazy="$webUrl + globalPro.brandLogo"
                 v-for="(globalPro, index) in globalProList"
                 :key="index"
-                @click="toSearOne(globalPro.brandId, 'brandId')"
+                @click="toSearOne(globalPro.brandId, 'brandId', index)"
               />
             </div>
           </div>
@@ -269,7 +269,9 @@
               >
                 <img
                   v-lazy="$webUrl + fineSale1.imgUrl"
-                  @click="toDetail(fineSale1.skuId, fineSale1)"
+                  @click="
+                    toDetail(fineSale1.skuId, fineSale1, 'fineSale1', index)
+                  "
                 />
                 <div class="good-name">{{ fineSale1.supplyTitle }}</div>
                 <span class="good-price">
@@ -285,19 +287,21 @@
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner1)">
-          <img v-lazy="$webUrl + banner1.advertImg" />
+          <img v-lazy="$bigwebUrl + banner1.advertImg" />
         </div>
         <div class="exhibition">
           <div class="flash-sale-2">
             <div class="pictures">
               <div
                 class="p1"
-                v-for="fineSale2 in fineSaleList2"
+                v-for="(fineSale2, index) in fineSaleList2"
                 :key="fineSale2.skuId"
               >
                 <img
                   v-lazy="$webUrl + fineSale2.imgUrl"
-                  @click="toDetail(fineSale2.skuId, fineSale2)"
+                  @click="
+                    toDetail(fineSale2.skuId, fineSale2, 'fineSale2', index)
+                  "
                 />
                 <span class="good-name clamp-2">
                   {{ fineSale2.supplyTitle }}
@@ -317,7 +321,7 @@
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner2)">
-          <img v-lazy="$webUrl + banner2.advertImg" />
+          <img v-lazy="$bigwebUrl + banner2.advertImg" />
         </div>
         <div class="good-popular box">
           <div class="flash-sale-1">
@@ -328,16 +332,16 @@
           <div class="good-popular-top">
             <div
               class="good-popular-top-1"
-              v-for="category in homeObj.producteFinecategory"
+              v-for="(category, index) in homeObj.producteFinecategory"
               :key="category.categoryId"
-              @click="toSearOne(category.categoryId, 'categoryId')"
+              @click="toSearOne(category.categoryId, 'categoryId', index)"
             >
               <img v-lazy="$webUrl + category.categoryImg" />
             </div>
           </div>
         </div>
         <div class="banner" @click="swipeClick(banner3)">
-          <img v-lazy="$webUrl + banner3.advertImg" />
+          <img v-lazy="$bigwebUrl + banner3.advertImg" />
         </div>
         <div class="good-sort">
           <van-tabs
@@ -448,7 +452,11 @@
                     >{{ jn }}{{ searchgoodDao.salePrice }}</span
                   >
                   <!-- <span class="poin">...</span> -->
-                  <span class="fl-right" style="color: red">
+                  <span
+                    class="fl-right"
+                    style="color: red"
+                    v-show="searchgoodDao.skuSalesNum"
+                  >
                     Sales:{{
                       searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0
                     }}PCS
@@ -745,7 +753,7 @@ export default {
       this.pullup = true;
     },
     //跳转商品详情
-    toDetail(skuid, overall) {
+    toDetail(skuid, overall, type, index) {
       // 活动清仓根据activityId,supplyId,activityType,activityState
       this.$router.push({
         name: "商品详情",
@@ -755,13 +763,105 @@ export default {
           activityType: overall.activityType,
         },
       });
+      if (type == "finework") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Selectives",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品详情页",
+            product_name: overall.supplyTitle,
+            discount: overall.discountPrice == null ? 0 : overall.discountPrice,
+            product_price: overall.salePrice,
+            products_id: overall.skuId,
+            product_sold: overall.skuSalesNum,
+          },
+          (rel) => {}
+        );
+      } else if (type == "fineSale1") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Hot Sales",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品详情页",
+            product_name: overall.supplyTitle,
+            discount: overall.discountPrice == null ? 0 : overall.discountPrice,
+            product_price: overall.salePrice,
+            products_id: overall.skuId,
+            product_sold: overall.skuSalesNum,
+          },
+          (rel) => {}
+        );
+      } else if (type == "fineSale2") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Hot Sales",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index + 10,
+            resource_page_name: "商品详情页",
+            product_name: overall.supplyTitle,
+            discount: overall.discountPrice == null ? 0 : overall.discountPrice,
+            product_price: overall.salePrice,
+            products_id: overall.skuId,
+            product_sold: overall.skuSalesNum,
+          },
+          (rel) => {}
+        );
+      }
     },
     //去到搜索里面
-    toSearOne(id, type) {
+    toSearOne(id, type, index) {
       if (type == "categoryId") {
         this.$router.push({ name: "搜索商品1", query: { categoryId: id } });
       } else if (type == "brandId") {
         this.$router.push({ name: "搜索商品1", query: { brandId: id } });
+      }
+      if (type == "categoryId") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Hot",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品列表页",
+          },
+          (rel) => {}
+        );
+      } else if (type == "brandId") {
+        //易观数据采集---资源位点击
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        AnalysysAgent.track(
+          "resource_click",
+          {
+            resource_type: "Global Brands",
+            $page_url: urlHtm,
+            $page_title: titHtm,
+            resource_rank: index,
+            resource_page_name: "商品列表页",
+          },
+          (rel) => {}
+        );
       }
     },
     //首页广告
@@ -783,20 +883,23 @@ export default {
       });
     },
     //点击轮播图
-    swipeClick(el) {
+    swipeClick(el, index) {
       if (!el.linkUrl) return;
       window.location.href = el.linkUrlEng;
-      var targetType = '';
-      if(el.linkUrlEng.substring(25,31) == 'commod'){
-        targetType = '商品详情页';
-      }else if(el.linkUrlEng.substring(25,31) == 'search'){
-        targetType = '列表页';
-      }else {
-        targetType = '其它';
+      var targetType = "";
+      if (el.linkUrlEng.substring(25, 31) == "commod") {
+        targetType = "商品详情页";
+      } else if (el.linkUrlEng.substring(25, 31) == "search") {
+        targetType = "列表页";
+      } else if (el.linkUrlEng.substring(25, 31) == "rechar") {
+        targetType = "话费充值页";
+      } else {
+        targetType = "其它";
       }
       //易观数据采集-----轮播图点击
       let urlHtm = window.location.href;
       let titHtm = document.title;
+      let num = parseInt(index);
       AnalysysAgent.track(
         "banner_click",
         {
@@ -804,6 +907,7 @@ export default {
           $page_title: titHtm,
           target_url: el.linkUrlEng,
           target_type: targetType,
+          banner_rank: num,
         },
         (rel) => {}
       );
@@ -903,13 +1007,19 @@ export default {
         color: #333;
         margin-right: 10px;
       }
+      // /deep/ .van-icon {
+      //   color: #ffffff;
+      // }
     }
     .flash-sale-2 {
       background-color: #fff;
       border-radius: 10px;
       margin-top: 20px;
+      padding: 0 30px;
       .goods_items {
+        // margin: 0 30px;
         padding: 30px 20px;
+        // background-color: #fff;
         border-bottom: 1px solid #eee;
         .goods_sale {
           position: absolute;
@@ -987,6 +1097,11 @@ export default {
     vertical-align: text-top;
     .flash-sale-1 {
       position: relative;
+      // height: 60px;
+      // line-height: 60px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
@@ -1038,6 +1153,7 @@ export default {
       .pictures {
         height: 240px;
         width: 1000px;
+        box-sizing: border-box;
         .p1 {
           width: 200px;
           height: 210px;
@@ -1046,7 +1162,7 @@ export default {
           text-align: center;
           .good-name {
             font-size: 20px;
-
+            width: 200px;
             color: #333333;
           }
           .good-price1 {
@@ -1090,9 +1206,14 @@ export default {
     padding: 0 30px;
     margin-bottom: 40px;
     .flash-sale-1 {
+      width: 100%;
       position: relative;
       height: 50px;
       line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
@@ -1114,8 +1235,10 @@ export default {
     }
     .flash-sale-2 {
       width: 100%;
+      // padding: 0 30px;
       margin-top: 17px;
       .pictures {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -1136,6 +1259,7 @@ export default {
             color: #333333;
             margin-top: 9px;
             height: 58px;
+            width: 220px;
           }
           .good-price1 {
             display: inline-block;
@@ -1155,6 +1279,10 @@ export default {
       position: relative;
       height: 50px;
       line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
@@ -1191,6 +1319,7 @@ export default {
       height: 550px;
       width: 100%;
       margin-top: 17px;
+      // padding: 0 0px;
       .brand-p-1 {
         width: 100%;
         height: 340px;
@@ -1236,6 +1365,12 @@ export default {
     padding: 0 30px;
     .flash-sale-1 {
       position: relative;
+      // height: 60px;
+      // line-height: 60px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
@@ -1260,7 +1395,9 @@ export default {
     .flash-sale-2 {
       width: 100%;
       margin-top: 17px;
+      // padding: 0 30px;
       .pictures {
+        box-sizing: border-box;
         background-color: #f7e8c7;
         padding: 24px 24px 20px;
         .good-world-best-p1 {
@@ -1306,6 +1443,7 @@ export default {
     background-color: #fff;
     .flash-sale-2 {
       .pictures {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -1322,6 +1460,7 @@ export default {
             font-size: 20px;
             color: #333333;
             margin-top: 9px;
+            width: 166px;
           }
           .good-price1 {
             display: inline-block;
@@ -1340,6 +1479,10 @@ export default {
       position: relative;
       height: 50px;
       line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
         height: 40px;
@@ -1363,6 +1506,7 @@ export default {
       width: 100%;
       height: 170px;
       margin: 19px 0 10px;
+      // padding: 0 30px;
       position: relative;
       display: flex;
       flex-direction: row;

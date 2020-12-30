@@ -84,7 +84,7 @@
           <span class="price2" v-if="good.discountPrice != null"
             >{{ jn }}{{ good.salePrice }}</span
           >
-          <span class="fl_ri" style="color: red"
+          <span style="color: red" v-show="good.skuSalesNum"
             >Sales:{{ good.skuSalesNum ? good.skuSalesNum : 0 }}</span
           >
           <!-- <span class="poin">...</span> -->
@@ -129,8 +129,7 @@ export default {
     },
     //跳转到商品详情
     toProduDetail(skuId, shopall) {
-      this.$emit("clickPro", skuId, shopall.activityType);
-      //   this.$router.push({ name: "商品详情", query: { skuId } });
+      this.$emit("clickPro", skuId, shopall);
     },
     getData() {
       this.dataList = this.twoDataList.map((o) => Object.assign({}, o));
@@ -260,10 +259,6 @@ export default {
         font-size: 60px;
         top: -35px;
         right: 0;
-      }
-      .fl_ri {
-        position: relative;
-        left: 140px;
       }
     }
     .exhibition-img {

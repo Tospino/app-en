@@ -9,7 +9,11 @@
 <template>
   <section class="customerService">
     <!-- 头部搜索框 -->
-    <details-header title="Message" v-if="isshow" :isBack="type!==0?true:false"></details-header>
+    <details-header
+      title="Message"
+      v-if="isshow"
+      :isBack="type !== 0 ? true : false"
+    ></details-header>
     <iframe
       :src="seversUrl"
       v-if="showServer && token"
@@ -67,7 +71,9 @@ export default {
       this.getData();
     } else {
       this.$router.push({ name: "登录" });
-      location.reload();
+      for (var i = 0; i < 1; i++) {
+        location.reload();
+      }
     }
     window.addEventListener("message", this.HandleMessage);
   },

@@ -65,8 +65,8 @@
                 class="img-nochange"
                 v-if="
                   product.stockEnough == 0 ||
-                    product.canSell == 0 ||
-                    product.freightCode != 0
+                  product.canSell == 0 ||
+                  product.freightCode != 0
                 "
               >
                 {{
@@ -88,7 +88,7 @@
                   :class="{
                     spen_on:
                       product.activityTagApp != null &&
-                      product.activityTagApp != ''
+                      product.activityTagApp != '',
                   }"
                   >{{ product.activityTagApp }}</span
                 >
@@ -363,7 +363,7 @@ import { querydefaultObjectApi } from "@/api/accountSettings/index";
 import {
   getconfirmorderApi,
   batchmakeorderApi,
-  onlineorderrewardmsgApi
+  onlineorderrewardmsgApi,
 } from "@/api/confirmOrder/index";
 import { orderlaunchpayApi } from "@/api/myOrder/index.js";
 import { park } from "@/api";
@@ -377,22 +377,22 @@ export default {
       option1: [
         { text: "全部商品", value: 0 },
         { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 }
+        { text: "活动商品", value: 2 },
       ],
       option2: [
         { text: "默认排序", value: "a" },
         { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" }
+        { text: "销量排序", value: "c" },
       ],
       payStatus: [
         {
           type: 1,
-          name: "Cash on delivery"
+          name: "Cash on delivery",
         },
         {
           type: 2,
-          name: "Online payment"
-        }
+          name: "Online payment",
+        },
       ],
       showPayment: false,
       checked: false,
@@ -416,14 +416,14 @@ export default {
       order: false, //更多优惠券
       couponList: [], //优惠券领取
       fanxianStatus: false, //返现弹窗
-      fanxianList: [] //返现列表
+      fanxianList: [], //返现列表
     };
   },
 
   computed: {
     ...mapState({
-      selectionShopCar: state => state.selectionShopCar
-    })
+      selectionShopCar: (state) => state.selectionShopCar,
+    }),
   },
   mounted() {
     //如果在收件地址里面选了地址就从vuex里面找,如果是刚进来的就请求默认地址
@@ -436,10 +436,10 @@ export default {
     //通过购物车进来
     if (this.$route.query.type == "shopcar") {
       let arr = this.$store.state.selectionShopCar;
-      arr.forEach(shopCar => {
+      arr.forEach((shopCar) => {
         let shopCarObj = {
           shopcrtId: shopCar.shopcrtId,
-          skuId: shopCar.skuId
+          skuId: shopCar.skuId,
         };
         this.shopcrtList.push(shopCarObj);
       });
@@ -460,14 +460,14 @@ export default {
         Notify({
           message: "Choose the method of payment.",
           color: "#fff",
-          type: "danger"
+          type: "danger",
         });
         return;
       }
       let flag = true;
       let flag2 = true;
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(ele2 => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((ele2) => {
           if (ele2.canSell == 0 || ele2.stockEnough == 0) {
             flag = false;
           }
@@ -495,7 +495,7 @@ export default {
     //编译状态
     orderStatus(type, list) {
       let name = "";
-      this[list].forEach(statu => {
+      this[list].forEach((statu) => {
         if (statu.type == type) {
           name = statu.name;
         }
@@ -523,7 +523,7 @@ export default {
     },
     //获取用户默认收货地址信息
     querydefaultObject() {
-      querydefaultObjectApi().then(res => {
+      querydefaultObjectApi().then((res) => {
         if (res.code == 0) {
           if (res.Data == null) {
             this.jumpRouter("确认订单收货地址");
@@ -554,14 +554,14 @@ export default {
       // let coupons = [];
       let data = {
         addressId: this.defaultAdderss.addressId,
-        detailList: arr
+        detailList: arr,
       };
       // 商品明细列表
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(item => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((item) => {
           let obj = {
             skuId: item.skuId,
-            detailNum: Number(item.detailNum)
+            detailNum: Number(item.detailNum),
           };
           arr.push(obj);
         });
@@ -588,7 +588,7 @@ export default {
         return;
       }
       this.orderData.orderList.forEach((ele, eleIndex) => {
-        ele.detailList.forEach(item => {
+        ele.detailList.forEach((item) => {
           if (item.skuId == good.skuId) {
             ele.detailList.splice(goodindex, 1);
             this.shopcrtList.forEach((shopcrt, shopcrtIndex) => {
@@ -614,14 +614,14 @@ export default {
       let coupon = {
         addressId: this.defaultAdderss.addressId,
         detailList: arr,
-        couponDrawList: drawId
+        couponDrawList: drawId,
       };
       // 商品明细列表
-      this.orderData.orderList.forEach(ele => {
-        ele.detailList.forEach(item => {
+      this.orderData.orderList.forEach((ele) => {
+        ele.detailList.forEach((item) => {
           let obj = {
             skuId: item.skuId,
-            detailNum: Number(item.detailNum)
+            detailNum: Number(item.detailNum),
           };
           arr.push(obj);
         });
@@ -633,7 +633,7 @@ export default {
     getconfirmorder(data) {
       // // 缓存订单数据在vuex
       // this.$store.state.orderDetails = data;
-      getconfirmorderApi(data).then(res => {
+      getconfirmorderApi(data).then((res) => {
         if (res.code == 0) {
           this.orderData = res.Data;
           // 缓存优惠券列表在vuex
@@ -665,9 +665,9 @@ export default {
         orderSource: 1,
         orderList: orderObj.orderList,
         shopcrtList: this.shopcrtList,
-        couponList: this.couponList
+        couponList: this.couponList,
       };
-      batchmakeorderApi(obj).then(res => {
+      batchmakeorderApi(obj).then((res) => {
         let orderIdArr = [];
         if (res.code == 0) {
           //   支付方式为货到付款,直接跳转到我的订单(待发货)
@@ -677,7 +677,7 @@ export default {
           } else {
             //弹出支付弹框
             this.showpaymen();
-            res.Data.forEach(item => {
+            res.Data.forEach((item) => {
               orderIdArr.push({ orderId: Number(item.orderId) });
             });
             this.orderIdList = orderIdArr;
@@ -715,32 +715,7 @@ export default {
         }
 
         //易观数据采集----支付订单
-        let reason = "";
-        if (res.code == 1) {
-          reason = "Parameter “requestModel” cannot be empty.";
-        } else if (res.code == 2) {
-          reason = "Parameter”orderList” cannot not be empty.";
-        } else if (res.code == 3) {
-          reason = "Parameter Method of Payment cannot not be empty.";
-        } else if (res.code == 4) {
-          reason = "Parameter Shipping Address ID cannot not be empty.";
-        } else if (res.code == 5) {
-          reason = "Parameter Anonymous Buyer cannot not be empty.";
-        } else if (res.code == 6) {
-          reason = "Parameter Order List cannot not be empty.";
-        } else if (res.code == 7) {
-          reason = "Parameter”detailList” cannot not be empty.";
-        } else if (res.code == 21) {
-          reason = "The product is invalid. Please reconfirm the order.";
-        } else if (res.code == 22) {
-          reason = "The MOQ is insufficient. Please reconfirm the order.";
-        } else if (res.code == 23) {
-          reason = "The stock is insufficient. Please reconfirm the order.";
-        } else if (res.code == 24) {
-          reason = "The product price is changed. Please reconfirm the order.";
-        } else if (res.code == 25) {
-          reason = "FBM products do not support pay by cash.";
-        }
+        
         AnalysysAgent.track(
           "pay_order",
           {
@@ -752,20 +727,24 @@ export default {
             order_amounts:
               parseFloat(this.orderData.allOrderProductAmountWebsite) +
               parseFloat(this.orderData.allOrderFareWebsite),
-            order_actual_amount: this.orderData.allOrderAmountWebsite,
+            order_actual_amounts: parseFloat(
+              this.orderData.allOrderAmountWebsite
+            ),
             receiver_area: this.defaultAdderss.district,
             shipping_cost: parseFloat(this.orderData.allOrderFareWebsite),
             order_id: res.Data[0].orderSn,
             is_successful: res.code == 0 ? true : false,
-            failure_reason: reason,
+            failure_reason: res.code.toString(),
             receiver_name: this.defaultAdderss.name,
             receiver_address: this.defaultAdderss.addreCitys,
             is_use_discount:
               this.orderData.allOrderCouponAmountWebsite == 0 ? false : true,
             pay_channel: this.zffs == 1 ? "Cash on delivery" : "Online payment",
-            receive_phonenum: this.defaultAdderss.phoneNumber
+            receive_phonenum: this.defaultAdderss.phoneNumber,
+            num_products: this.orderData.orderList[0].detailList[0].actDetailNum,
+            store_name: this.orderData.orderList[0].businessSn
           },
-          rel => {}
+          (rel) => {}
         );
       });
     },
@@ -774,14 +753,14 @@ export default {
       let obj = {
         addressId: this.defaultAdderss.addressId,
         detailList: this.selectionShopCar,
-        autoSelectCoupon: 1
+        autoSelectCoupon: 1,
       };
       this.getconfirmorder(obj);
     },
 
     //订单发起支付
     orderlaunchpay(data) {
-      orderlaunchpayApi(data).then(res => {
+      orderlaunchpayApi(data).then((res) => {
         if (res.code == 0) {
           this.showsucess();
         } else if (res.code == 1) {
@@ -827,7 +806,7 @@ export default {
       let obj = {
         payTypeDetail: this.payTypeDetail,
         payPwd: value,
-        orderList: this.orderIdList
+        orderList: this.orderIdList,
       };
 
       this.orderlaunchpay(obj);
@@ -837,7 +816,7 @@ export default {
     },
     //选择支付方式
     changePaymen(dataItem) {
-      this.payTypeList.forEach(item => {
+      this.payTypeList.forEach((item) => {
         item.checked = false;
       });
       dataItem.checked = true;
@@ -854,8 +833,8 @@ export default {
     //返现短信
     duanxin() {
       let data = this.orderIdList;
-      onlineorderrewardmsgApi({ orderList: data }).then(res => {});
-    }
+      onlineorderrewardmsgApi({ orderList: data }).then((res) => {});
+    },
   },
   components: {
     actionSheetPaymen,
@@ -863,8 +842,8 @@ export default {
     actionSheetPassword,
     balanceHeader,
     progressBar,
-    orderCouponPop
-  }
+    orderCouponPop,
+  },
 };
 </script>
 
