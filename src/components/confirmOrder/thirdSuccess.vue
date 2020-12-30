@@ -44,7 +44,10 @@ export default {
   watch: {},
   methods: {
     shop() {
-      this.$router.push("/control/home");
+      this.$router.push({
+        name: "首页",
+        query: { token: this.$route.query.token },
+      });
     },
   },
   components: {
