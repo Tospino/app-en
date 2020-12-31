@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-04 17:40:46
+ * @LastEditTime: 2020-12-30 17:09:19
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -70,10 +70,10 @@ export default {
       this.userinfoShop = JSON.parse(localStorage.userinfoShop);
       this.getData();
     } else {
-      this.$router.push({ name: "登录" });
-      for (var i = 0; i < 1; i++) {
-        location.reload();
-      }
+      this.$router.replace({ name: "登录" });
+      //   for (var i = 0; i < 1; i++) {
+      location.reload();
+      //   }
     }
     window.addEventListener("message", this.HandleMessage);
   },

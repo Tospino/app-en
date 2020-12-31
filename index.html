@@ -1,107 +1,104 @@
 <!--
  * @Author: 曹建勇
  * @Date: 2020-07-07 18:05:39
- * @LastEditTime: 2020-09-01 14:46:33
+ * @LastEditTime: 2020-12-30 17:02:45
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\index.html
 -->
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
-    />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
     <title>shop</title>
     <!-- 通过定位IP获取地址 -->
     <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script type="text/javascript">
-      //console.log(returnCitySN["cip"] + "," + returnCitySN["cname"]);
-      var startTime=new Date().getTime()-window.performance.timing.navigationStart
+        //console.log(returnCitySN["cip"] + "," + returnCitySN["cname"]);
+        var startTime = new Date().getTime() - window.performance.timing.navigationStart
       // console.log('启动时间',startTime)
     </script>
     <style>
-      .cjy-skeleton .van-skeleton {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        padding: 0 16px;
-        margin-top: 20px;
-      }
-
-      .cjy-skeleton .van-skeleton__avatar {
-        -webkit-flex-shrink: 0;
-        flex-shrink: 0;
-        margin-right: 16px;
-        background-color: #f2f3f5;
-      }
-
-      .cjy-skeleton .van-skeleton__avatar--round {
-        border-radius: 999px;
-      }
-
-      .cjy-skeleton .van-skeleton__content {
-        width: 100%;
-      }
-
-      .cjy-skeleton .van-skeleton__avatar + .van-skeleton__content {
-        padding-top: 8px;
-      }
-
-      .cjy-skeleton .van-skeleton__row,
-      .van-skeleton__title {
-        height: 16px;
-        background-color: #f2f3f5;
-      }
-
-      .cjy-skeleton .van-skeleton__title {
-        margin: 0;
-      }
-
-      .cjy-skeleton .van-skeleton__row:not(:first-child) {
-        margin-top: 12px;
-      }
-
-      .cjy-skeleton .van-skeleton__title + .van-skeleton__row {
-        margin-top: 20px;
-      }
-
-      .cjy-skeleton .van-skeleton--animate {
-        -webkit-animation: van-skeleton-blink 1.2s ease-in-out infinite;
-        animation: van-skeleton-blink 1.2s ease-in-out infinite;
-      }
-
-      .cjy-skeleton .van-skeleton--round .van-skeleton__row,
-      .van-skeleton--round .van-skeleton__title {
-        border-radius: 999px;
-      }
-
-      @-webkit-keyframes van-skeleton-blink {
-        50% {
-          opacity: 0.6;
+        .cjy-skeleton .van-skeleton {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            padding: 0 16px;
+            margin-top: 20px;
         }
-      }
 
-      @keyframes van-skeleton-blink {
-        50% {
-          opacity: 0.6;
+        .cjy-skeleton .van-skeleton__avatar {
+            -webkit-flex-shrink: 0;
+            flex-shrink: 0;
+            margin-right: 16px;
+            background-color: #f2f3f5;
         }
-      }
 
-      .mt_20 {
-        margin-top: 20px;
-      }
+        .cjy-skeleton .van-skeleton__avatar--round {
+            border-radius: 999px;
+        }
+
+        .cjy-skeleton .van-skeleton__content {
+            width: 100%;
+        }
+
+        .cjy-skeleton .van-skeleton__avatar+.van-skeleton__content {
+            padding-top: 8px;
+        }
+
+        .cjy-skeleton .van-skeleton__row,
+        .van-skeleton__title {
+            height: 16px;
+            background-color: #f2f3f5;
+        }
+
+        .cjy-skeleton .van-skeleton__title {
+            margin: 0;
+        }
+
+        .cjy-skeleton .van-skeleton__row:not(:first-child) {
+            margin-top: 12px;
+        }
+
+        .cjy-skeleton .van-skeleton__title+.van-skeleton__row {
+            margin-top: 20px;
+        }
+
+        .cjy-skeleton .van-skeleton--animate {
+            -webkit-animation: van-skeleton-blink 1.2s ease-in-out infinite;
+            animation: van-skeleton-blink 1.2s ease-in-out infinite;
+        }
+
+        .cjy-skeleton .van-skeleton--round .van-skeleton__row,
+        .van-skeleton--round .van-skeleton__title {
+            border-radius: 999px;
+        }
+
+        @-webkit-keyframes van-skeleton-blink {
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes van-skeleton-blink {
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .mt_20 {
+            margin-top: 20px;
+        }
     </style>
     <!-- twitter-->
     <meta name="twitter:title" content="twitter.Title" />
     <meta name="twitter:description" content="twitter.Description" />
-    <meta
-      name="twitter:image"
-      content="https://ftpfile.tospino.com//tospino/test/yichangbaobei/2020/2/e9893815-18b9-429f-a761-f461bd7bef02.jpg"
-    />
+    <meta name="twitter:image"
+        content="https://ftpfile.tospino.com//tospino/test/yichangbaobei/2020/2/e9893815-18b9-429f-a761-f461bd7bef02.jpg" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:url" content="https://test.tospino.com.gh" />
 
@@ -111,139 +108,103 @@
     <meta name="og:site_name" content="tospino 开发者" />
     <meta property="og:locale" content="en-US" />
     <meta property="og:type" content="website" />
-    <meta
-      name="og:image"
-      content="https://ftpfile.tospino.com//tospino/test/yichangbaobei/2020/2/e9893815-18b9-429f-a761-f461bd7bef02.jpg"
-    />
-    <meta
-      property="og:url"
-      content="https://test.tospino.com.gh/#/commodityDetails?skuId=2304"
-    />
-    <meta
-      name="og:description"
-      content="通过开发者文档详细了解 Facebook 产品。查看关于 AR/VR、业务、聊天、游戏、机器学习、创收、开源工具和社交的 Facebook 文档。"
-    />
+    <meta name="og:image"
+        content="https://ftpfile.tospino.com//tospino/test/yichangbaobei/2020/2/e9893815-18b9-429f-a761-f461bd7bef02.jpg" />
+    <meta property="og:url" content="https://test.tospino.com.gh/#/commodityDetails?skuId=2304" />
+    <meta name="og:description" content="通过开发者文档详细了解 Facebook 产品。查看关于 AR/VR、业务、聊天、游戏、机器学习、创收、开源工具和社交的 Facebook 文档。" />
 
     <!-- whatsapp -->
-    <meta
-      name="whatsapp:url"
-      class="share_url"
-      content="https://gh.tospino.com"
-    />
-    <meta
-      name="whatsapp:title"
-      class="share_title"
-      content="测试分享到whatsapp"
-    />
+    <meta name="whatsapp:url" class="share_url" content="https://gh.tospino.com" />
+    <meta name="whatsapp:title" class="share_title" content="测试分享到whatsapp" />
     <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId: "3322451687803078", // 正式
-          // appId: '3425494930806521', // 测试
-          cookie: true,
-          xfbml: true,
-          version: "v8.0"
-        });
-        FB.AppEvents.logPageView();
-      };
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: "3322451687803078", // 正式
+                // appId: '3425494930806521', // 测试
+                cookie: true,
+                xfbml: true,
+                version: "v8.0"
+            });
+            FB.AppEvents.logPageView();
+        };
 
-      (function(d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "facebook-jssdk");
+        (function (d, s, id) {
+            var js,
+                fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        })(document, "script", "facebook-jssdk");
     </script>
-  </head>
-  <link
-    href="http://47.52.210.251:8091/tospino/test/common/image/tospinologo.png"
-    rel="apple-touch-icon-precomposed"
-  />
-  <link
-    href="http://47.52.210.251:8091/tospino/test/common/image/tospinologo.png"
-    rel="apple-touch-icon"
-  />
+</head>
+<link href="http://47.52.210.251:8091/tospino/test/common/image/tospinologo.png" rel="apple-touch-icon-precomposed" />
+<link href="http://47.52.210.251:8091/tospino/test/common/image/tospinologo.png" rel="apple-touch-icon" />
 
-  <body>
+<body>
     <div id="app">
-      <section class="cjy-skeleton">
-        <div class="van-skeleton van-skeleton--animate">
-          <div class="van-skeleton__content">
-            <h3 class="van-skeleton__title" style="width: 40%;"></h3>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 60%;"></div>
-          </div>
-        </div>
-        <div class="van-skeleton van-skeleton--animate">
-          <div
-            class="van-skeleton__avatar van-skeleton__avatar--round"
-            style="width: 32px; height: 32px;"
-          ></div>
-          <div class="van-skeleton__content">
-            <h3 class="van-skeleton__title" style="width: 40%;"></h3>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 60%;"></div>
-          </div>
-        </div>
-        <div class="van-skeleton van-skeleton--animate">
-          <div
-            class="van-skeleton__avatar van-skeleton__avatar--round"
-            style="width: 32px; height: 32px;"
-          ></div>
-          <div class="van-skeleton__content">
-            <h3 class="van-skeleton__title" style="width: 40%;"></h3>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 60%;"></div>
-          </div>
-        </div>
-        <div class="van-skeleton van-skeleton--animate">
-          <div
-            class="van-skeleton__avatar van-skeleton__avatar--round"
-            style="width: 32px; height: 32px;"
-          ></div>
-          <div class="van-skeleton__content">
-            <h3 class="van-skeleton__title" style="width: 40%;"></h3>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 60%;"></div>
-          </div>
-        </div>
-        <div class="van-skeleton van-skeleton--animate">
-          <div
-            class="van-skeleton__avatar van-skeleton__avatar--round"
-            style="width: 32px; height: 32px;"
-          ></div>
-          <div class="van-skeleton__content">
-            <h3 class="van-skeleton__title" style="width: 40%;"></h3>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 60%;"></div>
-          </div>
-        </div>
-        <div class="van-skeleton van-skeleton--animate">
-          <div
-            class="van-skeleton__avatar van-skeleton__avatar--round"
-            style="width: 32px; height: 32px;"
-          ></div>
-          <div class="van-skeleton__content">
-            <h3 class="van-skeleton__title" style="width: 40%;"></h3>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 100%;"></div>
-            <div class="van-skeleton__row" style="width: 60%;"></div>
-          </div>
-        </div>
-      </section>
+        <section class="cjy-skeleton">
+            <div class="van-skeleton van-skeleton--animate">
+                <div class="van-skeleton__content">
+                    <h3 class="van-skeleton__title" style="width: 40%;"></h3>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="van-skeleton van-skeleton--animate">
+                <div class="van-skeleton__avatar van-skeleton__avatar--round" style="width: 32px; height: 32px;"></div>
+                <div class="van-skeleton__content">
+                    <h3 class="van-skeleton__title" style="width: 40%;"></h3>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="van-skeleton van-skeleton--animate">
+                <div class="van-skeleton__avatar van-skeleton__avatar--round" style="width: 32px; height: 32px;"></div>
+                <div class="van-skeleton__content">
+                    <h3 class="van-skeleton__title" style="width: 40%;"></h3>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="van-skeleton van-skeleton--animate">
+                <div class="van-skeleton__avatar van-skeleton__avatar--round" style="width: 32px; height: 32px;"></div>
+                <div class="van-skeleton__content">
+                    <h3 class="van-skeleton__title" style="width: 40%;"></h3>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="van-skeleton van-skeleton--animate">
+                <div class="van-skeleton__avatar van-skeleton__avatar--round" style="width: 32px; height: 32px;"></div>
+                <div class="van-skeleton__content">
+                    <h3 class="van-skeleton__title" style="width: 40%;"></h3>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="van-skeleton van-skeleton--animate">
+                <div class="van-skeleton__avatar van-skeleton__avatar--round" style="width: 32px; height: 32px;"></div>
+                <div class="van-skeleton__content">
+                    <h3 class="van-skeleton__title" style="width: 40%;"></h3>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 100%;"></div>
+                    <div class="van-skeleton__row" style="width: 60%;"></div>
+                </div>
+            </div>
+        </section>
     </div>
     <!-- built files will be auto injected -->
-  </body>
+</body>
+
 </html>
 <!-- <script src="//cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script> -->
