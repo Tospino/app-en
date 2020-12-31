@@ -1,7 +1,12 @@
 <template>
   <!-- 账户余额 -->
   <div class="account-balance">
-    <balance-header title="Add Minutes" title2="Records" @jumpRouter="jumpRouter" jumpName="话费充值记录"></balance-header>
+    <balance-header
+      title="Add Minutes"
+      title2="Records"
+      @jumpRouter="jumpRouter"
+      jumpName="话费充值记录"
+    ></balance-header>
     <div class="balance-bottom">
       <p class="bottom-p1">Enter the phone number you need to add minutes</p>
       <div class="phone-input">
@@ -10,18 +15,18 @@
       </div>
       <div class="money-list">
         <div
-          v-for="(prepaidMoney,index) in prepaidMoneyList"
+          v-for="(prepaidMoney, index) in prepaidMoneyList"
           :key="index"
-          :class="{active: index==currentIndex}"
-          @click="choiceItem(prepaidMoney,index)"
+          :class="{ active: index == currentIndex }"
+          @click="choiceItem(prepaidMoney, index)"
         >
-          <span class="mony1">{{prepaidMoney.money}}&nbsp;GHS</span>
+          <span class="mony1">{{ prepaidMoney.money }}&nbsp;GHS</span>
           <br />
-          <span class="mony2">Price: {{prepaidMoney.discountPrice}} GHS</span>
+          <span class="mony2">Price: {{ prepaidMoney.discountPrice }} GHS</span>
         </div>
         <div
           class="custom"
-          :class="{active: currentIndex == 100}"
+          :class="{ active: currentIndex == 100 }"
           v-if="prepaidMoneyData.isStartFreedom == 1"
         >
           <!-- <span class="mony1">自定义</span> -->
@@ -38,11 +43,13 @@
       <div
         class="btn-next"
         @click="showpaymen"
-        :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}"
-      >Add Now</div>
+        :style="{ backgroundColor: disabledSubmit ? '#FA5300' : '#999' }"
+      >
+        Add Now
+      </div>
     </div>
 
-    <!-- 选择付款方式弹窗 --> 
+    <!-- 选择付款方式弹窗 -->
     <action-sheet-paymen
       ref="actionSheetPaymen"
       :moeny="Number(currentItem.discountPrice)"
@@ -52,10 +59,16 @@
     ></action-sheet-paymen>
 
     <!-- 支付成功弹窗 -->
-    <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
+    <action-sheet-sucess
+      ref="sucess"
+      @showsucess="showsucess"
+    ></action-sheet-sucess>
 
     <!-- 支付密码 -->
-    <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
+    <action-sheet-password
+      ref="actionSheetPassword"
+      @getPassWord="getPassWord"
+    ></action-sheet-password>
   </div>
 </template>
 
@@ -104,7 +117,7 @@ export default {
       return (
         this.currentIndex != null &&
         this.phone &&
-        (Number(this.customMony) || this.currentItem.discountPrice)
+        (Number(this.customMony) > 0 || this.currentItem.discountPrice)
       );
     },
   },
@@ -172,15 +185,19 @@ export default {
         } else {
           Toast("error");
         }
-        
+
         //易观数据采集----话费充值
-        AnalysysAgent.track('add_minutes',{
-          price: data.prepaidActuallyMoney,
-          add_value: data.prepaidMoney,
-          is_successful: res.status_code == 200 ? true:false,
-          failure_reason: res.message,
-          phone_num: Number(data.referalNumber)
-        },rel => {})
+        AnalysysAgent.track(
+          "add_minutes",
+          {
+            price: data.prepaidActuallyMoney,
+            add_value: data.prepaidMoney,
+            is_successful: res.status_code == 200 ? true : false,
+            failure_reason: res.message,
+            phone_num: Number(data.referalNumber),
+          },
+          (rel) => {}
+        );
       });
     },
     //创建一个发票并发回slydepay支付令牌

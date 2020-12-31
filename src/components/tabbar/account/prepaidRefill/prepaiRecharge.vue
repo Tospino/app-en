@@ -120,7 +120,7 @@ export default {
     disabledSubmit() {
       return (
         (Number(this.customMony) && Number(this.customMony) > 0) ||
-        this.currentItem.money
+        (Number(this.currentItem.money) && Number(this.currentItem.money) > 0)
       );
     },
   },
