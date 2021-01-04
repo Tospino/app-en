@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-09-04 15:55:59
+ * @LastEditTime: 2021-01-04 13:51:33
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -10,10 +10,16 @@
 <template>
   <!-- 商品详情页 -->
   <div class="commodity-details" ref="headerapp">
-    <section v-if="showServer">
-      <customerService :type="1" :data="detailmData" />
+    <section v-show="showServer">
+      <customerService
+        ref="onlineServer"
+        :type="1"
+        :data="detailmData"
+        @change="showServer = false"
+        :show="showServer"
+      />
     </section>
-    <section v-else>
+    <section v-show="!showServer">
       <!-- 头部搜索框 -->
       <details-header></details-header>
       <div class="commodity-tab" v-if="true">
@@ -644,6 +650,7 @@ export default {
      */
     service() {
       this.showServer = true;
+      //   this.$refs.onlineServer.getData();
     },
     //商品详情
     productdetail(id, activityType) {

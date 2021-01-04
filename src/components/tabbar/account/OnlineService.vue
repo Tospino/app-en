@@ -2,19 +2,12 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2021-01-04 13:53:58
+ * @LastEditTime: 2021-01-04 14:05:41
  * @Description: 
- * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
+ * @FilePath: \app-en\src\components\tabbar\account\OnlineService.vue
 --> 
 <template>
   <section class="customerService">
-    <div class="header" v-show="type !== 0 ? true : false">
-      <div class="balance-header">
-        <van-icon name="arrow-left" class="arrow-left" @click="back" />
-        <span class="header-t1">Service</span>
-      </div>
-      <div class="place"></div>
-    </div>
     <iframe
       :src="seversUrl"
       v-if="showServer && token"
@@ -48,10 +41,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    show: {
-      type: Boolean,
-      default: false,
-    },
   },
   //   name: "customerService",
   data() {
@@ -65,31 +54,18 @@ export default {
     };
   },
   computed: {},
-  watch: {
-    show: {
-      immediate: true,
-      handler(val) {
-        console.log(
-          "🚀 ~ file: customerService.vue ~ line 73 ~ handler ~ val",
-          val
-        );
-        if (val) {
-          if (
-            localStorage.userinfoShop &&
-            (this.$storage.get("token") || localStorage.token)
-          ) {
-            this.token = localStorage.token || this.$storage.get("token");
-            this.userinfoShop =
-              JSON.parse(localStorage.userinfoShop) ||
-              this.$storage.get("userinfoShop");
-            this.getData();
-            window.addEventListener("message", this.HandleMessage);
-          } else {
-            this.$router.replace({ name: "登录" });
-          }
-        }
-      },
-    },
+  beforeRouteEnter(to, form, next) {
+    if (to.name == "客服") {
+      if (localStorage.userinfoShop && localStorage.token) {
+        next((v) => {
+          v.getUser();
+        });
+      } else {
+        next((v) => {
+          v.toLogin();
+        });
+      }
+    }
   },
   created() {
     if (this.$route.path === "/control/customerService") {
@@ -97,17 +73,40 @@ export default {
       this.isshow = false;
       this.h = document.documentElement.clientHeight - 55 + "px";
     }
+    // if (localStorage.userinfoShop && localStorage.token) {
+    //   this.token = localStorage.token || this.$storage.get("token");
+    //   this.userinfoShop =
+    //     JSON.parse(localStorage.userinfoShop) ||
+    //     this.$storage.get("userinfoShop");
+    //   this.getData();
+    // } else {
+    //   this.$router.replace({ name: "登录" });
+    // }
+    window.addEventListener("message", this.HandleMessage);
   },
   mounted() {},
+  watch: {},
   methods: {
-    // getUser() {
-    //   getuserinfo().then((res) => {
-    //     console.log("localStorage.token", localStorage.token);
-    //     this.token = localStorage.token;
-    //     this.userinfoShop = JSON.parse(localStorage.userinfoShop);
-    //     this.getData();
-    //   });
-    // },
+    toLogin() {
+      this.$router.replace({ name: "登录" });
+    },
+    getUser() {
+      if (localStorage.userinfoShop && localStorage.token) {
+        this.token = localStorage.token || this.$storage.get("token");
+        this.userinfoShop =
+          JSON.parse(localStorage.userinfoShop) ||
+          this.$storage.get("userinfoShop");
+        this.getData();
+      } else {
+        this.$router.replace({ name: "登录" });
+      }
+      //   getuserinfo().then((res) => {
+      //     console.log("localStorage.token", localStorage.token);
+      //     this.token = localStorage.token;
+      //     this.userinfoShop = JSON.parse(localStorage.userinfoShop);
+      //     this.getData();
+      //   });
+    },
     getData() {
       let otherParams;
       let nickName = `app user ID:${this.userinfoShop.userId}`;
@@ -184,48 +183,10 @@ export default {
         this.type !== 0 ? this.$router.go(0) : "";
       }
     },
-    back() {
-      this.$emit("change", false);
-    },
   },
   components: { detailsHeader },
 };
 </script>
 
 <style scoped lang='less'>
-.customerService {
-  .balance-header {
-    width: 100%;
-    height: 88px;
-    background-color: #f2f3f5;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    line-height: 88px;
-    z-index: 3;
-    .arrow-left {
-      position: absolute;
-      top: 20px;
-      left: 30px;
-      font-size: 40px;
-      width: 100px;
-      text-align: left;
-    }
-    .header-t1 {
-      display: inline-block;
-      line-height: 88px;
-      font-size: 36px;
-      color: #010101;
-    }
-    .header-t2 {
-      position: absolute;
-      right: 30px;
-      font-size: 30px;
-    }
-  }
-  .place {
-    height: 88px;
-  }
-}
 </style>

@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-21 10:03:29
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-07-31 14:45:38
+ * @LastEditTime: 2021-01-04 11:17:32
  * @Description: 
  * @FilePath: \app-en\src\multiplexing\navar.vue
 --> 
@@ -10,7 +10,7 @@
   <div>
     <div class="balance-header">
       <van-icon name="arrow-left" class="arrow-left" @click="back" />
-      <span class="header-t1">{{title}}</span>
+      <span class="header-t1">{{ title }}</span>
     </div>
     <div class="place"></div>
   </div>
@@ -41,7 +41,8 @@ export default {
     },
     back() {
       if (this.isBack) {
-        this.$router.go(0);
+        window.history.go(0);
+        // this.$router.go(0);
       } else {
         this.$router.go(-1);
       }
