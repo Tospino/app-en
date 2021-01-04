@@ -1,7 +1,7 @@
 /*
  * @Author: CJY
  * @Date: 2020-07-09 10:00:20
- * @LastEditTime: 2020-09-01 15:44:49
+ * @LastEditTime: 2021-01-04 09:32:39
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\api\http.js
@@ -138,16 +138,25 @@ parkAxios.interceptors.response.use(function (response) {
             if (data.code == -1) {
                 data.msg = "Please login again"
                 Toast(data.msg);
-                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+                setTimeout(() => {
+                    main.$router.replace({ name: '登录' })
+                    // location.reload();
+                }, 1000)
                 if (storage.get('token')) { storage.remove('token') }
             } else if (data.code == -2) {
                 data.msg = "No account information! Please login again."
-                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+                setTimeout(() => {
+                    main.$router.replace({ name: '登录' })
+                    // location.reload();
+                }, 1000)
                 if (storage.get('token')) { storage.remove('token') }
                 Toast(data.msg);
             } else if (data.code == -3) {
                 data.msg = "The login is invalid. Please login again."
-                setTimeout(() => { main.$router.replace({ name: '登录' }) }, 1000)
+                setTimeout(() => {
+                    main.$router.replace({ name: '登录' })
+                    // location.reload();
+                }, 1000)
                 if (storage.get('token')) { storage.remove('token') }
                 Toast(data.msg);
             } else if (data.code == -4) {

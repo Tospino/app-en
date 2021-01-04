@@ -3,7 +3,7 @@
   <div>
     <div class="detailsHeader c-b-gray">
       <div class="logo">
-        <van-icon name="arrow-left" size="17px" @click="$router.go(-1)" />
+        <van-icon name="arrow-left" size="17px" @click="Back" />
         <!-- v-if="$route.name!=='商品详情' && $route.name==='订单详情'" -->
         <!-- <van-icon
           name="arrow-left"
@@ -74,6 +74,9 @@ export default {
         }
       });
     },
+    Back() {
+      window.history.go(-1); // this.$router.go(-1) ||
+    },
   },
   components: {},
 };
@@ -90,6 +93,8 @@ export default {
     position: absolute;
     left: 30px;
     top: 50%;
+    // height: 88px;
+    // line-height: 88px;
     width: 100px;
     text-align: left;
     transform: translateY(-50%);
