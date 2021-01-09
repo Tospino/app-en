@@ -295,7 +295,7 @@
           </div>
         </van-field>
       </van-cell-group>
-      <van-cell-group class="border-0">
+      <!-- <van-cell-group class="border-0">
         <van-field
           v-model="username"
           clearable
@@ -312,7 +312,7 @@
             />
           </div>
         </van-field>
-      </van-cell-group>
+      </van-cell-group> -->
       <div class="footer-btn">
         <van-button type="default" @click="logOut">Log Out</van-button>
       </div>
