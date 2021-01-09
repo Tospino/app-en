@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2021-01-04 13:53:58
+ * @LastEditTime: 2021-01-09 09:30:11
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -116,11 +116,13 @@ export default {
         //   普通聊天
         otherParams = {
           nickName: nickName,
+          agent: "8001",
         };
       } else if (this.type === 1) {
         // 商品详情私聊客服
         otherParams = {
           nickName: nickName,
+          agent: "8001",
           productInfo: {
             // 客户端展示
             visible: true,
@@ -155,6 +157,7 @@ export default {
         // 订单详情私聊客服
         otherParams = {
           nickName: nickName,
+          agent: "8001",
           productInfo: {
             // 客户端展示
             visible: true,
