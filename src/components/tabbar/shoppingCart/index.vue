@@ -311,7 +311,10 @@
         </div>
       </div>
     </van-overlay>
+     <!-- 优惠券窗口贴边浮窗页面 -->
+    <bonus></bonus>
   </div>
+
 </template>
 
 <script>
@@ -327,6 +330,7 @@ import { guessyoulikeApi } from "@/api/search/index";
 import { Toast, Dialog } from "vant";
 import { mapState, mapActions } from "vuex";
 import { adduserfavoritesApi } from "@/api/favorites/index.js";
+import bonus from "@/multiplexing/bonus";
 import moment from "moment";
 export default {
   props: {},
@@ -847,6 +851,7 @@ export default {
   },
   components: {
     footerExhibition,
+    bonus
   },
 };
 </script>

@@ -321,11 +321,15 @@
         <!-- 客服电话 -->
         <kefu></kefu>
       </van-overlay>
+
+           <!-- 优惠券窗口贴边浮窗页面 -->
+    <bonus></bonus>
     </div>
   </section>
 </template>
 
 <script>
+import bonus from "@/multiplexing/bonus";
 import daifahuo from "@/assets/img/tabbar/my/account/daifahuo@2x.png";
 import daifukuan from "@/assets/img/tabbar/my/account/daifukuan@2x.png";
 import daishouhuo from "@/assets/img/tabbar/my/account/daishouhuo@2x.png";
@@ -493,6 +497,7 @@ export default {
   },
   components: {
     kefu,
+    bonus
   },
 };
 </script>

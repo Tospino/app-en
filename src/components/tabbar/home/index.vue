@@ -470,7 +470,7 @@
       </div>
     </scroll>
 <div v-if="isShowCoupon==true">
-  <!-- 新用户弹框 -->
+  <!-- 游客用户弹框 -->
     <user-popup
       :sale="sale"
       :newCoupon="newCoupon"
@@ -479,7 +479,7 @@
     ></user-popup>
 </div>
 <div v-else>
-  <!-- 会员用户弹框 -->
+  <!-- 新用户弹框 -->
     <member-coupon-pop
       :sale="sale"
       :newCoupon="newCoupon"
@@ -487,15 +487,17 @@
       @evBus="evBus"
     ></member-coupon-pop>
 </div>
-  
+ <!-- 优惠券窗口贴边浮窗页面 -->
+<bonus></bonus>
   </div>
 </template>
 
 <script>
-// 新用户
+// 游客用户
 import userPopup from "@/multiplexing/userCouponPop";
-// 会员用户
+// 新用户
 import memberCouponPop from "@/multiplexing/memberCouponPop";
+import bonus from "@/multiplexing/bonus";
 import searchHeader from "@/multiplexing/searchHeader";
 import {
   homePageApi,
@@ -961,7 +963,8 @@ export default {
   components: {
     searchHeader,
     userPopup,
-    memberCouponPop
+    memberCouponPop,
+    bonus
   },
 };
 </script>

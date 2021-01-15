@@ -43,11 +43,15 @@
         </div>
       </div>
     </div>
+ <!-- 优惠券窗口贴边浮窗页面 -->
+    <bonus></bonus>
+
   </div>
 </template>
 
 <script>
 import searchHeader from "@/multiplexing/searchHeader";
+import bonus from "@/multiplexing/bonus";
 import { procategorylistApi } from "@/api/classify/index";
 import { mapState, mapActions } from "vuex";
 export default {
@@ -169,7 +173,8 @@ export default {
     }
   },
   components: {
-    searchHeader
+    searchHeader,
+     bonus
   }
 };
 </script>

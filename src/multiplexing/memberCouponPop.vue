@@ -2,7 +2,7 @@
   <!-- 会员用户弹框 -->
   <div id="memberPopUp">
     <!-- 根据后台判断是否为新用户 -->
-    <van-overlay :show="sale">
+    <zhezhao v-if="sale">
       <div class="wrapper" v-if="isMistake == false">
         <div class="block">
           <div>
@@ -34,41 +34,40 @@
               </div>
             </div>
 
-            <div class="coupon-get">
-              <div v-for="(item,index) in menberCoupon" :key="index">
-
-                <div class="coupon-bg">
-                <div class="box-coupon">
-                  <div class="coupon-money">
-                    <i class="coupon-money-icon">{{ jn }}</i>
-                    <div class="coupon-money-reduce">
-                      {{ newCoupon.reduceAmount }}
+            <div class="coupon-haslist" >
+              <div v-for="(item, index) in menberCoupon" :key="index">
+                <div class="flex_space coupon-bg-has">
+                  <div class="box-coupon">
+                    <div class="coupon-money">
+                      <i class="coupon-money-icon">{{ jn }}</i>
+                      <div class="coupon-money-reduce">
+                        {{ newCoupon.reduceAmount }}
+                      </div>
                     </div>
-                  </div>
-                  <div class="cr-fs20">
-                    Mini Spend {{ jn }} {{ newCoupon.upToAmount }}
-                  </div>
-                  <!-- <div class="cr-fs20">Valid Till:{{
+                    <div class="cr-fs20">
+                      Mini Spend {{ jn }} {{ newCoupon.upToAmount }}
+                    </div>
+                    <!-- <div class="cr-fs20">Valid Till:{{
                   newCoupon.useEndWebsite
                     .slice(0, 10)
                     .split("-")
                     .reverse()
                     .join("/")
                 }}</div> -->
+                  </div>
+
+                  <div class="btn-coupon">
+                    <div class="btn" @click="newPre(newCoupon.couponId)"></div>
+                  </div>
                 </div>
-                 <div class="wrapper-btn">
-            <div class="btn" @click="newPre(newCoupon.couponId)"></div>
-          </div>
               </div>
-              </div>
-              
+              <div class="coupon-length-top"></div>
+              <div
+                class="coupon-length-bottom"
+                v-if="menberCoupon.length >= 3"
+              ></div>
             </div>
           </div>
-
-          <!-- <div class="wrapper-main">{{ jn }} {{ newCoupon.reduceAmount }}</div> -->
-          <!-- <div class="wrapper-btn">
-            <div class="btn" @click="newPre(newCoupon.couponId)"></div>
-          </div> -->
         </div>
         <div class="wrapper-footer">
           <img
@@ -93,11 +92,12 @@
           </div>
         </div>
       </div>
-    </van-overlay>
+    </zhezhao>
   </div>
 </template>
 
 <script>
+import zhezhao from "@/multiplexing/zhezhao";
 export default {
   name: "memberPopUp", //会员用户弹窗
   components: {},
@@ -128,10 +128,16 @@ export default {
         {
           id: 1,
         },
+        {
+          id: 1,
+        },
       ],
     };
   },
   computed: {},
+  components: {
+    zhezhao,
+  },
   watch: {},
   created() {},
   mounted() {},
@@ -183,21 +189,71 @@ export default {
   padding: 20px 0 0 47px;
   width: 320px;
 }
-.coupon-get {
-  max-height: 550px;
-  overflow: hidden;
+.coupon-haslist {
+  box-sizing: border-box;
+  max-height: 580px;
+  padding-bottom: 20px;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
-.coupon-bg {
+.btn-coupon {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  margin-top: 46px;
+  margin-right: 38px;
+}
+.coupon-length-top {
+  position: absolute;
+  top: 9%;
+  left: 2%;
+  width: 506px;
+  height: 40px;
+  background-image: url("~@/assets/img/coupon/meber_bottom.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  transform: rotate(180deg);
+}
+.coupon-length-bottom {
+  position: absolute;
+  bottom: 4%;
+  width: 510px;
+  height: 40px;
+  background-image: url("~@/assets/img/coupon/meber_bottom.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+}
+// // 待领取
+// .coupon-bg-get {
+//   margin-left: 6px;
+//   margin-top: 6px;
+//   width: 500px;
+//   height: 182px;
+//   background-image: url("~@/assets/img/coupon/meber_get.png");
+//   background-repeat: no-repeat;
+//   background-size: 100% 100%;
+//   -moz-background-size: 100% 100%;
+  
+// }
+// 已领取
+.coupon-bg-has {
   margin-left: 6px;
   margin-top: 6px;
   width: 500px;
   height: 182px;
-  background-image: url("~@/assets/img/coupon/meber_get.png");
+  background-image: url("~@/assets/img/coupon/meber_re.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
-  .coupon-money {
+  
+}
+
+.coupon-money {
     font-size: 90px;
     font-family: Arial;
     font-weight: bold;
@@ -221,7 +277,6 @@ export default {
       color: transparent;
     }
   }
-}
 #memberPopUp {
   position: fixed;
   width: 100vw;
@@ -257,11 +312,7 @@ export default {
       color: #e2200d;
       font-weight: bold;
       width: 660px;
-      // i {
-      //   font-size: 22px;
-      // }
     }
-  
   }
 
   .wrapper-footer {

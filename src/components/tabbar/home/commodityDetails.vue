@@ -511,6 +511,8 @@
       :clearShareLink="clearShareLink"
       :clearShare="clearShare"
     />
+ <!-- 优惠券窗口贴边浮窗页面 -->
+    <bonus></bonus>
   </div>
 </template>
 
@@ -522,6 +524,7 @@ import shopCouponPop from "./itemComponents/shopCouponPop";
 import progressBar from "@/multiplexing/progress";
 import customerService from "@/components/tabbar/account/customerService.vue";
 import share from "@/multiplexing/share.vue";
+import bonus from "@/multiplexing/bonus";
 import {
   productdetailApi,
   AppqureyuserCouponProApi,
@@ -1027,6 +1030,7 @@ export default {
     progressBar,
     customerService,
     share,
+    bonus
   },
 };
 </script>
