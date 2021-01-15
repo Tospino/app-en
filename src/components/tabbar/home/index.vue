@@ -469,19 +469,33 @@
         </div>
       </div>
     </scroll>
-
-    <!-- 新用户弹框 -->
+<div v-if="isShowCoupon==true">
+  <!-- 新用户弹框 -->
     <user-popup
       :sale="sale"
       :newCoupon="newCoupon"
       @userPopUp="userPopUp"
       @evBus="evBus"
     ></user-popup>
+</div>
+<div v-else>
+  <!-- 会员用户弹框 -->
+    <member-coupon-pop
+      :sale="sale"
+      :newCoupon="newCoupon"
+      @userPopUp="userPopUp"
+      @evBus="evBus"
+    ></member-coupon-pop>
+</div>
+  
   </div>
 </template>
 
 <script>
+// 新用户
 import userPopup from "@/multiplexing/userCouponPop";
+// 会员用户
+import memberCouponPop from "@/multiplexing/memberCouponPop";
 import searchHeader from "@/multiplexing/searchHeader";
 import {
   homePageApi,
@@ -551,6 +565,7 @@ export default {
       clear_one: "", //特价 倒计时
       clear_end: null, //结束时间
       down_time: "", //特价 倒计时刷新
+      isShowCoupon:false,//判断是否为新人券或会员券
     };
   },
   computed: {},
@@ -629,7 +644,6 @@ export default {
     // 首页新用户优惠券
     newCoupons() {
       APPgetuserIsfullApi().then((res) => {
-        // this.newCouponShow = res.code;
         if (res.code == 0) {
           let userNews = res.Data;
           if (userNews != null) {
@@ -641,6 +655,7 @@ export default {
           this.$toast.clear();
         }
       });
+      this.$forceUpdate();
     },
     // 关闭首页优惠券
     userPopUp() {
@@ -649,7 +664,10 @@ export default {
     // 领取优惠按钮
     evBus(id) {
       couponDrawApi(id).then((res) => {
+        if(res.code==0){
         Toast("Get the success");
+         this.sale = false;
+        }
       });
     },
     jumpRouter(name) {
@@ -943,6 +961,7 @@ export default {
   components: {
     searchHeader,
     userPopup,
+    memberCouponPop
   },
 };
 </script>
