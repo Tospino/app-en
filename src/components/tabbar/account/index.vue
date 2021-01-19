@@ -322,14 +322,24 @@
         <kefu></kefu>
       </van-overlay>
 
-           <!-- 优惠券窗口贴边浮窗页面 -->
-    <bonus></bonus>
+ <!-- 整体优惠券 -->
+    <allCoupons
+      v-if="isFrame"
+      :hasAggregate="hasAggregate"
+      :isShowCoupon="isShowCoupon"
+      :touristSum="touristSum"
+      :newCoupon="newCoupon"
+      :sideFrame='sideFrame'
+      @memberBus="memberBus"
+    ></allCoupons>
+   
     </div>
   </section>
 </template>
 
 <script>
-import bonus from "@/multiplexing/bonus";
+import allCoupons from "@/multiplexing/allCoupons";
+import {queryNewgiftpackApi,} from "@/api/home/index.js";
 import daifahuo from "@/assets/img/tabbar/my/account/daifahuo@2x.png";
 import daifukuan from "@/assets/img/tabbar/my/account/daifukuan@2x.png";
 import daishouhuo from "@/assets/img/tabbar/my/account/daishouhuo@2x.png";
@@ -372,6 +382,13 @@ export default {
       show2: false,
       showServer: false, // 是否显示客户弹框
       thirdapp: [],
+
+       isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
+      touristSum: 0, //吸引游客金额
+      isFrame: true, //是否显示平台优惠券弹框
+      newCoupon: [], //新用户列表
+      hasAggregate: {}, //总优惠数据
+        sideFrame:true,//是否显示侧边优惠弹框
     };
   },
   computed: {},
@@ -391,6 +408,7 @@ export default {
     this.selectuserfavorites();
     this.walletInfo();
     this.selectuserbrowhistory(this.formData);
+    this.newCoupons();
   },
   watch: {},
   methods: {
@@ -494,10 +512,41 @@ export default {
         );
       }
     },
+
+     // 首页平台用户优惠券
+    async newCoupons() {
+      let newGiftpack = await queryNewgiftpackApi();
+       this.$forceUpdate();
+      this.hasAggregate = newGiftpack;
+      this.isShowCoupon = newGiftpack.isReceive;
+      // 1游客显示金额吸引
+      this.touristSum = newGiftpack.summoney;
+      // 2.新人用户显示优惠券列表
+      if (newGiftpack.code == 0) {
+         this.isFrame =true;
+        if (newGiftpack.Data) {
+          this.newCoupon = newGiftpack.Data;
+        }
+      }else if(newGiftpack.code == -300){
+        this.isFrame = false
+          this.$forceUpdate();
+      }
+      this.$forceUpdate();
+    },
+  // 领取优惠按钮
+    memberBus(id) {
+      if (id) {
+        couponDrawApi(id).then((res) => {
+          if (res.code == 0) {
+            this.newCoupons();
+          }
+        });
+      }
+    },
   },
   components: {
     kefu,
-    bonus
+    allCoupons
   },
 };
 </script>

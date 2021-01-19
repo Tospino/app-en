@@ -2,30 +2,55 @@
   <div>
     <!-- 优惠券窗口贴边浮窗页面（首页、商品详情页、分类、购物车、我的） -->
     <!-- 须接收价格，跳转类型弹框，弹框是否再次弹起 -->
-    <div class="bonus">
-      <!-- <slot></slot>    -->
-      <div class="bonus-money">₵150.00</div>
+    <div v-if="isShowCoupon !== 2&&isBonus">
+      <div v-if="isShow">
+        <div class="bonus" @click="hasMistake">
+          <!-- <slot></slot>    -->
+          <div class="bonus-money">₵{{ touristSum }}</div>
+        </div>
+
+        <img
+          src="@/assets/img/coupon/home-icon-gb.png"
+          class="close-icon"
+          @click="showMistake"
+        />
+      </div>
     </div>
-    <img
-      src="@/assets/img/coupon/home-icon-gb.png"
-      class="close-icon"
-      @click="showMistake"
-    />
   </div>
 </template>
 
 <script>
 export default {
-  props: {},
+  props: {
+    touristSum: {
+      type: Number,
+      default: 0,
+    },
+    isShowCoupon: {
+      type: Number,
+      default: 1,
+    },
+     isBonus: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
-    return {};
+    return {
+      isShow: true,
+    };
   },
   computed: {},
   created() {},
   mounted() {},
   watch: {},
   methods: {
-    showMistake() {},
+    showMistake() {
+      this.isShow = false;
+    },
+    hasMistake() {
+      this.$emit("sidePopUp",0);
+    },
   },
   components: {},
 };

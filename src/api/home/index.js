@@ -36,10 +36,18 @@ export function homeAdvertPictureApi(params) {
 }
 
 
-// 首页新用户优惠券
+// 首页新用户优惠券(不用)
 export function APPgetuserIsfullApi() {
     return park({
         url: `/appusercenter/APPgetuserIsfull`,
+        method: 'POST'
+    })
+}
+
+// 平台用户优惠券
+export function queryNewgiftpackApi() {
+    return park({
+        url: `/appusercenter/queryNewgiftpack`,
         method: 'POST'
     })
 }

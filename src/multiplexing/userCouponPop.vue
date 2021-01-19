@@ -2,13 +2,13 @@
   <!-- 新用户弹框 -->
   <div id="userPopUp">
     <!-- 根据后台判断是否为新用户 -->
-    <van-overlay :show="sale">
-      <div class="wrapper" v-if="isMistake==false">
+      <zhezhao>
+      <div class="wrapper">
         <div class="block">
           <img src="@/assets/img/coupon/homeNew.png" class="wrapper-youhui" />
-          <div class="wrapper-main">{{ jn }} {{ newCoupon.reduceAmount }}</div>
+          <div class="wrapper-main">{{ jn }} {{ touristSum }}</div>
           <div class="wrapper-btn">
-            <div class="btn" @click="newPre(newCoupon.couponId)"></div>
+            <div class="btn" @click="jumpRouter('注册')"></div>
           </div>
         </div>
         <!-- <div class="line-w"></div> -->
@@ -16,47 +16,27 @@
           <img
             src="@/assets/img/coupon/home-icon@2x.png"
             class="close-icon"
-            @click="showMistake(1)"
+            @click="showMistake"
           />
         </div>
       </div>
-      <div class="wrapper" v-else>
-        <div class="mistake">
-          <img src="@/assets/img/coupon/homeNew1.png" class="wrapper-youhui" />
-          <div class="mistake-main">
-            You will lose your {{ jn }} {{ newCoupon.reduceAmount }} Bonus......
-            <p class="mistake-title">Are you sure to give up?</p>
-          </div>
-          <div class="mistake-btn flex_space">
-            <div class="btn_up" @click="close">Give up</div>
-            <div class="btn_return" @click="showMistake(2)">Return</div>
-          </div>
-        </div>
-      </div>
-    </van-overlay>
+      </zhezhao>
   </div>
 </template>
 
 <script>
+import zhezhao from "@/multiplexing/zhezhao";
 export default {
   name: "userPopUp", //新用户弹窗
   components: {},
   props: {
-    sale: {
-      type: Boolean,
-      default: false,
-    },
-    newCoupon: {
-      type: Object,
-      default: () => {
-        return {};
-      },
+    touristSum: {
+      type: Number,
+      default: 0,
     },
   },
   data() {
     return {
-      homeCoupons: "",
-      isMistake: false, //默认显示
     };
   },
   computed: {},
@@ -64,30 +44,11 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    // 新用户领取
-    newPre(Id) {
-      this.homeCoupons = {
-        couponId: Id,
-      };
-      // 传对应id
-      this.$emit("evBus", this.homeCoupons);
+    showMistake() {
+      this.$emit("userUp");
     },
-    //   关闭
-    close() {
-      this.$emit("userPopUp");
-    },
-    /*
-     *showMistake 1显示是否放弃 2显示当前是否领取
-     */
-    showMistake(item) {
-      switch (item) {
-        case 1:
-          this.isMistake = true;
-          break;
-        case 2:
-          this.isMistake = false;
-          break;
-      }
+    jumpRouter(name) {
+      this.$router.push({ name });
     },
   },
 };

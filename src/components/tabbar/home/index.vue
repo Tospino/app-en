@@ -469,41 +469,27 @@
         </div>
       </div>
     </scroll>
-<div v-if="isShowCoupon==true">
-  <!-- 游客用户弹框 -->
-    <user-popup
-      :sale="sale"
+    <!-- 整体优惠券 -->
+    <allCoupons
+      v-if="isFrame"
+      :hasAggregate="hasAggregate"
+      :isShowCoupon="isShowCoupon"
+      :touristSum="touristSum"
       :newCoupon="newCoupon"
-      @userPopUp="userPopUp"
-      @evBus="evBus"
-    ></user-popup>
-</div>
-<div v-else>
-  <!-- 新用户弹框 -->
-    <member-coupon-pop
-      :sale="sale"
-      :newCoupon="newCoupon"
-      @userPopUp="userPopUp"
-      @evBus="evBus"
-    ></member-coupon-pop>
-</div>
- <!-- 优惠券窗口贴边浮窗页面 -->
-<bonus></bonus>
+      :sideFrame='sideFrame'
+      @memberBus="memberBus"
+    ></allCoupons>
   </div>
 </template>
 
 <script>
-// 游客用户
-import userPopup from "@/multiplexing/userCouponPop";
-// 新用户
-import memberCouponPop from "@/multiplexing/memberCouponPop";
-import bonus from "@/multiplexing/bonus";
+import allCoupons from "@/multiplexing/allCoupons";
 import searchHeader from "@/multiplexing/searchHeader";
 import {
   homePageApi,
   HomePagebottomApi,
   homeAdvertPictureApi,
-  APPgetuserIsfullApi,
+  queryNewgiftpackApi,
   gethomeClearanceList,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
@@ -559,20 +545,22 @@ export default {
       banner3: {
         advertImg: "",
       },
-      newCouponShow: "", //判断是否为新用户是否展示
-      newCoupon: {},
-      sale: false, //新用户是否存在
       clear_list: [],
       isExit: false,
       clear_one: "", //特价 倒计时
       clear_end: null, //结束时间
       down_time: "", //特价 倒计时刷新
-      isShowCoupon:false,//判断是否为新人券或会员券
+
+      isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
+      touristSum: 0, //吸引游客金额
+      isFrame: true, //是否显示平台优惠券弹框
+      newCoupon: [], //新用户列表
+      hasAggregate: {}, //总优惠数据
+      sideFrame:false,//是否显示侧边优惠弹框
     };
   },
   computed: {},
   created() {
-    this.newCoupons();
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
       this.getuserinfo();
@@ -612,6 +600,7 @@ export default {
     next();
   },
   mounted() {
+    this.newCoupons();
     //   清仓
     let time_atc = setInterval(() => {
       //   清仓时间戳
@@ -643,34 +632,35 @@ export default {
   },
   watch: {},
   methods: {
-    // 首页新用户优惠券
-    newCoupons() {
-      APPgetuserIsfullApi().then((res) => {
-        if (res.code == 0) {
-          let userNews = res.Data;
-          if (userNews != null) {
-            this.newCoupon = res.Data;
-            this.sale = true;
-          }
-        } else {
-          this.sale = false;
-          this.$toast.clear();
+    // 首页平台用户优惠券
+    async newCoupons() {
+      let newGiftpack = await queryNewgiftpackApi();
+       this.$forceUpdate();
+      this.hasAggregate = newGiftpack;
+      this.isShowCoupon = newGiftpack.isReceive;
+      // 1游客显示金额吸引
+      this.touristSum = newGiftpack.summoney;
+      // 2.新人用户显示优惠券列表
+      if (newGiftpack.code == 0) {
+         this.isFrame =true;
+        if (newGiftpack.Data) {
+          this.newCoupon = newGiftpack.Data;
         }
-      });
+      }else if(newGiftpack.code == -300){
+        this.isFrame = false
+          this.$forceUpdate();
+      }
       this.$forceUpdate();
     },
-    // 关闭首页优惠券
-    userPopUp() {
-      this.sale = false;
-    },
     // 领取优惠按钮
-    evBus(id) {
-      couponDrawApi(id).then((res) => {
-        if(res.code==0){
-        Toast("Get the success");
-         this.sale = false;
-        }
-      });
+    memberBus(id) {
+      if (id) {
+        couponDrawApi(id).then((res) => {
+          if (res.code == 0) {
+            this.newCoupons();
+          }
+        });
+      }
     },
     jumpRouter(name) {
       this.$router.push({ name });
@@ -962,9 +952,7 @@ export default {
   },
   components: {
     searchHeader,
-    userPopup,
-    memberCouponPop,
-    bonus
+    allCoupons,
   },
 };
 </script>

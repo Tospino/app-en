@@ -1,144 +1,189 @@
 <template>
-  <!-- 会员用户弹框 -->
-  <div id="memberPopUp">
-    <!-- 根据后台判断是否为新用户 -->
-    <zhezhao>
-      <div class="wrapper"  v-if="isMistake">
-        <div class="block">
-          <div>
-            <img
-              src="@/assets/img/coupon/menber_1.png"
-              v-if="newCoupon.length == 1"
-            />
-            <img
-              src="@/assets/img/coupon/menber_2.png"
-              v-else-if="newCoupon.length == 2"
-            />
-            <img src="@/assets/img/coupon/menber_3.png" v-else />
+  <!-- 所有优惠券 -->
+  <div id="allCoupons" v-if="isAll">
+    <div>
+      <!-- 优惠券窗口贴边浮窗页面（首页、商品详情页、分类、购物车、我的） -->
+      <!-- 须接收价格，跳转类型弹框，弹框是否再次弹起 -->
+      <div v-if="isBonus">
+        <div v-if="isShow">
+          <div class="bonus" @click="hasMistake">
+            <div class="bonus-money">₵{{ touristSum }}</div>
           </div>
-          <div
-            class="wrapper-draw"
-            :class="{
-              'draw-one': newCoupon.length == 1,
-              'draw-two': newCoupon.length == 2,
-              'draw-three': newCoupon.length >= 3,
-            }"
-          >
-            <div class="txt-center">
-              <span class="fs-24 fw-b">—— Congratulations On Getting ——</span>
-              <div class="mt_14 fs-22" v-if="newCoupon[0].isdraw ===0">
-                Collect coupons before shopping.
-              </div>
-              <div class="mt_8" v-else>
-                Please check coupons in My>>My Coupons.
-              </div>
-            </div>
 
-            <div class="coupon-haslist" >
-              <div v-for="(item, index) in newCoupon" :key="index">
-                <div class="flex_space " :class="{'coupon-bg-has':item.isdraw>0,'coupon-bg-get':item.isdraw===0}">
-                  <div class="box-coupon">
-                    <div class="coupon-money">
-                      <i class="coupon-money-icon">{{ jn }}</i>
-                      <div class="coupon-money-reduce">
-                        {{ item.sonReduceAmount }}
-                      </div>
-                    </div>
-                    <div class="cr-fs20">
-                      Mini Spend {{ jn }} {{ item.sonUpToAmount }}
-                    </div>
-                    <div class="cr-fs20" >Valid Till:{{ item.sonUseEndWebsite?
-                  item.sonUseEndWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/"):item.sonUseDay+' '+'Day'
-                }}</div>
-                  </div>
-
-                  <div class="btn-coupon" v-if="item.isdraw===0" @click="newPre(item.couponId)">
-                  </div>
-                </div>
-              </div>
-              <div class="coupon-length-top"></div>
-              <div
-                class="coupon-length-bottom"
-                v-if="newCoupon.length >= 3"
-              ></div>
-            </div>
-          </div>
-        </div>
-        <div class="wrapper-footer">
           <img
-            src="@/assets/img/coupon/home-icon@2x.png"
+            src="@/assets/img/coupon/home-icon-gb.png"
             class="close-icon"
-            @click="showMistake(newCoupon[0].isdraw)"
+            @click="showMistake"
           />
         </div>
       </div>
-    </zhezhao>
+      <div v-else>
+        <div v-if="isMistake">
+          <!-- 游客 -->
+          <div v-if="isShowCoupon == 1">
+            <userPopup :touristSum="touristSum" @userUp="userUp"></userPopup>
+          </div>
+          <!-- 会员 -->
+          <memberCouponPop
+            :newCoupon="newCoupon"
+            @memberUp="memberUp"
+            @evBus="evBus"
+            v-else
+          ></memberCouponPop>
+        </div>
+        <!-- 是否返回 -->
+        <allCouponsBack
+          :touristSum="touristSum"
+          @allBack="allBack"
+          @waiveBack="waiveBack"
+          v-else
+        ></allCouponsBack>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import zhezhao from "@/multiplexing/zhezhao";
+// 游客用户
+import userPopup from "@/multiplexing/userCouponPop";
+// 新用户
+import memberCouponPop from "@/multiplexing/memberCouponPop";
+// 返回优惠券
+import allCouponsBack from "@/multiplexing/allCouponsBack";
 export default {
-  name: "memberPopUp", //会员用户弹窗
+  name: "allCoupons", //会员用户弹窗
   components: {},
   props: {
+    // 优惠券总数据
+    hasAggregate: {
+      type: Object,
+      default: () => {
+        return [];
+      },
+    },
+    // 是否显示新人会员
     isNewSale: {
       type: Boolean,
       default: false,
     },
+    // 是否显示新人优惠券列表
     newCoupon: {
       type: Array,
       default: () => {
         return [];
       },
     },
-     touristSum: {
+    // 总价格
+    touristSum: {
       type: Number,
       default: 0,
+    },
+    /*
+     *判断是否为新人券或会员券(是否领取)
+     *1是游客，2 已领取 ，3 未领取
+     */
+    isShowCoupon: {
+      type: Number,
+      default: 1,
+    },
+    // 根据页面显示侧边框
+    sideFrame: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
     return {
-      homeCoupons: -1,
       isMistake: true, //默认显示
+      isBonus: this.sideFrame, //默认侧边不显示
+      isAll: true, //整体优惠券弹框
+       isShow: true,//侧边弹框开启
     };
   },
   computed: {},
   components: {
-    zhezhao,
+    userPopup,
+    memberCouponPop,
+    allCouponsBack,
   },
   watch: {},
   created() {},
   mounted() {},
   methods: {
-    // 新用户领取
-    newPre(Id) {
-      this.homeCoupons = {
-        couponId: Id,
-      };
-      // 传对应id
-      this.$emit("evBus", this.homeCoupons);
+    // 侧边弹框是否再次打开弹框
+    hasMistake() {
+      this.isBonus = false;
     },
- 
-    /*
-     *showMistake 0显示是否放弃 -1显示当前是否领取
-     */
-    showMistake(item) {
-     if(item===0){
-      this.$emit("memberUp",item);
-     }else{
-        this.isMistake=false;
-        this.$emit("memberUp", this.homeCoupons);
-     }
+    // 侧边弹框关闭
+    showMistake() {
+      this.isShow = false;
+    },
+
+    // 游客关闭优惠券列表
+    userUp() {
+      this.isMistake = false;
+    },
+
+    // 返回优惠券列表
+    allBack() {
+      this.isMistake = true;
+    },
+
+    // 放弃领取优惠券列表
+    waiveBack() {
+      this.isBonus = true;
+      this.isMistake = true;
+    },
+
+    // 会员新人放弃领取
+    memberUp(item) {
+      if (item == -1) {
+        this.isAll=false
+      } else {
+        this.isMistake = false;
+      }
+    },
+
+    // 领取优惠券id
+    evBus(id) {
+      if (id) {
+        this.$emit("memberBus", id);
+      }
     },
   },
 };
 </script>
 <style scoped lang="less">
+.bonus {
+  width: 136px;
+  height: 135px;
+  position: fixed;
+  top: 773px;
+  right: 29px;
+  z-index: 10;
+  background-image: url("~@/assets/img/coupon/bonus_all.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  overflow: hidden;
+}
+.bonus-money {
+  font-size: 20px;
+  font-family: Arial;
+  font-weight: bold;
+  color: #fff800;
+  text-align: center;
+  line-height: 176px;
+}
+.close-icon {
+  width: 21px;
+  height: 21px;
+  position: fixed;
+  top: 773px;
+  right: 29px;
+  z-index: 10;
+}
+
 .draw-one {
   top: 48%;
 }
@@ -206,7 +251,6 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
-  
 }
 // 已领取
 .coupon-bg-has {
@@ -218,33 +262,32 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
-  
 }
 
 .coupon-money {
-    font-size: 90px;
-    font-family: Arial;
-    font-weight: bold;
-    display: flex;
+  font-size: 90px;
+  font-family: Arial;
+  font-weight: bold;
+  display: flex;
 
-    .coupon-money-icon {
-      font-size: 36px;
-      font-weight: 400;
-      color: #f6c5a8;
-      margin-top: 6px;
-    }
-    .coupon-money-reduce {
-      margin-left: 10px;
-      background: linear-gradient(
-        -23deg,
-        #f6c4a6 0%,
-        #fde9d8 54.5166015625%,
-        #f6c4a6 100%
-      );
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+  .coupon-money-icon {
+    font-size: 36px;
+    font-weight: 400;
+    color: #f6c5a8;
+    margin-top: 6px;
   }
+  .coupon-money-reduce {
+    margin-left: 10px;
+    background: linear-gradient(
+      -23deg,
+      #f6c4a6 0%,
+      #fde9d8 54.5166015625%,
+      #f6c4a6 100%
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
 
 #memberPopUp {
   position: fixed;

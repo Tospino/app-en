@@ -511,12 +511,23 @@
       :clearShareLink="clearShareLink"
       :clearShare="clearShare"
     />
- <!-- 优惠券窗口贴边浮窗页面 -->
-    <bonus></bonus>
+ 
+ <!-- 整体优惠券 -->
+    <allCoupons
+      v-if="isFrame"
+      :hasAggregate="hasAggregate"
+      :isShowCoupon="isShowCoupon"
+      :touristSum="touristSum"
+      :newCoupon="newCoupon"
+      :sideFrame='sideFrame'
+      @memberBus="memberBus"
+    ></allCoupons>
   </div>
 </template>
 
 <script>
+import allCoupons from "@/multiplexing/allCoupons";
+import {queryNewgiftpackApi,} from "@/api/home/index.js";
 import detailsHeader from "@/multiplexing/detailsHeader";
 import footerExhibition from "@/multiplexing/footerExhibition";
 import commoditySelection from "@/multiplexing/commoditySelection";
@@ -592,6 +603,13 @@ export default {
       sharelinks: location.href, //分享链接
       clearOne: "", //清仓
       time_atc: null,
+
+        isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
+      touristSum: 0, //吸引游客金额
+      isFrame: true, //是否显示平台优惠券弹框
+      newCoupon: [], //新用户列表
+      hasAggregate: {}, //总优惠数据
+        sideFrame:true,//是否显示侧边优惠弹框
     };
   },
   computed: {},
@@ -629,6 +647,7 @@ export default {
         }
       }
     }, 1000);
+     this.newCoupons();
   },
   beforeDestroy() {
     //清除定时器
@@ -1020,6 +1039,37 @@ export default {
     showShare() {
       this.$refs["share"].shows();
     },
+
+     // 首页平台用户优惠券
+    async newCoupons() {
+      let newGiftpack = await queryNewgiftpackApi();
+       this.$forceUpdate();
+      this.hasAggregate = newGiftpack;
+      this.isShowCoupon = newGiftpack.isReceive;
+      // 1游客显示金额吸引
+      this.touristSum = newGiftpack.summoney;
+      // 2.新人用户显示优惠券列表
+      if (newGiftpack.code == 0) {
+         this.isFrame =true;
+        if (newGiftpack.Data) {
+          this.newCoupon = newGiftpack.Data;
+        }
+      }else if(newGiftpack.code == -300){
+        this.isFrame = false
+          this.$forceUpdate();
+      }
+      this.$forceUpdate();
+    },
+  // 领取优惠按钮
+    memberBus(id) {
+      if (id) {
+        couponDrawApi(id).then((res) => {
+          if (res.code == 0) {
+            this.newCoupons();
+          }
+        });
+      }
+    },
   },
   components: {
     detailsHeader,
@@ -1030,7 +1080,7 @@ export default {
     progressBar,
     customerService,
     share,
-    bonus
+    allCoupons
   },
 };
 </script>
