@@ -313,7 +313,7 @@
     </van-overlay>
    <!-- 整体优惠券 -->
     <allCoupons
-      v-if="isFrame"
+       :isFrame="isFrame"
       :hasAggregate="hasAggregate"
       :isShowCoupon="isShowCoupon"
       :touristSum="touristSum"
@@ -379,13 +379,12 @@ export default {
       clearTimeWebsite: null,
       initialPrice: 0,
       initialNum: 0,
-
         isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
       touristSum: 0, //吸引游客金额
-      isFrame: true, //是否显示平台优惠券弹框
+      isFrame: false, //是否显示平台优惠券弹框
       newCoupon: [], //新用户列表
       hasAggregate: {}, //总优惠数据
-         sideFrame:true,//是否显示侧边优惠弹框
+        sideFrame:true,//是否显示侧边优惠弹框
     };
   },
   computed: {

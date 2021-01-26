@@ -60,7 +60,7 @@
                   </div>
                 </div>
               </div>
-              <div class="coupon-length-top"></div>
+              <div class="coupon-length-top" v-if="newCoupon.length >= 3"></div>
               <div
                 class="coupon-length-bottom"
                 v-if="newCoupon.length >= 3"

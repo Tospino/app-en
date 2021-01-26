@@ -471,12 +471,13 @@
     </scroll>
     <!-- 整体优惠券 -->
     <allCoupons
-      v-if="isFrame"
+    ref="allCoupons"
+      :isFrame="isFrame"
       :hasAggregate="hasAggregate"
       :isShowCoupon="isShowCoupon"
       :touristSum="touristSum"
       :newCoupon="newCoupon"
-      :sideFrame='sideFrame'
+      :sideFrame="sideFrame"
       @memberBus="memberBus"
     ></allCoupons>
   </div>
@@ -553,14 +554,15 @@ export default {
 
       isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
       touristSum: 0, //吸引游客金额
-      isFrame: true, //是否显示平台优惠券弹框
+      isFrame: false, //是否显示平台优惠券弹框
       newCoupon: [], //新用户列表
       hasAggregate: {}, //总优惠数据
-      sideFrame:false,//是否显示侧边优惠弹框
+      sideFrame: false, //是否显示侧边优惠弹框
     };
   },
   computed: {},
   created() {
+    
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
       this.getuserinfo();
@@ -592,8 +594,8 @@ export default {
     this.getClear();
     this.homeAdvertPicture();
   },
+
   beforeRouteLeave(to, from, next) {
-    // 设置下一个路由的 meta
     if (to.name == "搜索商品1") {
       to.meta.isBack = true;
     }
@@ -630,28 +632,38 @@ export default {
     }, 1000);
     this.refreshOrder();
   },
-  watch: {},
+   activated(){
+       this.newCoupons();
+       this.$refs.allCoupons.isShow = true
+
+  },
+  watch: {
+  
+  },
   methods: {
     // 首页平台用户优惠券
     async newCoupons() {
       let newGiftpack = await queryNewgiftpackApi();
-       this.$forceUpdate();
+      let obj = Object.assign(newGiftpack, { dengluOne: true });
+       localStorage.newCoupons=JSON.stringify(obj)
       this.hasAggregate = newGiftpack;
       this.isShowCoupon = newGiftpack.isReceive;
       // 1游客显示金额吸引
       this.touristSum = newGiftpack.summoney;
       // 2.新人用户显示优惠券列表
       if (newGiftpack.code == 0) {
-         this.isFrame =true;
+        this.isFrame = true;
+
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
         }
-      }else if(newGiftpack.code == -300){
-        this.isFrame = false
-          this.$forceUpdate();
+      } else if (newGiftpack.code == -300) {
+        this.isFrame = false;
       }
       this.$forceUpdate();
+      console.log(this.isFrame,'this.isFrame')
     },
+   
     // 领取优惠按钮
     memberBus(id) {
       if (id) {
