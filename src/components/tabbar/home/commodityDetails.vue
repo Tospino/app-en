@@ -303,7 +303,7 @@
               <span class="youhuiquan-title">Coupons</span>
               <span class="youhuiquan-txt" @click="saleMore">More</span>
             </div>
-            <div class="youhuiquan-main">
+            <div class="youhuiquan-main" >
               <img
                 src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png"
               />
@@ -330,17 +330,19 @@
                   </p>
                   <p class="youhuiquan-left-m">
                     Valid:{{
+                       ProModel.Data.useBeginWebsite?
                       ProModel.Data.useBeginWebsite
                         .slice(0, 10)
                         .split("-")
                         .reverse()
-                        .join("/")
+                        .join("/"):''
                     }}~{{
+                       ProModel.Data.useBeginWebsite?
                       ProModel.Data.useEndWebsite
                         .slice(0, 10)
                         .split("-")
                         .reverse()
-                        .join("/")
+                        .join("/"):''
                     }}
                   </p>
                   <progress-bar
@@ -514,7 +516,7 @@
  
  <!-- 整体优惠券 -->
     <allCoupons
-      v-if="isFrame"
+       :isFrame="isFrame"
       :hasAggregate="hasAggregate"
       :isShowCoupon="isShowCoupon"
       :touristSum="touristSum"
@@ -606,7 +608,7 @@ export default {
 
         isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
       touristSum: 0, //吸引游客金额
-      isFrame: true, //是否显示平台优惠券弹框
+      isFrame: false, //是否显示平台优惠券弹框
       newCoupon: [], //新用户列表
       hasAggregate: {}, //总优惠数据
         sideFrame:true,//是否显示侧边优惠弹框
@@ -661,7 +663,8 @@ export default {
     }
     next();
   },
-  watch: {},
+  watch: {
+  },
   methods: {
     onChange(index) {
       this.current = index;
@@ -888,7 +891,7 @@ export default {
         businessId: businessId,
         expId: expId,
       });
-      if (this.ProModel.code == 0) {
+      if (this.ProModel.code==0) {
         this.moreShop = true;
       } else {
         this.moreShop = false;

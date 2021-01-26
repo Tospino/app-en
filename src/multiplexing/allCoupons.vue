@@ -1,6 +1,6 @@
 <template>
   <!-- 所有优惠券 -->
-  <div id="allCoupons" v-if="isAll">
+  <div id="allCoupons" v-if="isFrame">
     <div>
       <!-- 优惠券窗口贴边浮窗页面（首页、商品详情页、分类、购物车、我的） -->
       <!-- 须接收价格，跳转类型弹框，弹框是否再次弹起 -->
@@ -91,22 +91,32 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 根据页面显示侧边框
+    isFrame: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       isMistake: true, //默认显示
-      isBonus: this.sideFrame, //默认侧边不显示
+      isBonus: true, //默认侧边不显示
       isAll: true, //整体优惠券弹框
        isShow: true,//侧边弹框开启
     };
   },
-  computed: {},
   components: {
     userPopup,
     memberCouponPop,
     allCouponsBack,
   },
-  watch: {},
+  watch: {
+    // isFrame :{
+    //  handler:function(newVal, oldVal){
+    //     console.log(newVal,'newVal')
+    //   },
+    // }
+  },
   created() {},
   mounted() {},
   methods: {
@@ -158,8 +168,8 @@ export default {
   width: 136px;
   height: 135px;
   position: fixed;
-  top: 773px;
-  right: 29px;
+  top:700px;
+  right: 50px;
   z-index: 10;
   background-image: url("~@/assets/img/coupon/bonus_all.png");
   background-repeat: no-repeat;
@@ -176,11 +186,11 @@ export default {
   line-height: 176px;
 }
 .close-icon {
-  width: 21px;
-  height: 21px;
+  width: 26px;
+  height: 26px;
   position: fixed;
-  top: 773px;
-  right: 29px;
+  top: 680px;
+  right: 40px;
   z-index: 10;
 }
 

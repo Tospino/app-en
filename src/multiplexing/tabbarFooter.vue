@@ -95,7 +95,16 @@ export default {
   mounted() {
     this.isreplace = this.$storage.get("token") ? true : false;
   },
-  watch: {},
+  watch: {
+    // '$route'(to,from){
+    //   console.log(to,from)
+    //     // 设置下一个路由的 meta
+    // if (from.name !== "首页") {
+    //   // to.meta.isBack = true;
+    //   // to.meta.keepAlive= true;
+    // }
+    //   }
+  },
   methods: {},
   components: {},
 };
