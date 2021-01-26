@@ -286,7 +286,7 @@ import { membertypelitApi, userregisterApi } from "@/api/register/index";
 import { ipgetcountry, areanamegetid, addbasearea } from "@/api/location/index";
 import uploadOne from "@/multiplexing/uploadOne";
 import choiceList from "@/multiplexing/choiceList.vue";
-import { msglistApi } from "@/api/login/index.js";
+import { msglistApi, getInternationalMsgApi } from "@/api/login/index.js";
 import { Toast } from "vant";
 import zhezhao from "@/multiplexing/zhezhao";
 import yinsi from "@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue";
@@ -395,7 +395,7 @@ export default {
       zhengce: false,
       userStatus: false,
       register_time: null, //注册时长定时器
-      duration: null
+      duration: null,
     };
   },
   computed: {
@@ -411,7 +411,7 @@ export default {
     this.duration = 0;
     this.register_time = setInterval(() => {
       this.duration++;
-    },1000)
+    }, 1000);
   },
   watch: {
     eyeStatus: {
@@ -683,7 +683,7 @@ export default {
         //易观数据采集-----注册
         let reason = "";
         if (res.code == 0) {
-          reason = 'success';
+          reason = "success";
         } else if (res.code == -110) {
           reason = "Incorrect verification code.";
         } else if (res.code == -25) {
@@ -717,19 +717,26 @@ export default {
             code: this.formData.recommendCode,
             is_successful: res.code == 0 ? true : false,
             nickname: this.formData.nickName,
-            duration: this.duration
+            duration: this.duration,
           },
           (rel) => {}
         );
         //绑定用户ID
-        if(res.code == 0){
+        if (res.code == 0) {
           AnalysysAgent.alias(this.formData.mobile, (rek) => {});
         }
       });
     },
     //验证码
-    msglist(data) {
-      msglistApi(data).then((res) => {
+    msglist(date) {
+      let data = Object.assign({}, date);
+      var phoneReg = /^[1-9]\d*$/;
+      if (!phoneReg.test(data.msgphone)) {
+        data.msgphone = data.msgphone.substring(1);
+      } else {
+        data.msgphone = data.msgphone;
+      }
+      getInternationalMsgApi(data).then((res) => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -745,28 +752,49 @@ export default {
               }
             }, 1000);
           }
-        } else if (res.code == 2) {
-          Toast("Failed sending");
-        } else if (res.code == -130) {
-          Toast("The phone number isn’t registered.");
-        } else if (res.code == -131) {
-          Toast(
-            "The phone number was frozen by system.Please contact customer service"
-          );
-        } else if (res.code == -132) {
-          Toast(
-            "The phone number was deleted by system.Please contact customer service"
-          );
-        } else if (res.code == -133) {
-          Toast(
-            "The phone number is still being approved.Please contact customer service"
-          );
-        } else if (res.code == -134) {
-          Toast(
-            "The phone number didn’t get the approval.Please contact customer service"
-          );
+        } else if (res.code == 101) {
+          msglistApi(data).then((res) => {
+            if (res.code == 0) {
+              const TIME_COUNT = 120;
+              if (!this.timer) {
+                this.count = TIME_COUNT;
+                this.countTrue = false;
+                this.timer = setInterval(() => {
+                  if (this.count > 0 && this.count <= TIME_COUNT) {
+                    this.count--;
+                  } else {
+                    this.countTrue = true;
+                    clearInterval(this.timer);
+                    this.timer = null;
+                  }
+                }, 1000);
+              }
+            } else if (res.code == 2) {
+              Toast("Failed sending");
+            } else if (res.code == -130) {
+              Toast("The phone number isn’t registered.");
+            } else if (res.code == -131) {
+              Toast(
+                "The phone number was frozen by system.Please contact customer service"
+              );
+            } else if (res.code == -132) {
+              Toast(
+                "The phone number was deleted by system.Please contact customer service"
+              );
+            } else if (res.code == -133) {
+              Toast(
+                "The phone number is still being approved.Please contact customer service"
+              );
+            } else if (res.code == -134) {
+              Toast(
+                "The phone number didn’t get the approval.Please contact customer service"
+              );
+            } else {
+              Toast("error");
+            }
+          });
         } else {
-          Toast("error");
+          Toast(res.msg);
         }
       });
     },

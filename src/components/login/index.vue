@@ -62,10 +62,7 @@
         <div class="other">Other ways to login</div>
         <div class="line right-80"></div>
         <div class="icons flex flex_around">
-          <img
-            @click="ThirdLogin('facebook')"
-            src="@/assets/img/login/facebook@3x.png"
-          />
+          <img src="@/assets/img/login/facebook@3x.png" />
           <!-- <van-row type="flex" justify="space-between">
             <van-col span="8" style="text-align:center" @click="ThirdLogin('facebook')">
               <img src="@/assets/img/login/facebook@3x.png" />
