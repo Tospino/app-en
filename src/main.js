@@ -36,7 +36,7 @@ import store from './store'
 import * as mycomponents from '@/common/mycomponents.js'
 import VueScroller from 'vue-scroller'
 import clipboard from 'clipboard'
-
+import 'vant/lib/icon/local.css'
 import {
   gethttpimgurlApi
 } from '@/api/login/index'
