@@ -635,7 +635,7 @@ export default {
    activated(){
        this.newCoupons();
        this.$refs.allCoupons.isShow = true
-
+      //  this.sideFrame=false
   },
   watch: {
   
@@ -643,9 +643,10 @@ export default {
   methods: {
     // 首页平台用户优惠券
     async newCoupons() {
+      this.sideFrame=true
       let newGiftpack = await queryNewgiftpackApi();
-      let obj = Object.assign(newGiftpack, { dengluOne: true });
-       localStorage.newCoupons=JSON.stringify(obj)
+      // let obj = Object.assign(newGiftpack, { dengluOne: true });
+      //  localStorage.newCoupons=JSON.stringify(obj)
       this.hasAggregate = newGiftpack;
       this.isShowCoupon = newGiftpack.isReceive;
       // 1游客显示金额吸引
@@ -661,7 +662,6 @@ export default {
         this.isFrame = false;
       }
       this.$forceUpdate();
-      console.log(this.isFrame,'this.isFrame')
     },
    
     // 领取优惠按钮

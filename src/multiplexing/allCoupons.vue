@@ -111,11 +111,12 @@ export default {
     allCouponsBack,
   },
   watch: {
-    // isFrame :{
-    //  handler:function(newVal, oldVal){
-    //     console.log(newVal,'newVal')
-    //   },
-    // }
+    sideFrame:{
+     handler:function(newVal, oldVal){
+        console.log(newVal,oldVal,'888')
+      },
+       immediate: true
+    }
   },
   created() {},
   mounted() {},
