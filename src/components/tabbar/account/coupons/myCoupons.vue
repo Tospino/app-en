@@ -64,17 +64,19 @@
               </p>
               <p class="youhuiquan-left-m">
                 Valid:{{
+                  shops.useBeginWebsite?
                   shops.useBeginWebsite
                     .slice(0, 10)
                     .split("-")
                     .reverse()
-                    .join("/")
+                    .join("/"):''
                 }}~{{
+                   shops.useEndWebsite?
                   shops.useEndWebsite
                     .slice(0, 10)
                     .split("-")
                     .reverse()
-                    .join("/")
+                    .join("/"):''
                 }}
               </p>
               <div v-if="shops.couponType == 2 ? false : true">
