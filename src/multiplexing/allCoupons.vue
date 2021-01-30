@@ -102,7 +102,7 @@ export default {
       isMistake: true, //默认显示
       isBonus: true, //默认侧边不显示
       isAll: true, //整体优惠券弹框
-       isShow: true,//侧边弹框开启
+      isShow: true, //侧边弹框开启
     };
   },
   components: {
@@ -110,14 +110,7 @@ export default {
     memberCouponPop,
     allCouponsBack,
   },
-  watch: {
-    sideFrame:{
-     handler:function(newVal, oldVal){
-        console.log(newVal,oldVal,'888')
-      },
-       immediate: true
-    }
-  },
+  watch: {},
   created() {},
   mounted() {},
   methods: {
@@ -149,7 +142,7 @@ export default {
     // 会员新人放弃领取
     memberUp(item) {
       if (item == -1) {
-        this.isAll=false
+        this.isAll = false;
       } else {
         this.isMistake = false;
       }
@@ -169,7 +162,7 @@ export default {
   width: 136px;
   height: 135px;
   position: fixed;
-  top:700px;
+  top: 700px;
   right: 50px;
   z-index: 10;
   background-image: url("~@/assets/img/coupon/bonus_all.png");

@@ -133,7 +133,6 @@ export default {
       if (!this.remark) return;
       this.revokeorder(data);
       //易观数据采集----取消订单
-      console.log(this.$parent.$parent.detailObj,22222222);
       let pay_method = "";
       if (this.$parent.$parent.detailObj.payType == 1) {
         pay_method = "Cash";
@@ -144,7 +143,8 @@ export default {
         "cancel_order",
         {
           order_id: this.$parent.$parent.detailObj.orderSn,
-          order_actual_amounts: this.$parent.$parent.detailObj.orderAmountWebsite,
+          order_actual_amounts: this.$parent.$parent.detailObj
+            .orderAmountWebsite,
           shipping_cost: this.$parent.$parent.detailObj.orderFareWebsite,
           pay_channel: pay_method,
           cancel_reason: this.remark,
@@ -155,9 +155,10 @@ export default {
               ? false
               : true,
           order_amounts: this.$parent.$parent.detailObj.orderAmountWebsite,
-          total_discounts: this.$parent.$parent.detailObj.orderCouponAmountWebsite,
+          total_discounts: this.$parent.$parent.detailObj
+            .orderCouponAmountWebsite,
           shop_id: this.$parent.$parent.detailObj.businessId,
-          coupon_id: this.$parent.$parent.detailObj.orderUseCouponIds
+          coupon_id: this.$parent.$parent.detailObj.orderUseCouponIds,
         },
         (rel) => {}
       );

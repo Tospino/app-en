@@ -12,7 +12,7 @@
         </div>
         <div class="cell">
             <!-- <div class="cell" @click="$router.push({name:'修改手机号码'})"> -->
-            <span class="c-333">Change Phone Nummber</span>
+            <span class="c-333">Change Phone Number</span>
             <span class="ziliao c-999">{{userinfoShop.mobile}}</span>
             <!-- <van-icon name="arrow" class="arrow c-999"/> -->
         </div>
