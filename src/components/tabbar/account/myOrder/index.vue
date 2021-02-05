@@ -7,10 +7,20 @@
       <span class="header-t2" @click="jumpRouter('我的订单历史记录')">
         <van-icon name="search" class="search" />
       </span>
-      <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')" />
+      <van-icon
+        name="chat-o"
+        class="chat"
+        size="17px"
+        @click="jumpRouter('消息')"
+      />
     </div>
     <div class="commodity-tab">
-      <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
+      <van-tabs
+        v-model="active"
+        class="tab-list"
+        title-active-color="#FA5300"
+        @change="changeTab"
+      >
         <van-tab :title="tab.title" v-for="tab in tabList" :key="tab.id">
           <scroll
             class="bscroll-wrapper"
@@ -46,7 +56,10 @@
       </zhezhao>
     </transition>
     <!-- 支付成功弹窗 -->
-    <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
+    <action-sheet-sucess
+      ref="sucess"
+      @showsucess="showsucess"
+    ></action-sheet-sucess>
     <!-- 密码弹窗 -->
     <action-sheet-password
       ref="actionSheetPassword"
@@ -304,6 +317,7 @@ export default {
         if (res.code == 0) {
           this.showPassWord(false);
           this.refreshOrder();
+          this.$refs.actionSheetPassword.value = "";
         } else if (res.code == 1) {
           Toast("Parameter “requestModel” cannot be empty.");
         } else if (res.code == 2) {

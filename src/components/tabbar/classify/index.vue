@@ -183,7 +183,6 @@ export default {
         name: "搜索商品1",
         query: { categoryId: categoryId },
       });
-      console.log(product);
       //易观数据采集---导航栏点击
       let urlHtm = window.location.href;
       let titHtm = document.title;

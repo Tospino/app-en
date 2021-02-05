@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-30 13:39:53
  * @LastEditors: 曹建勇
- * @LastEditTime: 2021-01-09 09:30:11
+ * @LastEditTime: 2021-02-05 11:19:17
  * @Description: 
  * @FilePath: \app-en\src\components\tabbar\account\customerService.vue
 --> 
@@ -69,10 +69,6 @@ export default {
     show: {
       immediate: true,
       handler(val) {
-        console.log(
-          "🚀 ~ file: customerService.vue ~ line 73 ~ handler ~ val",
-          val
-        );
         if (val) {
           if (
             localStorage.userinfoShop &&
@@ -100,17 +96,9 @@ export default {
   },
   mounted() {},
   methods: {
-    // getUser() {
-    //   getuserinfo().then((res) => {
-    //     console.log("localStorage.token", localStorage.token);
-    //     this.token = localStorage.token;
-    //     this.userinfoShop = JSON.parse(localStorage.userinfoShop);
-    //     this.getData();
-    //   });
-    // },
     getData() {
       let otherParams;
-      let nickName = `app user ID:${this.userinfoShop.userId}`;
+      let nickName = `app user ID C:${this.userinfoShop.userId}`;
       this.userinfoShop.userId;
       if (this.type === 0) {
         //   普通聊天

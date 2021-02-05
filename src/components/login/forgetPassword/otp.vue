@@ -46,7 +46,11 @@
 
 <script>
 import navar from "@/multiplexing/navar";
-import { msglistApi, getverificationcodeApi } from "@/api/login/index.js";
+import {
+  msglistApi,
+  getverificationcodeApi,
+  getInternationalMsgApi,
+} from "@/api/login/index.js";
 import { Toast } from "vant";
 export default {
   data() {
@@ -102,7 +106,7 @@ export default {
       } else {
         data.msgphone = data.msgphone;
       }
-      msglistApi(data).then((res) => {
+      getInternationalMsgApi(data).then((res) => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -118,30 +122,51 @@ export default {
               }
             }, 1000);
           }
-        } else if (res.code == 1) {
-          Toast("A phone number cannot send over 20 messages a day");
-        } else if (res.code == 2) {
-          Toast("Failed sending");
-        } else if (res.code == -130) {
-          Toast("The phone number isn’t registered.");
-        } else if (res.code == -131) {
-          Toast(
-            "The phone number was frozen by system.Please contact customer service"
-          );
-        } else if (res.code == -132) {
-          Toast(
-            "The phone number was deleted by system.Please contact customer service"
-          );
-        } else if (res.code == -133) {
-          Toast(
-            "The phone number is still being approved.Please contact customer service"
-          );
-        } else if (res.code == -134) {
-          Toast(
-            "The phone number didn’t get the approval.Please contact customer service"
-          );
+        } else if (res.code == 101) {
+          msglistApi(data).then((res) => {
+            if (res.code == 0) {
+              const TIME_COUNT = 120;
+              if (!this.timer) {
+                this.count = TIME_COUNT;
+                this.countTrue = false;
+                this.timer = setInterval(() => {
+                  if (this.count > 0 && this.count <= TIME_COUNT) {
+                    this.count--;
+                  } else {
+                    this.countTrue = true;
+                    clearInterval(this.timer);
+                    this.timer = null;
+                  }
+                }, 1000);
+              }
+            } else if (res.code == 1) {
+              Toast("A phone number cannot send over 20 messages a day");
+            } else if (res.code == 2) {
+              Toast("Failed sending");
+            } else if (res.code == -130) {
+              Toast("The phone number isn’t registered.");
+            } else if (res.code == -131) {
+              Toast(
+                "The phone number was frozen by system.Please contact customer service"
+              );
+            } else if (res.code == -132) {
+              Toast(
+                "The phone number was deleted by system.Please contact customer service"
+              );
+            } else if (res.code == -133) {
+              Toast(
+                "The phone number is still being approved.Please contact customer service"
+              );
+            } else if (res.code == -134) {
+              Toast(
+                "The phone number didn’t get the approval.Please contact customer service"
+              );
+            } else {
+              Toast("error");
+            }
+          });
         } else {
-          Toast("error");
+          Toast(res.msg);
         }
       });
     },

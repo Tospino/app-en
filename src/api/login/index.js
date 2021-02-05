@@ -24,7 +24,14 @@ export function msglistApi(params) {
         data: params
     })
 }
-
+//手机验证码(国际)
+export function getInternationalMsgApi(params) {
+    return park({
+        url: '/msginfo/getInternationalMsg',
+        method: 'POST',
+        data: params
+    })
+}
 
 //校验验证码是否正确的接口
 export function getverificationcodeApi(params) {

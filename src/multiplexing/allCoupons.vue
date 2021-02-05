@@ -111,14 +111,7 @@ export default {
     memberCouponPop,
     allCouponsBack,
   },
-  watch: {
-    sideFrame: {
-      handler: function (newVal, oldVal) {
-        // console.log(newVal, oldVal, "888");
-      },
-      immediate: true,
-    },
-  },
+  watch: {},
   created() {},
   mounted() {},
   methods: {
