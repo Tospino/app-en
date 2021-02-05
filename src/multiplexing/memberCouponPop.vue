@@ -57,7 +57,7 @@
                       Valid Till:{{
                         item.sonUseDay
                           ? ""
-                          : item.sonUseBegin
+                          : item.sonUseBeginWebsite
                               .slice(0, 10)
                               .split("-")
                               .reverse()
@@ -66,8 +66,8 @@
                             "~"
                       }}
                       {{
-                        item.sonUseEnd
-                          ? item.sonUseEnd
+                        item.sonUseEndWebsite
+                          ? item.sonUseEndWebsite
                               .slice(0, 10)
                               .split("-")
                               .reverse()
