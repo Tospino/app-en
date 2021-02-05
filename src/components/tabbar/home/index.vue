@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-31 14:38:35
+ * @LastEditTime: 2021-02-05 11:31:34
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -471,7 +471,7 @@
     </scroll>
     <!-- 整体优惠券 -->
     <allCoupons
-    ref="allCoupons"
+      ref="allCoupons"
       :isFrame="isFrame"
       :hasAggregate="hasAggregate"
       :isShowCoupon="isShowCoupon"
@@ -479,6 +479,7 @@
       :newCoupon="newCoupon"
       :sideFrame="sideFrame"
       @memberBus="memberBus"
+      @isShowBus="isShowBus"
     ></allCoupons>
   </div>
 </template>
@@ -562,7 +563,6 @@ export default {
   },
   computed: {},
   created() {
-    
     if (this.$route.query.token && this.$route.query.token != "undefined") {
       localStorage.token = this.$route.query.token;
       this.getuserinfo();
@@ -631,39 +631,47 @@ export default {
       }
     }, 1000);
     this.refreshOrder();
+    if (localStorage.isShowOpen) {
+      this.isFrame = false;
+    }
+    // if (localStorage.isOpen) {
+    //   this.$refs.allCoupons.isBonus = false;
+    // }
   },
-   activated(){
-       this.newCoupons();
-       this.$refs.allCoupons.isShow = true
-      //  this.sideFrame=false
+  activated() {
+    this.$refs.allCoupons.isShow = true;
+    //  this.sideFrame=false
   },
-  watch: {
-  
-  },
+  watch: {},
   methods: {
     // 首页平台用户优惠券
     async newCoupons() {
-      this.sideFrame=true
       let newGiftpack = await queryNewgiftpackApi();
-      // let obj = Object.assign(newGiftpack, { dengluOne: true });
-      //  localStorage.newCoupons=JSON.stringify(obj)
       this.hasAggregate = newGiftpack;
+      // 1是游客，2 已领取 ，3 未领取
       this.isShowCoupon = newGiftpack.isReceive;
       // 1游客显示金额吸引
       this.touristSum = newGiftpack.summoney;
       // 2.新人用户显示优惠券列表
       if (newGiftpack.code == 0) {
-        this.isFrame = true;
-
+        this.sideFrame = true;
+        if (this.isShowCoupon == 2) {
+          localStorage.isShowOpen = true;
+        } else {
+          this.isFrame = true;
+          this.isHomeCoupons = true;
+          this.$refs.allCoupons.isBonus = false;
+        }
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
         }
       } else if (newGiftpack.code == -300) {
         this.isFrame = false;
+        this.isHomeCoupons = false;
       }
       this.$forceUpdate();
     },
-   
+
     // 领取优惠按钮
     memberBus(id) {
       if (id) {
@@ -673,6 +681,15 @@ export default {
           }
         });
       }
+    },
+    // 关闭优惠券弹框
+    isShowBus(isShow) {
+      if (isShow) {
+        this.isFrame = false;
+      } else {
+        this.isFrame = true;
+      }
+      this.$forceUpdate();
     },
     jumpRouter(name) {
       this.$router.push({ name });

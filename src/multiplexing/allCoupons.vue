@@ -1,7 +1,7 @@
 <template>
   <!-- 所有优惠券 -->
-  <div id="allCoupons" v-if="isFrame">
-    <div>
+  <div id="allCoupons">
+    <div v-if="isFrame">
       <!-- 优惠券窗口贴边浮窗页面（首页、商品详情页、分类、购物车、我的） -->
       <!-- 须接收价格，跳转类型弹框，弹框是否再次弹起 -->
       <div v-if="isBonus">
@@ -9,7 +9,6 @@
           <div class="bonus" @click="hasMistake">
             <div class="bonus-money">₵{{ touristSum }}</div>
           </div>
-
           <img
             src="@/assets/img/coupon/home-icon-gb.png"
             class="close-icon"
@@ -32,12 +31,14 @@
           ></memberCouponPop>
         </div>
         <!-- 是否返回 -->
-        <allCouponsBack
-          :touristSum="touristSum"
-          @allBack="allBack"
-          @waiveBack="waiveBack"
-          v-else
-        ></allCouponsBack>
+        <div v-else>
+          <allCouponsBack
+            :touristSum="touristSum"
+            @allBack="allBack"
+            @waiveBack="waiveBack"
+            v-if="isShowCoupon !== 2"
+          ></allCouponsBack>
+        </div>
       </div>
     </div>
   </div>
@@ -102,7 +103,7 @@ export default {
       isMistake: true, //默认显示
       isBonus: true, //默认侧边不显示
       isAll: true, //整体优惠券弹框
-       isShow: true,//侧边弹框开启
+      isShow: true, //侧边弹框开启
     };
   },
   components: {
@@ -111,12 +112,12 @@ export default {
     allCouponsBack,
   },
   watch: {
-    sideFrame:{
-     handler:function(newVal, oldVal){
-        console.log(newVal,oldVal,'888')
+    sideFrame: {
+      handler: function (newVal, oldVal) {
+        // console.log(newVal, oldVal, "888");
       },
-       immediate: true
-    }
+      immediate: true,
+    },
   },
   created() {},
   mounted() {},
@@ -149,9 +150,14 @@ export default {
     // 会员新人放弃领取
     memberUp(item) {
       if (item == -1) {
-        this.isAll=false
+        this.isBonus = false;
       } else {
         this.isMistake = false;
+      }
+      if (this.isShowCoupon == 2) {
+        this.$emit("isShowBus", true);
+      } else {
+        this.$emit("isShowBus", false);
       }
     },
 
@@ -169,7 +175,7 @@ export default {
   width: 136px;
   height: 135px;
   position: fixed;
-  top:700px;
+  top: 700px;
   right: 50px;
   z-index: 10;
   background-image: url("~@/assets/img/coupon/bonus_all.png");

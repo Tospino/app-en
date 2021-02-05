@@ -303,7 +303,7 @@
               <span class="youhuiquan-title">Coupons</span>
               <span class="youhuiquan-txt" @click="saleMore">More</span>
             </div>
-            <div class="youhuiquan-main" >
+            <div class="youhuiquan-main">
               <img
                 src="@/assets/img/tabbar/home/commodityDetails/youhuiquan@2x.png"
               />
@@ -330,19 +330,21 @@
                   </p>
                   <p class="youhuiquan-left-m">
                     Valid:{{
-                       ProModel.Data.useBeginWebsite?
                       ProModel.Data.useBeginWebsite
-                        .slice(0, 10)
-                        .split("-")
-                        .reverse()
-                        .join("/"):''
+                        ? ProModel.Data.useBeginWebsite
+                            .slice(0, 10)
+                            .split("-")
+                            .reverse()
+                            .join("/")
+                        : ""
                     }}~{{
-                       ProModel.Data.useBeginWebsite?
-                      ProModel.Data.useEndWebsite
-                        .slice(0, 10)
-                        .split("-")
-                        .reverse()
-                        .join("/"):''
+                      ProModel.Data.useBeginWebsite
+                        ? ProModel.Data.useEndWebsite
+                            .slice(0, 10)
+                            .split("-")
+                            .reverse()
+                            .join("/")
+                        : ""
                     }}
                   </p>
                   <progress-bar
@@ -513,23 +515,25 @@
       :clearShareLink="clearShareLink"
       :clearShare="clearShare"
     />
- 
- <!-- 整体优惠券 -->
+
+    <!-- 整体优惠券 -->
     <allCoupons
-       :isFrame="isFrame"
+      v-if="isHomeCoupons"
+      :isFrame="isFrame"
       :hasAggregate="hasAggregate"
       :isShowCoupon="isShowCoupon"
       :touristSum="touristSum"
       :newCoupon="newCoupon"
-      :sideFrame='sideFrame'
+      :sideFrame="sideFrame"
       @memberBus="memberBus"
+      @isShowBus="isShowBus"
     ></allCoupons>
   </div>
 </template>
 
 <script>
 import allCoupons from "@/multiplexing/allCoupons";
-import {queryNewgiftpackApi,} from "@/api/home/index.js";
+import { queryNewgiftpackApi } from "@/api/home/index.js";
 import detailsHeader from "@/multiplexing/detailsHeader";
 import footerExhibition from "@/multiplexing/footerExhibition";
 import commoditySelection from "@/multiplexing/commoditySelection";
@@ -606,12 +610,13 @@ export default {
       clearOne: "", //清仓
       time_atc: null,
 
-        isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
+      isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
       touristSum: 0, //吸引游客金额
       isFrame: false, //是否显示平台优惠券弹框
       newCoupon: [], //新用户列表
       hasAggregate: {}, //总优惠数据
-        sideFrame:true,//是否显示侧边优惠弹框
+      sideFrame: true, //是否显示侧边优惠弹框
+      isHomeCoupons: false,
     };
   },
   computed: {},
@@ -649,7 +654,7 @@ export default {
         }
       }
     }, 1000);
-     this.newCoupons();
+    this.newCoupons();
   },
   beforeDestroy() {
     //清除定时器
@@ -663,8 +668,7 @@ export default {
     }
     next();
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     onChange(index) {
       this.current = index;
@@ -891,7 +895,7 @@ export default {
         businessId: businessId,
         expId: expId,
       });
-      if (this.ProModel.code==0) {
+      if (this.ProModel.code == 0) {
         this.moreShop = true;
       } else {
         this.moreShop = false;
@@ -1043,27 +1047,30 @@ export default {
       this.$refs["share"].shows();
     },
 
-     // 首页平台用户优惠券
+    // 首页平台用户优惠券
     async newCoupons() {
       let newGiftpack = await queryNewgiftpackApi();
-       this.$forceUpdate();
       this.hasAggregate = newGiftpack;
       this.isShowCoupon = newGiftpack.isReceive;
       // 1游客显示金额吸引
       this.touristSum = newGiftpack.summoney;
       // 2.新人用户显示优惠券列表
       if (newGiftpack.code == 0) {
-         this.isFrame =true;
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
         }
-      }else if(newGiftpack.code == -300){
-        this.isFrame = false
-          this.$forceUpdate();
+        if (this.isShowCoupon == 2) {
+          localStorage.isShowOpen = true;
+        } else {
+          this.isFrame = true;
+          this.isHomeCoupons = true;
+        }
+      } else if (newGiftpack.code == -300) {
+        this.isFrame = false;
+        this.isHomeCoupons = false;
       }
-      this.$forceUpdate();
     },
-  // 领取优惠按钮
+    // 领取优惠按钮
     memberBus(id) {
       if (id) {
         couponDrawApi(id).then((res) => {
@@ -1071,6 +1078,14 @@ export default {
             this.newCoupons();
           }
         });
+      }
+    },
+    // 关闭优惠券弹框
+    isShowBus(isShow) {
+      if (isShow) {
+        this.isFrame = false;
+      } else {
+        this.isFrame = true;
       }
     },
   },
@@ -1083,7 +1098,7 @@ export default {
     progressBar,
     customerService,
     share,
-    allCoupons
+    allCoupons,
   },
 };
 </script>

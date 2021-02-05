@@ -3,7 +3,7 @@
   <div id="memberPopUp">
     <!-- 根据后台判断是否为新用户 -->
     <zhezhao>
-      <div class="wrapper"  v-if="isMistake">
+      <div class="wrapper" v-if="isMistake">
         <div class="block">
           <div>
             <img
@@ -26,7 +26,7 @@
           >
             <div class="txt-center">
               <span class="fs-24 fw-b">—— Congratulations On Getting ——</span>
-              <div class="mt_14 fs-22" v-if="newCoupon[0].isdraw ===0">
+              <div class="mt_14 fs-22" v-if="newCoupon[0].isdraw === 0">
                 Collect coupons before shopping.
               </div>
               <div class="mt_8" v-else>
@@ -34,9 +34,15 @@
               </div>
             </div>
 
-            <div class="coupon-haslist" >
+            <div class="coupon-haslist">
               <div v-for="(item, index) in newCoupon" :key="index">
-                <div class="flex_space " :class="{'coupon-bg-has':item.isdraw>0,'coupon-bg-get':item.isdraw===0}">
+                <div
+                  class="flex_space"
+                  :class="{
+                    'coupon-bg-has': item.isdraw > 0,
+                    'coupon-bg-get': item.isdraw === 0,
+                  }"
+                >
                   <div class="box-coupon">
                     <div class="coupon-money">
                       <i class="coupon-money-icon">{{ jn }}</i>
@@ -47,17 +53,35 @@
                     <div class="cr-fs20">
                       Mini Spend {{ jn }} {{ item.sonUpToAmount }}
                     </div>
-                    <div class="cr-fs20" >Valid Till:{{ item.sonUseEndWebsite?
-                  item.sonUseEndWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/"):item.sonUseDay+' '+'Day'
-                }}</div>
+                    <div class="cr-fs20">
+                      Valid Till:{{
+                        item.sonUseDay
+                          ? ""
+                          : item.sonUseBegin
+                              .slice(0, 10)
+                              .split("-")
+                              .reverse()
+                              .join("/") +
+                            " " +
+                            "~"
+                      }}
+                      {{
+                        item.sonUseEnd
+                          ? item.sonUseEnd
+                              .slice(0, 10)
+                              .split("-")
+                              .reverse()
+                              .join("/")
+                          : ""
+                      }}
+                    </div>
                   </div>
 
-                  <div class="btn-coupon" v-if="item.isdraw===0" @click="newPre(item.couponId)">
-                  </div>
+                  <div
+                    class="btn-coupon"
+                    v-if="item.isdraw === 0"
+                    @click="newPre(item.couponId)"
+                  ></div>
                 </div>
               </div>
               <div class="coupon-length-top" v-if="newCoupon.length >= 3"></div>
@@ -96,7 +120,7 @@ export default {
         return [];
       },
     },
-     touristSum: {
+    touristSum: {
       type: Number,
       default: 0,
     },
@@ -123,17 +147,17 @@ export default {
       // 传对应id
       this.$emit("evBus", this.homeCoupons);
     },
- 
+
     /*
      *showMistake 0显示是否放弃 -1显示当前是否领取
      */
     showMistake(item) {
-     if(item===0){
-      this.$emit("memberUp",item);
-     }else{
-        this.isMistake=false;
+      if (item === 0) {
+        this.$emit("memberUp", item);
+      } else {
+        this.isMistake = false;
         this.$emit("memberUp", this.homeCoupons);
-     }
+      }
     },
   },
 };
@@ -206,7 +230,6 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
-  
 }
 // 已领取
 .coupon-bg-has {
@@ -218,33 +241,32 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
-  
 }
 
 .coupon-money {
-    font-size: 90px;
-    font-family: Arial;
-    font-weight: bold;
-    display: flex;
+  font-size: 90px;
+  font-family: Arial;
+  font-weight: bold;
+  display: flex;
 
-    .coupon-money-icon {
-      font-size: 36px;
-      font-weight: 400;
-      color: #f6c5a8;
-      margin-top: 6px;
-    }
-    .coupon-money-reduce {
-      margin-left: 10px;
-      background: linear-gradient(
-        -23deg,
-        #f6c4a6 0%,
-        #fde9d8 54.5166015625%,
-        #f6c4a6 100%
-      );
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+  .coupon-money-icon {
+    font-size: 36px;
+    font-weight: 400;
+    color: #f6c5a8;
+    margin-top: 6px;
   }
+  .coupon-money-reduce {
+    margin-left: 10px;
+    background: linear-gradient(
+      -23deg,
+      #f6c4a6 0%,
+      #fde9d8 54.5166015625%,
+      #f6c4a6 100%
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
 
 #memberPopUp {
   position: fixed;

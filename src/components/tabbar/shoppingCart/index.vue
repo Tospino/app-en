@@ -1,10 +1,10 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2020-08-20 13:53:02
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-02-04 16:31:57
+ * @LastEditors: 曹建勇
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
- * @FilePath: \xin\src\components\tabbar\shoppingCart\index.vue
+ * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
 --> 
 
 <template>
@@ -311,24 +311,26 @@
         </div>
       </div>
     </van-overlay>
-   <!-- 整体优惠券 -->
+    <!-- 整体优惠券 -->
     <allCoupons
-       :isFrame="isFrame"
+      ref="allCoupons"
+      v-if="isHomeCoupons"
+      :isFrame="isFrame"
       :hasAggregate="hasAggregate"
       :isShowCoupon="isShowCoupon"
       :touristSum="touristSum"
       :newCoupon="newCoupon"
-        :sideFrame='sideFrame'
+      :sideFrame="sideFrame"
       @memberBus="memberBus"
+      @isShowBus="isShowBus"
     ></allCoupons>
   </div>
-
 </template>
 
 <script>
 import footerExhibition from "@/multiplexing/footerExhibition";
 import allCoupons from "@/multiplexing/allCoupons";
-import {queryNewgiftpackApi,} from "@/api/home/index.js";
+import { queryNewgiftpackApi } from "@/api/home/index.js";
 import {
   shopcartlistApi,
   deleteshopcartApi,
@@ -340,6 +342,7 @@ import { guessyoulikeApi } from "@/api/search/index";
 import { Toast, Dialog } from "vant";
 import { mapState, mapActions } from "vuex";
 import { adduserfavoritesApi } from "@/api/favorites/index.js";
+import { couponDrawApi } from "@/api/confirmOrder/index";
 import moment from "moment";
 export default {
   props: {},
@@ -379,12 +382,13 @@ export default {
       clearTimeWebsite: null,
       initialPrice: 0,
       initialNum: 0,
-        isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
+      isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
       touristSum: 0, //吸引游客金额
       isFrame: false, //是否显示平台优惠券弹框
       newCoupon: [], //新用户列表
       hasAggregate: {}, //总优惠数据
-        sideFrame:true,//是否显示侧边优惠弹框
+      sideFrame: true, //是否显示侧边优惠弹框
+      isHomeCoupons: false,
     };
   },
   computed: {
@@ -430,8 +434,7 @@ export default {
         clearInterval(this.time_atc);
       }
     }, 1000);
-
-    this.newCoupons() ;
+    this.newCoupons();
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.menu, true);
@@ -866,28 +869,30 @@ export default {
       }
     },
 
-
     // 首页平台用户优惠券
     async newCoupons() {
       let newGiftpack = await queryNewgiftpackApi();
-       this.$forceUpdate();
       this.hasAggregate = newGiftpack;
       this.isShowCoupon = newGiftpack.isReceive;
       // 1游客显示金额吸引
       this.touristSum = newGiftpack.summoney;
       // 2.新人用户显示优惠券列表
       if (newGiftpack.code == 0) {
-         this.isFrame =true;
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
         }
-      }else if(newGiftpack.code == -300){
-        this.isFrame = false
-          this.$forceUpdate();
+        if (this.isShowCoupon == 2) {
+          localStorage.isShowOpen = true;
+        } else {
+          this.isFrame = true;
+          this.isHomeCoupons = true;
+        }
+      } else if (newGiftpack.code == -300) {
+        this.isFrame = false;
+        this.isHomeCoupons = false;
       }
-      this.$forceUpdate();
     },
- // 领取优惠按钮
+    // 领取优惠按钮
     memberBus(id) {
       if (id) {
         couponDrawApi(id).then((res) => {
@@ -897,11 +902,18 @@ export default {
         });
       }
     },
-
+    // 关闭优惠券弹框
+    isShowBus(isShow) {
+      if (isShow) {
+        this.isFrame = false;
+      } else {
+        this.isFrame = true;
+      }
+    },
   },
   components: {
     footerExhibition,
-allCoupons
+    allCoupons,
   },
 };
 </script>
