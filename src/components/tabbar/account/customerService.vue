@@ -69,10 +69,6 @@ export default {
     show: {
       immediate: true,
       handler(val) {
-        console.log(
-          "🚀 ~ file: customerService.vue ~ line 73 ~ handler ~ val",
-          val
-        );
         if (val) {
           if (
             localStorage.userinfoShop &&
@@ -100,14 +96,6 @@ export default {
   },
   mounted() {},
   methods: {
-    // getUser() {
-    //   getuserinfo().then((res) => {
-    //     console.log("localStorage.token", localStorage.token);
-    //     this.token = localStorage.token;
-    //     this.userinfoShop = JSON.parse(localStorage.userinfoShop);
-    //     this.getData();
-    //   });
-    // },
     getData() {
       let otherParams;
       let nickName = `app user ID C:${this.userinfoShop.userId}`;

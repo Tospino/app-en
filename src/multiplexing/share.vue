@@ -96,7 +96,7 @@ export default {
           "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350";
         window.open(url, "_blank", "Web");
       };
-      let ometa = document.getElementsByTagName("meta"); // console.log("meta", document.getElementsByTagName("meta"));
+      let ometa = document.getElementsByTagName("meta");
       ometa[14].content = this.list.supplyTitle;
       ometa[12].content = this.$webUrl + this.list.locationUrl;
       ometa[8].content = "shop" + this.list.salePrice;

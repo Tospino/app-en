@@ -83,7 +83,8 @@ export default {
       } catch (err) {
         console.log(err.message);
       }
-
+      var token = JSON.parse(JSON.stringify(localStorage.token));
+      var userinfoShop = JSON.parse(JSON.stringify(localStorage.userinfoShop));
       function clearCaching() {
         if (window.plus) {
           plusReady();
@@ -93,6 +94,8 @@ export default {
 
         function plusReady() {
           plus.cache.clear();
+          localStorage.token = token;
+          localStorage.userinfoShop = userinfoShop;
         }
       }
       clearCaching();

@@ -29,7 +29,14 @@
               >
                 <div
                   class="sanji"
-                  @click="toSearOne(product.categoryId,product,leftList[activeKey].classNameEng,rightGoods.classNameEng)"
+                  @click="
+                    toSearOne(
+                      product.categoryId,
+                      product,
+                      leftList[activeKey].classNameEng,
+                      rightGoods.classNameEng
+                    )
+                  "
                   prop="product.classNameEng"
                 >
                   <img v-lazy="$webUrl + product.categoryImg" />
@@ -43,11 +50,23 @@
         </div>
       </div>
     </div>
+    <!-- 整体优惠券 -->
+    <allCoupons
+      :isFrame="isFrame"
+      :hasAggregate="hasAggregate"
+      :isShowCoupon="isShowCoupon"
+      :touristSum="touristSum"
+      :newCoupon="newCoupon"
+      :sideFrame="sideFrame"
+      @memberBus="memberBus"
+    ></allCoupons>
   </div>
 </template>
 
 <script>
 import searchHeader from "@/multiplexing/searchHeader";
+import allCoupons from "@/multiplexing/allCoupons";
+import { queryNewgiftpackApi } from "@/api/home/index.js";
 import { procategorylistApi } from "@/api/classify/index";
 import { mapState, mapActions } from "vuex";
 export default {
@@ -57,18 +76,25 @@ export default {
       activeKey: 0,
       formData: {
         category_level: 1,
-        parent_id: 0
+        parent_id: 0,
       },
       leftList: [],
       rightList: [],
       leftImgSrc: "",
-      classifyData: {}
+      classifyData: {},
+
+      isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
+      touristSum: 0, //吸引游客金额
+      isFrame: false, //是否显示平台优惠券弹框
+      newCoupon: [], //新用户列表
+      hasAggregate: {}, //总优惠数据
+      sideFrame: true, //是否显示侧边优惠弹框
     };
   },
   computed: {
     ...mapState({
-      classifyKeep: state => state.classifyKeep
-    })
+      classifyKeep: (state) => state.classifyKeep,
+    }),
   },
   activated() {
     if (this.classifyKeep) {
@@ -108,12 +134,13 @@ export default {
     } else {
       this.procategorylist();
     }
+    this.newCoupons();
   },
   watch: {},
   methods: {
     ...mapActions(["classifykeep"]),
     procategorylist() {
-      procategorylistApi(this.formData).then(res => {
+      procategorylistApi(this.formData).then((res) => {
         if (res.code == 0) {
           this.leftList = res.leftdataList;
           this.rightList = res.righdataList;
@@ -131,7 +158,7 @@ export default {
       this.leftImgSrc = this.leftList[index].categoryImg;
       this.formData.category_level = 2;
       this.formData.parent_id = this.leftList[index].categoryId;
-      procategorylistApi(this.formData).then(res => {
+      procategorylistApi(this.formData).then((res) => {
         if (res.code == 0) {
           this.rightList = res.righdataList;
           this.leftList = res.leftdataList;
@@ -146,31 +173,66 @@ export default {
       });
     },
     //去到搜索里面
-    toSearOne(categoryId,product,yiji,erji) {
+    toSearOne(categoryId, product, yiji, erji) {
       this.$router.push({
         name: "搜索商品1",
-        query: { categoryId: categoryId }
+        query: { categoryId: categoryId },
       });
-      console.log(product);
       //易观数据采集---导航栏点击
       let urlHtm = window.location.href;
       let titHtm = document.title;
-      AnalysysAgent.track("navigation_click", {
-        $page_title: titHtm,
-        $page_url: urlHtm,
-        target_url:
-          "https://gh.tospino.com/#/search/searchGoodsOne" +
-          "?categoryId=" +
-          categoryId,
-        navigation_name: product.classNameEng,
-        navigation_first_category: yiji,
-        navigation_second_category: erji
-      },rel => {});
-    }
+      AnalysysAgent.track(
+        "navigation_click",
+        {
+          $page_title: titHtm,
+          $page_url: urlHtm,
+          target_url:
+            "https://gh.tospino.com/#/search/searchGoodsOne" +
+            "?categoryId=" +
+            categoryId,
+          navigation_name: product.classNameEng,
+          navigation_first_category: yiji,
+          navigation_second_category: erji,
+        },
+        (rel) => {}
+      );
+    },
+
+    // 首页平台用户优惠券
+    async newCoupons() {
+      let newGiftpack = await queryNewgiftpackApi();
+      this.$forceUpdate();
+      this.hasAggregate = newGiftpack;
+      this.isShowCoupon = newGiftpack.isReceive;
+      // 1游客显示金额吸引
+      this.touristSum = newGiftpack.summoney;
+      // 2.新人用户显示优惠券列表
+      if (newGiftpack.code == 0) {
+        this.isFrame = true;
+        if (newGiftpack.Data) {
+          this.newCoupon = newGiftpack.Data;
+        }
+      } else if (newGiftpack.code == -300) {
+        this.isFrame = false;
+        this.$forceUpdate();
+      }
+      this.$forceUpdate();
+    },
+    // 领取优惠按钮
+    memberBus(id) {
+      if (id) {
+        couponDrawApi(id).then((res) => {
+          if (res.code == 0) {
+            this.newCoupons();
+          }
+        });
+      }
+    },
   },
   components: {
-    searchHeader
-  }
+    searchHeader,
+    allCoupons,
+  },
 };
 </script>
 

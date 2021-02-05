@@ -100,12 +100,6 @@ export default {
       } else {
         this.$router.replace({ name: "登录" });
       }
-      //   getuserinfo().then((res) => {
-      //     console.log("localStorage.token", localStorage.token);
-      //     this.token = localStorage.token;
-      //     this.userinfoShop = JSON.parse(localStorage.userinfoShop);
-      //     this.getData();
-      //   });
     },
     getData() {
       let otherParams;

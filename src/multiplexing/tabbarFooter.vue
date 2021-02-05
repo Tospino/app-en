@@ -95,9 +95,6 @@ export default {
   mounted() {
     this.isreplace = this.$storage.get("token") ? true : false;
   },
-  watch: {},
-  methods: {},
-  components: {},
 };
 </script>
 
