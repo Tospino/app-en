@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-01-04 13:51:33
+ * @LastEditTime: 2021-02-07 16:10:09
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -338,7 +338,7 @@
                             .join("/")
                         : ""
                     }}~{{
-                      ProModel.Data.useBeginWebsite
+                      ProModel.Data.useEndWebsite
                         ? ProModel.Data.useEndWebsite
                             .slice(0, 10)
                             .split("-")

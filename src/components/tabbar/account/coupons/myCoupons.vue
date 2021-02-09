@@ -64,19 +64,21 @@
               </p>
               <p class="youhuiquan-left-m">
                 Valid:{{
-                  shops.useBeginWebsite?
                   shops.useBeginWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/"):''
+                    ? shops.useBeginWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
                 }}~{{
-                   shops.useEndWebsite?
                   shops.useEndWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/"):''
+                    ? shops.useEndWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
                 }}
               </p>
               <div v-if="shops.couponType == 2 ? false : true">
@@ -176,16 +178,20 @@
               <p class="youhuiquan-left-m">
                 Valid:{{
                   shopone.useBeginWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/")
+                    ? shopone.useBeginWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
                 }}~{{
                   shopone.useEndWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/")
+                    ? shopone.useEndWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
                 }}
               </p>
             </div>
@@ -257,16 +263,20 @@
               <p class="youhuiquan-left-m">
                 Valid:{{
                   shopDel.useBeginWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/")
+                    ? shopDel.useBeginWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
                 }}~{{
                   shopDel.useEndWebsite
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/")
+                    ? shopDel.useEndWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
                 }}
               </p>
             </div>

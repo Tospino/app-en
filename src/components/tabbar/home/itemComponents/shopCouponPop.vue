@@ -10,29 +10,63 @@
         <!-- <van-icon name="cross" class="cross" @click="close" /> -->
       </div>
       <div class="selection-conten">
-        <div class="youhuiquan-main" v-for="(couponItem,index) in couponShop" :key="index">
-          <div v-if="couponItem.drawStatus==0||couponItem.drawStatus==null">
+        <div
+          class="youhuiquan-main"
+          v-for="(couponItem, index) in couponShop"
+          :key="index"
+        >
+          <div
+            v-if="couponItem.drawStatus == 0 || couponItem.drawStatus == null"
+          >
             <img :src="srcUse" />
           </div>
-          <div v-else-if="couponItem.drawStatus==3">
+          <div v-else-if="couponItem.drawStatus == 3">
             <img :src="srcMore" />
           </div>
           <div class="youhuiquan-box">
             <div class="youhuiquan-left">
               <!-- <span class="youhuiquan-left-biao">GH{{jn}}</span> -->
               <p class="youhuiquan-left-money">
-                <span class="youhuiquan-left-biao">GH{{jn}}</span>
-                {{ couponItem.reduceAmount}}
+                <span class="youhuiquan-left-biao">GH{{ jn }}</span>
+                {{ couponItem.reduceAmount }}
                 <i>OFF</i>
               </p>
-              <p
-                class="youhuiquan-left-m"
-              >Type:{{couponItem.couponType==1?"Tospino’s Price-off":couponItem.couponType==2?"Newer Exclusives":couponItem.couponType==3?"Shop’s Price-off":couponItem.couponType==4?"Item Price-off":"Item Price-off"}}</p>
-              <p
-                class="youhuiquan-left-m"
-              >Valid:{{couponItem.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{couponItem.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
-              <div v-if="couponItem.couponType==2?false:true">
-                <progress-bar :progressBar="couponItem.claimRate*100"></progress-bar>
+              <p class="youhuiquan-left-m">
+                Type:{{
+                  couponItem.couponType == 1
+                    ? "Tospino’s Price-off"
+                    : couponItem.couponType == 2
+                    ? "Newer Exclusives"
+                    : couponItem.couponType == 3
+                    ? "Shop’s Price-off"
+                    : couponItem.couponType == 4
+                    ? "Item Price-off"
+                    : "Item Price-off"
+                }}
+              </p>
+              <p class="youhuiquan-left-m">
+                Valid:{{
+                  couponItem.useBeginWebsite
+                    ? couponItem.useBeginWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
+                }}~{{
+                  couponItem.useEndWebsite
+                    ? couponItem.useEndWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    : ""
+                }}
+              </p>
+              <div v-if="couponItem.couponType == 2 ? false : true">
+                <progress-bar
+                  :progressBar="couponItem.claimRate * 100"
+                ></progress-bar>
               </div>
             </div>
 
@@ -42,23 +76,40 @@
                 <!-- <span class="youhuiquan-right-title">{{couponItem.couponName}}</span> -->
               </div>
               <div class="youhuiquan-right-main">
-                <div>Mini Spend GH{{jn}} {{couponItem.upToAmount!=null?couponItem.upToAmount:couponItem.reduceAmount}}</div>
+                <div>
+                  Mini Spend GH{{ jn }}
+                  {{
+                    couponItem.upToAmount != null
+                      ? couponItem.upToAmount
+                      : couponItem.reduceAmount
+                  }}
+                </div>
                 <van-button
-                  style="background: none;border: 0;color:#FEA072 "
+                  style="background: none; border: 0; color: #fea072"
                   round
                   disabled
-                  v-if="couponItem.drawStatus==0?true:false"
+                  v-if="couponItem.drawStatus == 0 ? true : false"
                   type="info"
                   class="youhuiquan-right-btn"
-                >Received</van-button>
+                  >Received</van-button
+                >
 
                 <van-button
                   v-else
                   round
                   type="info"
-                  @click="ProBar(couponItem.couponId,couponItem.couponDetailId)"
+                  @click="
+                    ProBar(couponItem.couponId, couponItem.couponDetailId)
+                  "
                   class="youhuiquan-right-btn"
-                >{{couponItem.drawStatus==null?"Get it now":couponItem.drawStatus==3?"Get more":"Delete"}}</van-button>
+                  >{{
+                    couponItem.drawStatus == null
+                      ? "Get it now"
+                      : couponItem.drawStatus == 3
+                      ? "Get more"
+                      : "Delete"
+                  }}</van-button
+                >
                 <!-- {{couponItem.drawStatus==null?"Get it now":couponItem.drawStatus==0?"Use it now":couponItem.drawStatus==1?"Get more":couponItem.drawStatus==2?"Delete":"Delete"}} -->
               </div>
             </div>

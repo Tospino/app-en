@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-05 11:31:34
+ * @LastEditTime: 2021-02-07 17:48:19
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -592,6 +592,7 @@ export default {
       this.homePage();
     }
     this.getClear();
+    this.newCoupons();
     this.homeAdvertPicture();
   },
 
@@ -602,7 +603,6 @@ export default {
     next();
   },
   mounted() {
-    this.newCoupons();
     //   清仓
     let time_atc = setInterval(() => {
       //   清仓时间戳
@@ -634,9 +634,6 @@ export default {
     if (localStorage.isShowOpen) {
       this.isFrame = false;
     }
-    // if (localStorage.isOpen) {
-    //   this.$refs.allCoupons.isBonus = false;
-    // }
   },
   activated() {
     this.$refs.allCoupons.isShow = true;
@@ -678,6 +675,11 @@ export default {
         couponDrawApi(id).then((res) => {
           if (res.code == 0) {
             this.newCoupons();
+          } else if (res.code == 25) {
+            // 多个页面领取后code为25 关闭弹框
+            setInterval(() => {
+              this.isFrame = false;
+            }, 500);
           }
         });
       }
@@ -790,6 +792,7 @@ export default {
       this.formData.limit = 10;
       this.homePagebottom(this.formData);
       this.pullup = true;
+      this.newCoupons();
     },
     //跳转商品详情
     toDetail(skuid, overall, type, index) {
