@@ -504,21 +504,26 @@ export default {
         if (isToUse == 1) {
           Toast("Unavailable yet");
         } else {
-          if (Type == 1 || Type == 2) {
-            this.$router.push({ name: "搜索商品1" });
-          } else if (Type == 3) {
-            this.$router.push({
-              name: "搜索商品1",
-              query: { businessId: busId, expIds: expIds },
-            });
+          // 新人子优惠券
+          if (shops.newuserMsg) {
+            Toast(shops.newuserMsg);
           } else {
-            if (sellFlag == 0) {
-              Toast("The goods is not available");
-            } else {
+            if (Type == 1 || Type == 2) {
+              this.$router.push({ name: "搜索商品1" });
+            } else if (Type == 3) {
               this.$router.push({
-                name: "商品详情",
-                query: { skuId: skuId, activityType: shops.activityType },
+                name: "搜索商品1",
+                query: { businessId: busId, expIds: expIds },
               });
+            } else {
+              if (sellFlag == 0) {
+                Toast("The goods is not available");
+              } else {
+                this.$router.push({
+                  name: "商品详情",
+                  query: { skuId: skuId, activityType: shops.activityType },
+                });
+              }
             }
           }
         }

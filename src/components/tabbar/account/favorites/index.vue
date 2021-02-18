@@ -93,7 +93,7 @@ export default {
       viewOne: true,
       formData: {
         page: 1,
-        limit: 10,
+        limit: 1000,
         seraname: "",
         sort: 2,
       },
@@ -142,6 +142,7 @@ export default {
       this.scroll =
         document.documentElement.scrollTop || document.body.scrollTop;
       if (this.pullUp && this.scroll >= cha) {
+        //   只进一次
         if (this.kanmengou) {
           this.formData.page++;
           this.selectuserfavorites(this.formData, true);

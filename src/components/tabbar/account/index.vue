@@ -342,6 +342,7 @@
 <script>
 import allCoupons from "@/multiplexing/allCoupons";
 import { queryNewgiftpackApi } from "@/api/home/index.js";
+import { couponDrawApi } from "@/api/confirmOrder/index";
 import daifahuo from "@/assets/img/tabbar/my/account/daifahuo@2x.png";
 import daifukuan from "@/assets/img/tabbar/my/account/daifukuan@2x.png";
 import daishouhuo from "@/assets/img/tabbar/my/account/daishouhuo@2x.png";
