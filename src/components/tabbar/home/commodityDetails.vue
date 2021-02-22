@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-07 16:10:09
+ * @LastEditTime: 2021-02-22 16:28:03
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -895,7 +895,7 @@ export default {
         businessId: businessId,
         expId: expId,
       });
-      if (this.ProModel.code == 0) {
+      if (this.ProModel.Data.couponId != null) {
         this.moreShop = true;
       } else {
         this.moreShop = false;
@@ -1059,7 +1059,7 @@ export default {
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
         }
-        if (this.isShowCoupon == 2) {
+        if (this.isShowCoupon == 2 || this.isShowCoupon == 4) {
           localStorage.isShowOpen = true;
         } else {
           this.isFrame = true;
@@ -1076,6 +1076,12 @@ export default {
         couponDrawApi(id).then((res) => {
           if (res.code == 0) {
             this.newCoupons();
+          } else if (res.code == 25) {
+            Toast("The coupon has been collected");
+            // 多个页面领取后code为25 关闭弹框
+            setInterval(() => {
+              this.isFrame = false;
+            }, 500);
           }
         });
       }

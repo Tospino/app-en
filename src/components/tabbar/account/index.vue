@@ -528,7 +528,7 @@ export default {
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
         }
-        if (this.isShowCoupon == 2) {
+        if (this.isShowCoupon == 2 || this.isShowCoupon == 4) {
           localStorage.isShowOpen = true;
         } else {
           this.isFrame = true;
@@ -545,6 +545,12 @@ export default {
         couponDrawApi(id).then((res) => {
           if (res.code == 0) {
             this.newCoupons();
+          } else if (res.code == 25) {
+            Toast("The coupon has been collected");
+            // 多个页面领取后code为25 关闭弹框
+            setInterval(() => {
+              this.isFrame = false;
+            }, 500);
           }
         });
       }

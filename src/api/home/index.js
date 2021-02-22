@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-08-17 16:23:29
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-08-25 11:13:24
+ * @LastEditTime: 2021-02-22 16:08:12
  * @Description: 
  * @FilePath: \app-en\src\api\home\index.js
  */
@@ -48,6 +48,13 @@ export function APPgetuserIsfullApi() {
 export function queryNewgiftpackApi() {
     return park({
         url: `/appusercenter/queryNewgiftpack`,
+        method: 'POST'
+    })
+}
+// 新人券记录是否第一次点击弹框
+export function saveuserPackApi() {
+    return park({
+        url: `/appusercenter/saveuserPack`,
         method: 'POST'
     })
 }

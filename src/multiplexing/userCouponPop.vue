@@ -2,7 +2,7 @@
   <!-- 新用户弹框 -->
   <div id="userPopUp">
     <!-- 根据后台判断是否为新用户 -->
-      <zhezhao>
+    <zhezhao>
       <div class="wrapper">
         <div class="block">
           <img src="@/assets/img/coupon/homeNew.png" class="wrapper-youhui" />
@@ -20,7 +20,7 @@
           />
         </div>
       </div>
-      </zhezhao>
+    </zhezhao>
   </div>
 </template>
 
@@ -36,8 +36,7 @@ export default {
     },
   },
   data() {
-    return {
-    };
+    return {};
   },
   computed: {},
   watch: {},
@@ -78,7 +77,7 @@ export default {
       top: -42%;
       left: 3%;
       text-align: center;
-      font-size: 68px;
+      font-size: 46px;
       color: #e2200d;
       font-weight: bold;
       width: 660px;

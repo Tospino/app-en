@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-16 16:39:26
+ * @LastEditTime: 2021-02-22 16:27:23
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -493,6 +493,7 @@ import {
   homeAdvertPictureApi,
   queryNewgiftpackApi,
   gethomeClearanceList,
+  saveuserPackApi,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -593,6 +594,7 @@ export default {
     }
     this.getClear();
     this.newCoupons();
+    this.saveuserPackNew();
     this.homeAdvertPicture();
   },
 
@@ -645,19 +647,19 @@ export default {
     async newCoupons() {
       let newGiftpack = await queryNewgiftpackApi();
       this.hasAggregate = newGiftpack;
-      // 1是游客，2 已领取 ，3 未领取
+      // 1是游客，2 已领取 ，3 未领取 , 4 没券了已领取完
       this.isShowCoupon = newGiftpack.isReceive;
       // 1游客显示金额吸引
       this.touristSum = newGiftpack.summoney;
       // 2.新人用户显示优惠券列表
       if (newGiftpack.code == 0) {
         this.sideFrame = true;
-        if (this.isShowCoupon == 2) {
+        if (this.isShowCoupon == 2 || this.isShowCoupon == 4) {
           localStorage.isShowOpen = true;
         } else {
           this.isFrame = true;
           this.isHomeCoupons = true;
-          this.$refs.allCoupons.isBonus = false;
+          //   this.$refs.allCoupons.isBonus = false;
         }
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
@@ -668,7 +670,10 @@ export default {
       }
       this.$forceUpdate();
     },
-
+    // 新人券记录是否第一次点击弹框
+    async saveuserPackNew() {
+      let newGiftpack = await saveuserPackApi();
+    },
     // 领取优惠按钮
     memberBus(id) {
       if (id) {
@@ -676,6 +681,7 @@ export default {
           if (res.code == 0) {
             this.newCoupons();
           } else if (res.code == 25) {
+            Toast("The coupon has been collected");
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {
               this.isFrame = false;
@@ -784,6 +790,7 @@ export default {
         this.homePage();
         this.refreshOrder();
         this.getClear();
+        this.newCoupons();
       }, 500);
     },
     //刷新页面
@@ -792,7 +799,6 @@ export default {
       this.formData.limit = 10;
       this.homePagebottom(this.formData);
       this.pullup = true;
-      this.newCoupons();
     },
     //跳转商品详情
     toDetail(skuid, overall, type, index) {

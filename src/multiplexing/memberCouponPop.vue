@@ -43,17 +43,19 @@
                     'coupon-bg-get': item.isdraw === 0,
                   }"
                 >
-                  <div class="box-coupon">
-                    <div class="coupon-money">
-                      <i class="coupon-money-icon">{{ jn }}</i>
-                      <div class="coupon-money-reduce">
-                        {{ item.sonReduceAmount }}
+                  <section class="flex_col">
+                    <div class="box-coupon pd_40_47">
+                      <div class="coupon-money">
+                        <i class="coupon-money-icon">{{ jn }}</i>
+                        <div class="coupon-money-reduce">
+                          {{ item.sonReduceAmount }}
+                        </div>
+                      </div>
+                      <div class="cr-fs20">
+                        Mini Spend {{ jn }} {{ item.sonUpToAmount }}
                       </div>
                     </div>
-                    <div class="cr-fs20">
-                      Mini Spend {{ jn }} {{ item.sonUpToAmount }}
-                    </div>
-                    <div class="cr-fs20">
+                    <div class="cr-fs20 pd_l_40">
                       Valid Till:{{
                         item.sonUseDay
                           ? ""
@@ -75,8 +77,7 @@
                           : ""
                       }}
                     </div>
-                  </div>
-
+                  </section>
                   <div
                     class="btn-coupon"
                     v-if="item.isdraw === 0"
@@ -177,8 +178,15 @@ export default {
   font-size: 20px;
   line-height: 30px;
 }
+.pd_40_47 {
+  padding: 40px 0 0 47px;
+}
+.pd_l_40 {
+  padding-left: 46px;
+  width: 100%;
+}
+
 .box-coupon {
-  padding: 20px 0 0 47px;
   width: 320px;
 }
 .coupon-haslist {
@@ -203,7 +211,7 @@ export default {
   top: 9%;
   left: 2%;
   width: 506px;
-  height: 40px;
+  height: 18px;
   background-image: url("~@/assets/img/coupon/meber_bottom.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -212,7 +220,7 @@ export default {
 }
 .coupon-length-bottom {
   position: absolute;
-  bottom: 4%;
+  bottom: 4.2%;
   width: 510px;
   height: 40px;
   background-image: url("~@/assets/img/coupon/meber_bottom.png");
@@ -244,13 +252,13 @@ export default {
 }
 
 .coupon-money {
-  font-size: 90px;
+  font-size: 64px;
   font-family: Arial;
   font-weight: bold;
   display: flex;
 
   .coupon-money-icon {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 400;
     color: #f6c5a8;
     margin-top: 6px;

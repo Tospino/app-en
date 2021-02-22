@@ -219,7 +219,7 @@ export default {
 
         .youhuiquan-left {
           width: 70%;
-          padding-top: 16px;
+          padding-top: 40px;
           padding-left: 20px;
           .youhuiquan-left-biao {
             font-size: 25px;
