@@ -84,7 +84,7 @@
           <span class="price2" v-if="good.discountPrice != null"
             >{{ jn }}{{ good.salePrice }}</span
           >
-          <span style="color: red" v-show="good.skuSalesNum"
+          <span style="color: red" class="fl-right" v-show="good.skuSalesNum"
             >Sales:{{ good.skuSalesNum ? good.skuSalesNum : 0 }}</span
           >
           <!-- <span class="poin">...</span> -->
@@ -224,10 +224,10 @@ export default {
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
-      font-size: 18px;
+      font-size: 24px;
     }
     .score {
-      margin: 10px 0 20px;
+      // margin: 10px 0 20px;
       color: #999;
       .van-rate {
         margin-right: 8px;
@@ -237,6 +237,7 @@ export default {
           color: #fff;
           //   padding: 6px 12px;
           border-radius: 15px;
+          padding: 4px 10px;
         }
       }
     }
@@ -244,6 +245,7 @@ export default {
       position: absolute;
       bottom: 0;
       margin-bottom: 20px;
+      width: 96%;
       .price1 {
         font-size: 28px;
         color: #fa5300;
@@ -284,8 +286,9 @@ export default {
         .clear_icon {
           position: absolute;
           color: #fff;
-          padding: 6px 16px;
+          padding: 10px 16px;
           border-radius: 0px 0px 10px 0px;
+          font-size: 24px;
         }
       }
     }
