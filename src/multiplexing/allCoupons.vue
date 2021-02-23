@@ -138,6 +138,8 @@ export default {
     waiveBack() {
       this.isBonus = true;
       this.isMistake = true;
+      //   返回纪录一次弹框
+      this.$emit("waiveBackIs");
     },
 
     // 会员新人放弃领取

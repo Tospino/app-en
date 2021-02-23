@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-23 09:03:49
+ * @LastEditTime: 2021-02-23 10:01:57
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -480,6 +480,7 @@
       :sideFrame="sideFrame"
       @memberBus="memberBus"
       @isShowBus="isShowBus"
+      @waiveBackIs="waiveBackIs"
     ></allCoupons>
   </div>
 </template>
@@ -560,6 +561,7 @@ export default {
       newCoupon: [], //新用户列表
       hasAggregate: {}, //总优惠数据
       sideFrame: false, //是否显示侧边优惠弹框
+      userRecordOne: false, //记录第一次进入首页的弹框
     };
   },
   computed: {},
@@ -638,7 +640,6 @@ export default {
   },
   activated() {
     this.$refs.allCoupons.isShow = true;
-    //  this.sideFrame=false
   },
   watch: {},
   methods: {
@@ -658,8 +659,13 @@ export default {
         } else {
           this.isFrame = true;
           this.isHomeCoupons = true;
-          this.$refs.allCoupons.isBonus = false;
-          this.$refs.allCoupons.isBonus = true;
+          if (this.isShowCoupon == 1) {
+            this.$refs.allCoupons.isBonus = false;
+          } else {
+            if (!this.userRecordOne) {
+              this.$refs.allCoupons.isBonus = false;
+            }
+          }
         }
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
@@ -674,7 +680,8 @@ export default {
     async saveuserPackNew() {
       let savePackNew = await saveuserPackApi();
       if (savePackNew.code == 0) {
-        // this.newCoupons();
+        this.userRecordOne = true;
+        this.newCoupons();
       }
     },
     // 领取优惠按钮
@@ -701,6 +708,12 @@ export default {
         this.isFrame = true;
       }
       this.$forceUpdate();
+    },
+    // (未领取)返回按钮记录第一次
+    waiveBackIs() {
+      if (this.isShowCoupon == 3) {
+        this.saveuserPackNew();
+      }
     },
     jumpRouter(name) {
       this.$router.push({ name });
