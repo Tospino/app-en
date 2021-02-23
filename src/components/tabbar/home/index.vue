@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-23 10:01:57
+ * @LastEditTime: 2021-02-23 19:27:16
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -562,6 +562,7 @@ export default {
       hasAggregate: {}, //总优惠数据
       sideFrame: false, //是否显示侧边优惠弹框
       userRecordOne: false, //记录第一次进入首页的弹框
+      routerRecordOne: false,
     };
   },
   computed: {},
@@ -640,8 +641,24 @@ export default {
   },
   activated() {
     this.$refs.allCoupons.isShow = true;
+
+    this.newCoupons();
   },
-  watch: {},
+  watch: {
+    $route: {
+      handler: function (val, oldVal) {
+        console.log(val, oldVal);
+        //   &&oldVal.name=""
+        if (val.name == "首页" && oldVal.name == "引导页") {
+          if (this.isShowCoupon == 1) {
+            this.$refs.allCoupons.isBonus = false;
+          }
+        }
+      },
+      // 深度观察监听
+      deep: true,
+    },
+  },
   methods: {
     // 首页平台用户优惠券
     async newCoupons() {
@@ -660,7 +677,6 @@ export default {
           this.isFrame = true;
           this.isHomeCoupons = true;
           if (this.isShowCoupon == 1) {
-            this.$refs.allCoupons.isBonus = false;
           } else {
             if (!this.userRecordOne) {
               this.$refs.allCoupons.isBonus = false;
