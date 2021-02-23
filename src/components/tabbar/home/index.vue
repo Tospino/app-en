@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-22 16:27:23
+ * @LastEditTime: 2021-02-23 09:03:49
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -594,7 +594,6 @@ export default {
     }
     this.getClear();
     this.newCoupons();
-    this.saveuserPackNew();
     this.homeAdvertPicture();
   },
 
@@ -659,7 +658,8 @@ export default {
         } else {
           this.isFrame = true;
           this.isHomeCoupons = true;
-          //   this.$refs.allCoupons.isBonus = false;
+          this.$refs.allCoupons.isBonus = false;
+          this.$refs.allCoupons.isBonus = true;
         }
         if (newGiftpack.Data) {
           this.newCoupon = newGiftpack.Data;
@@ -672,7 +672,10 @@ export default {
     },
     // 新人券记录是否第一次点击弹框
     async saveuserPackNew() {
-      let newGiftpack = await saveuserPackApi();
+      let savePackNew = await saveuserPackApi();
+      if (savePackNew.code == 0) {
+        // this.newCoupons();
+      }
     },
     // 领取优惠按钮
     memberBus(id) {
