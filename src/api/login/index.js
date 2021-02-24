@@ -25,9 +25,9 @@ export function msglistApi(params) {
     })
 }
 //手机验证码(国际)
-export function getInternationalMsgApi(params) {
+export function sendArkeselMsgApi(params) {
     return park({
-        url: '/msginfo/getInternationalMsg',
+        url: '/msginfo/sendArkeselMsg',
         method: 'POST',
         data: params
     })

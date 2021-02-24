@@ -28,7 +28,7 @@
 
 <script>
 import settingsHeader from "./itemComponents/settingsHeader";
-import { msglistApi, getInternationalMsgApi } from "@/api/login/index.js";
+import { msglistApi, sendArkeselMsgApi } from "@/api/login/index.js";
 import { Toast } from "vant";
 export default {
   props: {},
@@ -58,7 +58,7 @@ export default {
     //验证码
     msglist(date) {
       let data = Object.assign({}, date);
-      getInternationalMsgApi(data).then((res) => {
+      sendArkeselMsgApi(data).then((res) => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -74,7 +74,7 @@ export default {
               }
             }, 1000);
           }
-        } else if (res.code == 101) {
+        } else if (res.code == 101 || res.code == 102) {
           msglistApi(data).then((res) => {
             if (res.code == 0) {
               const TIME_COUNT = 120;

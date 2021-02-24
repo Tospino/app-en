@@ -40,7 +40,7 @@ import balanceHeader from "./itemComponents/balanceHeader";
 import {
   msglistApi,
   getverificationcodeApi,
-  getInternationalMsgApi,
+  sendArkeselMsgApi,
 } from "@/api/login/index.js";
 import { Toast } from "vant";
 export default {
@@ -98,9 +98,9 @@ export default {
       } else {
         data.msgphone = data.msgphone;
       }
-      getInternationalMsgApi(data).then((res) => {
+      sendArkeselMsgApi(data).then((res) => {
         if (res.code == 0) {
-        } else if (res.code == 101) {
+        } else if (res.code == 101 || res.code == 102) {
           msglistApi(data).then((res) => {
             if (res.code == 0) {
             } else if (res.code == 1) {

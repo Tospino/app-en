@@ -286,7 +286,7 @@ import { membertypelitApi, userregisterApi } from "@/api/register/index";
 import { ipgetcountry, areanamegetid, addbasearea } from "@/api/location/index";
 import uploadOne from "@/multiplexing/uploadOne";
 import choiceList from "@/multiplexing/choiceList.vue";
-import { msglistApi, getInternationalMsgApi } from "@/api/login/index.js";
+import { msglistApi, sendArkeselMsgApi } from "@/api/login/index.js";
 import { Toast } from "vant";
 import zhezhao from "@/multiplexing/zhezhao";
 import yinsi from "@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue";
@@ -736,7 +736,7 @@ export default {
       } else {
         data.msgphone = data.msgphone;
       }
-      getInternationalMsgApi(data).then((res) => {
+      sendArkeselMsgApi(data).then((res) => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -752,7 +752,7 @@ export default {
               }
             }, 1000);
           }
-        } else if (res.code == 101) {
+        } else if (res.code == 101 || res.code == 102) {
           msglistApi(data).then((res) => {
             if (res.code == 0) {
               const TIME_COUNT = 120;

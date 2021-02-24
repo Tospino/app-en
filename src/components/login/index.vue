@@ -161,6 +161,7 @@ import {
   userregister,
   msglistApi,
   getuserinfo,
+  sendArkeselMsgApi,
 } from "@/api/login/index";
 import { accReg, passReg } from "@/common/reg.js";
 import zhezhao from "@/multiplexing/zhezhao";
@@ -465,7 +466,7 @@ export default {
     // 获取手机验证码
     getMsgCode() {
       if (this.bindForm.phone.length === 11 && typeof this.msg == "string") {
-        msglistApi({
+        sendArkeselMsgApi({
           msgphone: this.bindForm.phone,
           areaCode: this.$refs["phone_select"].value,
           types: 8,
@@ -479,6 +480,23 @@ export default {
                 clearInterval(timer);
               }
             }, 1000);
+          } else if (res.code == 101 || res.code == 102) {
+            msglistApi({
+              msgphone: this.bindForm.phone,
+              areaCode: this.$refs["phone_select"].value,
+              types: 8,
+            }).then((res) => {
+              if (res.code == 0) {
+                Toast("Send Successfully");
+                this.msg = 60;
+                let timer = setInterval(() => {
+                  this.msg--;
+                  if (this.msg === 0) {
+                    clearInterval(timer);
+                  }
+                }, 1000);
+              }
+            });
           }
         });
       } else {
