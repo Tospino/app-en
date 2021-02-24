@@ -357,6 +357,7 @@ import { walletInfoApi } from "@/api/accountBalance/index.js";
 import { selectuserbrowhistoryApi } from "@/api/favorites/index";
 import { Dialog } from "vant";
 import kefu from "@/multiplexing/kefu.vue";
+import { Toast } from "vant";
 export default {
   props: {},
   data() {
@@ -550,7 +551,7 @@ export default {
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {
               this.isFrame = false;
-            }, 500);
+            }, 1000);
           }
         });
       }

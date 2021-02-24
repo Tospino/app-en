@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-22 16:28:42
+ * @LastEditTime: 2021-02-24 18:20:28
  * @LastEditors: 曹建勇
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -903,7 +903,8 @@ export default {
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {
               this.isFrame = false;
-            }, 500);
+              this.isHomeCoupons = false;
+            }, 1000);
           }
         });
       }

@@ -73,6 +73,7 @@ import { queryNewgiftpackApi } from "@/api/home/index.js";
 import { procategorylistApi } from "@/api/classify/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
 import { mapState, mapActions } from "vuex";
+import { Toast } from "vant";
 export default {
   props: {},
   data() {
@@ -236,8 +237,9 @@ export default {
             Toast("The coupon has been collected");
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {
+              this.isHomeCoupons = false;
               this.isFrame = false;
-            }, 500);
+            }, 1000);
           }
         });
       }

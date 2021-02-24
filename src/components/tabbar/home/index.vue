@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-23 19:27:16
+ * @LastEditTime: 2021-02-24 19:50:27
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -470,6 +470,7 @@
       </div>
     </scroll>
     <!-- 整体优惠券 -->
+
     <allCoupons
       ref="allCoupons"
       :isFrame="isFrame"
@@ -596,10 +597,8 @@ export default {
       this.homePage();
     }
     this.getClear();
-    this.newCoupons();
     this.homeAdvertPicture();
   },
-
   beforeRouteLeave(to, from, next) {
     if (to.name == "搜索商品1") {
       to.meta.isBack = true;
@@ -635,21 +634,17 @@ export default {
       }
     }, 1000);
     this.refreshOrder();
-    if (localStorage.isShowOpen) {
-      this.isFrame = false;
-    }
   },
   activated() {
-    this.$refs.allCoupons.isShow = true;
-
     this.newCoupons();
   },
   watch: {
     $route: {
       handler: function (val, oldVal) {
-        console.log(val, oldVal);
-        //   &&oldVal.name=""
-        if (val.name == "首页" && oldVal.name == "引导页") {
+        if (
+          (val.name == "首页" && oldVal.name == "引导页") ||
+          (val.name == "引导页" && oldVal.name == "登录")
+        ) {
           if (this.isShowCoupon == 1) {
             this.$refs.allCoupons.isBonus = false;
           }
@@ -671,12 +666,20 @@ export default {
       // 2.新人用户显示优惠券列表
       if (newGiftpack.code == 0) {
         this.sideFrame = true;
-        if (this.isShowCoupon == 2 || this.isShowCoupon == 4) {
+        if (this.isShowCoupon == 2) {
           localStorage.isShowOpen = true;
+          setTimeout(() => {
+            this.isFrame = false;
+          }, 1000);
         } else {
           this.isFrame = true;
-          this.isHomeCoupons = true;
+          this.$refs.allCoupons.isShow = true;
           if (this.isShowCoupon == 1) {
+            if (!localStorage.isShow) {
+              this.$refs.allCoupons.isBonus = false;
+              //   第一次进来
+              localStorage.isShow = true;
+            }
           } else {
             if (!this.userRecordOne) {
               this.$refs.allCoupons.isBonus = false;
@@ -688,7 +691,6 @@ export default {
         }
       } else if (newGiftpack.code == -300) {
         this.isFrame = false;
-        this.isHomeCoupons = false;
       }
       this.$forceUpdate();
     },
@@ -711,7 +713,7 @@ export default {
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {
               this.isFrame = false;
-            }, 500);
+            }, 1000);
           }
         });
       }
