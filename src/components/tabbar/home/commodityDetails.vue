@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-25 09:30:00
+ * @LastEditTime: 2021-02-25 11:54:40
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -1076,7 +1076,7 @@ export default {
         couponDrawApi(id).then((res) => {
           if (res.code == 0) {
             this.newCoupons();
-          } else if (res.code == 25) {
+          } else if (res.code == 25 || res.code == 29) {
             Toast("The coupon has been collected");
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {
