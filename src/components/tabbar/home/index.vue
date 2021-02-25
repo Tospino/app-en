@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-24 19:50:27
+ * @LastEditTime: 2021-02-25 09:19:33
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -711,6 +711,12 @@ export default {
           } else if (res.code == 25) {
             Toast("The coupon has been collected");
             // 多个页面领取后code为25 关闭弹框
+            setInterval(() => {
+              this.isFrame = false;
+            }, 1000);
+          } else if (res.code == 32) {
+            Toast("The coupon issue period ends");
+            // 多个页面领取后code为32 关闭弹框
             setInterval(() => {
               this.isFrame = false;
             }, 1000);

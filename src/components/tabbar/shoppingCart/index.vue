@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-24 18:20:28
+ * @LastEditTime: 2021-02-25 09:30:13
  * @LastEditors: 曹建勇
  * @Description: 新增优惠券入口---修改样式(保留之前样式 indexBefore)
  * @FilePath: \app-en\src\components\tabbar\shoppingCart\index.vue
@@ -904,6 +904,12 @@ export default {
             setInterval(() => {
               this.isFrame = false;
               this.isHomeCoupons = false;
+            }, 1000);
+          } else if (res.code == 32) {
+            Toast("The coupon issue period ends");
+            // 多个页面领取后code为32 关闭弹框
+            setInterval(() => {
+              this.isFrame = false;
             }, 1000);
           }
         });

@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-22 16:28:03
+ * @LastEditTime: 2021-02-25 09:30:00
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -1082,6 +1082,12 @@ export default {
             setInterval(() => {
               this.isFrame = false;
             }, 500);
+          } else if (res.code == 32) {
+            Toast("The coupon issue period ends");
+            // 多个页面领取后code为32 关闭弹框
+            setInterval(() => {
+              this.isFrame = false;
+            }, 1000);
           }
         });
       }

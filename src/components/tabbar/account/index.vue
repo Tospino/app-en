@@ -552,6 +552,12 @@ export default {
             setInterval(() => {
               this.isFrame = false;
             }, 1000);
+          } else if (res.code == 32) {
+            Toast("The coupon issue period ends");
+            // 多个页面领取后code为32 关闭弹框
+            setInterval(() => {
+              this.isFrame = false;
+            }, 1000);
           }
         });
       }
