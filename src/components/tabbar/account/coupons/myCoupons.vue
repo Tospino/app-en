@@ -548,10 +548,27 @@ export default {
               this.onLoad();
             }
           }, 1000);
-        } else if (res.code == 25 || res.code == 26) {
+        } else if (
+          res.code == 25 ||
+          res.code == 26 ||
+          res.code == 29 ||
+          res.code == 22
+        ) {
           setTimeout(() => {
             Toast("The coupon has been collected");
           }, 500);
+          setTimeout(() => {
+            // 清空数据，重新加载
+            this.refreshCoupon();
+            this.onLoad();
+          }, 1000);
+        } else if (res.code == 32) {
+          Toast("The coupon issue period ends");
+          setTimeout(() => {
+            // 清空数据，重新加载
+            this.refreshCoupon();
+            this.onLoad();
+          }, 1000);
         } else {
           this.$toast.clear();
         }

@@ -546,7 +546,7 @@ export default {
         couponDrawApi(id).then((res) => {
           if (res.code == 0) {
             this.newCoupons();
-          } else if (res.code == 25 || res.code == 29) {
+          } else if (res.code == 25 || res.code == 29 || res.code == 22) {
             Toast("The coupon has been collected");
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {

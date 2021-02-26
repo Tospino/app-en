@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-20 17:26:48
- * @LastEditTime: 2020-08-21 15:59:25
+ * @LastEditTime: 2021-02-25 18:38:41
  * @LastEditors: 曹建勇
  * @Description: 订单详情中的优惠券接口联调
  * @FilePath: \app-en\src\components\confirmOrder\itemComponents\orderCouponPop.vue
@@ -20,43 +20,78 @@
           <!-- <van-icon name="cross" class="cross" @click="close" /> -->
         </div>
         <div class="order-tab" v-if="true">
-          <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
+          <van-tabs
+            v-model="active"
+            class="tab-list"
+            title-active-color="#FA5300"
+          >
             <van-tab>
-              <template slot="title">Available({{this.coupon.length}})</template>
+              <template slot="title"
+                >Available({{ this.coupon.length }})</template
+              >
             </van-tab>
             <van-tab>
-              <template slot="title">Not Applicable({{this.couponListCannotUse.length}})</template>
+              <template slot="title"
+                >Not Applicable({{ this.couponListCannotUse.length }})</template
+              >
             </van-tab>
           </van-tabs>
         </div>
       </div>
       <div class="selection-conten">
         <!-- 可领取优惠券 -->
-        <div v-if="active==0">
-          <div v-for="(couponItem,index) in coupon" :key="index" class="item-one">
+        <div v-if="active == 0">
+          <div
+            v-for="(couponItem, index) in coupon"
+            :key="index"
+            class="item-one"
+          >
             <div class="youhuiquan-item">
               <div class="youhuiquan-left left-one">
                 <!-- <span class="youhuiquan-left-biao biao-one">GH{{jn}}</span> -->
                 <p class="youhuiquan-left-money money-one">
-                  <span class="youhuiquan-left-biao biao-one">GH{{jn}}</span>
-                  {{couponItem.reduceAmountWebsite}}
+                  <span class="youhuiquan-left-biao biao-one">GH{{ jn }}</span>
+                  {{ couponItem.reduceAmountWebsite }}
                   <i>OFF</i>
                 </p>
                 <div class="youhuiquan-left-ms">
                   <!-- v-if="couponItem.upToAmountWebsite==null?false:true" -->
-                  <p
-                    class="youhuiquan-left-mc mc-one"
-                  >Mini Spend GH {{jn}} {{couponItem.upToAmountWebsite!=null?couponItem.upToAmountWebsite:couponItem.reduceAmountWebsite}}</p>
-                  <p class="youhuiquan-left-m m-one">Type:{{couponItem.couponTypeNameEng}}</p>
-                  <p
-                    class="youhuiquan-left-m m-one"
-                  >valid:{{couponItem.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{couponItem.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+                  <p class="youhuiquan-left-mc mc-one">
+                    Mini Spend GH {{ jn }}
+                    {{
+                      couponItem.upToAmountWebsite != null
+                        ? couponItem.upToAmountWebsite
+                        : couponItem.reduceAmountWebsite
+                    }}
+                  </p>
+                  <p class="youhuiquan-left-m m-one">
+                    Type:{{ couponItem.couponTypeNameEng }}
+                  </p>
+                  <p class="youhuiquan-left-m m-one">
+                    valid:{{
+                      couponItem.useBeginWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    }}~{{
+                      couponItem.useEndWebsite
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")
+                    }}
+                  </p>
                 </div>
                 <!-- <progress-bar :progressBar="couponItem.drawPercent" ></progress-bar> -->
                 <!-- 根据后台判断是否是新用户 -->
-                <div v-if="couponItem.canDraw==0?0:1">
+                <div v-if="couponItem.canDraw == 0 ? 0 : 1">
                   <progress-bar
-                    :progressBar="couponItem.drawPercent?Number(couponItem.drawPercent)*100:0"
+                    :progressBar="
+                      couponItem.drawPercent
+                        ? Number(couponItem.drawPercent) * 100
+                        : 0
+                    "
                   ></progress-bar>
                 </div>
               </div>
@@ -71,14 +106,21 @@
                     v-if="couponItem.upToAmountWebsite==null?false:true"
                   >For GH {{jn}} {{couponItem.upToAmountWebsite}} consumption</p>-->
                   <van-button
-                    v-if="couponItem.canDraw==0?0:1"
+                    v-if="couponItem.canDraw == 0 ? 0 : 1"
                     round
                     type="info"
-                    @click="ProBar(couponItem.couponId,couponItem.couponDetailId,couponItem.canDraw)"
+                    @click="
+                      ProBar(
+                        couponItem.couponId,
+                        couponItem.couponDetailId,
+                        couponItem.canDraw
+                      )
+                    "
                     class="youhuiquan-right-btn"
-                  >Get it now</van-button>
+                    >Get it now</van-button
+                  >
                   <div v-else class="checkedBox">
-                    <div v-if="couponItem.canSelect==1?true:false">
+                    <div v-if="couponItem.canSelect == 1 ? true : false">
                       <van-checkbox
                         v-model="couponItem.isSelected"
                         checked-color="#FA5300"
@@ -100,29 +142,45 @@
             <!-- 原因 -->
             <div
               class="cause-text"
-              v-if="couponItem.cannotSelectReasonEng==null?false:true"
-            >{{couponItem.cannotSelectReasonEng}}</div>
+              v-if="couponItem.cannotSelectReasonEng == null ? false : true"
+            >
+              {{ couponItem.cannotSelectReasonEng }}
+            </div>
           </div>
         </div>
         <!-- 不可领取 -->
         <div
-          v-else-if="active==1"
+          v-else-if="active == 1"
           class="youhuiquan-two"
-          v-for="(couponUse,index) in couponListCannotUse"
+          v-for="(couponUse, index) in couponListCannotUse"
           :key="index"
         >
           <div class="youhuiquan-item item-two">
             <div class="youhuiquan-left left-two">
-              <span class="youhuiquan-left-biao">GH{{jn}}</span>
+              <span class="youhuiquan-left-biao">GH{{ jn }}</span>
               <p class="youhuiquan-left-money">
-                {{couponUse.reduceAmountWebsite}}
+                {{ couponUse.reduceAmountWebsite }}
                 <i>OFF</i>
               </p>
               <div class="youhuiquan-left-ms">
-                <p class="youhuiquan-left-m">Type:{{couponUse.couponTypeNameEng}}</p>
-                <p
-                  class="youhuiquan-left-m"
-                >valid:{{couponUse.useBeginWebsite.slice(0,10).split("-").reverse().join('/')}}~{{couponUse.useEndWebsite.slice(0,10).split("-").reverse().join('/')}}</p>
+                <p class="youhuiquan-left-m">
+                  Type:{{ couponUse.couponTypeNameEng }}
+                </p>
+                <p class="youhuiquan-left-m">
+                  valid:{{
+                    couponUse.useBeginWebsite
+                      .slice(0, 10)
+                      .split("-")
+                      .reverse()
+                      .join("/")
+                  }}~{{
+                    couponUse.useEndWebsite
+                      .slice(0, 10)
+                      .split("-")
+                      .reverse()
+                      .join("/")
+                  }}
+                </p>
               </div>
             </div>
             <div class="youhuiquan-right">
@@ -131,15 +189,20 @@
               </div>
               <div class="youhuiquan-right-main">
                 <!-- v-if="couponUse.upToAmountWebsite==null?false:true" -->
-                <p
-                  class="youhuiquan-left-mc"
-                >Mini Spend GH {{jn}} {{couponUse.upToAmountWebsite!=null?couponUse.upToAmountWebsite:couponUse.reduceAmountWebsite}}</p>
+                <p class="youhuiquan-left-mc">
+                  Mini Spend GH {{ jn }}
+                  {{
+                    couponUse.upToAmountWebsite != null
+                      ? couponUse.upToAmountWebsite
+                      : couponUse.reduceAmountWebsite
+                  }}
+                </p>
               </div>
             </div>
           </div>
           <div class="youhuiquan-reason">
             <span class="reason-title">Reason for unavailability:</span>
-            <p class="reason-content">{{couponUse.cannotSelectReasonEng}}</p>
+            <p class="reason-content">{{ couponUse.cannotSelectReasonEng }}</p>
           </div>
         </div>
       </div>
@@ -150,6 +213,7 @@
 <script>
 import progressBar from "@/multiplexing/progress";
 import { mapState } from "vuex";
+import { Toast } from "vant";
 import {
   getconfirmorderApi,
   couponDrawApi,
@@ -191,12 +255,32 @@ export default {
         couponDetailId: detail,
       };
       this.couponDraw = await couponDrawApi(couponsData);
-      let voucher = [
-        {
-          drawId: this.couponDraw.drawId,
-        },
-      ];
-      this.$emit("couponDrawId", voucher);
+      if (this.couponDraw.code == 0) {
+        Toast("Get the success");
+        setTimeout(() => {
+          let voucher = [
+            {
+              drawId: this.couponDraw.drawId,
+            },
+          ];
+          this.$emit("couponDrawId", voucher);
+        }, 1000);
+      } else if (
+        this.couponDraw.code == 25 ||
+        this.couponDraw.code == 26 ||
+        this.couponDraw.code == 29 ||
+        this.couponDraw.code == 22
+      ) {
+        setTimeout(() => {
+          Toast("The coupon has been collected");
+        }, 500);
+      } else if (this.couponDraw.code == 32) {
+        setTimeout(() => {
+          Toast("The coupon issue period ends");
+        }, 500);
+      } else {
+        this.$toast.clear();
+      }
     },
 
     // 选择优惠券

@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-25 11:54:40
+ * @LastEditTime: 2021-02-25 18:06:11
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -942,17 +942,30 @@ export default {
         couponId: couponId,
         couponDetailId: DetailId,
       });
-      this.couponProModel(supplyId, businessId, expId);
       if (couponDraw.code == 0) {
-        Toast("Get the success");
+        setTimeout(() => {
+          Toast("Get the success");
+        }, 500);
         this.moreShop = true;
-      } else if (couponDraw.code == 25) {
+      } else if (
+        couponDraw.code == 25 ||
+        couponDraw.code == 26 ||
+        couponDraw.code == 29 ||
+        couponDraw.code == 22
+      ) {
         setTimeout(() => {
           Toast("The coupon has been collected");
+        }, 500);
+      } else if (couponDraw.code == 32) {
+        setTimeout(() => {
+          Toast("The coupon issue period ends");
         }, 500);
       } else {
         this.$toast.clear();
       }
+      setTimeout(() => {
+        this.couponProModel(supplyId, businessId, expId);
+      }, 1000);
       //易观数据采集----点击领取优惠券
       let couponType1 = "";
       if (this.ProModel.Data.couponType == 1) {
@@ -1003,16 +1016,27 @@ export default {
     // 子组件领取的优惠券
     async couponSucceed(id) {
       let couponDraw = await couponDrawApi(id);
-      this.saleMore();
       if (couponDraw.code == 0) {
         Toast("Get the success");
-      } else if (couponDraw.code == 25) {
+      } else if (
+        couponDraw.code == 25 ||
+        couponDraw.code == 26 ||
+        couponDraw.code == 29 ||
+        couponDraw.code == 22
+      ) {
         setTimeout(() => {
           Toast("The coupon has been collected");
+        }, 500);
+      } else if (couponDraw.code == 32) {
+        setTimeout(() => {
+          Toast("The coupon issue period ends");
         }, 500);
       } else {
         this.$toast.clear();
       }
+      setTimeout(() => {
+        this.saleMore();
+      }, 1000);
     },
     shopPop() {
       this.shop = false;
@@ -1076,7 +1100,7 @@ export default {
         couponDrawApi(id).then((res) => {
           if (res.code == 0) {
             this.newCoupons();
-          } else if (res.code == 25 || res.code == 29) {
+          } else if (res.code == 25 || res.code == 29 || res.code == 22) {
             Toast("The coupon has been collected");
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {
