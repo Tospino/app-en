@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-25 13:56:21
+ * @LastEditTime: 2021-02-27 10:45:43
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -675,10 +675,10 @@ export default {
           this.isFrame = true;
           this.$refs.allCoupons.isShow = true;
           if (this.isShowCoupon == 1) {
-            if (!localStorage.isShow) {
+            if (!sessionStorage.isShow) {
               this.$refs.allCoupons.isBonus = false;
               //   第一次进来
-              localStorage.isShow = true;
+              sessionStorage.isShow = true;
             }
           } else {
             if (!this.userRecordOne) {

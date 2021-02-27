@@ -234,6 +234,7 @@ export default {
   }, //生命周期 - 销毁之前
   destroyed() {
     window.removeEventListener("keyup", this.keyupEnter, false);
+    sessionStorage.removeItem("isShow");
   }, //生命周期 - 销毁完成
   watch: {
     eyeStatus: {
