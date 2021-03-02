@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-25 18:06:11
+ * @LastEditTime: 2021-03-02 11:42:00
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -335,9 +335,9 @@
                             .slice(0, 10)
                             .split("-")
                             .reverse()
-                            .join("/")
+                            .join("/") + "~"
                         : ""
-                    }}~{{
+                    }}{{
                       ProModel.Data.useEndWebsite
                         ? ProModel.Data.useEndWebsite
                             .slice(0, 10)
@@ -348,6 +348,7 @@
                     }}
                   </p>
                   <progress-bar
+                    v-if="ProModel.Data.couponType !== 2"
                     :progressBar="
                       ProModel.Data.claimRate
                         ? ProModel.Data.claimRate * 100

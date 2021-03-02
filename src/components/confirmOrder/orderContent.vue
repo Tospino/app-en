@@ -248,7 +248,7 @@
     </div>
 
     <div class="m-b-20 fbm-beizhu" v-if="orderData.hasFBM == 1">
-      Tips: DM products do not support online after-sales services.
+      Tips: Products shipped directly from overseas do not support returns.
       <br />Please contact customer service personnel for consulting!!!
     </div>
 
@@ -715,7 +715,7 @@ export default {
         }
 
         //易观数据采集----支付订单
-        
+
         AnalysysAgent.track(
           "pay_order",
           {
@@ -741,8 +741,9 @@ export default {
               this.orderData.allOrderCouponAmountWebsite == 0 ? false : true,
             pay_channel: this.zffs == 1 ? "Cash on delivery" : "Online payment",
             receive_phonenum: this.defaultAdderss.phoneNumber,
-            num_products: this.orderData.orderList[0].detailList[0].actDetailNum,
-            store_name: this.orderData.orderList[0].businessSn
+            num_products: this.orderData.orderList[0].detailList[0]
+              .actDetailNum,
+            store_name: this.orderData.orderList[0].businessSn,
           },
           (rel) => {}
         );

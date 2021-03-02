@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-01-04 13:50:41
+ * @LastEditTime: 2021-03-02 18:15:18
  * @LastEditors: 曹建勇
  * @Description: 新增优惠券-两个字段
  * @FilePath: \app-en\src\components\tabbar\account\myOrder\orderDetail.vue
@@ -153,7 +153,7 @@
         </div>
       </div>
       <div class="m-b-30 fbm-beizhu" v-if="detailObj.expId == 1">
-        Tips: DM products do not support online after-sales services.
+        Tips: Products shipped directly from overseas do not support returns.
         <br />Please contact customer service personnel for consulting!!!
       </div>
       <div class="address-p4">

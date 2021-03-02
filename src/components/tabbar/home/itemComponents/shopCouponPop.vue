@@ -51,9 +51,9 @@
                         .slice(0, 10)
                         .split("-")
                         .reverse()
-                        .join("/")
+                        .join("/") + "~"
                     : ""
-                }}~{{
+                }}{{
                   couponItem.useEndWebsite
                     ? couponItem.useEndWebsite
                         .slice(0, 10)
