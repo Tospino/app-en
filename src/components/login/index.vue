@@ -281,12 +281,15 @@ export default {
     //登录按钮
     logIn() {
       if (this.disabledSubmit) {
-        var phoneReg = /^[1-9]\d*$/;
-        if (!phoneReg.test(this.userData.username1)) {
-          this.userData.username = this.userData.username1.substring(1);
-        } else {
-          this.userData.username = this.userData.username1;
-        }
+        var phoneReg = /^[1-9]\d*$/;
+        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        if(reg.test(this.userData.username1)){
+          this.userData.username = this.userData.username1;
+        }else if (!phoneReg.test(this.userData.username1)) {
+          this.userData.username = this.userData.username1.substring(1);
+        } else {
+          this.userData.username = this.userData.username1;
+        }
 
         loginApi(this.userData).then(res => {
           if (res.code == 0) {
@@ -545,12 +548,30 @@ export default {
       googleuserLogin(form).then(res => {
         switch (res.code) {
           case 0:
+            // isNew 是否新注册用户 true 是 false 否 （新注册密码默认是123456）
             localStorage.token = res.token;
             //第一次登录：dengluOne
             let obj = Object.assign(res.user, { dengluOne: true });
             localStorage.userinfoShop = JSON.stringify(obj);
-            this.$router.push({ name: "首页" });
-            this.classifykeep(true);
+            if (res.isNew) {
+              Dialog.alert({
+                confirmButtonText: "Confirm",
+                cancelButtonText: "Cancel",
+                showCancelButton: true,
+                title: "Alert for newly registered users",
+                message:
+                  "Congratulations on your registration as our member. Your initial password is 123456. Would you like to change it now?"
+              })
+                .then(() => {
+                  this.$router.push({ name: "修改登录密码" });
+                })
+                .catch(() => {
+                  this.$router.push({ name: "首页" });
+                  this.classifykeep(true);
+                });
+            } else {
+              this.$router.push({ name: "首页" });
+            }
             break;
           case -10:
             Toast("system error");
@@ -571,16 +592,6 @@ export default {
           default:
             Toast("system error");
             break;
-        }
-        if (res.code === 0) {
-          localStorage.token = res.token;
-          //第一次登录：dengluOne
-          let obj = Object.assign(res.user, { dengluOne: true });
-          localStorage.userinfoShop = JSON.stringify(obj);
-          this.$router.push({ name: "首页" });
-          this.classifykeep(true);
-        } else {
-          Toast("Google login failed");
         }
       });
     },
