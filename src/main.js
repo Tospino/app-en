@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-09 10:00:20
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-10-19 18:20:24
+ * @LastEditTime: 2021-03-01 17:31:00
  * @Description:
  * @FilePath: \app-en\src\main.js
  */
@@ -103,6 +103,12 @@ Vue.use(VueLazyload, {
 // 引入缓存插件
 import storage from "storejs";
 Vue.prototype.$storage = storage;
+
+// 谷歌登录
+import { LoaderPlugin } from 'vue-google-login';
+Vue.use(LoaderPlugin, {
+    client_id: "981774383820-adq983fuf1mh718gh843sabpkg5f55nc.apps.googleusercontent.com"
+});
 
 /* eslint-disable no-new */
 const main = new Vue({

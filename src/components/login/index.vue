@@ -57,12 +57,27 @@
       <span class="c2 fs-24" @click="jumpRouter('注册')">Create Account</span>
     </div>
     <div class="footer">
-      <div>
+      <div v-if="isH5">
         <div class="line left-80"></div>
         <div class="other">Other ways to login</div>
         <div class="line right-80"></div>
         <div class="icons flex flex_around">
-          <img src="@/assets/img/login/facebook@3x.png" />
+          <!-- <img
+            src="@/assets/img/login/Google@2x.png"
+            @click="ThirdLogin('google')"
+          /> -->
+          <GoogleLogin
+            class="google_btn"
+            :params="params"
+            ref="GoogleLogin"
+            :onSuccess="onSuccess"
+            :onFailure="onFailure"
+          >
+            <img
+              src="@/assets/img/login/Google@2x.png"
+              @click="ThirdLogin('google')"
+            />
+          </GoogleLogin>
           <!-- <van-row type="flex" justify="space-between">
             <van-col span="8" style="text-align:center" @click="ThirdLogin('facebook')">
               <img src="@/assets/img/login/facebook@3x.png" />
@@ -76,6 +91,7 @@
           </van-row>-->
         </div>
       </div>
+
       <div class="agreement">
         <input type="checkbox" class="checkbox" v-model="checked" />
         <span class="c1 fs-24">
@@ -162,12 +178,15 @@ import {
   msglistApi,
   getuserinfo,
   sendArkeselMsgApi,
+  googleuserLogin
 } from "@/api/login/index";
 import { accReg, passReg } from "@/common/reg.js";
 import zhezhao from "@/multiplexing/zhezhao";
 import yinsi from "@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue";
 import { Toast, Dialog } from "vant";
 import { mapActions } from "vuex";
+import GoogleLogin from "vue-google-login";
+import Vue from "vue";
 export default {
   props: {},
   data() {
@@ -179,17 +198,17 @@ export default {
       userData: {
         username: "",
         password: "",
-        username1: "",
+        username1: ""
       },
       rules: {
         username1: {
           required: true,
-          messages: "Enter login username",
+          messages: "Enter login username"
         },
         password: {
           required: true,
-          messages: "Enter login password",
-        },
+          messages: "Enter login password"
+        }
       },
       zhengce: false,
       show: false,
@@ -197,30 +216,39 @@ export default {
         phone: "",
         code: "",
         password: "",
-        areaCode: "+233",
+        areaCode: "+233"
       },
       showKeyboard: false,
       facebook_id: "",
       hasUser: true, // 是否是已注册用户
       msg: "get code",
+      // 谷歌id
+      params: {
+        client_id:
+          "981774383820-adq983fuf1mh718gh843sabpkg5f55nc.apps.googleusercontent.com"
+      },
+      isH5: true // 是否是H5
     };
   },
   computed: {
     disabledSubmit() {
       return !this.$fn.isDisabled(this.userData, this.rules) && this.checked;
-    },
+    }
   },
   created() {
     //易观数据采集-----核心页面加载
+    if (window.plus) {
+      this.isH5 = false;
+    }
     let urlHtm = window.location.href;
     let titHtm = document.title;
     AnalysysAgent.track(
       "core_page_load",
       {
         $url: urlHtm,
-        $title: titHtm,
+        $title: titHtm
       },
-      (rel) => {}
+      rel => {}
     );
   },
   mounted() {
@@ -238,15 +266,15 @@ export default {
   }, //生命周期 - 销毁完成
   watch: {
     eyeStatus: {
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         this.eyeStatus
           ? (this.eyeName = "eye-o")
           : (this.eyeName = "closed-eye");
         this.eyeStatus
           ? (this.inputType = "text")
           : (this.inputType = "password");
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapActions(["classifykeep"]),
@@ -260,7 +288,7 @@ export default {
           this.userData.username = this.userData.username1;
         }
 
-        loginApi(this.userData).then((res) => {
+        loginApi(this.userData).then(res => {
           if (res.code == 0) {
             localStorage.token = res.token;
             // if (this.$storage("?historyList")) {
@@ -308,13 +336,13 @@ export default {
               user_id: this.userData.username,
               login_method: "密码",
               is_successful: res.code == 0 ? true : false,
-              failure_reason: reason,
+              failure_reason: reason
             },
-            (rel) => {}
+            rel => {}
           );
           if (res.code == 0) {
             //绑定用户ID
-            AnalysysAgent.alias(this.userData.username, (rek) => {});
+            AnalysysAgent.alias(this.userData.username, rek => {});
             //易观绑定用户属性
             AnalysysAgent.profileSet(
               {
@@ -330,9 +358,9 @@ export default {
                 first_source: res.user.auditRemark,
                 total_gmv: res.user.orderAmountWebsite,
                 detailed_address: res.user.companyAddress,
-                main_business: res.user.typeTitle,
+                main_business: res.user.typeTitle
               },
-              (rel) => {}
+              rel => {}
             );
           }
         });
@@ -344,9 +372,9 @@ export default {
         "btn_click",
         {
           $title: titHtm,
-          btn_name: "Log In",
+          btn_name: "Log In"
         },
-        (rel) => {}
+        rel => {}
       );
     },
     //回车键
@@ -366,14 +394,14 @@ export default {
       if (val === "facebook") {
         // 调用facebook登录
         FB.login(
-          function (response) {
+          function(response) {
             if (response.status === "connected") {
               a.facebook_id = response.authResponse.userID;
-              FB.api("/me", function (response1) {
+              FB.api("/me", function(response1) {
                 doLogin({
                   inputToken: response.authResponse.accessToken,
-                  name: response1.name,
-                }).then((res) => {
+                  name: response1.name
+                }).then(res => {
                   if (res.code === 0) {
                     localStorage.token = res.token;
                     a.$router.push({ name: "首页" });
@@ -387,7 +415,7 @@ export default {
             } else {
               Dialog.alert({
                 title: "Tips",
-                message: "User cancelled login or did not fully authorize.",
+                message: "User cancelled login or did not fully authorize."
               }).then(() => {
                 // on close
               });
@@ -400,6 +428,7 @@ export default {
         // FB.logout(function (response) {
         //   // Person is now logged out
         // });
+      } else if (val == "google") {
       }
     },
     // 检测手机号是否注册平台账号
@@ -408,8 +437,8 @@ export default {
         checkphonethird({
           userPhone: this.bindForm.phone,
           thirduserId: this.facebook_id,
-          type: 1,
-        }).then((res) => {
+          type: 1
+        }).then(res => {
           switch (res.code) {
             case -110:
               this.hasUser = false;
@@ -445,19 +474,19 @@ export default {
         smsCode: this.bindForm.code,
         password: this.bindForm.password,
         ishaveuser: this.hasUser ? 1 : 0,
-        type: 1,
+        type: 1
       };
       if (this.hasUser) {
         delete query.password;
       }
-      userregister(query).then((res) => {
+      userregister(query).then(res => {
         if (res.code === 0) {
           Toast("Binding success");
           setTimeout(() => {
             localStorage.token = res.token;
             this.$router.push({ name: "首页" });
           }, 1500);
-          getuserinfo().then((req) => {
+          getuserinfo().then(req => {
             this.$storage.set("userinfoShop", req.user);
             this.$storage.set("thirdapp", req.applist);
           });
@@ -470,8 +499,8 @@ export default {
         sendArkeselMsgApi({
           msgphone: this.bindForm.phone,
           areaCode: this.$refs["phone_select"].value,
-          types: 8,
-        }).then((res) => {
+          types: 8
+        }).then(res => {
           if (res.code == 0) {
             Toast("Send Successfully");
             this.msg = 60;
@@ -485,8 +514,8 @@ export default {
             msglistApi({
               msgphone: this.bindForm.phone,
               areaCode: this.$refs["phone_select"].value,
-              types: 8,
-            }).then((res) => {
+              types: 8
+            }).then(res => {
               if (res.code == 0) {
                 Toast("Send Successfully");
                 this.msg = 60;
@@ -504,11 +533,67 @@ export default {
         Toast("please enter a valid phone number");
       }
     },
+    // 谷歌登录返回
+    onSuccess(googleUser) {
+      const form = {
+        userId: googleUser.getBasicProfile().getId(),
+        email: googleUser.getBasicProfile().getEmail(),
+        // idtoken: googleUser.getAuthResponse().id_token,
+        requeType: 2 //请求类型 1 会对idtoken做校验 2 不做校验
+      };
+      console.log(form);
+      googleuserLogin(form).then(res => {
+        switch (res.code) {
+          case 0:
+            localStorage.token = res.token;
+            //第一次登录：dengluOne
+            let obj = Object.assign(res.user, { dengluOne: true });
+            localStorage.userinfoShop = JSON.stringify(obj);
+            this.$router.push({ name: "首页" });
+            this.classifykeep(true);
+            break;
+          case -10:
+            Toast("system error");
+            break;
+          case -24:
+            Toast("This account is under review ");
+            break;
+          case -26:
+            Toast(
+              "The account is under review. The account has been frozen. Please contact the backstage customer service"
+            );
+            break;
+          case -26:
+            Toast(
+              "The account has been deleted, please contact the backstage customer service"
+            );
+            break;
+          default:
+            Toast("system error");
+            break;
+        }
+        if (res.code === 0) {
+          localStorage.token = res.token;
+          //第一次登录：dengluOne
+          let obj = Object.assign(res.user, { dengluOne: true });
+          localStorage.userinfoShop = JSON.stringify(obj);
+          this.$router.push({ name: "首页" });
+          this.classifykeep(true);
+        } else {
+          Toast("Google login failed");
+        }
+      });
+    },
+    onFailure(err) {
+      Toast("Google login failed");
+      console.log("🚀 ~ file: index.vue ~ line 527 ~ onFailure ~ err", err);
+    }
   },
   components: {
     zhezhao,
     yinsi,
-  },
+    GoogleLogin
+  }
 };
 </script>
 
@@ -517,6 +602,9 @@ export default {
   height: 80px;
   line-height: 80px;
   font-size: 30px;
+}
+.google_btn {
+  border: none;
 }
 .van-action-sheet__close {
   font-size: 36px;

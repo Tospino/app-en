@@ -2,7 +2,7 @@
  * @Author: 曹建勇
  * @Date: 2020-07-21 10:03:29
  * @LastEditors: 曹建勇
- * @LastEditTime: 2020-09-03 11:46:42
+ * @LastEditTime: 2021-03-01 15:52:21
  * @Description: 
  * @FilePath: \app-en\src\api\login\index.js
  */
@@ -105,6 +105,22 @@ export function getcountryWebUrlApi(params) {
 export function doLogin(params) {
     return park({
         url: '/appThirdpartylogin/verify',
+        method: 'POST',
+        data: params,
+    })
+}
+// 用户中心-校验google登录
+export function googleLogin(params) {
+    return park({
+        url: '/appThirdpartylogin/googleverify',
+        method: 'POST',
+        data: params,
+    })
+}
+// 用户中心-校验google用户登录
+export function googleuserLogin(params) {
+    return park({
+        url: '/appThirdpartylogin/googleuserLogin',
         method: 'POST',
         data: params,
     })
