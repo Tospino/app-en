@@ -25,3 +25,21 @@ export function userregisterApi(params) {
         data:params
     })
 }
+
+//邮箱验证码
+export function getEmailCodeApi(params) {
+    return park({
+        url:`/tpmailmsginfo/getEmailCode`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//校验邮箱验证码
+export function checkEmailCodeApi(params) {
+	return park({
+		url: '/tpmailmsginfo/checkEmailCode',
+		method: 'POST',
+		data: params
+	})
+}

@@ -254,7 +254,10 @@ export default {
     logIn() {
       if (this.disabledSubmit) {
         var phoneReg = /^[1-9]\d*$/;
-        if (!phoneReg.test(this.userData.username1)) {
+        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        if(reg.test(this.userData.username1)){
+          this.userData.username = this.userData.username1;
+        }else if (!phoneReg.test(this.userData.username1)) {
           this.userData.username = this.userData.username1.substring(1);
         } else {
           this.userData.username = this.userData.username1;
