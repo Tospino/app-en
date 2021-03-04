@@ -26,8 +26,20 @@ export default new Router({
                 import (`@/components/login/index.vue`)
         },
         {
+            path: "/phoneEmail",
+            name: "手机邮箱验证码",
+            component: () =>
+            import (`@/components/login/forgetPassword/phoneEmail.vue`)
+        },
+        {
+            path: "/email",
+            name: "邮箱验证码",
+            component: () =>
+            import (`@/components/login/forgetPassword/email.vue`)
+        },
+        {
             path: "/otp",
-            name: "验证码",
+            name: "手机验证码",
             component: () =>
                 import (`@/components/login/forgetPassword/otp.vue`)
         },
@@ -566,9 +578,15 @@ export default new Router({
                 },
                 {
                     path: "parrwordOtp",
-                    name: "支付密码输入验证码",
+                    name: "支付密码手机输入验证码",
                     component: () =>
                         import (`@/components/confirmOrder/parrwordOtp.vue`)
+                },
+                {
+                    path: "parrwordEmail",
+                    name: "支付密码邮箱输入验证码",
+                    component: () =>
+                        import (`@/components/confirmOrder/parrwordEmail.vue`)
                 },
                 {
                     path: "orderAddress",

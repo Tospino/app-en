@@ -66,7 +66,13 @@ export default {
       this.value = this.value.slice(0, this.value.length - 1);
     },
     toparrwordOtp() {
-      this.$router.push({ name: "支付密码输入验证码" });
+      let userinfoShop = this.$storage.get('userinfoShop');
+      if(userinfoShop.phoneOremail == 1){
+        this.$router.push({ name: "支付密码手机输入验证码" });
+      }else if(userinfoShop.phoneOremail == 2){
+        this.$router.push({name: "支付密码邮箱输入验证码"});
+      }
+      
     },
     cancel() {
       this.value = "";

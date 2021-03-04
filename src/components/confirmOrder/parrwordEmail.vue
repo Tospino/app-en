@@ -1,13 +1,13 @@
 <template>
-  <!-- 支付密码忘记密码 => 输入手机验证码 -->
+  <!-- 支付密码忘记密码 => 输入邮箱验证码 -->
   <div class="parrwordOtp">
     <balanceHeader></balanceHeader>
     <div class="parrwordOtp-text">
       <div class="p1 czjz spjz">
-        We have sent the verification code to your phone:
+        We have sent the verification code to your email:
       </div>
       <div class="p2">
-        {{ userinfoShop.mobileCode }} {{ userinfoShop.mobile }}
+        {{ userinfoShop.email }}
       </div>
     </div>
     <div class="paymen-content">
@@ -37,11 +37,8 @@
 
 <script>
 import balanceHeader from "./itemComponents/balanceHeader";
-import {
-  msglistApi,
-  getverificationcodeApi,
-  sendArkeselMsgApi,
-} from "@/api/login/index.js";
+import { getEmailCodeApi } from "@/api/register/index";
+import { checkphonesmsApi } from "@/api/login/index.js";
 import { Toast } from "vant";
 export default {
   props: {},
@@ -52,15 +49,14 @@ export default {
       showKeyboard: true,
       userinfoShop: {},
       formData: {
-        msgphone: "",
-        types: 3,
-        areaCode: "",
+        email: "",
+        types: 7
       },
       jiaoyan: {
         msg_phone: "",
-        msg_types: "3",
-        msg_num: "",
-      },
+        msg_types: "7",
+        msg_num: ""
+      }
     };
   },
   computed: {},
@@ -69,9 +65,8 @@ export default {
     if (localStorage.userinfoShop) {
       this.userinfoShop = JSON.parse(localStorage.userinfoShop);
     }
-    this.formData.msgphone = this.userinfoShop.mobile;
-    this.formData.areaCode = this.userinfoShop.mobileCode;
-    this.msglist(this.formData);
+    this.formData.email = this.userinfoShop.email;
+    this.getEmailCode(this.formData);
   },
   watch: {},
   methods: {
@@ -86,68 +81,33 @@ export default {
     //完成按钮
     wancheng() {
       this.jiaoyan.msg_num = this.value;
-      this.jiaoyan.msg_phone = this.userinfoShop.mobile;
-      this.getverificationcode(this.jiaoyan);
+      this.jiaoyan.msg_phone = this.userinfoShop.email;
+      this.checkEmailCode(this.jiaoyan);
     },
-    //发送短信
-    msglist(date) {
+    //发送邮箱验证码
+    getEmailCode(date) {
       let data = Object.assign({}, date);
-      var phoneReg = /^[1-9]\d*$/;
-      if (!phoneReg.test(data.msgphone)) {
-        data.msgphone = data.msgphone.substring(1);
-      } else {
-        data.msgphone = data.msgphone;
-      }
-      sendArkeselMsgApi(data).then((res) => {
-        if (res.code == 0) {
-        } else if (res.code == 101 || res.code == 102) {
-          msglistApi(data).then((res) => {
-            if (res.code == 0) {
-            } else if (res.code == 1) {
-              Toast("A phone number cannot send over 20 messages a day");
-            } else if (res.code == 2) {
-              Toast("Failed sending");
-            } else if (res.code == -130) {
-              Toast("The phone number isn’t registered.");
-            } else if (res.code == -131) {
-              Toast(
-                "The phone number was frozen by system.Please contact customer service"
-              );
-            } else if (res.code == -132) {
-              Toast(
-                "The phone number was deleted by system.Please contact customer service"
-              );
-            } else if (res.code == -133) {
-              Toast(
-                "The phone number is still being approved.Please contact customer service"
-              );
-            } else if (res.code == -134) {
-              Toast(
-                "The phone number didn’t get the approval.Please contact customer service"
-              );
-            } else {
-              Toast("error");
-            }
-          });
-        } else {
-          Toast(res.msg);
+      getEmailCodeApi(data).then(res => {
+          if(res.code == 0){
+        }else if(res.code == -10001){
+            Toast('error')
         }
-      });
+      })
     },
     //校验验证码是否正确的接口
-    getverificationcode(data) {
-      getverificationcodeApi(data).then((res) => {
-        if (res.code == 0) {
-          this.$router.push({ name: "重置支付密码" });
-        } else if (res.code == -110) {
-          Toast("Verification code is incorrect！");
-        }
-      });
-    },
+    checkEmailCode(data){
+        checkphonesmsApi(data).then(res => {
+            if(res.code == 0){
+                this.$router.push({ name: "重置支付密码" });
+            }else if(res.code = -10001){
+                Toast("Verification code is incorrect!");
+            }
+        })
+    }
   },
   components: {
-    balanceHeader,
-  },
+    balanceHeader
+  }
 };
 </script>
 
