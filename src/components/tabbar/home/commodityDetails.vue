@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-25 18:06:11
+ * @LastEditTime: 2021-03-03 13:57:21
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -335,9 +335,9 @@
                             .slice(0, 10)
                             .split("-")
                             .reverse()
-                            .join("/")
+                            .join("/") + "~"
                         : ""
-                    }}~{{
+                    }}{{
                       ProModel.Data.useEndWebsite
                         ? ProModel.Data.useEndWebsite
                             .slice(0, 10)
@@ -348,6 +348,7 @@
                     }}
                   </p>
                   <progress-bar
+                    v-if="ProModel.Data.couponType !== 2"
                     :progressBar="
                       ProModel.Data.claimRate
                         ? ProModel.Data.claimRate * 100
@@ -1021,6 +1022,7 @@ export default {
       } else if (
         couponDraw.code == 25 ||
         couponDraw.code == 26 ||
+        couponDraw.code == 28 ||
         couponDraw.code == 29 ||
         couponDraw.code == 22
       ) {
@@ -1100,7 +1102,13 @@ export default {
         couponDrawApi(id).then((res) => {
           if (res.code == 0) {
             this.newCoupons();
-          } else if (res.code == 25 || res.code == 29 || res.code == 22) {
+          } else if (
+            res.code == 25 ||
+            res.code == 28 ||
+            res.code == 29 ||
+            res.code == 22 ||
+            res.code == 30
+          ) {
             Toast("The coupon has been collected");
             // 多个页面领取后code为25 关闭弹框
             setInterval(() => {

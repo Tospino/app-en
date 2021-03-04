@@ -69,9 +69,9 @@
                         .slice(0, 10)
                         .split("-")
                         .reverse()
-                        .join("/")
+                        .join("/") + "~"
                     : ""
-                }}~{{
+                }}{{
                   shops.useEndWebsite
                     ? shops.useEndWebsite
                         .slice(0, 10)
@@ -182,9 +182,9 @@
                         .slice(0, 10)
                         .split("-")
                         .reverse()
-                        .join("/")
+                        .join("/") + "~"
                     : ""
-                }}~{{
+                }}{{
                   shopone.useEndWebsite
                     ? shopone.useEndWebsite
                         .slice(0, 10)
@@ -267,9 +267,9 @@
                         .slice(0, 10)
                         .split("-")
                         .reverse()
-                        .join("/")
+                        .join("/") + "~"
                     : ""
-                }}~{{
+                }}{{
                   shopDel.useEndWebsite
                     ? shopDel.useEndWebsite
                         .slice(0, 10)
