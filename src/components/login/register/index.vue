@@ -573,7 +573,7 @@ export default {
       if (this.formData.email == "") {
         Toast("Please enter your email address.");
         return;
-      } else if (!emReg.test(this.formData.email)) {
+      } else if (!emReg.test(this.formData.email) && this.formData.email != "null") {
         Toast("The email form isn’t correct.");
         return;
       }
