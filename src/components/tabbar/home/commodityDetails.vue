@@ -554,6 +554,7 @@ import {
 import {
   adduserbrowhistoryApi,
   adduserfavoritesApi,
+  deleteuserfavoritesskuidApi,
 } from "@/api/favorites/index.js";
 // 领取优惠券
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -847,40 +848,51 @@ export default {
     },
     //点击收藏图标
     cliShoucang() {
-      if (this.Isfavorites == 1) return;
-      let arr = [];
-      arr.push(this.detailmData.skuId);
-      this.adduserfavorites(arr);
-      //易观数据采集----加入收藏
-      let urlHtm = window.location.href;
-      let titHtm = document.title;
-      let typeName = this.detailmData.typeName;
-      let category = typeName.split(",");
-      AnalysysAgent.track(
-        "collect",
-        {
-          product_id: this.detailmData.supplyId.toString(),
-          product_price: this.detailmData.salePrice,
-          product_name: this.detailmData.supplyTitle,
-          product_sold: this.detailmData.skuSalesNum,
-          coupon_value:
-            this.ProModel.Data.reduceAmount == null
-              ? 0
-              : this.ProModel.Data.reduceAmount,
-          discount: this.detailmData.discountPrice,
-          $page_url: urlHtm,
-          $paeg_title: titHtm,
-          product_first_category: category[0],
-          product_second_category: category[1],
-        },
-        (rel) => {}
-      );
+      if (this.Isfavorites == 1) {
+        this.deleteuserfavoritesskuid({ skuid: this.detailmData.skuId });
+      } else {
+        let arr = [];
+        arr.push(this.detailmData.skuId);
+        this.adduserfavorites(arr);
+        //易观数据采集----加入收藏
+        let urlHtm = window.location.href;
+        let titHtm = document.title;
+        let typeName = this.detailmData.typeName;
+        let category = typeName.split(",");
+        AnalysysAgent.track(
+          "collect",
+          {
+            product_id: this.detailmData.supplyId.toString(),
+            product_price: this.detailmData.salePrice,
+            product_name: this.detailmData.supplyTitle,
+            product_sold: this.detailmData.skuSalesNum,
+            coupon_value:
+              this.ProModel.Data.reduceAmount == null
+                ? 0
+                : this.ProModel.Data.reduceAmount,
+            discount: this.detailmData.discountPrice,
+            $page_url: urlHtm,
+            $paeg_title: titHtm,
+            product_first_category: category[0],
+            product_second_category: category[1],
+          },
+          (rel) => {}
+        );
+      }
     },
     //加入收藏夹
     adduserfavorites(data) {
       adduserfavoritesApi(data).then((res) => {
         if (res.code == 0) {
           this.Isfavorites = 1;
+        }
+      });
+    },
+    //取消收藏
+    deleteuserfavoritesskuid(data) {
+      deleteuserfavoritesskuidApi(data).then((res) => {
+        if (res.code == 0) {
+          this.Isfavorites = 0;
         }
       });
     },
