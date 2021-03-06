@@ -62,11 +62,11 @@ export default {
                     this.type = res.phoneOremail;
                     this.phone = res.phone;
                     this.email = res.email;
-                    if(this.type == 3){
+                    if(res.phone && res.email){
                         this.$router.push({name:'手机邮箱验证码',query:{msgphone:this.phone,msgemail:this.email}});
-                    }else if(this.type == 2){
+                    }else if(res.email){
                         this.$router.push({name:'邮箱验证码',query:{msgemail:this.email}});
-                    }else if(this.type == 1){
+                    }else if(res.phone){
                         this.$router.push({name:'手机验证码',query:{msgphone:this.phone}});
                     }
                 }else if(res.code == -26){
