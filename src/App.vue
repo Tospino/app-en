@@ -22,7 +22,6 @@ export default {
     //易观数据采集-----核心页面加载
     let urlHtm = window.location.href;
     let titHtm = document.title;
-    //   console.log(returnCitySN["cip"] + "," + returnCitySN["cname"]);
     AnalysysAgent.track(
       "core_page_load",
       {
@@ -62,7 +61,6 @@ export default {
                 //首次按键，提示‘再按一次退出应用’
                 if (!first) {
                   first = new Date().getTime(); //获取第一次点击的时间戳
-                  // console.log('再按一次退出应用');//用自定义toast提示最好
                   // toast('双击返回键退出应用'); //调用自己写的吐丝提示 函数
                   plus.nativeUI.toast("Logout the APP if you press again", {
                     duration: "short",
@@ -83,8 +81,14 @@ export default {
       } catch (err) {
         console.log(err.message);
       }
-      var token = JSON.parse(JSON.stringify(localStorage.token));
-      var userinfoShop = JSON.parse(JSON.stringify(localStorage.userinfoShop));
+      if (localStorage.token) {
+        var token = JSON.parse(JSON.stringify(localStorage.token));
+      }
+      if (localStorage.userinfoShop) {
+        var userinfoShop = JSON.parse(
+          JSON.stringify(localStorage.userinfoShop)
+        );
+      }
       function clearCaching() {
         if (window.plus) {
           plusReady();
