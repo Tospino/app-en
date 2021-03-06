@@ -544,7 +544,6 @@ export default {
         // idtoken: googleUser.getAuthResponse().id_token,
         requeType: 2, //请求类型 1 会对idtoken做校验 2 不做校验
       };
-      console.log(form);
       googleuserLogin(form).then((res) => {
         switch (res.code) {
           case 0:
@@ -597,7 +596,6 @@ export default {
     },
     onFailure(err) {
       Toast("Google login failed");
-      console.log("🚀 ~ file: index.vue ~ line 527 ~ onFailure ~ err", err);
     },
   },
   components: {

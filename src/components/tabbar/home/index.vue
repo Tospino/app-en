@@ -568,10 +568,6 @@ export default {
   },
   computed: {},
   created() {
-    if (this.$route.query.token && this.$route.query.token != "undefined") {
-      localStorage.token = this.$route.query.token;
-      this.getuserinfo();
-    }
     if (localStorage.homeObj) {
       this.homeObj = this.$fn.MyLocalStorage.Cache.get("homeObj");
       if (!this.homeObj) {
@@ -999,14 +995,6 @@ export default {
         },
         (rel) => {}
       );
-    },
-    //获取用户信息
-    getuserinfo() {
-      getuserinfoApi().then((res) => {
-        if (res.code == 0) {
-          localStorage.userinfoShop = JSON.stringify(res.user);
-        }
-      });
     },
     // 去特价清仓页面
     toClearance() {
