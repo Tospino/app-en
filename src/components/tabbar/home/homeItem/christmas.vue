@@ -18,7 +18,7 @@
         />
       </div>
       <div class="christmas_content flex_col_center">
-        <div class="head_tilte">Trending</div>
+        <div class="head_tilte">Best Sales</div>
         <div class="main_shop mt_22">
           <div
             class="main_shop_box flex flex_warp"
