@@ -12,14 +12,14 @@
       <div class="icons">
         <!-- 扫码功能去掉 -->
         <img
-          src="@/assets/img/activity/christmas/christmas_nav_hlep_3.png"
+          src="@/assets/img/tabbar/home/Message_.png"
           class="img1"
           @click="toMessage()"
         />
         <img
-          src="@/assets/img/activity/christmas/christmas_nav_hlep_4.png"
+          src="@/assets/img/tabbar/home/msg@3x.png"
           class="img2"
-          @click="$router.push({name:'消息'})"
+          @click="$router.push({ name: '消息' })"
         />
       </div>
     </div>
@@ -47,13 +47,17 @@ export default {
       this.$router.push({ name: "扫码" });
     },
     onSearch() {},
-    toMessage(){
-      this.$router.push({path:'/control/customerService'});
+    toMessage() {
+      this.$router.push({ path: "/control/customerService" });
       //易观数据采集---联系客服
-      AnalysysAgent.track('contact',{
-        contact_type: '自定义'
-      },rel => {})
-    }
+      AnalysysAgent.track(
+        "contact",
+        {
+          contact_type: "自定义",
+        },
+        (rel) => {}
+      );
+    },
   },
   components: {},
 };
@@ -65,7 +69,7 @@ export default {
   height: 88px;
   position: fixed;
   z-index: 1;
-  background-color: #A3030D; //新增
+  // background-color: #940000; //新增
   .logo {
     position: absolute;
     left: 40px;
@@ -81,12 +85,12 @@ export default {
     position: absolute;
     left: 20px;
     top: 20px;
-    width: 600px;  
+    width: 600px;
     height: 58px;
     overflow: hidden;
     /deep/ .van-search {
-      // background: #f2f3f5 !important;
-      background: #A3030D!important;  //修改
+      background: #f2f3f5 !important;
+      // background: #940000!important;  //修改
       .van-search__content--round {
         height: 58px;
         border-radius: 29px;
