@@ -2,19 +2,13 @@
   <!-- 个人页 -->
   <section>
     <div class="christmas_bg"></div>
-    <!-- 圣诞 -->
-    <div class="account christmas_bg_nav" v-show="christmasBg">
       <div class="header flex_space">
-        <span class="header-wd">My Tospino</span>
         <div class="christmas_bg_nav_right">
           <van-icon
             name="chat-o"
             size="17px"
-            @click="jumpRouter('消息')"
             color="#fff"
           />
-        </div>
-      </div>
     </div>
     <div class="account">
       <div class="header">
@@ -25,7 +19,7 @@
       </div>
       <div class="head-con">
         <div class="head-img">
-          <img src="@/assets/img/activity/christmas/christmas_my_user.png" />
+          <img src="@/assets/img/tabbar/my/account/touxiang@2x.png" />
           <br />
           <span class="head-name">{{
             userinfoShop.userName ? userinfoShop.userName : "Set your nickname"
@@ -432,18 +426,6 @@ export default {
   },
   watch: {},
   methods: {
-    handleScroll() {
-      // 页面滚动距顶部距离
-      var scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      if (scrollTop > 10) {
-        this.christmasBg = true;
-      } else {
-        this.christmasBg = false;
-      }
-    },
     getUser() {
       getuserinfo().then((res) => {
         this.$storage.set("userinfoShop", res.user);
@@ -451,23 +433,14 @@ export default {
       });
     },
     jumpRouter(name) {
-      this.$router.push({
-        name,
-      });
+      this.$router.push({ name });
     },
     toLanguage() {
-      this.$router.push({
-        name: "语言",
-        query: {
-          type: 1,
-        },
-      });
+      this.$router.push({ name: "语言", query: { type: 1 } });
     },
     toMyOrder(num) {
       sessionStorage.setItem("activeIndex", num);
-      this.$router.push({
-        name: "我的订单",
-      });
+      this.$router.push({ name: "我的订单" });
     },
     //登出
     logOut() {
@@ -477,9 +450,7 @@ export default {
           this.$storage.remove("thirdapp");
           localStorage.removeItem("userinfoShop");
         }
-        this.$router.push({
-          name: "登录",
-        });
+        this.$router.push({ name: "登录" });
         location.reload();
       });
     },
@@ -517,9 +488,7 @@ export default {
      * @author: 曹建勇
      */
     service() {
-      this.$router.push({
-        path: "/control/customerService",
-      });
+      this.$router.push({ path: "/control/customerService" });
     },
     /**
      * @description:去绑定第三方 facebook
@@ -527,29 +496,24 @@ export default {
      */
     toBindThird() {
       if (this.thirdapp.length !== 0 && this.thirdapp[0].thirdUserId) {
-        this.$router.push({
-          name: "授权详情",
-        });
+        this.$router.push({ name: "授权详情" });
       } else {
         let a = this;
         FB.login(
           function (response) {
             if (response.status === "connected") {
               FB.api("/me", function (response1) {
-                userAddthird({
-                  thirduserId: response1.id,
-                  type: 1,
-                }).then((res) => {
-                  a.getUser();
-                  Dialog.alert({
-                    title: "Tips",
-                    message: "Empower Facebook to succeed!",
-                  }).then(() => {
-                    a.$router.push({
-                      name: "授权详情",
+                userAddthird({ thirduserId: response1.id, type: 1 }).then(
+                  (res) => {
+                    a.getUser();
+                    Dialog.alert({
+                      title: "Tips",
+                      message: "Empower Facebook to succeed!",
+                    }).then(() => {
+                      a.$router.push({ name: "授权详情" });
                     });
-                  });
-                });
+                  }
+                );
               });
             } else {
               Dialog.alert({
@@ -558,9 +522,7 @@ export default {
               });
             }
           },
-          {
-            scope: "public_profile,email",
-          }
+          { scope: "public_profile,email" }
         );
       }
     },
@@ -626,96 +588,63 @@ export default {
 </script>
 
 <style scoped lang="less">
-.christmas_bg {
-  background: url(../../../assets/img/activity/christmas/christmas_my_bg.png);
-  width: 100%;
-  height: 420px;
-  background-size: 100%;
-  position: absolute;
-  top: 0;
-  z-index: -1;
-}
-
-.christmas_bg_nav {
-  background-color: #a3030d;
-  box-sizing: border-box;
-  width: 100vw;
-  height: 88px;
-  z-index: 99;
-  position: fixed;
-}
-
 .account {
   padding: 0 30px;
-
   /deep/ .van-tabbar-item {
     text-align: center;
   }
-
   .header {
     line-height: 88px;
     box-sizing: border-box;
   }
-
   .header-wd {
     font-size: 36px;
-    color: #fff;
+    color: #000;
   }
-
   .head-con {
     width: 100%;
     // height: 212px;
-    margin-top: 66px;
     position: relative;
     text-align: center;
-
     .head-img {
       display: inline-block;
       width: 100%;
-
       // height: 160px;
       img {
         width: 160px;
         height: 160px;
         margin-bottom: 15px;
       }
-
       .head-name {
         font-size: 30px;
         color: #333333;
       }
-
       .head-id {
         display: inline-block;
         height: 24px;
         background: rgba(219, 144, 0, 1);
-        border-radius: 15px;
+        border-radius: 12px;
         color: #ffffff;
         font-size: 16px;
         margin: 8px 0 34px;
-        padding: 4px 11px;
+        padding: 0 11px;
         line-height: 28px;
       }
     }
   }
-
   .record {
     width: 100%;
     height: 150px;
-    margin-top: 10px;
     margin-bottom: 35px;
-
     .van-row {
       height: 100%;
       background-color: #fff;
     }
-
     /deep/ .van-col--8 {
       display: inline-block;
       height: 100%;
       text-align: center;
       position: relative;
-
       .t1 {
         position: absolute;
         top: 48px;
@@ -723,7 +652,6 @@ export default {
         color: #666;
         transform: translate(-50%);
       }
-
       .num {
         position: absolute;
         top: 93px;
@@ -733,43 +661,35 @@ export default {
       }
     }
   }
-
   .account-myorder {
     width: 100%;
     background-color: #fff;
-
     .order-title {
       height: 67px;
       border-bottom: 1px solid #dcdcdc;
       font-size: 30px;
       color: #333;
       line-height: 67px;
-
       span {
         margin-left: 20px;
       }
     }
-
     .order-tabbar {
       position: relative;
       height: 126px;
-
       .icons {
         position: absolute;
         height: 98px;
         bottom: 10px;
-
         /deep/ i {
           font-size: 43px;
         }
       }
-
       .icon-style {
         // width: 40px;
         height: 40px;
         margin-bottom: 3px;
       }
-
       /deep/ .van-hairline--top-bottom {
         &::after {
           border-width: 0;
@@ -781,33 +701,26 @@ export default {
   .border-0 {
     //跳转栏
     margin-top: 14px;
-
     /deep/ .van-cell {
       height: 100px;
       line-height: 80px;
-
       .van-cell__value {
         border: 0;
         margin-left: 45px;
-
         /deep/ .van-field__body {
           width: 95%;
-
           .van-field__control {
             font-size: 30px;
           }
-
           .van-icon-arrow {
             font-size: 30px;
           }
         }
       }
-
       .icon-left {
         position: absolute;
         left: 23px;
         top: 20px;
-
         .chongzhi {
           width: 36px;
           height: 36px;
@@ -815,12 +728,10 @@ export default {
       }
     }
   }
-
   .footer-btn {
     width: 100%;
     margin: 40px 0;
     text-align: center;
-
     /deep/ .van-button {
       width: 240px;
       height: 75px;
@@ -829,15 +740,12 @@ export default {
       font-size: 34px;
     }
   }
-
   .p-30 {
     padding: 0 30px;
   }
-
   .maigin-t-14 {
     margin-top: 14px;
   }
-
   .overlay {
     // position: relative;
     .overlay-wrapper {
