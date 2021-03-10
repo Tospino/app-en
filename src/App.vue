@@ -8,7 +8,7 @@
 -->
 <template>
   <div id="app">
-    <keep-alive>
+    <keep-alive :include="$store.state.christmasListArr">
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"></router-view>
@@ -45,6 +45,13 @@ export default {
       window.pageYOffset = 0;
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
+      // 如果跳转的页面为圣诞列表，且不是从商品详情返回或者跳转
+      if (to.name == "首页" && from.name !== "商品详情") {
+        this.$store.state.christmasListArr.push("首页");
+      }
+      if (this.$route.query.token && this.$route.query.token != "undefined") {
+        localStorage.token = this.$route.query.token;
+      }
     },
   },
   mounted() {

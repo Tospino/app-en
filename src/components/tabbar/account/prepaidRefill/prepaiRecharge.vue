@@ -32,15 +32,28 @@
       </div>
       <div class="enter-amount" @click="customNum">
         <van-field
+          maxlength="12"
           v-model="customMony"
           type="number"
           class="field"
           @input="changeMoney"
+          placeholder="₵ Enter an amount"
         />
       </div>
+      <div style="color: red; margin-top: 10px" v-if="customMony <= 0">
+        Please enter a value greater than zero
+      </div>
       <div
+        v-if="customMony > 0"
         class="btn-next"
         @click="showpaymen"
+        :style="{ backgroundColor: disabledSubmit ? '#FA5300' : '#999' }"
+      >
+        Next
+      </div>
+      <div
+        v-else
+        class="btn-next"
         :style="{ backgroundColor: disabledSubmit ? '#FA5300' : '#999' }"
       >
         Next
@@ -228,7 +241,9 @@ export default {
     showsucess() {
       this.$refs.sucess.showAction = true;
       setTimeout(() => {
-        this.$router.push({ name: "话费充值记录" });
+        this.$router.push({
+          name: "话费充值记录",
+        });
       }, 1000);
     },
     //获取到密码,请求接口
@@ -252,32 +267,38 @@ export default {
 .account-balance {
   .balance-bottom {
     padding: 39px 30px 0;
+
     .bottom-p1 {
       font-size: 40px;
       color: #666;
       margin-bottom: 19px;
     }
+
     .bottom-p2 {
       font-size: 28px;
       color: #666;
       margin-bottom: 19px;
     }
+
     .line {
       height: 1px;
       background: #dcdcdc;
       margin: 35px 0;
     }
+
     .tips-middle {
       font-size: 24px;
       color: #666;
       line-height: 30px;
     }
+
     .money-list {
       display: -webkit-flex;
       display: flex;
       -webkit-flex-wrap: wrap;
       flex-wrap: wrap;
       margin: 30px 0;
+
       div {
         width: 220px;
         height: 170px;
@@ -287,6 +308,7 @@ export default {
         text-align: center;
         color: #333;
         margin: 0 6px 15px 0;
+
         &:nth-last-child(1) {
           margin-right: 0;
         }
@@ -297,6 +319,7 @@ export default {
         box-shadow: 0px 4px 8px 0px rgba(228, 76, 0, 0.3);
         color: #fa5300;
       }
+
       .mony1 {
         display: inline-block;
         margin-top: 42px;
@@ -304,11 +327,13 @@ export default {
         font-weight: bold;
         margin-bottom: 9px;
       }
+
       .mony2 {
         display: inline-block;
         font-size: 24px;
       }
     }
+
     .btn-next {
       height: 88px;
       border-radius: 10px;
@@ -320,24 +345,33 @@ export default {
       background-color: #fa5300;
     }
   }
+
   .enter-amount {
     height: 88px;
     border: 1px solid #999999;
     border-radius: 10px;
   }
+
   .field {
     height: 100%;
+
     /deep/ .van-cell__value {
       height: 100%;
+
       .van-field__body {
         height: 100%;
         font-size: 40px;
       }
     }
+    /deep/ .van-field__control {
+      font-size: 32px;
+    }
   }
+
   .tips-bottom {
     font-size: 28px;
     line-height: 32px;
+
     .b1 {
       font-size: 34px;
       color: #333;

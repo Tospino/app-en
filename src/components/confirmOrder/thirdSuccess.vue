@@ -1,3 +1,11 @@
+<!--
+ * @Author: 曹建勇
+ * @Date: 2020-08-30 17:42:23
+ * @LastEditors: 曹建勇
+ * @LastEditTime: 2021-03-10 14:45:49
+ * @Description: 
+ * @FilePath: \app-en\src\components\confirmOrder\thirdSuccess.vue
+-->
 <template>
   <!-- 第三方支付 -->
   <div>
@@ -20,18 +28,22 @@
 <script>
 import thirdHeader from "./itemComponents/thirdHeader";
 import thirdLose from "./itemComponents/thirdLose";
+import { getuserinfoApi } from "@/api/accountSettings/index";
 export default {
   props: {},
   data() {
     return {
       show: false,
+      orderType: null, //orderType：1平台商品订单，2话费充值订单 3余额充值
     };
   },
   computed: {},
   created() {
+    this.orderType = this.$route.query.orderType;
     setTimeout(() => {
       if (this.$route.query.token) {
         this.$storage.set("token", this.$route.query.token);
+        this.getuserinfo();
       }
     }, 500);
     if (this.$route.query.status == 1) {
@@ -40,8 +52,6 @@ export default {
       this.show = false;
     }
   },
-  mounted() {},
-  watch: {},
   methods: {
     shop() {
       this.$router.push({

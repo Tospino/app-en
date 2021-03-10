@@ -2,7 +2,7 @@
   <!-- 我的订单 -->
   <div class="my-order">
     <div class="footprint-header">
-      <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)" />
+      <van-icon name="arrow-left" class="arrow-left" @click="arrowLeft" />
       <span class="header-t1">My Order</span>
       <span class="header-t2" @click="jumpRouter('我的订单历史记录')">
         <van-icon name="search" class="search" />
@@ -275,6 +275,9 @@ export default {
     },
     //刷新页面
     refreshOrder() {
+      if (this.$route.query.token && this.$route.query.token != "undefined") {
+        localStorage.token = this.$route.query.token;
+      }
       this.formData.page = 1;
       this.formData.limit = 10;
       this.orderlist(this.formData, true);
@@ -310,6 +313,14 @@ export default {
         this.showPassWord(false);
         this.refreshOrder();
       }, 1000);
+    },
+    //后退键
+    arrowLeft() {
+      if (this.$route.query.isThree) {
+        this.$router.push({ name: "我的" });
+      } else {
+        this.$router.go(-1);
+      }
     },
     //确认收货
     completeorder(data) {

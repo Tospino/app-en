@@ -39,6 +39,7 @@
       </div>
     </div>
     <div class="cell">
+			<!-- <span style="color: red;font-size: 16px;">*</span> -->
       <span>Refund Description</span>
       <input type="text" class="input-xt" placeholder="optional" v-model="formData.remark" />
     </div>
@@ -170,6 +171,13 @@ export default {
       });
 
       //易观数据采集----退货
+      let moduleSource ;
+      if(!this.$storage.get("skuid")){
+        moduleSource = '普通页面'
+      }else{
+        moduleSource = this.$storage.get("skuid").toString() == this.detailmData.skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
+      }
+
       AnalysysAgent.track(
         "return_goods",
         {
@@ -181,6 +189,7 @@ export default {
           refund_amount: this.detailObj.orderAmountWebsite,
           product_id: this.detailObj.detailList[0].skuId.toString(),
           quantity: this.detailObj.detailList[0].shouldRefundNum,
+          module_source: moduleSource
         },
         (rel) => {}
       );
@@ -191,6 +200,13 @@ export default {
         Toast("Choose reason for refund");
         return;
       }
+	  // else if(this.formData.remark==''){
+		 //  Toast("Please state refund instructions");
+		 //  return;
+	  // }else if(this.uploadList.length===0){
+		 //  Toast("Please upload pictures of valid refund");
+		 //  return;
+	  // }
       let arr = [];
       let imgList = [];
       this.uploadList.forEach((ele) => {

@@ -203,6 +203,13 @@ export default {
       });
 
       //易观数据采集----退款
+      let moduleSource ;
+      if(!this.$storage.get("skuid")){
+        moduleSource = '普通页面'
+      }else{
+        moduleSource = this.$storage.get("skuid").toString() == this.detailmData.skuId.toString() ? "圣诞活动主会场" : "正常页面进入"
+      }
+
       AnalysysAgent.track(
         "refund",
         {
@@ -214,6 +221,7 @@ export default {
           refund_amount: this.detailObj.orderAmountWebsite,
           product_id: this.detailObj.detailList[0].skuId.toString(),
           quantity: this.detailObj.detailList[0].shouldRefundNum,
+          module_source: moduleSource
         },
         (rel) => {}
       );

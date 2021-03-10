@@ -55,9 +55,11 @@ const state = {
 
   coupons: [], //可领取优惠券列表
 
-  couponListUse: [] //不可领取优惠券列表
+  couponListUse: [], //不可领取优惠券列表
 
   // couponShop: [] //用户中心的优惠券
+	
+	christmasListArr:[] //圣诞列表
 }
 const getters = {}
 
@@ -92,10 +94,10 @@ const mutations = {
   },
   GETCOUPONSLISTUSE(state, arr = []) {
     return (state.couponListUse = arr)
+  },
+  GETSHOP(state, arr = []) {
+    return (state.christmasListArr = arr)
   }
-  // GETCOUPONSHOP (state, arr = []) {
-  //   return (state.couponShop = arr)
-  // }
 }
 
 const actions = {
@@ -141,11 +143,11 @@ const actions = {
   //   不可领取优惠券
   getcouponslistuse(context, arr = []) {
     return context.commit('GETCOUPONSLISTUSE', arr)
+  },
+  // 
+  getshop(context, arr = []) {
+    return context.commit('GETSHOP', arr)
   }
-  // //   用户优惠券中心
-  // getcouponshop (context, arr = []) {
-  //   return context.commit('GETCOUPONSHOP', arr)
-  // }
 }
 
 export default new Vuex.Store({

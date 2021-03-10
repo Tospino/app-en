@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-10 10:26:27
- * @LastEditTime: 2021-02-27 10:35:29
+ * @LastEditTime: 2021-03-10 15:05:13
  * @LastEditors: 曹建勇
  * @Description: In User Settings Edit
  * @FilePath: \app-en\src\router\index.js
@@ -29,13 +29,13 @@ export default new Router({
             path: "/phoneEmail",
             name: "手机邮箱验证码",
             component: () =>
-            import (`@/components/login/forgetPassword/phoneEmail.vue`)
+                import (`@/components/login/forgetPassword/phoneEmail.vue`)
         },
         {
             path: "/email",
             name: "邮箱验证码",
             component: () =>
-            import (`@/components/login/forgetPassword/email.vue`)
+                import (`@/components/login/forgetPassword/email.vue`)
         },
         {
             path: "/otp",
@@ -49,12 +49,14 @@ export default new Router({
             component: () =>
                 import (`@/components/login/forgetPassword/index.vue`)
         },
+
         {
             path: "/forgeSuccess",
             name: "修改密码成功",
             component: () =>
                 import (`@/components/login/forgetPassword/forgeSuccess.vue`)
         },
+
         {
             path: "/revisePassword",
             name: "修改密码",
@@ -619,6 +621,12 @@ export default new Router({
                     name: "特价清仓搜索",
                     component: () =>
                         import (`@/components/tabbar/home/homeItem/ClearanceSaleSearch.vue`)
+                },
+                {
+                    path: "Christmas",
+                    name: "圣诞节",
+                    component: () =>
+                        import (`@/components/tabbar/home/homeItem/christmas.vue`)
                 }
             ]
         },

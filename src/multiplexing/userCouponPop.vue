@@ -49,6 +49,17 @@ export default {
     jumpRouter(name) {
       this.$router.push({ name });
     },
+    //易观数据采集--按钮点击
+    kongbai() {
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: "圣诞页",
+          btn_name: "新人优惠券弹窗未正确点击按钮",
+        },
+        (rel) => {}
+      );
+    },
   },
 };
 </script>
@@ -65,8 +76,8 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
+    position: relative;
   }
-
   .block {
     width: 668px;
     height: 789px;
@@ -92,9 +103,11 @@ export default {
       width: 264px;
       text-align: center;
       .wrapper-title {
-        font-size: 28px;
-        color: #fa5300;
-        padding-bottom: 13px;
+        height: 22px;
+        font-size: 31px;
+        color: #f3c686;
+        padding-bottom: 318px;
+        font-weight: bold;
       }
       .btn {
         width: 400px;
@@ -106,8 +119,12 @@ export default {
         }
         .btn-box {
           position: relative;
-          top: -88%;
-          font-size: 36px;
+          width: 210px;
+          height: 50px;
+          line-height: 50px;
+          top: -50%;
+          left: 10%;
+          font-size: 30px;
           color: #ffffff;
         }
       }
@@ -122,8 +139,8 @@ export default {
     text-align: center;
     margin-top: 38px;
     .close-icon {
-      width: 70px;
-      height: 70px;
+      width: 40px;
+      height: 40px;
     }
   }
 

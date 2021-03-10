@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-03-03 13:57:21
+ * @LastEditTime: 2021-03-10 14:50:08
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券--shopCouponPop组件和字段
  * @FilePath: \app-en\src\components\tabbar\home\commodityDetails.vue
@@ -928,13 +928,24 @@ export default {
       }
       let typeName = this.detailmData.typeName;
       let category = typeName.split(",");
+      let moduleSource;
+      if (!this.$storage.get("skuid")) {
+        moduleSource = "普通页面";
+      } else {
+        moduleSource =
+          this.$storage.get("skuid").toString() ==
+          this.detailmData.skuId.toString()
+            ? "圣诞活动主会场"
+            : "正常页面进入";
+      }
+
       AnalysysAgent.track(
         "product_detail_view",
         {
           product_price: this.detailmData.salePrice,
           coupon_name:
             this.moreShop == true ? this.ProModel.Data.couponName : "无优惠卷",
-          product_id: this.detailmData.supplyId.toString(),
+          product_id: this.detailmData.skuId.toString(),
           product_name: this.detailmData.supplyTitle,
           product_sold: this.detailmData.skuSalesNum,
           coupon_value:
@@ -945,6 +956,7 @@ export default {
           commodity_detail_souce: souce,
           product_first_category: category[0],
           product_second_category: category[1],
+          module_source: moduleSource,
         },
         (rel) => {}
       );

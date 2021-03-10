@@ -69,3 +69,21 @@ export function gethomeClearanceList(params) {
         data: params,
     })
 }
+
+// 圣诞活动（商品分类）
+export function christmasThemeApi(params){
+	return park({
+	    url: `/theme/module/list`,
+	    method: 'POST',
+	    data: params,
+	})
+}
+
+// 圣诞活动（主题）
+export function christmasThemeategoryApi(params){
+	return park({
+	    url: `/theme/sku/list`,
+	    method: 'POST',
+	    data: params,
+	})
+}
