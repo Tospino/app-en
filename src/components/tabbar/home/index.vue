@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-03-10 15:09:11
+ * @LastEditTime: 2021-03-10 17:24:18
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -74,6 +74,7 @@
             </van-button>
           </div>
         </div>-->
+
         <!-- 圣诞 -->
         <div class="good-recommend" :style="christmas_home_top">
           <div class="christmas_top_bg" @click="toChristmas()">
@@ -85,12 +86,9 @@
         </div>
         <!-- 精品推荐 -->
         <div class="good-recommend box">
-          <div class="flash-sale-1" :style="christmas_home_bg">
-            <div class="pd_t_8">
-              <span class="put-line"></span>
-              <span class="t1 ml_8">Selectives</span>
-            </div>
-
+          <div class="flash-sale-1">
+            <span class="put-line"></span>
+            <span class="t1">Selectives</span>
             <!-- <span class="t2">查看更多</span> -->
           </div>
           <div class="flash-sale-2">
@@ -141,8 +139,8 @@
         </div>
         <!-- 特价清仓 -->
         <div class="good-Clearance box" v-if="clear_list.length != 0">
-          <div class="flash-sale-1 flex flex_space" :style="christmas_home_bg">
-            <div class="flex pd_t_16">
+          <div class="flash-sale-1 flex flex_space">
+            <div class="flex">
               <span class="put-line"></span>
               <span class="t1">Clearance Sale</span>
               <span class="desc ml_20" v-show="isExit == 0">
@@ -167,7 +165,7 @@
                 </count-down>
               </span>
             </div>
-            <div class="flex pd_t_16 mr_20" @click="toClearance">
+            <div class="flex" @click="toClearance">
               <span class="t2">More</span>
               <van-icon name="arrow" />
             </div>
@@ -232,11 +230,9 @@
           </div>
         </div>
         <div class="good-world box">
-          <div class="flash-sale-1" :style="christmas_home_bg">
-            <div class="pd_t_8">
-              <span class="put-line"></span>
-              <span class="t1 ml_8">Global Brands</span>
-            </div>
+          <div class="flash-sale-1">
+            <span class="put-line"></span>
+            <span class="t1">Global Brands</span>
             <!-- <span class="t2">查看更多</span> -->
           </div>
           <div class="good-world-brand">
@@ -268,11 +264,9 @@
           </div>
         </div>
         <div class="good-world-best">
-          <div class="flash-sale-1" :style="christmas_home_bg">
-            <div class="pd_t_8">
-              <span class="put-line"></span>
-              <span class="t1 ml_8">Hot Sales</span>
-            </div>
+          <div class="flash-sale-1">
+            <span class="put-line"></span>
+            <span class="t1">Hot Sales</span>
             <!-- <span class="t2">查看更多</span> -->
           </div>
           <div class="flash-sale-2">
@@ -340,12 +334,9 @@
           <img v-lazy="$bigwebUrl + banner2.advertImg" />
         </div>
         <div class="good-popular box">
-          <div class="flash-sale-1" :style="christmas_home_bg">
-            <div class="pd_t_8">
-              <span class="put-line"></span>
-              <span class="t1 ml_8">Hot</span>
-            </div>
-
+          <div class="flash-sale-1">
+            <span class="put-line"></span>
+            <span class="t1">Hot</span>
             <!-- <span class="t2">查看更多</span> -->
           </div>
           <div class="good-popular-top">
@@ -370,9 +361,8 @@
             @change="changeTab(bottomTabs, $event)"
           >
             <van-tab v-for="(tab, index) in bottomTabs" :key="index">
-              <div slot="title" class="flex_center2 line_right">
+              <div slot="title">
                 <span class="primary">{{ tab.classNameEng }}</span>
-                <!-- <span class="line_right">|</span> -->
               </div>
             </van-tab>
           </van-tabs>
@@ -516,7 +506,6 @@ import {
   queryNewgiftpackApi,
   gethomeClearanceList,
   saveuserPackApi,
-  APPgetuserIsfullApi,
 } from "@/api/home/index.js";
 import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
@@ -586,18 +575,10 @@ export default {
       userRecordOne: false, //记录第一次进入首页的弹框
       routerRecordOne: false,
       // 圣诞
-      christmas_home_bg: {
-        backgroundImage:
-          "url(" +
-          require("../../../assets/img/activity/christmas/christmas_home_labe.png") +
-          ")",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
-      },
       christmas_home_top: {
         backgroundImage:
           "url(" +
-          require("../../../assets/img/activity/christmas/christmas_top.png") +
+          require("../../../assets/img/activity/christmas/christmas_top.gif") +
           ")",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
@@ -774,24 +755,7 @@ export default {
       }
     },
     jumpRouter(name) {
-      this.$router.push({
-        name,
-      });
-    },
-    // 圣诞页面
-    toChristmas() {
-      this.$router.push({
-        name: "圣诞节",
-      });
-      //易观数据采集----按钮点击
-      AnalysysAgent.track(
-        "btn_click",
-        {
-          $title: "圣诞活动落地页",
-          btn_name: "圣诞活动落地页进入按钮",
-        },
-        (rel) => {}
-      );
+      this.$router.push({ name });
     },
     //首页数据
     homePage(data) {
@@ -967,19 +931,9 @@ export default {
     //去到搜索里面
     toSearOne(id, type, index) {
       if (type == "categoryId") {
-        this.$router.push({
-          name: "搜索商品1",
-          query: {
-            categoryId: id,
-          },
-        });
+        this.$router.push({ name: "搜索商品1", query: { categoryId: id } });
       } else if (type == "brandId") {
-        this.$router.push({
-          name: "搜索商品1",
-          query: {
-            brandId: id,
-          },
-        });
+        this.$router.push({ name: "搜索商品1", query: { brandId: id } });
       }
       if (type == "categoryId") {
         //易观数据采集---资源位点击
@@ -1021,19 +975,13 @@ export default {
           this.leng = this.topBananerList.length;
           this.banner1 = res.Data.newHouse[0]
             ? res.Data.newHouse[0]
-            : {
-                advertImg: "",
-              };
+            : { advertImg: "" };
           this.banner2 = res.Data.newHouse[1]
             ? res.Data.newHouse[1]
-            : {
-                advertImg: "",
-              };
+            : { advertImg: "" };
           this.banner3 = res.Data.newHouse[2]
             ? res.Data.newHouse[2]
-            : {
-                advertImg: "",
-              };
+            : { advertImg: "" };
         }
       });
     },
@@ -1069,15 +1017,11 @@ export default {
     },
     // 去特价清仓页面
     toClearance() {
-      this.$router.push({
-        name: "特价清仓",
-      });
+      this.$router.push({ name: "特价清仓" });
     },
     // 获取特价清仓数据
     getClear() {
-      gethomeClearanceList({
-        isHome: 1,
-      }).then((res) => {
+      gethomeClearanceList({ isHome: 1 }).then((res) => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
           //   特价时间
@@ -1089,6 +1033,21 @@ export default {
           }
         }
       });
+    },
+    // 圣诞页面
+    toChristmas() {
+      this.$router.push({
+        name: "圣诞节",
+      });
+      //易观数据采集----按钮点击
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: "圣诞活动落地页",
+          btn_name: "圣诞活动落地页进入按钮",
+        },
+        (rel) => {}
+      );
     },
   },
   components: {
@@ -1124,7 +1083,7 @@ export default {
     width: 90px;
     height: 90px;
     position: absolute;
-    right: 68px;
+    right: 40px;
     bottom: 90px;
     -webkit-animation-name: scaleDraw;
     /*关键帧名称*/
@@ -1136,26 +1095,6 @@ export default {
     /*动画所花费的时间*/
   }
 }
-.pd_t_8 {
-  padding-top: 8px;
-  vertical-align: bottom;
-}
-
-.pd_t_16 {
-  padding-top: 16px;
-  vertical-align: bottom;
-}
-
-.put-line {
-  width: 6px !important;
-  height: 24px !important;
-  background-color: #ffffff;
-}
-
-.ml_8 {
-  margin-left: 8px;
-}
-
 .bscroll-wrapper {
   height: calc(100vh - 90px - 100px);
 }
@@ -1188,55 +1127,46 @@ export default {
     .active_bg {
       background-color: #f95300 !important;
     }
-    // padding: 30px;
+    padding: 30px;
     .flash-sale-1 {
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      overflow: hidden;
-      // background: url(../../../assets/img/activity/background.png) no-repeat;
-      // background-position: 0;
-      // background-size: 100%;
-
+      height: 50px;
+      line-height: 50px;
       .put-line {
         width: 6px;
-        height: 24px;
-        background-color: #ffffff;
+        height: 40px;
+        background-color: #fa5300;
+        top: 5px;
       }
-
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-left: 13px;
         margin-right: 14px;
       }
-
       .desc {
         font-size: 24px;
         font-weight: 500;
-        color: #ffffff;
+        color: rgba(0, 165, 111, 1);
       }
-
       .t2 {
         font-size: 24px;
         font-weight: bold;
-        color: #ffffff;
+        color: #333;
         margin-right: 10px;
       }
-
-      /deep/ .van-icon {
-        color: #ffffff;
-      }
+      // /deep/ .van-icon {
+      //   color: #ffffff;
+      // }
     }
     .flash-sale-2 {
-      //   background-color: #fff;
+      background-color: #fff;
       border-radius: 10px;
       margin-top: 20px;
-      margin-bottom: 20px;
       padding: 0 30px;
       .goods_items {
+        // margin: 0 30px;
         padding: 30px 20px;
-        background-color: #fff;
+        // background-color: #fff;
         border-bottom: 1px solid #eee;
         .goods_sale {
           position: absolute;
@@ -1420,35 +1350,31 @@ export default {
   }
   .good-recommend {
     // width: 100%;
-    // padding: 0 30px;
+    padding: 0 30px;
     margin-bottom: 40px;
 
     .flash-sale-1 {
-      // width: 100%;
+      width: 100%;
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-
-      // 圣诞
-      // background: url(../../../assets/img/activity/christmas/christmas_home_labe.png) no-repeat;
+      height: 50px;
+      line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
       // background-position: 0;
       // background-size: 100%;
       .put-line {
         width: 6px;
-        height: 30px;
-        background-color: #ffffff;
+        height: 40px;
+        background-color: #fa5300;
         display: inline-block;
-        // position: relative;
-        // top: 5px;
+        position: relative;
+        top: 5px;
       }
-
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-right: 20px;
       }
-
       .t2 {
         float: right;
         font-size: 20px;
@@ -1464,8 +1390,6 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        box-sizing: border-box;
-        padding: 0 30px;
         .p1 {
           display: inline-block;
           margin-right: 5px;
@@ -1496,47 +1420,42 @@ export default {
     }
   }
   .good-world {
-    // width: 100%;
+    width: 100%;
     height: 600px;
-
-    // padding: 0 30px;
+    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background-position: 0;
-      background-size: 100%;
-
+      height: 50px;
+      line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
-        height: 30px;
-        background-color: #ffffff;
+        height: 40px;
+        background-color: #fa5300;
         display: inline-block;
-        // position: relative;
-        // top: 5px;
+        position: relative;
+        top: 5px;
       }
-
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-right: 20px;
       }
-
       .t2 {
         float: right;
         font-size: 20px;
-        color: #ffffff;
+        color: #666;
       }
-
       .t3 {
         position: absolute;
         top: 20px;
         right: 145px;
         font-size: 24px;
-        color: #ffffff;
+        color: #666;
       }
-
       .van-count-down {
         display: inline-block;
         position: absolute;
@@ -1544,30 +1463,25 @@ export default {
         right: 25px;
       }
     }
-
     .good-world-brand {
       height: 550px;
-      // width: 100%;
+      width: 100%;
       margin-top: 17px;
-      padding: 0 30px;
-
+      // padding: 0 0px;
       .brand-p-1 {
         width: 100%;
         height: 340px;
-
         .brand-p-1-left {
           width: 340px;
           height: 340px;
           float: left;
           margin-right: 10px;
         }
-
         .brand-p-1-right-top {
           width: 340px;
           height: 165px;
           float: left;
         }
-
         .brand-p-1-right-bottom {
           width: 340px;
           height: 165px;
@@ -1575,7 +1489,6 @@ export default {
           margin-top: 10px;
         }
       }
-
       .brand-p-2 {
         // width: 100%;
         height: 80px;
@@ -1584,12 +1497,10 @@ export default {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-
         img {
           width: 165px;
           height: 80px;
           margin-right: 3px;
-
           &:last-child {
             margin-right: 0;
           }
@@ -1597,52 +1508,46 @@ export default {
       }
     }
   }
-
   .good-world-best {
     margin-bottom: 40px;
-
+    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background-position: 0;
-      background-size: 100%;
-
+      // height: 60px;
+      // line-height: 60px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
-        height: 30px;
-        background-color: #ffffff;
+        height: 40px;
+        background-color: #fa5300;
         display: inline-block;
-        // position: relative;
-        // top: 5px;
+        position: relative;
+        top: 5px;
       }
-
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-right: 20px;
       }
-
       .t2 {
         position: absolute;
         top: 20px;
         right: 30px;
         font-size: 20px;
-        color: #ffffff;
+        color: #666;
       }
     }
-
     .flash-sale-2 {
-      // width: 100%;
+      width: 100%;
       margin-top: 17px;
-      padding: 0 30px;
-
+      // padding: 0 30px;
       .pictures {
         box-sizing: border-box;
         background-color: #f7e8c7;
         padding: 24px 24px 20px;
-
         .good-world-best-p1 {
           padding: 45px 0 16px;
           width: 200px;
@@ -1651,16 +1556,13 @@ export default {
           margin-right: 21px;
           background-color: #f2f3f5;
           position: relative;
-
           &:last-child {
             margin-right: 0;
           }
-
           img {
             width: 175px;
             height: 175px;
           }
-
           .good-name {
             padding: 0 12px;
             height: 29px;
@@ -1672,7 +1574,6 @@ export default {
             color: #000;
             font-size: 14px;
           }
-
           .good-price {
             font-size: 16px;
             color: #f83600;
@@ -1719,49 +1620,46 @@ export default {
     }
   }
   .good-popular {
+    width: 100%;
     height: 462px;
-
+    padding: 0 30px;
     .flash-sale-1 {
       position: relative;
-      height: 60px;
-      line-height: 60px;
-      padding-left: 30px;
-      background-position: 0;
-      background-size: 100%;
-
+      height: 50px;
+      line-height: 50px;
+      // padding-left: 30px;
+      // background: url(../../../assets/img/activity/background.png) no-repeat;
+      // background-position: 0;
+      // background-size: 100%;
       .put-line {
         width: 6px;
-        height: 30px;
-        background-color: #ffffff;
+        height: 40px;
+        background-color: #fa5300;
         display: inline-block;
-        // position: relative;
-        // top: 5px;
+        position: relative;
+        top: 5px;
       }
-
       .t1 {
         font-size: 30px;
-        color: #ffffff;
+        color: #333;
         margin-right: 20px;
       }
-
       .t2 {
         float: right;
         font-size: 20px;
-        color: #ffffff;
+        color: #666;
       }
     }
-
     .good-popular-top {
-      // width: 100%;
+      width: 100%;
       height: 170px;
       margin: 19px 0 10px;
-      padding: 0 30px;
+      // padding: 0 30px;
       position: relative;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
-
       .good-popular-top-1 {
         width: 340px;
         height: 170px;
@@ -1769,7 +1667,6 @@ export default {
         margin-bottom: 10px;
       }
     }
-
     .good-popular-bottom {
       margin: 0px;
     }
@@ -1778,27 +1675,10 @@ export default {
     width: 100%;
     // height: 1619px;
     box-sizing: border-box;
-    margin-top: 20px;
-    /deep/ .van-tab {
-      padding: 40px 0;
-      line-height: 60px;
-    }
-    /deep/ .van-tabs__nav {
-      background: url(../../../assets/img/activity/christmas/christmas_home_labe.png)
-        no-repeat;
-      background-position: 0;
-      background-size: 100%;
-      //   margin-top: 20px;
-      //   height: 60px;
-
-      .van-tabs__line {
-        width: 70px !important;
-        background-color: #fff !important;
-      }
-    }
+    padding-top: 20px;
     /deep/ .van-tabs {
       .van-tabs__wrap {
-        min-height: 90px;
+        min-height: 100px;
         .van-tab {
           // line-height: 88px;
           .van-tab__text {
@@ -1806,16 +1686,7 @@ export default {
           }
         }
         .primary {
-          font-size: 26px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          color: #fff;
-        }
-        .line_right {
-          border-right: 2px solid #fff;
-          height: 30px;
-          padding: 0 10px;
+          font-size: 34px;
         }
       }
     }

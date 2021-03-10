@@ -6,7 +6,7 @@
         src="@/assets/img/activity/christmas/christmas_list_back.png"
         @click="$router.go(-1)"
       />
-      <div class="christmas_heard">Christmas Festival</div>
+      <div class="christmas_heard">HAPPY EASTER DAY</div>
     </div>
     <!-- 圣诞-绿 -->
     <div class="christmas_tree">
@@ -119,7 +119,7 @@
                         src="@/assets/img/activity/christmas/christmas_list_lable.png"
                         class="title_two_icon"
                       />
-                      <span class="title_two_text">Christmas Festival</span>
+                      <span class="title_two_text">Happy Easter</span>
                     </div>
                     <div class="text_conter">
                       {{ christmasOldItem.skuName }}
@@ -259,14 +259,14 @@ export default {
         this.$refs.wrapper.scrollTo(0, 0);
       }
       //易观数据采集----按钮点击
-        AnalysysAgent.track(
-          "btn_click",
-          {
-            $title: "圣诞活动主会场",
-            btn_name: "圣诞活动主会场分类----" + tabItem.themeModuleName
-          },
-          rel => {}
-        );
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: "圣诞活动主会场",
+          btn_name: "圣诞活动主会场分类----" + tabItem.themeModuleName,
+        },
+        (rel) => {}
+      );
     },
     // 圣诞
     therm(christmasData, flag) {
@@ -356,7 +356,7 @@ export default {
     },
     //跳转详情页
     toDetail(skuId) {
-      localStorage.setItem("skuid",skuId);
+      localStorage.setItem("skuid", skuId);
       this.$router.push({
         name: "商品详情",
         query: {
@@ -364,14 +364,14 @@ export default {
         },
       });
       //易观数据采集----按钮点击
-        AnalysysAgent.track(
-          "btn_click",
-          {
-            $title: "圣诞活动主会场",
-            btn_name: "圣诞活动主会场主推产品详情页---skuID " + skuId
-          },
-          rel => {}
-        );
+      AnalysysAgent.track(
+        "btn_click",
+        {
+          $title: "圣诞活动主会场",
+          btn_name: "圣诞活动主会场主推产品详情页---skuID " + skuId,
+        },
+        (rel) => {}
+      );
     },
   },
   components: {
@@ -420,16 +420,16 @@ export default {
 }
 
 .tab_click_icon {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 33px;
   position: absolute;
   z-index: 1;
-  top: -20px;
+  top: -10px;
   left: 0;
 }
 
 .christmas_btn {
-  background: #bb2229;
+  background: #fe6137;
   font-size: 24px;
   width: 160px;
   height: 48px;
@@ -453,7 +453,7 @@ export default {
   width: 100%;
   z-index: 3;
   height: 88px;
-  background-color: #a3030d;
+  background-color: #970b62;
   color: #fff;
   font-size: 34px;
 
@@ -544,7 +544,7 @@ export default {
   .main_img {
     width: 210px;
     height: 210px;
-	background: #fff;
+    background: #fff;
   }
 
   .main_text {
@@ -594,7 +594,7 @@ export default {
   .christmas_list_red {
     // height: calc(100vh - 500px);
     box-sizing: border-box;
-    background-color: #a3030d;
+    background-color: #efa0b3;
     padding: 30px 16px 0px 16px;
 
     .christmas_old_content {
@@ -624,7 +624,7 @@ export default {
     .christmas_old_imgs {
       width: 230px;
       height: 230px;
-	  background: #fff;
+      background: #fff;
     }
 
     .box_right {
@@ -638,7 +638,7 @@ export default {
     }
 
     .title_two_text {
-      background-color: #bb2229;
+      background-color: #e8c24d;
       box-sizing: border-box;
       font-size: 22px;
       padding: 4px 12px;
@@ -646,10 +646,10 @@ export default {
 
     .title_two_icon {
       position: absolute;
-      top: -28px;
+      top: -22px;
       left: -24px;
-      width: 50px;
-      height: 50px;
+      width: 48px;
+      height: 33px;
     }
 
     .text_conter {
