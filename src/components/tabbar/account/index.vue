@@ -1,15 +1,6 @@
 <template>
   <!-- 个人页 -->
   <section>
-    <div class="christmas_bg"></div>
-      <div class="header flex_space">
-        <div class="christmas_bg_nav_right">
-          <van-icon
-            name="chat-o"
-            size="17px"
-            color="#fff"
-          />
-    </div>
     <div class="account">
       <div class="header">
         <span class="header-wd">My Tospino</span>
