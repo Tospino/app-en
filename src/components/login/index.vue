@@ -62,10 +62,6 @@
         <div class="other">Other ways to login</div>
         <div class="line right-80"></div>
         <div class="icons flex flex_around">
-          <!-- <img
-            src="@/assets/img/login/Google@2x.png"
-            @click="ThirdLogin('google')"
-          /> -->
           <GoogleLogin
             class="google_btn"
             :params="params"
@@ -79,16 +75,28 @@
             />
           </GoogleLogin>
           <!-- <van-row type="flex" justify="space-between">
-            <van-col span="8" style="text-align:center" @click="ThirdLogin('facebook')">
+            <van-col
+              span="8"
+              style="text-align:center"
+              @click="ThirdLogin('facebook')"
+            >
               <img src="@/assets/img/login/facebook@3x.png" />
             </van-col>
-            <van-col span="8" style="text-align:center" @click="ThirdLogin('twitter')">
+            <van-col
+              span="8"
+              style="text-align:center"
+              @click="ThirdLogin('twitter')"
+            >
               <img src="@/assets/img/login/twitter@3x.png" />
             </van-col>
-            <van-col span="8" style="text-align:center" @click="ThirdLogin('weixin')">
+            <van-col
+              span="8"
+              style="text-align:center"
+              @click="ThirdLogin('weixin')"
+            >
               <img src="@/assets/img/login/weixin@3x.png" />
             </van-col>
-          </van-row>-->
+          </van-row> -->
         </div>
       </div>
 
@@ -281,15 +289,15 @@ export default {
     //登录按钮
     logIn() {
       if (this.disabledSubmit) {
-        var phoneReg = /^[1-9]\d*$/;
-        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
-        if(reg.test(this.userData.username1)){
-          this.userData.username = this.userData.username1;
-        }else if (!phoneReg.test(this.userData.username1)) {
-          this.userData.username = this.userData.username1.substring(1);
-        } else {
-          this.userData.username = this.userData.username1;
-        }
+        var phoneReg = /^[1-9]\d*$/;
+        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        if (reg.test(this.userData.username1)) {
+          this.userData.username = this.userData.username1;
+        } else if (!phoneReg.test(this.userData.username1)) {
+          this.userData.username = this.userData.username1.substring(1);
+        } else {
+          this.userData.username = this.userData.username1;
+        }
 
         loginApi(this.userData).then(res => {
           if (res.code == 0) {
