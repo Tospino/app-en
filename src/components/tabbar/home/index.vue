@@ -1,7 +1,7 @@
 <!--
  * @Author: zlj
  * @Date: 2020-07-18 17:45:35
- * @LastEditTime: 2021-02-27 10:45:43
+ * @LastEditTime: 2021-03-13 16:05:42
  * @LastEditors: 曹建勇
  * @Description: 添加优惠券userPopup
  * @FilePath: \app-en\src\components\tabbar\home\index.vue
@@ -135,24 +135,7 @@
               <span class="t1">Clearance Sale</span>
               <span class="desc ml_20" v-show="isExit == 0">
                 <!-- 特价时间 -->
-                <count-down model="timer" :end-time="clear_one">
-                  <template v-slot="time">
-                    Starts at
-                    {{
-                      parseInt(time.restCount / 3600) > 9
-                        ? parseInt(time.restCount / 3600)
-                        : "0" + parseInt(time.restCount / 3600)
-                    }}:{{
-                      parseInt((time.restCount % 3600) / 60) > 9
-                        ? parseInt((time.restCount % 3600) / 60)
-                        : "0" + parseInt((time.restCount % 3600) / 60)
-                    }}:{{
-                      parseInt(time.restCount % 60) > 9
-                        ? parseInt(time.restCount % 60)
-                        : "0" + parseInt(time.restCount % 60)
-                    }}
-                  </template>
-                </count-down>
+                <timeCountDown :ChaTime="ChaTime"></timeCountDown>
               </span>
             </div>
             <div class="flex" @click="toClearance">
@@ -489,6 +472,7 @@
 <script>
 import allCoupons from "@/multiplexing/allCoupons";
 import searchHeader from "@/multiplexing/searchHeader";
+import timeCountDown from "@/multiplexing/timeCountDown";
 import {
   homePageApi,
   HomePagebottomApi,
@@ -501,6 +485,7 @@ import { getuserinfoApi } from "@/api/accountSettings/index";
 import { couponDrawApi } from "@/api/confirmOrder/index";
 import { Toast } from "vant";
 import moment from "moment";
+var timer, endTimer;
 export default {
   props: {},
   data() {
@@ -552,9 +537,9 @@ export default {
       },
       clear_list: [],
       isExit: false,
-      clear_one: "", //特价 倒计时
-      clear_end: null, //结束时间
-      down_time: "", //特价 倒计时刷新
+      ChaTime: null, //开始结束时间戳差值
+      endchaTime: null, //活动结束时间与当前时间差值时间戳
+      flag: true,
 
       isShowCoupon: 1, //判断是否为新人券或会员券(是否领取)
       touristSum: 0, //吸引游客金额
@@ -592,7 +577,6 @@ export default {
     } else {
       this.homePage();
     }
-    this.getClear();
     this.homeAdvertPicture();
   },
   beforeRouteLeave(to, from, next) {
@@ -602,37 +586,11 @@ export default {
     next();
   },
   mounted() {
-    //   清仓
-    let time_atc = setInterval(() => {
-      //   清仓时间戳
-      let clear_time = moment(this.clear_one).valueOf();
-      //   结束时间
-      let activityEnd = moment(this.clear_end).valueOf();
-      let new_time = new Date().getTime();
-      //   倒计时
-      //   预热三天 259200
-      if (parseInt(clear_time / 1000) - 259200 == parseInt(new_time / 1000)) {
-        this.getClear();
-        this._pulldown();
-        this.homePagebottom(this.formData);
-      }
-      //   活动中
-      if (parseInt(clear_time / 1000) == parseInt(new_time / 1000)) {
-        this.getClear();
-        this._pulldown();
-        this.homePagebottom(this.formData);
-      }
-      //   活动结束
-      if (parseInt(new_time / 1000) == parseInt(activityEnd / 1000)) {
-        this.getClear();
-        this._pulldown();
-        this.homePagebottom(this.formData);
-      }
-    }, 1000);
     this.refreshOrder();
   },
   activated() {
     this.newCoupons();
+    this.getClear();
   },
   watch: {
     $route: {
@@ -649,6 +607,36 @@ export default {
       // 深度观察监听
       deep: true,
     },
+    endchaTime: {
+      handler: function (newVal) {
+        let restCount = newVal / 1000;
+        if (restCount < 0) {
+          clearInterval(endTimer);
+          if (this.flag) {
+            this._pulldown();
+            this.flag = false;
+            setTimeout(() => {
+              this.flag = true;
+            }, 1000);
+          }
+        }
+      },
+    },
+    ChaTime: {
+      handler: function (newVal) {
+        let restCount = parseInt(newVal / 1000);
+        if (restCount == 0) {
+          clearInterval(timer);
+          setTimeout(() => {
+            this._pulldown();
+          }, 1000);
+        }
+      },
+    },
+  },
+  destroyed() {
+    clearInterval(timer);
+    clearInterval(endTimer);
   },
   methods: {
     // 首页平台用户优惠券
@@ -822,10 +810,11 @@ export default {
     },
     //下拉刷新
     _pulldown() {
+      this.getClear();
       setTimeout(() => {
         this.homePage();
         this.refreshOrder();
-        this.getClear();
+
         this.newCoupons();
       }, 500);
     },
@@ -1005,20 +994,36 @@ export default {
       gethomeClearanceList({ isHome: 1 }).then((res) => {
         if (res.code == 0) {
           this.clear_list = res.Data.list;
+          this.ChaTime = res.ChaTime;
+          this.endchaTime = res.endchaTime;
+          this.countdownChaTime();
           //   特价时间
           if (this.clear_list.length != 0) {
-            this.clear_one = this.clear_list[0].activityBegin;
-            this.clear_end = this.clear_list[0].activityEnd;
-            //   this.isExit = res.IsConcat;
             this.isExit = this.clear_list[0].activityState;
           }
         }
       });
     },
+    //倒计时
+    countdownChaTime() {
+      clearInterval(timer);
+      clearInterval(endTimer);
+      if (this.ChaTime) {
+        timer = setInterval(() => {
+          this.ChaTime = this.ChaTime - 1000;
+        }, 1000);
+      }
+      if (this.endchaTime) {
+        endTimer = setInterval(() => {
+          this.endchaTime = this.endchaTime - 1000;
+        }, 1000);
+      }
+    },
   },
   components: {
     searchHeader,
     allCoupons,
+    timeCountDown,
   },
 };
 </script>
