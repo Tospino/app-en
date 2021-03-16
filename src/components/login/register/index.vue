@@ -3,6 +3,15 @@
   <div class="register">
     <div v-show="choiceShow">
       <navar title="Register"></navar>
+      <div class="register-type flex">
+        <span
+          v-for="(item, index) in register"
+          :key="index"
+          :class="{ active: registerType == index }"
+          @click="changeRegister(index)"
+          >{{ item }}</span
+        >
+      </div>
       <div class="item-title">Account Info</div>
       <div class="create-user">
         <van-cell-group>
@@ -11,18 +20,27 @@
             placeholder="User's name"
             :maxlength="20"
           />
-          <div class="iphone-option">
-            <select ref="mobilecode">
-              <option value="233">+233</option>
-            </select>
+          <div v-if="registerType === 0">
+            <div class="iphone-option">
+              <select ref="mobilecode">
+                <option value="233">+233</option>
+              </select>
+            </div>
+            <van-field
+              v-model="formData.phone"
+              placeholder="Enter your phone number"
+              class="zyyw aaa"
+              type="number"
+              :maxlength="11"
+            />
           </div>
-          <van-field
-            v-model="formData.phone"
-            placeholder="Enter your phone number"
-            class="zyyw aaa"
-            type="number"
-            :maxlength="11"
-          />
+          <div v-else-if="registerType === 1">
+            <van-field
+              v-model="formData.email"
+              placeholder="Enter your email"
+              class="zyyw"
+            />
+          </div>
           <van-field
             v-model="formData.smsCode"
             placeholder="Enter verification code"
@@ -41,11 +59,13 @@
               {{ count }}S
             </div>
           </van-field>
-          <van-field
-            v-model="formData.email"
-            placeholder="Enter your email(optional fields)"
-            class="zyyw"
-          />
+          <div v-if="registerType === 0">
+            <van-field
+              v-model="formData.email"
+              placeholder="Fill in 'null' if no Email."
+              class="zyyw"
+            />
+          </div>
           <van-field
             v-model="formData.userPwd"
             clearable
@@ -282,7 +302,11 @@
 
 <script>
 import navar from "@/multiplexing/navar";
-import { membertypelitApi, userregisterApi } from "@/api/register/index";
+import {
+  membertypelitApi,
+  userregisterApi,
+  getEmailCodeApi
+} from "@/api/register/index";
 import { ipgetcountry, areanamegetid, addbasearea } from "@/api/location/index";
 import uploadOne from "@/multiplexing/uploadOne";
 import choiceList from "@/multiplexing/choiceList.vue";
@@ -296,6 +320,8 @@ export default {
   props: {},
   data() {
     return {
+      registerType: 0, //注册方式： 0.手机号 1.邮箱
+      register: ["Phone", "Email"],
       countdown: "Get It",
       count: "",
       timer: null,
@@ -334,74 +360,78 @@ export default {
         legalPersonImg: "", //法人人像照
         legalPersonBack: "", //法人证件反面照
         legalPersonFront: "", //法人证件正面照
-        recommendCode: "", // 推荐码
+        recommendCode: "" // 推荐码
       },
       rules: {
         nickName: {
           required: true,
-          messages: "Enter account",
+          messages: "Enter account"
         },
         phone: {
           required: true,
-          messages: "Enter phone number",
+          messages: "Enter phone number"
+        },
+        email: {
+          required: true,
+          messages: "Enter Email"
         },
         smsCode: {
           required: true,
-          messages: "Enter verification code",
+          messages: "Enter verification code"
         },
         userPwd: {
           required: true,
-          messages: "Enter login password",
+          messages: "Enter login password"
         },
         userPwd2: {
           required: true,
-          messages: "Confirm the password",
-        },
+          messages: "Confirm the password"
+        }
       },
       form: {
         lev1: null,
         lev2: null,
         lev3: null,
-        lev4: null,
+        lev4: null
       },
       choiceForm: {
         lev1: {
           id: "",
           name: "",
-          areaCode: "",
+          areaCode: ""
         },
         lev2: {
           id: "",
           name: "",
-          areaCode: "",
+          areaCode: ""
         },
         lev3: {
           id: "",
           name: "",
-          areaCode: "",
+          areaCode: ""
         },
         lev4: {
           id: "",
           name: "",
-          areaCode: "",
-        },
+          areaCode: ""
+        }
       },
       memberList: [], //主营业务列表
       yzmData: {
         msgphone: "",
         types: "1",
-        areaCode: "233",
+        areaCode: "233"
       },
       zhengce: false,
       userStatus: false,
       register_time: null, //注册时长定时器
-      duration: null,
+      duration: null
     };
   },
   computed: {
     disabledSubmit() {
       return !this.$fn.isDisabled(this.formData, this.rules) && this.xieyi;
-    },
+    }
   },
   async created() {
     this.getLoaction();
@@ -415,23 +445,28 @@ export default {
   },
   watch: {
     eyeStatus: {
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         this.eyeStatus
           ? (this.eyeName = "eye-o")
           : (this.eyeName = "closed-eye");
         this.fieldType = this.eyeStatus ? "text" : "password";
-      },
+      }
     },
     eyeStatus1: {
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         this.eyeStatus1
           ? (this.eyeName1 = "eye-o")
           : (this.eyeName1 = "closed-eye");
         this.fieldType1 = this.eyeStatus1 ? "text" : "password";
-      },
-    },
+      }
+    }
   },
   methods: {
+    //切换注册类型
+    changeRegister(index) {
+      this.registerType = index;
+      this.formData = {};
+    },
     // 获取定位地址
     async getLoaction() {
       let latlng = ""; //
@@ -446,20 +481,20 @@ export default {
         url: `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`,
         method: "POST",
         headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-      }).then((res) => {
+          "Content-Type": "application/json;charset=utf-8"
+        }
+      }).then(res => {
         let data = res.data;
         latlng = `${data.location.lat},${data.location.lng}`;
       });
       let data = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=EN`,
-        method: "GET",
+        method: "GET"
       });
       // 获取中文数据，添加到数据库
       let dataEN = await axios({
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}&language=CN`,
-        method: "GET",
+        method: "GET"
       });
       let total_data = [...dataEN.data.results, ...data.data.results];
       if (Array.isArray(total_data) && total_data.length !== 0) {
@@ -534,9 +569,11 @@ export default {
     toRevise() {
       if (!this.disabledSubmit) return;
       clearInterval(this.register_time);
-      var emReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/; //正则表达式
+      var emReg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/; //正则表达式
       if (this.formData.email == "") {
-      } else if (!emReg.test(this.formData.email)) {
+        Toast("Please enter your email address.");
+        return;
+      } else if (!emReg.test(this.formData.email) && this.formData.email != "null") {
         Toast("The email form isn’t correct.");
         return;
       }
@@ -548,13 +585,16 @@ export default {
         Toast("The entered password isn’t consistent with the one confirmed.");
         return;
       }
-      this.formData.mobileCode = this.$refs.mobilecode.value;
-      var phoneReg = /^[1-9]\d*$/;
-      if (!phoneReg.test(this.formData.phone)) {
-        this.formData.mobile = this.formData.phone.substring(1);
-      } else {
-        this.formData.mobile = this.formData.phone;
+      if (this.registerType === 0) {
+        this.formData.mobileCode = this.$refs.mobilecode.value;
+        var phoneReg = /^[1-9]\d*$/;
+        if (!phoneReg.test(this.formData.phone)) {
+          this.formData.mobile = this.formData.phone.substring(1);
+        } else {
+          this.formData.mobile = this.formData.phone;
+        }
       }
+
       this.userregister();
 
       //易观数据采集---按钮点击
@@ -563,27 +603,63 @@ export default {
         "btn_click",
         {
           $title: titHtm,
-          btn_name: "Register",
+          btn_name: "Register"
         },
-        (rel) => {}
+        rel => {}
       );
     },
     getCode() {
-      if (this.formData.phone == "") {
-        Toast("Enter phone number");
-        return;
+      if (this.registerType === 0) {
+        if (this.formData.phone == "") {
+          Toast("Enter phone number");
+          return;
+        }
+        var phoneReg = /^[1-9]\d*$/;
+        if (!phoneReg.test(this.formData.phone)) {
+          this.formData.mobile = this.formData.phone.substring(1);
+        } else {
+          this.formData.mobile = this.formData.phone;
+        }
+        this.yzmData.msgphone = this.formData.mobile;
+        this.yzmData.areaCode = this.$refs.mobilecode.value;
+        this.msglist(this.yzmData);
+      } else if (this.registerType === 1) {
+        if (this.formData.email == "") {
+          Toast("Enter your Email");
+          return;
+        }
+        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        if (
+          reg.test(this.formData.email) == false &&
+          this.formData.email != "null"
+        ) {
+          Toast("Please enter your email address.");
+          return;
+        }
+        getEmailCodeApi({ email: this.formData.email, types: 1 }).then(res => {
+          if (res.code == 0) {
+            const TIME_COUNT = 120;
+            if (!this.timer) {
+              this.count = TIME_COUNT;
+              this.countTrue = false;
+              this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                  this.count--;
+                } else {
+                  this.countTrue = true;
+                  clearInterval(this.timer);
+                  this.timer = null;
+                }
+              }, 1000);
+            } else {
+              Toast("error");
+            }
+          }
+        });
       }
-      var phoneReg = /^[1-9]\d*$/;
-      if (!phoneReg.test(this.formData.phone)) {
-        this.formData.mobile = this.formData.phone.substring(1);
-      } else {
-        this.formData.mobile = this.formData.phone;
-      }
-      this.yzmData.msgphone = this.formData.mobile;
-      this.yzmData.areaCode = this.$refs.mobilecode.value;
-      this.msglist(this.yzmData);
+
       //易观数据采集---点击获取验证码
-      AnalysysAgent.track("get_code", { service_type: "注册" }, (rel) => {});
+      AnalysysAgent.track("get_code", { service_type: "注册" }, rel => {});
     },
     getfilePath(path, imgName) {
       if (imgName == "公司正面照") {
@@ -606,7 +682,7 @@ export default {
       this.choiceShow = false;
       let obj = {
         area_level: level,
-        parent_id: parent,
+        parent_id: parent
       };
       this.$refs.choiceList.formData.area_level = obj.area_level;
       this.$refs.choiceList.formData.parent_id = obj.parent_id;
@@ -636,13 +712,13 @@ export default {
     },
     //主营业务列表
     membertypelit() {
-      membertypelitApi().then((res) => {
+      membertypelitApi().then(res => {
         if (res.code == 0) {
           let arr = res.tpMemberTypeList;
-          arr.forEach((e) => {
+          arr.forEach(e => {
             let obj = {
               name: e.typeTitle,
-              id: e.typeId,
+              id: e.typeId
             };
             this.memberList.push(obj);
           });
@@ -659,7 +735,7 @@ export default {
     },
     //注册
     userregister() {
-      userregisterApi(this.formData).then((res) => {
+      userregisterApi(this.formData).then(res => {
         if (res.code == 0) {
           localStorage.phone = res.user.phone;
           this.show2 = true;
@@ -717,13 +793,13 @@ export default {
             code: this.formData.recommendCode,
             is_successful: res.code == 0 ? true : false,
             nickname: this.formData.nickName,
-            duration: this.duration,
+            duration: this.duration
           },
-          (rel) => {}
+          rel => {}
         );
         //绑定用户ID
         if (res.code == 0) {
-          AnalysysAgent.alias(this.formData.mobile, (rek) => {});
+          AnalysysAgent.alias(this.formData.mobile, rek => {});
         }
       });
     },
@@ -736,7 +812,7 @@ export default {
       } else {
         data.msgphone = data.msgphone;
       }
-      sendArkeselMsgApi(data).then((res) => {
+      sendArkeselMsgApi(data).then(res => {
         if (res.code == 0) {
           const TIME_COUNT = 120;
           if (!this.timer) {
@@ -753,7 +829,7 @@ export default {
             }, 1000);
           }
         } else if (res.code == 101 || res.code == 102) {
-          msglistApi(data).then((res) => {
+          msglistApi(data).then(res => {
             if (res.code == 0) {
               const TIME_COUNT = 120;
               if (!this.timer) {
@@ -805,7 +881,7 @@ export default {
         let obj = {
           id: data.Data.areaId,
           name: data.Data.areaNameEng,
-          areaCode: data.Data.areaCode,
+          areaCode: data.Data.areaCode
         };
         this.$set(this.choiceForm, `lev${level}`, obj);
       } else {
@@ -819,22 +895,22 @@ export default {
           areaName: name_cn, // 名称
           areaNameEng: name, // 名称英语
           parentId: level == 1 ? 0 : this.choiceForm[`lev${lev}`].id, // 父级ID
-          area_status: 1,
+          area_status: 1
         });
       }
     },
     // 当检索不到数据时，添加地址id
     async addAreaID(params) {
       if (params.parentId === 0 || params.parentId) {
-        await addbasearea(params).then((res) => {
+        await addbasearea(params).then(res => {
           this.$set(this.choiceForm, `lev${params.areaLevel}`, {
             id: res.Data.areaId,
             name: res.Data.areaNameEng,
-            areaCode: res.Data.areaCode,
+            areaCode: res.Data.areaCode
           });
         });
       }
-    },
+    }
   },
   components: {
     navar,
@@ -842,8 +918,8 @@ export default {
     choiceList,
     zhezhao,
     yinsi,
-    userAgreement,
-  },
+    userAgreement
+  }
 };
 </script>
 
@@ -883,6 +959,7 @@ export default {
       }
     }
   }
+
   .iphone-option {
     width: 78px;
     height: 52px;
@@ -983,6 +1060,26 @@ export default {
     line-height: 88px;
     .btn-zc {
       color: #fff;
+    }
+  }
+  .register-type {
+    margin: 0 30px;
+    height: 80px;
+    line-height: 80px;
+    color: #333333;
+    font-size: 32px;
+    text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    span {
+      width: 350px;
+    }
+    span:nth-child(1) {
+      border-right: 1px solid #e5e5e5;
+    }
+    .active {
+      color: #fa5300;
+      border-bottom: 6px solid #fa5300;
     }
   }
   .item-title {

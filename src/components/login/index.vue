@@ -186,7 +186,7 @@ import {
   msglistApi,
   getuserinfo,
   sendArkeselMsgApi,
-  googleuserLogin
+  googleuserLogin,
 } from "@/api/login/index";
 import { accReg, passReg } from "@/common/reg.js";
 import zhezhao from "@/multiplexing/zhezhao";
@@ -206,17 +206,17 @@ export default {
       userData: {
         username: "",
         password: "",
-        username1: ""
+        username1: "",
       },
       rules: {
         username1: {
           required: true,
-          messages: "Enter login username"
+          messages: "Enter login username",
         },
         password: {
           required: true,
-          messages: "Enter login password"
-        }
+          messages: "Enter login password",
+        },
       },
       zhengce: false,
       show: false,
@@ -224,7 +224,7 @@ export default {
         phone: "",
         code: "",
         password: "",
-        areaCode: "+233"
+        areaCode: "+233",
       },
       showKeyboard: false,
       facebook_id: "",
@@ -233,15 +233,15 @@ export default {
       // 谷歌id
       params: {
         client_id:
-          "981774383820-adq983fuf1mh718gh843sabpkg5f55nc.apps.googleusercontent.com"
+          "981774383820-adq983fuf1mh718gh843sabpkg5f55nc.apps.googleusercontent.com",
       },
-      isH5: true // 是否是H5
+      isH5: true, // 是否是H5
     };
   },
   computed: {
     disabledSubmit() {
       return !this.$fn.isDisabled(this.userData, this.rules) && this.checked;
-    }
+    },
   },
   created() {
     //易观数据采集-----核心页面加载
@@ -254,9 +254,9 @@ export default {
       "core_page_load",
       {
         $url: urlHtm,
-        $title: titHtm
+        $title: titHtm,
       },
-      rel => {}
+      (rel) => {}
     );
   },
   mounted() {
@@ -274,15 +274,15 @@ export default {
   }, //生命周期 - 销毁完成
   watch: {
     eyeStatus: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         this.eyeStatus
           ? (this.eyeName = "eye-o")
           : (this.eyeName = "closed-eye");
         this.eyeStatus
           ? (this.inputType = "text")
           : (this.inputType = "password");
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions(["classifykeep"]),
@@ -299,7 +299,7 @@ export default {
           this.userData.username = this.userData.username1;
         }
 
-        loginApi(this.userData).then(res => {
+        loginApi(this.userData).then((res) => {
           if (res.code == 0) {
             localStorage.token = res.token;
             // if (this.$storage("?historyList")) {
@@ -347,13 +347,13 @@ export default {
               user_id: this.userData.username,
               login_method: "密码",
               is_successful: res.code == 0 ? true : false,
-              failure_reason: reason
+              failure_reason: reason,
             },
-            rel => {}
+            (rel) => {}
           );
           if (res.code == 0) {
             //绑定用户ID
-            AnalysysAgent.alias(this.userData.username, rek => {});
+            AnalysysAgent.alias(this.userData.username, (rek) => {});
             //易观绑定用户属性
             AnalysysAgent.profileSet(
               {
@@ -369,9 +369,9 @@ export default {
                 first_source: res.user.auditRemark,
                 total_gmv: res.user.orderAmountWebsite,
                 detailed_address: res.user.companyAddress,
-                main_business: res.user.typeTitle
+                main_business: res.user.typeTitle,
               },
-              rel => {}
+              (rel) => {}
             );
           }
         });
@@ -383,9 +383,9 @@ export default {
         "btn_click",
         {
           $title: titHtm,
-          btn_name: "Log In"
+          btn_name: "Log In",
         },
-        rel => {}
+        (rel) => {}
       );
     },
     //回车键
@@ -405,14 +405,14 @@ export default {
       if (val === "facebook") {
         // 调用facebook登录
         FB.login(
-          function(response) {
+          function (response) {
             if (response.status === "connected") {
               a.facebook_id = response.authResponse.userID;
-              FB.api("/me", function(response1) {
+              FB.api("/me", function (response1) {
                 doLogin({
                   inputToken: response.authResponse.accessToken,
-                  name: response1.name
-                }).then(res => {
+                  name: response1.name,
+                }).then((res) => {
                   if (res.code === 0) {
                     localStorage.token = res.token;
                     a.$router.push({ name: "首页" });
@@ -426,7 +426,7 @@ export default {
             } else {
               Dialog.alert({
                 title: "Tips",
-                message: "User cancelled login or did not fully authorize."
+                message: "User cancelled login or did not fully authorize.",
               }).then(() => {
                 // on close
               });
@@ -448,8 +448,8 @@ export default {
         checkphonethird({
           userPhone: this.bindForm.phone,
           thirduserId: this.facebook_id,
-          type: 1
-        }).then(res => {
+          type: 1,
+        }).then((res) => {
           switch (res.code) {
             case -110:
               this.hasUser = false;
@@ -485,19 +485,19 @@ export default {
         smsCode: this.bindForm.code,
         password: this.bindForm.password,
         ishaveuser: this.hasUser ? 1 : 0,
-        type: 1
+        type: 1,
       };
       if (this.hasUser) {
         delete query.password;
       }
-      userregister(query).then(res => {
+      userregister(query).then((res) => {
         if (res.code === 0) {
           Toast("Binding success");
           setTimeout(() => {
             localStorage.token = res.token;
             this.$router.push({ name: "首页" });
           }, 1500);
-          getuserinfo().then(req => {
+          getuserinfo().then((req) => {
             this.$storage.set("userinfoShop", req.user);
             this.$storage.set("thirdapp", req.applist);
           });
@@ -510,8 +510,8 @@ export default {
         sendArkeselMsgApi({
           msgphone: this.bindForm.phone,
           areaCode: this.$refs["phone_select"].value,
-          types: 8
-        }).then(res => {
+          types: 8,
+        }).then((res) => {
           if (res.code == 0) {
             Toast("Send Successfully");
             this.msg = 60;
@@ -525,8 +525,8 @@ export default {
             msglistApi({
               msgphone: this.bindForm.phone,
               areaCode: this.$refs["phone_select"].value,
-              types: 8
-            }).then(res => {
+              types: 8,
+            }).then((res) => {
               if (res.code == 0) {
                 Toast("Send Successfully");
                 this.msg = 60;
@@ -550,10 +550,9 @@ export default {
         userId: googleUser.getBasicProfile().getId(),
         email: googleUser.getBasicProfile().getEmail(),
         // idtoken: googleUser.getAuthResponse().id_token,
-        requeType: 2 //请求类型 1 会对idtoken做校验 2 不做校验
+        requeType: 2, //请求类型 1 会对idtoken做校验 2 不做校验
       };
-      console.log(form);
-      googleuserLogin(form).then(res => {
+      googleuserLogin(form).then((res) => {
         switch (res.code) {
           case 0:
             // isNew 是否新注册用户 true 是 false 否 （新注册密码默认是123456）
@@ -568,7 +567,7 @@ export default {
                 showCancelButton: true,
                 title: "Alert for newly registered users",
                 message:
-                  "Congratulations on your registration as our member. Your initial password is 123456. Would you like to change it now?"
+                  "Congratulations on your registration as our member. Your initial password is 123456. Would you like to change it now?",
               })
                 .then(() => {
                   this.$router.push({ name: "修改登录密码" });
@@ -605,14 +604,13 @@ export default {
     },
     onFailure(err) {
       Toast("Google login failed");
-      console.log("🚀 ~ file: index.vue ~ line 527 ~ onFailure ~ err", err);
-    }
+    },
   },
   components: {
     zhezhao,
     yinsi,
-    GoogleLogin
-  }
+    GoogleLogin,
+  },
 };
 </script>
 

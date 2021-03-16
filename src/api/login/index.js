@@ -24,6 +24,16 @@ export function msglistApi(params) {
         data: params
     })
 }
+
+//修改手机号
+export function updateuserphoneApi(params) {
+	return park({
+		url: '/appusercenter/updateuserphone',
+		method: 'POST',
+		data: params
+	})
+}
+
 //手机验证码(国际)
 export function sendArkeselMsgApi(params) {
     return park({
@@ -42,6 +52,15 @@ export function getverificationcodeApi(params) {
     })
 }
 
+//手机/邮箱校验验证码
+export function checkphonesmsApi(params) {
+    return park({
+        url: '/appusercenter/checkphonesms',
+        method: 'POST',
+        data: params
+    })
+}
+
 //找回登录密码支付密码
 export function setretrievepasswordApi(params) {
     return park({
@@ -55,6 +74,15 @@ export function setretrievepasswordApi(params) {
 export function setuserpaypasswordApi(params) {
     return park({
         url: '/appusercenter/setuserpaypassword',
+        method: 'POST',
+        data: params
+    })
+}
+
+//忘记登录密码输入账号返回注册类型验证
+export function selectPhoneExistApi(params) {
+    return park({
+        url: '/h5login/selectPhoneExist',
         method: 'POST',
         data: params
     })
